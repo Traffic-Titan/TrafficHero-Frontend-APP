@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../Mode_State.dart';
+import 'package:traffic_hero/imports.dart';
+
 
 class News extends StatelessWidget {
   const News({super.key});
@@ -8,7 +7,8 @@ class News extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
    // ignore: unused_local_variable
-   String state = Provider.of<mode_state>(context).modeName;
+   String state = Provider.of<stateManager>(context).modeName;
+   print(state);
     return const Placeholder();
   }
 }

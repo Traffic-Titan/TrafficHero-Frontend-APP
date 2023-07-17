@@ -37,6 +37,17 @@ dependencies:
   cupertino_icons: ^1.0.2
   http: ^1.1.0
   provider: ^6.0.5
+  flutter_login: ^4.1.1
+  url_launcher_ios: ^6.1.4
+  url_launcher: ^6.1.12
+  flutter_easyloading: ^3.0.5
+  crypto: ^3.0.3
+  geocoding: ^2.1.0
+  dart_jsonwebtoken: ^2.8.2
+  flutter_holo_date_picker: ^1.1.0
+  time_picker_spinner_pop_up: ^1.2.1
+  intl: ^0.18.1
+  flutter_datetime_picker_plus: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -48,6 +59,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -60,6 +72,8 @@ flutter:
     - assets/topbar/Mode_Masstransit.png
     - assets/topbar/SmartAssistant.png
     - assets/topbar/Default_Avatar.png
+    - assets/login_icon/google.png
+    - assets/login_icon/sign_in.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

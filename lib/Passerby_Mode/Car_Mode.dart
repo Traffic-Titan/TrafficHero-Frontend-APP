@@ -1,12 +1,6 @@
 // ignore_for_file: file_names, camel_case_types, prefer_typing_uninitialized_variables
-import 'package:flutter/material.dart';
+import 'package:traffic_hero/imports.dart';
 import 'package:flutter/cupertino.dart';
-//引入頁面
-import '../App_Page/Home_Page.dart';
-import '../App_Page/News_Page.dart';
-
-
-
 
 //主程式
 class CarMode extends StatefulWidget {
