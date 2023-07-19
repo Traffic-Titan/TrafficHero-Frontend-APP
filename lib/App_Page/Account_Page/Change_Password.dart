@@ -116,7 +116,7 @@ class new_password_page extends State<ChangePassword> {
           "new_password": Sha256().sha256Function(change_new_password_Controller.text)
         };
       } else {
-        var accountemail = JWT.decode(state.accountState).payload;
+        var accountemail = jwt().jwtdecode(state.accountState).payload;
         setState(() {
           //使用狀態管理判斷是忘記密碼還是修改密碼顯示舊密碼的輸入，通過是否有儲存帳戶資訊來判斷
           old_input_showState = true;

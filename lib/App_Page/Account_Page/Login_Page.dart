@@ -16,6 +16,7 @@ class _Login extends State<Login> {
   var error_text = '';
   var response;
   var show_password = true;
+  final googleController = Get.put(googlesso());
 
 //當頁面創造時執行
   @override
@@ -137,6 +138,9 @@ class _Login extends State<Login> {
                   const SizedBox(
                     height: 10,
                   ),
+                  // Image.network(googleController.googleAccount.value?.photoUrl ?? '',
+                  //  height: 200,
+                  // ),
                   Image.asset(
                     'assets/login_icon/sign_in.png',
                     height: 200,
@@ -272,10 +276,16 @@ class _Login extends State<Login> {
                           imagePath: 'assets/login_icon/google.png',
                         ),
                         onTap: () {
-                          print(
-                              Sha256().sha256Function(passwordController.text));
-                          print("google_SSO");
-                          EasyLoading.show(status: 'loading...');
+                          var test1 = [] ;
+                          test1.add("1");
+                          var test = {
+                            'test' : test1
+                          };
+
+                          print(test['test']);
+                          // googleController.googleLogin();
+                          EasyLoading.showSuccess(googleController.googleAccount1.value?.toString() ?? '');
+                          // EasyLoading.show(status: 'loading...');
                         },
                       ),
                     ],

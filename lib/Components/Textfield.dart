@@ -29,8 +29,7 @@ class MyTextfield extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    Container(
+    return Container(
       width: 310,
       child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 0),

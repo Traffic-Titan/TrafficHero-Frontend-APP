@@ -8,11 +8,11 @@ class SquareTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding:const EdgeInsets.all(10),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.white),
           borderRadius: BorderRadius.circular(40),
-          color: Color.fromARGB(109, 13, 66, 103),
+          color:const Color.fromARGB(255, 255, 255, 255),
       ),
       
       child: Image.asset(

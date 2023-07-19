@@ -30,11 +30,7 @@ class _registerState extends State<register> {
   var error_born = true;
   var length_error_password_text = '';
   late stateManager state;
-  // var name_state;
-  // var email_state;
-  // var password_state;
-  // var gender_state;
-  var born_state;
+
 
   void Show_Password() {
     if (show_password == true) {

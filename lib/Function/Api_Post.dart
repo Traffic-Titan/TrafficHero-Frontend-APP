@@ -6,7 +6,7 @@ class api {
     Body,
     url,
   ) async {
-    var api_Url = 'https://c175-106-1-187-119.ngrok-free.app';
+    var api_Url = 'http://114.34.89.252:5000';
     try {
       Response response = await post(Uri.parse(api_Url + url),
           headers: {

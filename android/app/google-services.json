@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "1012827309373",
+    "project_id": "traffichero-frontend-app-sso",
+    "storage_bucket": "traffichero-frontend-app-sso.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1012827309373:android:d9eed400c1f8a027737154",
+        "android_client_info": {
+          "package_name": "com.TrafficTitan.TrafficHero.traffic_hero"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1012827309373-qqo2qfqoprjbmn8muphfpai47pohetnj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrEH1K9QeqUCHliGL_Qtz6NTevv6MUPdo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1012827309373-agmmh5deuj8nl6mr6lb606hkeljtse02.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1012827309373-1e3jti38s17pjte46a60g8dfo2vq8bgg.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.TrafficTitan"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

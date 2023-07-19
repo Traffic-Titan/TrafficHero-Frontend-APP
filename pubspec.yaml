@@ -48,6 +48,10 @@ dependencies:
   time_picker_spinner_pop_up: ^1.2.1
   intl: ^0.18.1
   flutter_datetime_picker_plus: ^2.0.1
+  firebase_auth: ^4.7.1
+  google_sign_in: ^6.1.4
+  firebase_core: ^2.15.0
+  get: ^4.6.5
 
 dev_dependencies:
   flutter_test:
