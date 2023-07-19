@@ -223,7 +223,7 @@ class _Login extends State<Login> {
                     height: 10,
                   ),
                   InkWell(
-                    child: const Login_button(
+                    child: const block_button(
                       functionName: '登入',
                     ),
                     onTap: () async {

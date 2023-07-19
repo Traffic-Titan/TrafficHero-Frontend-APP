@@ -223,7 +223,7 @@ class new_password_page extends State<ChangePassword> {
                   height: 80,
                 ),
                 InkWell(
-                  child: const Login_button(functionName: "送出"),
+                  child: const block_button(functionName: "送出"),
                   onTap: () {
                     if (lengthText()) {
                       EasyLoading.show(status: 'loading...');
