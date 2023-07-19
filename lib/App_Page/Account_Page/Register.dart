@@ -203,53 +203,56 @@ class _registerState extends State<register> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 60),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(50),
-                      ),
-                      child: Padding(
-                          padding: const EdgeInsets.only(left: 10, right: 30),
-                          child: Container(
-                            margin: const EdgeInsets.all(3),
-                            child: DropdownButton(
-                              borderRadius: BorderRadius.circular(20),
-                              value: gender,
-                              items: const [
-                                DropdownMenuItem(
-                                  value: "性別",
-                                  child: Text("性別"),
+                  Container(
+                    width: 310,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 0),
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50),
+                        ),
+                        child: Padding(
+                            padding: const EdgeInsets.only(left: 10, right: 30),
+                            child: Container(
+                              margin: const EdgeInsets.all(3),
+                              child: DropdownButton(
+                                borderRadius: BorderRadius.circular(20),
+                                value: gender,
+                                items: const [
+                                  DropdownMenuItem(
+                                    value: "性別",
+                                    child: Text("性別"),
+                                  ),
+                                  DropdownMenuItem(
+                                      value: "male", child: Text("男")),
+                                  DropdownMenuItem(
+                                    value: "female",
+                                    child: Text("女"),
+                                  )
+                                ],
+                                onChanged: (value) {
+                                  setState(() {
+                                    gender = value.toString();
+                                  });
+                                },
+                                icon: const Padding(
+                                    padding: EdgeInsets.only(left: 20),
+                                    child: Icon(Icons.arrow_circle_down_sharp)),
+                                iconEnabledColor:
+                                    const Color.fromARGB(255, 0, 0, 0),
+                                style: const TextStyle(
+                                  //te
+                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  fontSize: 17,
                                 ),
-                                DropdownMenuItem(
-                                    value: "male", child: Text("男")),
-                                DropdownMenuItem(
-                                  value: "female",
-                                  child: Text("女"),
-                                )
-                              ],
-                              onChanged: (value) {
-                                setState(() {
-                                  gender = value.toString();
-                                });
-                              },
-                              icon: const Padding(
-                                  padding: EdgeInsets.only(left: 20),
-                                  child: Icon(Icons.arrow_circle_down_sharp)),
-                              iconEnabledColor:
-                                  const Color.fromARGB(255, 0, 0, 0),
-                              style: const TextStyle(
-                                //te
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontSize: 17,
+                                dropdownColor:
+                                    const Color.fromARGB(255, 255, 249, 249),
+                                underline: Container(),
+                                isExpanded: true,
                               ),
-                              dropdownColor:
-                                  const Color.fromARGB(255, 255, 249, 249),
-                              underline: Container(),
-                              isExpanded: true,
-                            ),
-                          )),
+                            )),
+                      ),
                     ),
                   ),
                   const SizedBox(
@@ -280,7 +283,7 @@ class _registerState extends State<register> {
                     height: 80,
                   ),
                   InkWell(
-                    child: const Login_button(functionName: "送出"),
+                    child: const block_button(functionName: "送出"),
                     onTap: () {
                       if (text_lengh() && check_password_function()) {
                         EasyLoading.show(status: 'loading...');

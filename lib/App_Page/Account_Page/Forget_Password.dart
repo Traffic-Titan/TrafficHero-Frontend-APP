@@ -115,7 +115,7 @@ class _forget_password_pageState extends State<forget_password_page> {
                   height: 80,
                 ),
                 InkWell(
-                  child: const Login_button(functionName: "送出"),
+                  child: const block_button(functionName: "送出"),
                   onTap: () {
                     EasyLoading.show(status: 'loading...');
                     forget_password_function(context);

@@ -148,7 +148,7 @@ class _verify_pageState extends State<verify_page> {
                 ),
                 
                 InkWell(
-                  child: const Login_button(functionName: "送出"),
+                  child: const block_button(functionName: "送出"),
                   onTap: () {
                     EasyLoading.show(status: 'loading...');
                     verify_function(context);

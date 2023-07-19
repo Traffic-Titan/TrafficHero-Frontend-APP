@@ -1,10 +1,10 @@
 import 'package:traffic_hero/imports.dart';
 
-class Login_button extends StatelessWidget {
+class block_button extends StatelessWidget {
 
   final String functionName;
 
-  const Login_button({
+  const block_button({
     super.key,
     required this.functionName,
   });
