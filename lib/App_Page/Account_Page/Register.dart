@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, prefer_const_declarations, non_constant_identifier_names, duplicate_ignore, unnecessary_import, unrelated_type_equality_checks, dead_code
+// ignore_for_file: camel_case_types, prefer_const_declarations, non_constant_identifier_names, duplicate_ignore, unnecessary_import, unrelated_type_equality_checks, dead_code, file_names, sized_box_for_whitespace
 import 'package:intl/intl.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:traffic_hero/imports.dart';
@@ -63,16 +63,22 @@ class _registerState extends State<register> {
   }
 
   bool text_lengh() {
-    if (registerPasswordController.text.length < 8) {
+    if (registerPasswordController.text == '') {
+      setState(() {
+        error_password = false;
+       length_error_password_text = "請輸入密碼";
+      });
+       EasyLoading.dismiss();
+      
+      return false;
+
+    } else if (registerPasswordController.text.length < 8 ) {
+     
       EasyLoading.dismiss();
       setState(() {
         error_password = false;
         length_error_password_text = "密碼長度小於8字元";
       });
-      return false;
-    } else if (registerPasswordController.text == '') {
-      EasyLoading.dismiss();
-      length_error_password_text = "請輸入密碼";
       return false;
     } else {
       EasyLoading.dismiss();

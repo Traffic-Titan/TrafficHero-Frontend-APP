@@ -36,15 +36,15 @@ class _Login extends State<Login> {
       });
     }
   }
-  
+
   //判斷密碼長度
-  bool text_lengh(){
-    if(passwordController.text.length < 8){
+  bool text_lengh() {
+    if (passwordController.text.length < 8) {
       setState(() {
         error_text = "密碼長度小於8字元";
       });
       return false;
-    }else{
+    } else {
       return true;
     }
   }
@@ -61,8 +61,7 @@ class _Login extends State<Login> {
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
         EasyLoading.showSuccess('登入成功');
-        state.updateAccountState(
-            await jsonDecode(response.body)['Token']);
+        state.updateAccountState(await jsonDecode(response.body)['Token']);
         setState(() {
           response = response;
           login_error_show = false;
@@ -118,7 +117,7 @@ class _Login extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor:  Color.fromARGB(168, 1, 99, 148),
+        backgroundColor: const Color.fromARGB(168, 1, 99, 148),
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -177,7 +176,6 @@ class _Login extends State<Login> {
                     error_text: '',
                     onTap: () {
                       Show_Password();
-                      
                     },
                   ),
                   const SizedBox(
@@ -231,11 +229,8 @@ class _Login extends State<Login> {
                       functionName: '登入',
                     ),
                     onTap: () async {
-
-                        EasyLoading.show(status: 'loading...');
-                        signUserIn();
-
-                      
+                      EasyLoading.show(status: 'loading...');
+                      signUserIn();
                     },
                   ),
                   const SizedBox(
@@ -276,15 +271,21 @@ class _Login extends State<Login> {
                           imagePath: 'assets/login_icon/google.png',
                         ),
                         onTap: () {
-                          var test1 = [] ;
-                          test1.add("1");
-                          var test = {
-                            'test' : test1
-                          };
+                          try {
+                            googleController.googleLogin();
+                          } on PlatformException catch (e) {
+                            print('Error during Google SSO: $e');
+                            // 在这里可以做一些错误处理，比如提示用户或记录错误日志
+                          } on FormatException catch (e) {
+                            // 捕获FormatException类型的异常
+                            print("FormatException: ${e.message}");
+                            // 在这里可以做一些错误处理，比如提示用户或记录错误日志
+                          } catch (e) {
+                            // 捕获其他类型的异常
+                            print("Other Exception: ${e.toString()}");
+                            // 在这里可以做一些错误处理，比如提示用户或记录错误日志
+                          }
 
-                          print(test['test']);
-                          // googleController.googleLogin();
-                          EasyLoading.showSuccess(googleController.googleAccount1.value?.toString() ?? '');
                           // EasyLoading.show(status: 'loading...');
                         },
                       ),

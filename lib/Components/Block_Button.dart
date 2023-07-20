@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types
+
 import 'package:traffic_hero/imports.dart';
 
 class block_button extends StatelessWidget {

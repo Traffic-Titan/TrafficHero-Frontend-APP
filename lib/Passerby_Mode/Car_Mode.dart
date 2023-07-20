@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, camel_case_types, prefer_typing_uninitialized_variables
 import 'package:traffic_hero/imports.dart';
-import 'package:flutter/cupertino.dart';
 
 //主程式
 class CarMode extends StatefulWidget {
@@ -41,6 +40,7 @@ class _CarMode extends State<CarMode> {
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
+        backgroundColor: Colors.blue,
         items: bottonTabs,
         onTap: (index) {
           setState(() {
@@ -50,7 +50,7 @@ class _CarMode extends State<CarMode> {
         },
       ),
       body: currentPage,
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 0.498),
+      backgroundColor: const Color.fromARGB(255, 254, 254, 254),
     );
   }
 }

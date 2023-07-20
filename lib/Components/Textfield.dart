@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, file_names, avoid_unnecessary_containers
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, file_names, avoid_unnecessary_containers, sized_box_for_whitespace
 
 import 'package:traffic_hero/imports.dart';
 

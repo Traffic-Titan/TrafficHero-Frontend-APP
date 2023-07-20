@@ -37,7 +37,7 @@ class stateManager with ChangeNotifier {
 
   void forgetTokenSet(newValue) {
     if (newValue == null) {
-      print('off');
+      
     } else {
       _forgetToken = newValue;
     }

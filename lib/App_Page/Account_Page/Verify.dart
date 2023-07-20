@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, non_constant_identifier_names, camel_case_types, prefer_typing_uninitialized_variables
+// ignore_for_file: file_names, non_constant_identifier_names, camel_case_types, prefer_typing_uninitialized_variables, use_build_context_synchronously
 import 'package:traffic_hero/imports.dart';
 
 class verify_page extends StatefulWidget {
@@ -16,6 +16,12 @@ class _verify_pageState extends State<verify_page> {
   late Timer _timer;
   int _countdownTime = 600; // 十分钟的秒数
   late stateManager state;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    state = Provider.of<stateManager>(context, listen: false);
+  }
 
   @override
   void initState() {
@@ -70,11 +76,15 @@ class _verify_pageState extends State<verify_page> {
     } else {
       if (res.statusCode == 200) {
         EasyLoading.dismiss();
-        state.forgetTokenSet(jsonDecode(response.body)['Token']);
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => ChangePassword()),
-        );
+        if (jsonDecode(response.body)['token'] != null) {
+          state.forgetTokenSet(jsonDecode(response.body)['token']);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ChangePassword()),
+          );
+        }else{
+          EasyLoading.showError('無法連接伺服器');
+        }
       } else {
         EasyLoading.dismiss();
         setState(() {
