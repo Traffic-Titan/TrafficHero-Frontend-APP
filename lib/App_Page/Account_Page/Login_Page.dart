@@ -132,166 +132,158 @@ class _Login extends State<Login> {
           reverse: true,
           child: SafeArea(
             child: Center(
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  // Image.network(googleController.googleAccount.value?.photoUrl ?? '',
-                  //  height: 200,
-                  // ),
-                  Image.asset(
-                    'assets/login_icon/sign_in.png',
-                    height: 200,
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  const Text(
-                    '歡迎使用',
-                    style: TextStyle(color: Colors.white, fontSize: 40),
-                  ),
-                  const Text(
-                    'Traffic Hero',
-                    style: TextStyle(color: Colors.white, fontSize: 28),
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  MyTextfield(
-                    controller: usernameController,
-                    hintText: '電子郵件',
-                    obscurText: false,
-                    error_status: true,
-                    error_text: '',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Textfield_password(
-                    controller: passwordController,
-                    hintText: '密碼',
-                    obscurText: show_password,
-                    error_status: true,
-                    error_text: '',
-                    onTap: () {
-                      Show_Password();
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 78),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Row(
-                          children: [
-                            Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8),
-                                child: InkWell(
-                                    child: const Text(
-                                      "忘記密碼",
-                                      style: TextStyle(
-                                        color: Colors.white,
+              child: Container(
+                width: 310,
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    // Image.network(googleController.googleAccount.value?.photoUrl ?? '',
+                    //  height: 200,
+                    // ),
+                    Image.asset(
+                      'assets/login_icon/sign_in.png',
+                      height: 200,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    const Text(
+                      '歡迎使用',
+                      style: TextStyle(color: Colors.white, fontSize: 40),
+                    ),
+                    const Text(
+                      'Traffic Hero',
+                      style: TextStyle(color: Colors.white, fontSize: 28),
+                    ),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    MyTextfield(
+                      controller: usernameController,
+                      hintText: '電子郵件',
+                      obscurText: false,
+                      error_status: true,
+                      error_text: '',
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Textfield_password(
+                      controller: passwordController,
+                      hintText: '密碼',
+                      obscurText: show_password,
+                      error_status: true,
+                      error_text: '',
+                      onTap: () {
+                        Show_Password();
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 8),
+                                  child: InkWell(
+                                      child: const Text(
+                                        "忘記密碼",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                        ),
                                       ),
-                                    ),
-                                    onTap: () => forgetpassword(context))),
-                            InkWell(
-                              child: const Text(
-                                "註冊",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              onTap: () {
-                                register_page(context);
-                              },
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  if (login_error_show)
-                    Text(
-                      error_text,
-                      style: const TextStyle(color: Colors.white),
-                    ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  InkWell(
-                    child: const block_button(
-                      functionName: '登入',
-                    ),
-                    onTap: () async {
-                      EasyLoading.show(status: 'loading...');
-                      signUserIn();
-                    },
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 70),
-                    child: Row(
-                      children: [
-                        Expanded(
-                            child: Divider(
-                          thickness: 1,
-                          color: Colors.white,
-                        )),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            'OR',
-                            style: TextStyle(color: Colors.white),
+                                      onTap: () => forgetpassword(context))),
+                              InkWell(
+                                child: const Text(
+                                  "註冊",
+                                  style: TextStyle(color: Colors.white),
+                                ),
+                                onTap: () {
+                                  register_page(context);
+                                },
+                              )
+                            ],
                           ),
-                        ),
-                        Expanded(
-                            child: Divider(
-                          thickness: 1,
-                          color: Colors.white,
-                        )),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        child: const SquareTitle(
-                          imagePath: 'assets/login_icon/google.png',
-                        ),
-                        onTap: () {
-                          try {
-                            googleController.googleLogin();
-                          } on PlatformException catch (e) {
-                            print('Error during Google SSO: $e');
-                            // 在这里可以做一些错误处理，比如提示用户或记录错误日志
-                          } on FormatException catch (e) {
-                            // 捕获FormatException类型的异常
-                            print("FormatException: ${e.message}");
-                            // 在这里可以做一些错误处理，比如提示用户或记录错误日志
-                          } catch (e) {
-                            // 捕获其他类型的异常
-                            print("Other Exception: ${e.toString()}");
-                            // 在这里可以做一些错误处理，比如提示用户或记录错误日志
-                          }
-
-                          // EasyLoading.show(status: 'loading...');
-                        },
+                        ],
                       ),
-                    ],
-                  )
-                ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (login_error_show)
+                      Text(
+                        error_text,
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    InkWell(
+                      child: const block_button(
+                        functionName: '登入',
+                      ),
+                      onTap: () async {
+                        EasyLoading.show(status: 'loading...');
+                        signUserIn();
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 70),
+                      child: Row(
+                        children: [
+                          Expanded(
+                              child: Divider(
+                            thickness: 1,
+                            color: Colors.white,
+                          )),
+                          Padding(
+                            padding: EdgeInsets.all(8.0),
+                            child: Text(
+                              'OR',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                          Expanded(
+                              child: Divider(
+                            thickness: 1,
+                            color: Colors.white,
+                          )),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                          child: const SquareTitle(
+                            imagePath: 'assets/login_icon/google.png',
+                          ),
+                          onTap: () {
+
+                              googleController.googleLogin();
+                              // 在这里可以做一些错误处理，比如提示用户或记录错误日志
+                            }
+              
+                  
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

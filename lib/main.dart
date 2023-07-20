@@ -1,10 +1,12 @@
 // ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
 import 'imports.dart';
 
-void main() {
+void main() async{
+  await dotenv.load();
   runApp(
     ChangeNotifierProvider(
       create: (context) => stateManager(),
+      
       child: MyApp(),
     ),
   );

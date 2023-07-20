@@ -9,6 +9,7 @@
 .tags*
 **/.vagrant/
 **/DerivedData/
+GoogleService-Info.plist
 Icon?
 **/Pods/
 **/.symlinks/

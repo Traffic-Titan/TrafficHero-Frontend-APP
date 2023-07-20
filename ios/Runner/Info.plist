@@ -3,6 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleDevelopmentRegion</key>
+
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>Traffic Hero</string>
@@ -48,6 +49,7 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>CFBundleURLTypes</key>
+	
 	<array>
 		<dict>
 			<key>CFBundleTypeRole</key>
@@ -56,7 +58,7 @@
 			<array>
 				<!-- TODO Replace this value: -->
 				<!-- Copied from GoogleService-Info.plist key REVERSED_CLIENT_ID -->
-				<string></string>
+				<string>com.googleusercontent.apps.1012827309373-gq4a66btl0oar3s6kjbks2bdmlktp5s0</string>
 			</array>
 	</dict>
 </array>

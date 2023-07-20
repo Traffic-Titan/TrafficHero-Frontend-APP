@@ -21,15 +21,17 @@ class _NewsState extends State<News> {
         ),
         body: Center(
             child: ListView.builder(
-              
-              itemCount: 7,
+               itemCount: 7,
               itemBuilder: (context, index) => Card(
-                
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
               child: ListTile(
+                
                 contentPadding: const EdgeInsets.symmetric(vertical: 10,horizontal: 30),
+                
                 title: Text('$index'),
+
                 onTap: () {
-                  print('object');
+                  print(dotenv.env['ios_sso_REVERSED_CLIENT_I_KEY']);
                 },
                 ),
                 
