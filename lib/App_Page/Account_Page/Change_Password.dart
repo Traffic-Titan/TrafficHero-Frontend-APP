@@ -127,7 +127,7 @@ class new_password_page extends State<ChangePassword> {
           "new_password": Sha256().sha256Function(change_new_password_Controller.text)
         };
       }
-      response = await apiPut_Function().apiPut(Body, url);
+      response = await api().Api_Put(Body, url,'');
 
       if (response.statusCode == 200) {
         EasyLoading.showSuccess('修改成功');
@@ -149,16 +149,16 @@ class new_password_page extends State<ChangePassword> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ),
+        // appBar: AppBar(
+        //   backgroundColor: Colors.transparent,
+        //   elevation: 0,
+        //   leading: IconButton(
+        //     icon: const Icon(Icons.arrow_back_ios),
+        //     onPressed: () {
+        //       Navigator.of(context).pop();
+        //     },
+        //   ),
+        // ),
         backgroundColor: const Color.fromARGB(168, 1, 99, 148),
         body: SafeArea(
           child: Center(

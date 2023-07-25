@@ -1,8 +1,10 @@
-// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, unnecessary_new
 import 'imports.dart';
 
 void main() async{
   await dotenv.load();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     ChangeNotifierProvider(
       create: (context) => stateManager(),
@@ -23,12 +25,14 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       title: '',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch:   Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home:const All_Page(),
+      home: const Login(),
       debugShowCheckedModeBanner: false,
+      routes: <String, WidgetBuilder>{'/ALLpage': (_) => new All_Page()},
       builder: EasyLoading.init(),
     );
   }
 }
+

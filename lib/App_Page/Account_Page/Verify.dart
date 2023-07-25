@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, non_constant_identifier_names, camel_case_types, prefer_typing_uninitialized_variables, use_build_context_synchronously
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, unnecessary_null_comparison, prefer_function_declarations_over_variables, camel_case_types, prefer_typing_uninitialized_variables, file_names
 import 'package:traffic_hero/imports.dart';
 
 class verify_page extends StatefulWidget {
@@ -16,6 +16,8 @@ class _verify_pageState extends State<verify_page> {
   late Timer _timer;
   int _countdownTime = 600; // 十分钟的秒数
   late stateManager state;
+  var countdown_display_control = true;
+  var get_verification_code_again = false;
 
   @override
   void didChangeDependencies() {
@@ -35,6 +37,10 @@ class _verify_pageState extends State<verify_page> {
     _timer = Timer.periodic(oneSec, (Timer timer) {
       setState(() {
         if (_countdownTime < 1) {
+          setState(() {
+            countdown_display_control = false;
+            get_verification_code_again = true;
+          });
           timer.cancel();
         } else {
           _countdownTime = _countdownTime - 1;
@@ -52,7 +58,7 @@ class _verify_pageState extends State<verify_page> {
   void verify_function(BuildContext context) async {
     var Body = {"email": state.verifyEmail, "code": verifyController.text};
     var url = '/Account/verify_code';
-    var res = await api().apiPost(Body, url);
+    var res = await api().Api_Post(Body, url,'');
     setState(() {
       response = res;
     });
@@ -76,15 +82,11 @@ class _verify_pageState extends State<verify_page> {
     } else {
       if (res.statusCode == 200) {
         EasyLoading.dismiss();
-        if (jsonDecode(response.body)['token'] != null) {
-          state.forgetTokenSet(jsonDecode(response.body)['token']);
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const ChangePassword()),
-          );
-        }else{
-          EasyLoading.showError('無法連接伺服器');
-        }
+        state.forgetTokenSet(jsonDecode(response.body)['Token']);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => ChangePassword()),
+        );
       } else {
         EasyLoading.dismiss();
         setState(() {
@@ -107,16 +109,16 @@ class _verify_pageState extends State<verify_page> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0,
+      //   leading: IconButton(
+      //     icon: const Icon(Icons.arrow_back_ios),
+      //     onPressed: () {
+      //       Navigator.of(context).pop();
+      //     },
+      //   ),
+      // ),
       backgroundColor: const Color.fromARGB(168, 1, 99, 148),
       body: SafeArea(
         child: Center(
@@ -142,13 +144,39 @@ class _verify_pageState extends State<verify_page> {
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                '${formatCountdownTime(_countdownTime)}后重新获取',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
+              if (countdown_display_control)
+                Text(
+                  '${formatCountdownTime(_countdownTime)}後重新獲取',
+                  style: const TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
                 ),
-              ),
+              if (get_verification_code_again)
+                InkWell(
+                  child:const Text(
+                  '重新獲取驗證碼',
+                  style:  TextStyle(
+                    fontSize: 14,
+                    color: Colors.white,
+                  ),
+                ),
+                  onTap: () {
+
+                    if (state.veriffyState == 'register') {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const register()));
+                    } else {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const forget_password_page()));
+                    }
+                  },
+                ),
               const SizedBox(
                 height: 80,
               ),

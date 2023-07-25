@@ -9,19 +9,19 @@ class CarMode extends StatefulWidget {
 }
 
 class _CarMode extends State<CarMode> {
-  
   final List<BottomNavigationBarItem> bottonTabs = [
     const BottomNavigationBarItem(
-        label: '汽車首頁', icon: Icon(CupertinoIcons.home), tooltip: "汽車首頁"),
+      label: '首頁',
+      icon: Icon(CupertinoIcons.home),
+      tooltip: "首頁",
+    ),
     const BottomNavigationBarItem(
         label: '最新消息', icon: Icon(CupertinoIcons.news_solid), tooltip: "最新消息"),
-    
   ];
 
   final List tabBodies = [
     const Home(),
     const News(),
-    
   ];
 
 //將預設標籤設定為0
@@ -38,9 +38,25 @@ class _CarMode extends State<CarMode> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
+        selectedFontSize: 0,
+        unselectedFontSize: 20,
+        selectedIconTheme: const IconThemeData(
+          color: Colors.white,
+          // 图标大小
+          size: 50,
+          // 图标透明度
+          opacity: 1.0,
+        ),
+        unselectedIconTheme: const IconThemeData(
+          size: 40,
+          // 图标透明度
+          opacity: 1.0,
+        ),
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
-        backgroundColor: Colors.blue,
+        backgroundColor: Color.fromRGBO(46, 117, 182, 1),
         items: bottonTabs,
         onTap: (index) {
           setState(() {

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, prefer_typing_uninitialized_variables, file_names, use_build_context_synchronously
+// ignore_for_file: avoid_print, non_constant_identifier_names, prefer_typing_uninitialized_variables, file_names, use_build_context_synchronously, dead_code_catch_following_catch, unnecessary_null_comparison, sized_box_for_whitespace
 import 'package:traffic_hero/imports.dart';
 
 class Login extends StatefulWidget {
@@ -17,12 +17,95 @@ class _Login extends State<Login> {
   var response;
   var show_password = true;
   final googleController = Get.put(googlesso());
+  var isAuth;
+  int count = 0;
+  var body;
+  var url;
 
 //當頁面創造時執行
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
+  }
+
+  handlesignIn(GoogleSignInAccount? account) async {
+    body = {
+      "email": googleController.googleAccount.value?.email ?? '',
+      "Google_ID": googleController.googleAccount.value?.id ?? '',
+      "Google_Avatar": googleController.googleAccount.value?.photoUrl ?? ''
+    };
+
+    url = '/Account/Google_SSO';
+
+    if (account != null) {
+      try {
+        response = await api().Api_Post(body, url,'');
+      } catch (e) {
+        EasyLoading.showError('請通知客服');
+      }
+
+      if (response.statusCode == 200) {
+        EasyLoading.showSuccess(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
+        state.updateAccountState(await jsonDecode(response.body)['Token']);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const All_Page()));
+      } else if (response.statusCode == 403) {
+        state.google_sso_status_Set('register');
+        state.google_sso_Set(googleController.googleAccount);
+
+        EasyLoading.showSuccess(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail']);
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const register()),
+            (route) => false);
+        setState(() {
+          count = 0;
+        });
+      } else if (response.statusCode == 401) {
+        // EasyLoading.dismiss();
+        googleController.google_signOut();
+        EasyLoading.showError(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail']);
+        setState(() {
+          count = 0;
+        });
+      } else {
+        EasyLoading.dismiss();
+        print('2');
+        googleController.google_signOut();
+        setState(() {
+          login_error_show = true;
+        });
+
+        setState(() {
+          isAuth = true;
+        });
+      }
+    } else {
+      googleController.google_signOut();
+      setState(() {
+        count = 0;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    googleController.googleSignIn.onCurrentUserChanged
+        .listen((GoogleSignInAccount? account) {
+      setState(() {
+        count++;
+      });
+      if (count <= 1) {
+        handlesignIn(account);
+      }
+    }).onError((err) {
+      print('Error during Signing in: $err');
+    });
   }
 
   void Show_Password() {
@@ -50,17 +133,18 @@ class _Login extends State<Login> {
   }
 
   Future<bool> signUserIn() async {
-    response = await api().apiPost({
+    response = await api().Api_Post({
       "email": usernameController.text,
       "password": Sha256().sha256Function(passwordController.text)
-    }, '/Account/login');
+    }, '/Account/login','');
 
     if (response == null) {
       return false;
     } else {
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
-        EasyLoading.showSuccess('登入成功');
+        EasyLoading.showSuccess(
+            jsonDecode(utf8.decode(response.bodyBytes))['message'] ?? '');
         state.updateAccountState(await jsonDecode(response.body)['Token']);
         setState(() {
           response = response;
@@ -72,8 +156,8 @@ class _Login extends State<Login> {
       } else {
         EasyLoading.dismiss();
         setState(() {
-          error_text = '帳號密碼錯誤';
-          // error_text = jsonDecode(utf8.decode(response.bodyBytes))['detail'].toString();
+          error_text =
+              jsonDecode(utf8.decode(response.bodyBytes))['detail'].toString();
           login_error_show = true;
         });
         return false;
@@ -91,28 +175,6 @@ class _Login extends State<Login> {
         context, MaterialPageRoute(builder: (context) => const register()));
   }
 
-  Future<bool> google_sso_function() async {
-    response = await api().apiPost(
-        {"email": usernameController.text, "password": passwordController.text},
-        '/Account/login');
-    print(sha256.convert(response.body));
-    if (response.statusCode == 200) {
-      EasyLoading.showSuccess('登入成功');
-
-      print(response.body);
-      setState(() {
-        login_error_show = false;
-      });
-      return true;
-    } else {
-      EasyLoading.dismiss();
-      setState(() {
-        login_error_show = true;
-      });
-      return false;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -121,30 +183,18 @@ class _Login extends State<Login> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
         ),
         body: SingleChildScrollView(
           reverse: true,
           child: SafeArea(
             child: Center(
-              child: Container(
+              child: 
+              Container(
                 width: 310,
                 child: Column(
                   children: [
                     const SizedBox(
-                      height: 10,
-                    ),
-                    // Image.network(googleController.googleAccount.value?.photoUrl ?? '',
-                    //  height: 200,
-                    // ),
-                    Image.asset(
-                      'assets/login_icon/sign_in.png',
-                      height: 200,
+                      height: 100,
                     ),
                     const SizedBox(
                       height: 10,
@@ -231,7 +281,8 @@ class _Login extends State<Login> {
                         functionName: '登入',
                       ),
                       onTap: () async {
-                        EasyLoading.show(status: 'loading...');
+                        
+                        // EasyLoading.show(status: 'loading...');
                         signUserIn();
                       },
                     ),
@@ -269,17 +320,40 @@ class _Login extends State<Login> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         InkWell(
-                          child: const SquareTitle(
-                            imagePath: 'assets/login_icon/google.png',
-                          ),
-                          onTap: () {
+                            child: const SquareTitle(
+                              imagePath: 'assets/login_icon/google.png',
+                            ),
+                            onTap: ()async {
 
-                              googleController.googleLogin();
-                              // 在这里可以做一些错误处理，比如提示用户或记录错误日志
-                            }
-              
-                  
-                        ),
+                              try {
+                                if (googleController.googleAccount.value ==
+                                    null) {
+                                  EasyLoading.show(status: 'loading...');
+                                  try {
+                                    googleController.google();
+                                  } on PlatformException catch (e) {
+                                    print("PlatformException: ${e.message}");
+                                    // Handle the platform exception here.
+                                  } on FormatException catch (e) {
+                                    print("FormatException: ${e.message}");
+                                    // Handle the format exception here.
+                                  } catch (e) {
+                                    print("Other Exception: ${e.toString()}");
+                                    // Handle other exceptions here.
+                                  }
+                                } else {
+                                  googleController.google_signOut();
+                                }
+                              } catch (e) {
+                                EasyLoading.dismiss();
+                                EasyLoading.showError('Google 伺服器錯誤');
+                              }
+                              print(googleController
+                                      .googleAccount.value?.photoUrl ??
+                                  '');
+
+                              // google_sso_function();
+                            }),
                       ],
                     )
                   ],

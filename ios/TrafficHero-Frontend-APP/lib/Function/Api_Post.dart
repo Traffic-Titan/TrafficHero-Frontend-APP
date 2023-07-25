@@ -1,14 +1,14 @@
 // ignore_for_file: camel_case_types, avoid_print, non_constant_identifier_names, file_names
 import 'package:traffic_hero/imports.dart';
 
-class apiPut_Function {
-  Future<Response> apiPut(
+class api {
+  Future<Response> apiPost(
     Body,
     url,
   ) async {
-    var api_Url = 'http://114.34.89.252:5000';
+    var api_Url = dotenv.env['TrafficHero-Backend'].toString();
     try {
-      Response response = await put(Uri.parse(api_Url + url),
+      Response response = await post(Uri.parse(api_Url + url),
           headers: {
             "Content-Type": "application/json",
           },

@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, prefer_const_declarations, non_constant_identifier_names, duplicate_ignore, unnecessary_import, unrelated_type_equality_checks, dead_code, file_names, sized_box_for_whitespace
+// ignore_for_file: camel_case_types, prefer_const_declarations, non_constant_identifier_names, duplicate_ignore, unnecessary_import, unrelated_type_equality_checks, dead_code, file_names, sized_box_for_whitespace, unused_local_variable, prefer_typing_uninitialized_variables
 import 'package:intl/intl.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:traffic_hero/imports.dart';
@@ -30,6 +30,7 @@ class _registerState extends State<register> {
   var error_born = true;
   var length_error_password_text = '';
   late stateManager state;
+  var body;
 
 
   void Show_Password() {
@@ -48,6 +49,12 @@ class _registerState extends State<register> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
+    if(state.google_sso_status == 'register'){
+      setState(() {
+        registerNameController.text = state.google_sso.value?.displayName ?? '';
+        registerEmailController.text = state.google_sso.value?.email ?? '';
+      });
+    }
   }
 
   void Show_Password_check() {
@@ -88,14 +95,34 @@ class _registerState extends State<register> {
 
   // ignore: non_constant_identifier_names
   void register_function(context) async {
-    response = await api().apiPost({
+    if(state.google_sso_status == 'register'){
+      setState(() {
+        body = {
+      "name": registerNameController.text,
+      "email": registerEmailController.text,
+      "password":
+          Sha256().sha256Function(registerPasswordController.text).toString(),
+      "gender": gender,
+      "birthday": birthday,
+      "Google_ID": state.google_sso.value?.id ?? ''
+      };
+
+    });
+    }else{
+      setState(() {
+        body = {
       "name": registerNameController.text,
       "email": registerEmailController.text,
       "password":
           Sha256().sha256Function(registerPasswordController.text).toString(),
       "gender": gender,
       "birthday": birthday
-    }, '/Account/register');
+    };
+      });
+      
+    }
+
+    response = await api().Api_Post(body, '/Account/register','');
     if (response.statusCode == 200) {
       state.VerifyEmailSet(registerEmailController.text);
       state.veriffyStateSet('register');
@@ -104,6 +131,7 @@ class _registerState extends State<register> {
           MaterialPageRoute(builder: (context) => const verify_page()));
     } else {
       EasyLoading.dismiss();
+      EasyLoading.showError(jsonDecode(utf8.decode(response.bodyBytes))['detail']);
     }
   }
 
@@ -287,6 +315,7 @@ class _registerState extends State<register> {
                   InkWell(
                     child: const block_button(functionName: "送出"),
                     onTap: () {
+                     
                       if (text_lengh() && check_password_function()) {
                         EasyLoading.show(status: 'loading...');
                         register_function(context);

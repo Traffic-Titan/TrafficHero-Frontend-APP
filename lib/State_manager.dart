@@ -8,12 +8,18 @@ class stateManager with ChangeNotifier {
   String _verifyEmail = '';
   String _forgetToken = '';
   String _veriffyState = '';
+  var _google_sso_status;
+  var _google_sso;
+  var _profile;
 
   String get modeName => _modeName;
   String get accountState => _accountState;
   String get verifyEmail => _verifyEmail;
   String get forgetToken => _forgetToken;
   String get veriffyState => _veriffyState;
+  get google_sso_status => _google_sso_status;
+  get google_sso => _google_sso;
+ get profile => _profile;
 
   void updateModeState(String newValue) {
     _modeName = newValue;
@@ -37,7 +43,6 @@ class stateManager with ChangeNotifier {
 
   void forgetTokenSet(newValue) {
     if (newValue == null) {
-      
     } else {
       _forgetToken = newValue;
     }
@@ -46,6 +51,21 @@ class stateManager with ChangeNotifier {
 
   void veriffyStateSet(newValue) {
     _veriffyState = newValue;
+    notifyListeners();
+  }
+
+  void google_sso_status_Set(newValue) {
+    _google_sso_status = newValue;
+    notifyListeners();
+  }
+
+  void google_sso_Set(newValue) {
+    _google_sso = newValue;
+    notifyListeners();
+  }
+
+  void updateprofileState(newValue) {
+    _profile = newValue;
     notifyListeners();
   }
 }

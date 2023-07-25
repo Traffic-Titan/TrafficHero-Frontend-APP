@@ -54,6 +54,12 @@ dependencies:
   get: ^4.6.5
   dio: ^5.3.0
   flutter_dotenv: ^5.1.0
+  custom_searchable_dropdown: ^2.1.1
+  flutter_awesome_select: ^6.5.0
+  awesome_select: ^6.0.0
+  sticky_headers: ^0.3.0+2
+  webview_flutter: ^4.2.2
+  path_provider: ^2.0.15
 
 dev_dependencies:
   flutter_test:
@@ -75,11 +81,14 @@ flutter:
   assets:
     - assets/topbar/Mode_Car.png
     - assets/topbar/Mode_Scooter.png
-    - assets/topbar/Mode_Masstransit.png
+    - assets/topbar/Mode_Public_Transport.png
     - assets/topbar/SmartAssistant.png
     - assets/topbar/Default_Avatar.png
     - assets/login_icon/google.png
     - assets/login_icon/sign_in.png
+    - assets/topbar/select_car.png
+    - assets/topbar/select_Public_Transport.png
+    - assets/topbar/select_scooter.png
     - .env
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

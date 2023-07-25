@@ -18,7 +18,7 @@ class _PublicTransportMode extends State<PublicTransportMode> {
 
   final List<BottomNavigationBarItem> bottonTabs = [
     const BottomNavigationBarItem(
-        label: '大眾運輸首頁', icon: Icon(CupertinoIcons.home), tooltip: "大眾運輸首頁"),
+        label: '首頁', icon: Icon(CupertinoIcons.home), tooltip: "首頁"),
     const BottomNavigationBarItem(
         label: '最新消息', icon: Icon(CupertinoIcons.news_solid), tooltip: "最新消息"),
 
@@ -40,12 +40,30 @@ class _PublicTransportMode extends State<PublicTransportMode> {
     super.initState();
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
+        selectedFontSize: 15,
+        unselectedFontSize: 0,
+        selectedIconTheme: const IconThemeData(
+          color: Colors.white,
+          // 图标大小
+          size: 40,
+          // 图标透明度
+          opacity: 1.0,
+        ),
+        unselectedIconTheme: const IconThemeData(
+          size: 40,
+          // 图标透明度
+          opacity: 1.0,
+        ),
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
+        backgroundColor: Color.fromRGBO(46, 117, 182, 1),
         items: bottonTabs,
         onTap: (index) {
           setState(() {
@@ -55,7 +73,8 @@ class _PublicTransportMode extends State<PublicTransportMode> {
         },
       ),
       body: currentPage,
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 0.498),
+      backgroundColor: const Color.fromARGB(255, 254, 254, 254),
     );
   }
 }
+
