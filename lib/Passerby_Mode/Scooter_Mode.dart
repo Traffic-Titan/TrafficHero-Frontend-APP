@@ -1,9 +1,6 @@
 // ignore_for_file: file_names, camel_case_types, prefer_typing_uninitialized_variables
-import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
-//引入頁面
-import '../App_Page/Home_Page.dart';
-import '../App_Page/News_Page.dart';
+import 'package:traffic_hero/imports.dart';
+
 
 
 
@@ -20,7 +17,7 @@ class _ScooterMode extends State<ScooterMode> {
   
   final List<BottomNavigationBarItem> bottonTabs = [
     const BottomNavigationBarItem(
-        label: '機車首頁', icon: Icon(CupertinoIcons.home), tooltip: "機車首頁"),
+        label: '首頁', icon: Icon(CupertinoIcons.home), tooltip: "首頁"),
     const BottomNavigationBarItem(
         label: '最新消息', icon: Icon(CupertinoIcons.news_solid), tooltip: "最新消息"),
     
@@ -46,8 +43,26 @@ class _ScooterMode extends State<ScooterMode> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white,
+        unselectedFontSize: 0,
+        selectedFontSize: 20,
+        
+        selectedIconTheme: const IconThemeData(
+          color: Colors.white,
+          // 图标大小
+          size: 40,
+          // 图标透明度
+          opacity: 1.0,
+        ),
+        unselectedIconTheme: const IconThemeData(
+          size: 40,
+          // 图标透明度
+          opacity: 1.0,
+        ),
         type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
+        backgroundColor: Color.fromRGBO(46, 117, 182, 1),
         items: bottonTabs,
         onTap: (index) {
           setState(() {
@@ -57,7 +72,8 @@ class _ScooterMode extends State<ScooterMode> {
         },
       ),
       body: currentPage,
-      backgroundColor: const Color.fromRGBO(255, 255, 255, 0.498),
+      backgroundColor: const Color.fromARGB(255, 254, 254, 254),
     );
   }
 }
+
