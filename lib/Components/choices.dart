@@ -98,7 +98,6 @@ List<Map<String, String>> scooterway = [
 List<Map<String, String>> publicTransport = [
   {'value': '公車', 'title': '公車',  'body': '公路'},
   {'value': 'YouBike', 'title': 'You Bike',  'body': '公路'},
-  {'value': '公車', 'title': '公車',  'body': '公路'},
   {'value': '台鐵', 'title': '台鐵',  'body': '鐵路'},
   {'value': '高鐵', 'title': '高鐵',  'body': '鐵路'},
 ];
