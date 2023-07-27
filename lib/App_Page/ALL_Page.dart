@@ -143,7 +143,7 @@ class _All_PageState extends State<All_Page> {
         leading: IconButton(
           icon: Image.asset('assets/topbar/SmartAssistant.png'),
           iconSize: 50,
-          onPressed: () => scaffoldKey.currentState!.openEndDrawer(),
+          onPressed: () => print('object'),
         ),
         actions: <Widget>[
           IconButton(

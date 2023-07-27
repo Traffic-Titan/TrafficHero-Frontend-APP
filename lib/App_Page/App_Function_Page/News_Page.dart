@@ -1,4 +1,4 @@
-// ignore_for_file: sized_box_for_whitespace, avoid_print, file_names, unnecessary_set_literal, prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: sized_box_for_whitespace, avoid_print, file_names, unnecessary_set_literal, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, non_constant_identifier_names
 
 import 'package:traffic_hero/imports.dart';
 import 'package:traffic_hero/Components/choices.dart' as choices;
@@ -16,6 +16,30 @@ class _NewsState extends State<News> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
+
+    //依照模式判斷顯示內容
+    if (state.modeName == 'car') {
+      setState(() {
+        List_City = choices.city;
+        List_2 = choices.way;
+        select_name = '選擇道路';
+        select_name_English = 'choose way';
+      });
+    } else if (state.modeName == 'scooter') {
+      setState(() {
+        List_City = choices.city;
+        List_2 = choices.scooterway;
+        select_name = '選擇道路';
+        select_name_English = 'choose way';
+      });
+    } else {
+      setState(() {
+        List_City = choices.city;
+        List_2 = choices.publicTransport;
+        select_name = '選擇交通工具';
+        select_name_English = 'choose publicTransport';
+      });
+    }
   }
 
   var pp =
@@ -812,9 +836,12 @@ class _NewsState extends State<News> {
   var test;
   var selected = [];
   var selected1 = [];
-  List<String> City = [];
-  List<String> Way = [];
-
+  List<String> Select_1 = [];
+  List<String> Select_2 = [];
+  var List_City;
+  var List_2;
+  var select_name;
+  var select_name_English;
   Color get primaryColor => Theme.of(context).primaryColor;
 
   @override
@@ -829,18 +856,17 @@ class _NewsState extends State<News> {
                   children: [
                     Expanded(
                       child: Container(
-                        width: 230,
+                        width: 250,
                         color: Color.fromARGB(40, 82, 145, 228),
                         child: SmartSelect<String>.multiple(
                           title: '選擇縣市',
                           placeholder: 'Choose City',
-                          
-                          selectedValue: City,
-                          onChange: (selected) => setState(
-                              () => {City = selected.value, print(City)}),
+                          selectedValue: Select_1,
+                          onChange: (selected) => setState(() =>
+                              {Select_1 = selected.value, print(Select_1)}),
                           choiceItems:
                               S2Choice.listFrom<String, Map<String, String>>(
-                            source: choices.city,
+                            source: List_City,
                             value: (index, item) => item['value'] ?? '',
                             title: (index, item) => item['title'] ?? '',
                             group: (index, item) => item['body'] ?? '',
@@ -849,7 +875,6 @@ class _NewsState extends State<News> {
                               const S2ChoiceStyle(color: Colors.redAccent),
                           modalType: S2ModalType.bottomSheet,
                           modalConfirm: true,
-                          
                           modalFilter: true,
                           groupEnabled: true,
                           groupSortBy: S2GroupSort.byCountInDesc(),
@@ -883,17 +908,17 @@ class _NewsState extends State<News> {
                     ),
                     Expanded(
                       child: Container(
-                        width: 230,
+                        width: 300,
                         color: Color.fromARGB(40, 82, 145, 228),
                         child: SmartSelect<String>.multiple(
-                          title: '選擇道路',
-                          placeholder: 'Choose way',
-                          selectedValue: Way,
+                          title: select_name,
+                          placeholder: select_name_English,
+                          selectedValue: Select_2,
                           onChange: (selected) =>
-                              setState(() => {Way = selected.value}),
+                              setState(() => {Select_2 = selected.value}),
                           choiceItems:
                               S2Choice.listFrom<String, Map<String, String>>(
-                            source: choices.way,
+                            source:  List_2,
                             value: (index, item) => item['value'] ?? '',
                             title: (index, item) => item['title'] ?? '',
                             group: (index, item) => item['body'] ?? '',
@@ -933,6 +958,27 @@ class _NewsState extends State<News> {
                         ),
                       ),
                     ),
+                    Column(
+                      children: [
+                        Container(
+                            width: 80,
+                            height: 73,
+                            color: Color.fromARGB(40, 82, 145, 228),
+                            child: InkWell(
+                              child: Center(
+                                  child: SizedBox(
+                                width: 20,
+                                child: Text('清除'),
+                              )),
+                              onTap: () {
+                                setState(() {
+                                  Select_1 = [];
+                                  Select_2 = [];
+                                });
+                              },
+                            )),
+                      ],
+                    )
                   ],
                 ),
                 Expanded(
@@ -986,7 +1032,10 @@ class _NewsState extends State<News> {
                                   ],
                                 ),
                                 subtitle: Text(news['NewsCategory'].toString()),
-                                trailing: const Icon(Icons.arrow_forward_ios,size: 30,),
+                                trailing: const Icon(
+                                  Icons.arrow_forward_ios,
+                                  size: 30,
+                                ),
                                 onTap: () {
                                   EasyLoading.show(status: 'loading...');
                                   if (news['NewsURL'].toString() != '') {
@@ -997,6 +1046,8 @@ class _NewsState extends State<News> {
                                                 WebViewExample(
                                                     tt: news['NewsURL']
                                                         .toString())));
+                                  }else{
+
                                   }
                                 },
                               ));

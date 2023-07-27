@@ -42,11 +42,6 @@ List<S2Choice<String>> heroes = [
   S2Choice<String>(value: 'won', title: 'Wonder Woman'),
 ];
 
-List<S2Choice<String>> fruits = [
-  S2Choice<String>(value: 'app', title: 'Apple'),
-  S2Choice<String>(value: 'ore', title: 'Orange'),
-  S2Choice<String>(value: 'mel', title: 'Melon'),
-];
 
 List<S2Choice<String>> frameworks = [
   S2Choice<String>(value: 'ion', title: 'Ionic'),
@@ -54,16 +49,7 @@ List<S2Choice<String>> frameworks = [
   S2Choice<String>(value: 'rea', title: 'React Native'),
 ];
 
-List<S2Choice<String>> categories = [
-  S2Choice<String>(value: 'ele', title: 'Electronics'),
-  S2Choice<String>(value: 'aud', title: 'Audio & Video'),
-  S2Choice<String>(value: 'acc', title: 'Accessories'),
-  S2Choice<String>(value: 'ind', title: 'Industrial'),
-  S2Choice<String>(value: 'wat', title: 'Smartwatch'),
-  S2Choice<String>(value: 'sci', title: 'Scientific'),
-  S2Choice<String>(value: 'mea', title: 'Measurement'),
-  S2Choice<String>(value: 'pho', title: 'Smartphone'),
-];
+
 
 List<S2Choice<String>> sorts = [
   S2Choice<String>(value: 'popular', title: 'Popular'),
@@ -104,148 +90,15 @@ List<Map<String, String>> way = [
   {'value': '一般道路', 'title': '一般道路',  'body': '道路'},
 ];
 
-List<Map<String, String>> smartphones = [
-  {
-    'id': 'sk3',
-    'name': 'Samsung Keystone 3',
-    'brand': 'Samsung',
-    'category': 'Budget Phone'
-  },
-  {
-    'id': 'n106',
-    'name': 'Nokia 106',
-    'brand': 'Nokia',
-    'category': 'Budget Phone'
-  },
-  {
-    'id': 'n150',
-    'name': 'Nokia 150',
-    'brand': 'Nokia',
-    'category': 'Budget Phone'
-  },
-  {
-    'id': 'r7a',
-    'name': 'Redmi 7A',
-    'brand': 'Xiaomi',
-    'category': 'Mid End Phone'
-  },
-  {
-    'id': 'ga10s',
-    'name': 'Galaxy A10s',
-    'brand': 'Samsung',
-    'category': 'Mid End Phone'
-  },
-  {
-    'id': 'rn7',
-    'name': 'Redmi Note 7',
-    'brand': 'Xiaomi',
-    'category': 'Mid End Phone'
-  },
-  {
-    'id': 'ga20s',
-    'name': 'Galaxy A20s',
-    'brand': 'Samsung',
-    'category': 'Mid End Phone'
-  },
-  {
-    'id': 'mc9',
-    'name': 'Meizu C9',
-    'brand': 'Meizu',
-    'category': 'Mid End Phone'
-  },
-  {
-    'id': 'm6',
-    'name': 'Meizu M6',
-    'brand': 'Meizu',
-    'category': 'Mid End Phone'
-  },
-  {
-    'id': 'ga2c',
-    'name': 'Galaxy A2 Core',
-    'brand': 'Samsung',
-    'category': 'Mid End Phone'
-  },
-  {
-    'id': 'r6a',
-    'name': 'Redmi 6A',
-    'brand': 'Xiaomi',
-    'category': 'Mid End Phone'
-  },
-  {
-    'id': 'r5p',
-    'name': 'Redmi 5 Plus',
-    'brand': 'Xiaomi',
-    'category': 'Mid End Phone'
-  },
-  {
-    'id': 'ga70',
-    'name': 'Galaxy A70',
-    'brand': 'Samsung',
-    'category': 'Mid End Phone'
-  },
-  {
-    'id': 'ai11',
-    'name': 'iPhone 11 Pro',
-    'brand': 'Apple',
-    'category': 'Flagship Phone'
-  },
-  {
-    'id': 'aixr',
-    'name': 'iPhone XR',
-    'brand': 'Apple',
-    'category': 'Flagship Phone'
-  },
-  {
-    'id': 'aixs',
-    'name': 'iPhone XS',
-    'brand': 'Apple',
-    'category': 'Flagship Phone'
-  },
-  {
-    'id': 'aixsm',
-    'name': 'iPhone XS Max',
-    'brand': 'Apple',
-    'category': 'Flagship Phone'
-  },
-  {
-    'id': 'hp30',
-    'name': 'Huawei P30 Pro',
-    'brand': 'Huawei',
-    'category': 'Flagship Phone'
-  },
-  {
-    'id': 'ofx',
-    'name': 'Oppo Find X',
-    'brand': 'Oppo',
-    'category': 'Flagship Phone'
-  },
-  {
-    'id': 'gs10',
-    'name': 'Galaxy S10+',
-    'brand': 'Samsung',
-    'category': 'Flagship Phone'
-  },
+List<Map<String, String>> scooterway = [
+  {'value': '省道', 'title': '省道',  'body': '道路'},
+  {'value': '一般道路', 'title': '一般道路',  'body': '道路'},
 ];
 
-List<Map<String, String>> transports = [
-  {
-    'title': 'Plane',
-    'image': 'https://source.unsplash.com/Eu1xLlWuTWY/100x100',
-  },
-  {
-    'title': 'Train',
-    'image': 'https://source.unsplash.com/Njq3Nz6-5rQ/100x100',
-  },
-  {
-    'title': 'Bus',
-    'image': 'https://source.unsplash.com/qoXgaF27zBc/100x100',
-  },
-  {
-    'title': 'Car',
-    'image': 'https://source.unsplash.com/p7tai9P7H-s/100x100',
-  },
-  {
-    'title': 'Bike',
-    'image': 'https://source.unsplash.com/2LTMNCN4nEg/100x100',
-  },
+List<Map<String, String>> publicTransport = [
+  {'value': '公車', 'title': '公車',  'body': '公路'},
+  {'value': 'YouBike', 'title': 'You Bike',  'body': '公路'},
+  {'value': '公車', 'title': '公車',  'body': '公路'},
+  {'value': '台鐵', 'title': '台鐵',  'body': '鐵路'},
+  {'value': '高鐵', 'title': '高鐵',  'body': '鐵路'},
 ];
