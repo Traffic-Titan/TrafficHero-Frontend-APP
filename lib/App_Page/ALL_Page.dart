@@ -25,14 +25,14 @@ class _All_PageState extends State<All_Page> {
     var response;
     var url = '/Account/profile';
     var jwt = state.accountState;
-    try{
-      response = await api().api_Get( url, jwt);
-    }catch (e){
+    try {
+      response = await api().api_Get(url, jwt);
+    } catch (e) {
       print('object');
     }
 
-    if(response.statusCode == 200){
-      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)) );
+    if (response.statusCode == 200) {
+      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
     }
     if (state.accountState == '') {
       setState(() {
@@ -52,20 +52,19 @@ class _All_PageState extends State<All_Page> {
     });
   }
 
-  void get_User()async {
+  void get_User() async {
     var response;
     var url = '/Account/profile';
     var jwt = state.accountState;
-    try{
-      response = await api().api_Get( url, jwt);
-    }catch (e){
+    try {
+      response = await api().api_Get(url, jwt);
+    } catch (e) {
       print('object');
     }
 
-    if(response.statusCode == 200){
-      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)) );
+    if (response.statusCode == 200) {
+      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
     }
-
   }
 
   Widget changeMode() {
@@ -103,7 +102,8 @@ class _All_PageState extends State<All_Page> {
                   setState(() {
                     car = 'assets/topbar/Mode_Car.png';
                     scooter = 'assets/topbar/select_scooter.png';
-  public_Transport = 'assets/topbar/select_Public_Transport.png';
+                    public_Transport =
+                        'assets/topbar/select_Public_Transport.png';
                   });
                   //將狀態儲存為car
                   state.updateModeState('car');
@@ -117,8 +117,8 @@ class _All_PageState extends State<All_Page> {
                   setState(() {
                     car = 'assets/topbar/select_car.png';
                     scooter = 'assets/topbar/Mode_Scooter.png';
-                    public_Transport = 'assets/topbar/select_Public_Transport.png';
-                    
+                    public_Transport =
+                        'assets/topbar/select_Public_Transport.png';
                   });
                   state.updateModeState('scooter');
                 },
@@ -130,7 +130,8 @@ class _All_PageState extends State<All_Page> {
                   setState(() {
                     car = 'assets/topbar/select_car.png';
                     scooter = 'assets/topbar/select_scooter.png';
-                    public_Transport = 'assets/topbar/Mode_Public_Transport.png';
+                    public_Transport =
+                        'assets/topbar/Mode_Public_Transport.png';
                   });
                   selectedMode('publicTransport');
                   state.updateModeState('publicTransport');
@@ -150,10 +151,6 @@ class _All_PageState extends State<All_Page> {
             icon: Image.asset("assets/topbar/Default_Avatar.png"),
             iconSize: 50,
             onPressed: () async {
-                // var url = '/Account/profile';
-                //       var  response =await api().api_Get(url, state.accountState);
-                //       state.updateprofileState(jsonDecode(response.body)  );
-                //         print(response.body);
               scaffoldKey.currentState!.openEndDrawer();
               get_User();
             },

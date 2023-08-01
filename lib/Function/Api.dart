@@ -20,12 +20,14 @@ class api {
       if (response.statusCode == 200) {
         return response;
       } else {
+        EasyLoading.showError('伺服器沒有連線');
         print(utf8.decode(response.bodyBytes));
 
         print('failed');
         return response;
       }
     } catch (e) {
+      EasyLoading.showError('伺服器連線失敗');
       print(e.toString());
       rethrow;
     }
@@ -44,11 +46,12 @@ class api {
         return response;
       } else {
         print(utf8.decode(response.bodyBytes));
-
+        EasyLoading.showError('伺服器沒有連線');
         print('failed');
         return response;
       }
     } catch (e) {
+      EasyLoading.showError('伺服器連線失敗');
       print(e.toString());
       rethrow;
     }
@@ -71,12 +74,13 @@ class api {
         return response;
       } else {
         print(utf8.decode(response.bodyBytes));
-
+        EasyLoading.showError('伺服器沒有連線');
         print('failed');
         return response;
       }
     } catch (e) {
       print(e.toString());
+      EasyLoading.showError('伺服器連線失敗');
       rethrow;
     }
   }

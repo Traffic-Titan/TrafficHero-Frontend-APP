@@ -12,6 +12,7 @@ class googlesso extends GetxController {
     try {
       googleAccount.value = await googleSignIn.signIn();
     } on PlatformException catch (e) {
+      print(e);
       if (e.code == 'channel-error') {
         print('object');
       }
