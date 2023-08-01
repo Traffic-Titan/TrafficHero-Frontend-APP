@@ -30,24 +30,26 @@ export 'package:traffic_hero/App_Page/Account_Page/Login_Page.dart';
 export 'package:traffic_hero/Passerby_Mode/Public_Transport_Mode.dart';
 export 'package:traffic_hero/App_Page/Account_Page/Forget_Password.dart';
 export 'package:traffic_hero/App_Page/Account_Page/Register.dart';
-export 'package:traffic_hero/App_Page/ALL_Page.dart';
+export 'package:traffic_hero/App_Page/All_Page.dart';
 export 'package:traffic_hero/App_Page/Account_Page/verify.dart';
-export 'package:traffic_hero/Function/webview.dart';
+export 'package:traffic_hero/Function/Webview.dart';
+export 'package:traffic_hero/App_Page/App_Function_Page/News_Card_View.dart';
 
 //Function
 export 'package:traffic_hero/State_manager.dart';
 export 'package:traffic_hero/function/SHA256.dart';
 export 'package:traffic_hero/Function/Api.dart';
-export 'package:traffic_hero/Function/google_sso.dart';
+export 'package:traffic_hero/Function/Google_SSO.dart';
 export 'package:traffic_hero/Function/JWT.dart';
 
 //Components
 export 'package:traffic_hero/Components/Button.dart';
-export 'package:traffic_hero/Components/SSO.dart';
-export 'package:traffic_hero/Components/Textfield_password.dart';
+export 'package:traffic_hero/Components/Icon.dart';
+export 'package:traffic_hero/Components/Password_Textfield.dart';
 export 'package:traffic_hero/Components/Block_Button.dart';
-export 'package:traffic_hero/Components/Textfield.dart';
+export 'package:traffic_hero/Components/Universal_Textfield.dart';
 export 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
 export 'package:traffic_hero/Components/Passerby_NavigationBar.dart';
 export 'package:traffic_hero/Components/Newbar.dart';
-export 'package:traffic_hero/Components/choices.dart' ;
+export 'package:traffic_hero/Components/Choices.dart';
+export 'package:traffic_hero/Components/DropDown_Select.dart';

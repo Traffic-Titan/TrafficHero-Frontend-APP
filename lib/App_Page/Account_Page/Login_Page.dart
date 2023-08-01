@@ -19,8 +19,8 @@ class _Login extends State<Login> {
   final googleController = Get.put(googlesso());
   var isAuth;
   int count = 0;
-  var body;
-  var url;
+  var request_body;
+  var request_url;
 
 //當頁面創造時執行
   @override
@@ -30,65 +30,50 @@ class _Login extends State<Login> {
   }
 
   handlesignIn(GoogleSignInAccount? account) async {
-    body = {
+
+    request_body = {
       "email": googleController.googleAccount.value?.email ?? '',
       "Google_ID": googleController.googleAccount.value?.id ?? '',
       "Google_Avatar": googleController.googleAccount.value?.photoUrl ?? ''
     };
 
-    url = '/Account/Google_SSO';
+    request_url = '/Account/Google_SSO';
 
     if (account != null) {
-      try {
-        response = await api().Api_Post(body, url,'');
-      } catch (e) {
-        EasyLoading.showError('請通知客服');
-      }
+
+      response = await api().Api_Post(request_body, request_url,'');
+
 
       if (response.statusCode == 200) {
-        EasyLoading.showSuccess(
-            jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
-        state.updateAccountState(await jsonDecode(response.body)['Token']);
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const All_Page()));
+        //顯示成功訊息
+        EasyLoading.showSuccess( jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
+        //將狀態寫入
+        state.updateAccountState(await jsonDecode(response.body)['Token'] ?? '');
+        //跳轉頁面
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const All_Page()));
       } else if (response.statusCode == 403) {
+        //SSO回傳訊息403，判斷為未註冊，跳轉註冊頁面
         state.google_sso_status_Set('register');
-        state.google_sso_Set(googleController.googleAccount);
-
-        EasyLoading.showSuccess(
-            jsonDecode(utf8.decode(response.bodyBytes))['detail']);
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const register()),
             (route) => false);
-        setState(() {
-          count = 0;
-        });
+        //將google帳戶資訊寫入全局，方便調用
+        state.google_sso_Set(googleController.googleAccount);
+        //顯示錯誤訊息
+        EasyLoading.showSuccess(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail']);
       } else if (response.statusCode == 401) {
-        // EasyLoading.dismiss();
+        //401為帳戶未綁定SSO因此會先將firebase的帳戶狀態先登出
         googleController.google_signOut();
+          //顯示錯誤訊息
         EasyLoading.showError(
             jsonDecode(utf8.decode(response.bodyBytes))['detail']);
-        setState(() {
-          count = 0;
-        });
       } else {
-        EasyLoading.dismiss();
-        print('2');
         googleController.google_signOut();
-        setState(() {
-          login_error_show = true;
-        });
-
-        setState(() {
-          isAuth = true;
-        });
       }
     } else {
       googleController.google_signOut();
-      setState(() {
-        count = 0;
-      });
     }
   }
 
@@ -108,6 +93,7 @@ class _Login extends State<Login> {
     });
   }
 
+//此為顯示密碼function
   void Show_Password() {
     if (show_password == true) {
       setState(() {
@@ -132,7 +118,8 @@ class _Login extends State<Login> {
     }
   }
 
-  Future<bool> signUserIn() async {
+//一般登陸function
+  Future<bool> userSignIn() async {
     response = await api().Api_Post({
       "email": usernameController.text,
       "password": Sha256().sha256Function(passwordController.text)
@@ -157,7 +144,7 @@ class _Login extends State<Login> {
         EasyLoading.dismiss();
         setState(() {
           error_text =
-              jsonDecode(utf8.decode(response.bodyBytes))['detail'].toString();
+              jsonDecode(utf8.decode(response.bodyBytes ?? ''))['detail'].toString() ?? '';
           login_error_show = true;
         });
         return false;
@@ -180,10 +167,7 @@ class _Login extends State<Login> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color.fromARGB(168, 1, 99, 148),
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
+       
         body: SingleChildScrollView(
           reverse: true,
           child: SafeArea(
@@ -283,7 +267,7 @@ class _Login extends State<Login> {
                       onTap: () async {
                         
                         // EasyLoading.show(status: 'loading...');
-                        signUserIn();
+                        userSignIn();
                       },
                     ),
                     const SizedBox(
@@ -326,21 +310,11 @@ class _Login extends State<Login> {
                             onTap: ()async {
 
                               try {
-                                if (googleController.googleAccount.value ==
-                                    null) {
-                                  EasyLoading.show(status: 'loading...');
-                                  try {
+                                if (googleController.googleAccount.value == null) {
+                                  
+                                  
                                     googleController.google();
-                                  } on PlatformException catch (e) {
-                                    print("PlatformException: ${e.message}");
-                                    // Handle the platform exception here.
-                                  } on FormatException catch (e) {
-                                    print("FormatException: ${e.message}");
-                                    // Handle the format exception here.
-                                  } catch (e) {
-                                    print("Other Exception: ${e.toString()}");
-                                    // Handle other exceptions here.
-                                  }
+                                  
                                 } else {
                                   googleController.google_signOut();
                                 }
@@ -348,9 +322,6 @@ class _Login extends State<Login> {
                                 EasyLoading.dismiss();
                                 EasyLoading.showError('Google 伺服器錯誤');
                               }
-                              print(googleController
-                                      .googleAccount.value?.photoUrl ??
-                                  '');
 
                               // google_sso_function();
                             }),

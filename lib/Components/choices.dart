@@ -42,14 +42,11 @@ List<S2Choice<String>> heroes = [
   S2Choice<String>(value: 'won', title: 'Wonder Woman'),
 ];
 
-
 List<S2Choice<String>> frameworks = [
   S2Choice<String>(value: 'ion', title: 'Ionic'),
   S2Choice<String>(value: 'flu', title: 'Flutter'),
   S2Choice<String>(value: 'rea', title: 'React Native'),
 ];
-
-
 
 List<S2Choice<String>> sorts = [
   S2Choice<String>(value: 'popular', title: 'Popular'),
@@ -60,44 +57,46 @@ List<S2Choice<String>> sorts = [
 ];
 
 List<Map<String, String>> city = [
-  {'value': '基隆市', 'title': '基隆市',  'body': '1. 北部區域'},
-  {'value': '新北市', 'title': '新北市',  'body': '1. 北部區域'},
-  {'value': '臺北市', 'title': '臺北市',  'body': '1. 北部區域'},
-  {'value': '新竹市', 'title': '新竹市',  'body': '1. 北部區域'},
-  {'value': '桃園市', 'title': '桃園市',  'body': '1. 北部區域'},
-  {'value': '新竹縣', 'title': '新竹縣',  'body': '1. 北部區域'},
-  {'value': '宜蘭縣', 'title': '宜蘭縣',  'body': '1. 北部區域'},
-  {'value': '臺中市', 'title': '臺中市',  'body': '2. 中部區域'},
-  {'value': '苗栗縣', 'title': '苗栗縣',  'body': '2. 中部區域'},
-  {'value': '彰化縣', 'title': '彰化縣',  'body': '2. 中部區域'},
-  {'value': '南投縣', 'title': '南投縣',  'body': '2. 中部區域'},
-  {'value': '雲林縣', 'title': '雲林縣',  'body': '2. 中部區域'},
-  {'value': '高雄市', 'title': '高雄市',  'body': '3. 南部區域'},
-  {'value': '臺南市', 'title': '臺南市',  'body': '3. 南部區域'},
-  {'value': '嘉義市', 'title': '嘉義市',  'body': '3. 南部區域'},
-  {'value': '嘉義縣', 'title': '嘉義縣',  'body': '3. 南部區域'},
-  {'value': '屏東縣', 'title': '屏東縣',  'body': '3. 南部區域'},
-  {'value': '花蓮縣', 'title': '花蓮縣',  'body': '4. 東部區域'},
-  {'value': '臺東縣', 'title': '臺東縣',  'body': '4. 東部區域'},
-  {'value': '澎湖縣', 'title': '澎湖縣',  'body': '5. 離島區域'},
-  {'value': '金門縣', 'title': '金門縣',  'body': '5. 離島區域'},
-  {'value': '連江縣', 'title': '連江縣',  'body': '5. 離島區域'},
+  {'value': '基隆市', 'title': '基隆市', 'body': '1. 北部區域'},
+  {'value': '新北市', 'title': '新北市', 'body': '1. 北部區域'},
+  {'value': '臺北市', 'title': '臺北市', 'body': '1. 北部區域'},
+  {'value': '新竹市', 'title': '新竹市', 'body': '1. 北部區域'},
+  {'value': '桃園市', 'title': '桃園市', 'body': '1. 北部區域'},
+  {'value': '新竹縣', 'title': '新竹縣', 'body': '1. 北部區域'},
+  {'value': '宜蘭縣', 'title': '宜蘭縣', 'body': '1. 北部區域'},
+  {'value': '臺中市', 'title': '臺中市', 'body': '2. 中部區域'},
+  {'value': '苗栗縣', 'title': '苗栗縣', 'body': '2. 中部區域'},
+  {'value': '彰化縣', 'title': '彰化縣', 'body': '2. 中部區域'},
+  {'value': '南投縣', 'title': '南投縣', 'body': '2. 中部區域'},
+  {'value': '雲林縣', 'title': '雲林縣', 'body': '2. 中部區域'},
+  {'value': '高雄市', 'title': '高雄市', 'body': '3. 南部區域'},
+  {'value': '臺南市', 'title': '臺南市', 'body': '3. 南部區域'},
+  {'value': '嘉義市', 'title': '嘉義市', 'body': '3. 南部區域'},
+  {'value': '嘉義縣', 'title': '嘉義縣', 'body': '3. 南部區域'},
+  {'value': '屏東縣', 'title': '屏東縣', 'body': '3. 南部區域'},
+  {'value': '花蓮縣', 'title': '花蓮縣', 'body': '4. 東部區域'},
+  {'value': '臺東縣', 'title': '臺東縣', 'body': '4. 東部區域'},
+  {'value': '澎湖縣', 'title': '澎湖縣', 'body': '5. 離島區域'},
+  {'value': '金門縣', 'title': '金門縣', 'body': '5. 離島區域'},
+  {'value': '連江縣', 'title': '連江縣', 'body': '5. 離島區域'},
 ];
 
 List<Map<String, String>> way = [
-  {'value': '國道', 'title': '國道',  'body': '道路'},
-  {'value': '省道', 'title': '省道',  'body': '道路'},
-  {'value': '一般道路', 'title': '一般道路',  'body': '道路'},
+  {'value': '國道', 'title': '國道', 'body': '道路'},
+  {'value': '省道', 'title': '省道', 'body': '道路'},
+  {'value': '一般道路', 'title': '一般道路', 'body': '道路'},
 ];
 
 List<Map<String, String>> scooterway = [
-  {'value': '省道', 'title': '省道',  'body': '道路'},
-  {'value': '一般道路', 'title': '一般道路',  'body': '道路'},
+  {'value': '省道', 'title': '省道', 'body': '道路'},
+  {'value': '一般道路', 'title': '一般道路', 'body': '道路'},
 ];
 
 List<Map<String, String>> publicTransport = [
-  {'value': '公車', 'title': '公車',  'body': '公路'},
-  {'value': 'YouBike', 'title': 'You Bike',  'body': '公路'},
-  {'value': '台鐵', 'title': '台鐵',  'body': '鐵路'},
-  {'value': '高鐵', 'title': '高鐵',  'body': '鐵路'},
+  {'value': '公車', 'title': '公車', 'body': '公路'},
+  {'value': '客運', 'title': '客運', 'body': '公路'},
+  {'value': '共享單車', 'title': '共享單車', 'body': '公路'},
+  {'value': '台鐵', 'title': '台鐵', 'body': '鐵路'},
+  {'value': '捷運', 'title': '捷運', 'body': '鐵路'},
+  {'value': '輕軌', 'title': '輕軌', 'body': '鐵路'},
 ];

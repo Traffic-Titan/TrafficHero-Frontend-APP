@@ -5,7 +5,6 @@ import 'package:traffic_hero/imports.dart';
 
 class register extends StatefulWidget {
   const register({super.key});
-
   @override
   State<register> createState() => _registerState();
 }
@@ -20,7 +19,7 @@ class _registerState extends State<register> {
   var show_password_ckeck = true;
   // ignore: prefer_typing_uninitialized_variables
   var response;
-  String gender = '性別';
+  var gender = '性別';
   var birthday = '生日';
   var error_email = true;
   var error_name = true;
@@ -32,6 +31,18 @@ class _registerState extends State<register> {
   late stateManager state;
   var body;
 
+  //創造時
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    state = Provider.of<stateManager>(context, listen: false);
+    if (state.google_sso_status == 'register') {
+      setState(() {
+        registerNameController.text = state.google_sso.value?.displayName ?? '';
+        registerEmailController.text = state.google_sso.value?.email ?? '';
+      });
+    }
+  }
 
   void Show_Password() {
     if (show_password == true) {
@@ -41,18 +52,6 @@ class _registerState extends State<register> {
     } else {
       setState(() {
         show_password = true;
-      });
-    }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    state = Provider.of<stateManager>(context, listen: false);
-    if(state.google_sso_status == 'register'){
-      setState(() {
-        registerNameController.text = state.google_sso.value?.displayName ?? '';
-        registerEmailController.text = state.google_sso.value?.email ?? '';
       });
     }
   }
@@ -73,14 +72,12 @@ class _registerState extends State<register> {
     if (registerPasswordController.text == '') {
       setState(() {
         error_password = false;
-       length_error_password_text = "請輸入密碼";
+        length_error_password_text = "請輸入密碼";
       });
-       EasyLoading.dismiss();
-      
-      return false;
+      EasyLoading.dismiss();
 
-    } else if (registerPasswordController.text.length < 8 ) {
-     
+      return false;
+    } else if (registerPasswordController.text.length < 8) {
       EasyLoading.dismiss();
       setState(() {
         error_password = false;
@@ -95,34 +92,34 @@ class _registerState extends State<register> {
 
   // ignore: non_constant_identifier_names
   void register_function(context) async {
-    if(state.google_sso_status == 'register'){
+    if (state.google_sso_status == 'register') {
       setState(() {
         body = {
-      "name": registerNameController.text,
-      "email": registerEmailController.text,
-      "password":
-          Sha256().sha256Function(registerPasswordController.text).toString(),
-      "gender": gender,
-      "birthday": birthday,
-      "Google_ID": state.google_sso.value?.id ?? ''
-      };
-
-    });
-    }else{
-      setState(() {
-        body = {
-      "name": registerNameController.text,
-      "email": registerEmailController.text,
-      "password":
-          Sha256().sha256Function(registerPasswordController.text).toString(),
-      "gender": gender,
-      "birthday": birthday
-    };
+          "name": registerNameController.text,
+          "email": registerEmailController.text,
+          "password": Sha256()
+              .sha256Function(registerPasswordController.text)
+              .toString(),
+          "gender": gender,
+          "birthday": birthday,
+          "Google_ID": state.google_sso.value?.id ?? ''
+        };
       });
-      
+    } else {
+      setState(() {
+        body = {
+          "name": registerNameController.text,
+          "email": registerEmailController.text,
+          "password": Sha256()
+              .sha256Function(registerPasswordController.text)
+              .toString(),
+          "gender": gender,
+          "birthday": birthday
+        };
+      });
     }
 
-    response = await api().Api_Post(body, '/Account/register','');
+    response = await api().Api_Post(body, '/Account/register', '');
     if (response.statusCode == 200) {
       state.VerifyEmailSet(registerEmailController.text);
       state.veriffyStateSet('register');
@@ -131,11 +128,12 @@ class _registerState extends State<register> {
           MaterialPageRoute(builder: (context) => const verify_page()));
     } else {
       EasyLoading.dismiss();
-      EasyLoading.showError(jsonDecode(utf8.decode(response.bodyBytes))['detail']);
+      EasyLoading.showError(
+          jsonDecode(utf8.decode(response.bodyBytes))['detail']);
     }
   }
 
-  bool check_password_function() {
+   check_password_function() {
     if (registerPasswordController.text !=
         registercheckPasswordController.text) {
       EasyLoading.dismiss();
@@ -315,7 +313,6 @@ class _registerState extends State<register> {
                   InkWell(
                     child: const block_button(functionName: "送出"),
                     onTap: () {
-                     
                       if (text_lengh() && check_password_function()) {
                         EasyLoading.show(status: 'loading...');
                         register_function(context);
