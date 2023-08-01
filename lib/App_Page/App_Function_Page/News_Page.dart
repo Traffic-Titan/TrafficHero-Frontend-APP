@@ -20,13 +20,12 @@ class _NewsState extends State<News> {
     super.didChangeDependencies();
     EasyLoading.show(status: 'Loading.....');
     state = Provider.of<stateManager>(context, listen: false);
- 
+  get_News();
 
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
 
       setState(() {
-        get_News();
         print(listView);
         List_City = choices.city;
         List_2 = choices.way;
