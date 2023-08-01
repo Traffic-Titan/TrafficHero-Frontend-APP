@@ -110,9 +110,9 @@ List<Map<String, String>> stationList = [
   {"time": "10","id": "201","station": "國立雲林科技大學站"},
 ];
 List<Map<String, String>> operationList = [
-  {"type": "台鐵","state": "assets/home/light_normal.png"},
-  {"type": "高鐵","state": "assets/home/light_abnormal.png"},
-  {"type": "台北\n捷運","state": "assets/home/light_abnormal.png"},
-  {"type": "新北\n捷運","state": "assets/home/light_partialAdnormal.png"},
-  {"type": "桃園\n捷運","state": "assets/home/light_normal.png"},
+  {"type": "台鐵","state": "assets/home/light_normal.png","url":"台鐵後端API"},
+  {"type": "高鐵","state": "assets/home/light_abnormal.png","url":"高鐵後端API"},
+  {"type": "台北\n捷運","state": "assets/home/light_abnormal.png","url":"台北捷運後端API"},
+  {"type": "新北\n捷運","state": "assets/home/light_partialAdnormal.png","url":"新北運後端API"},
+  {"type": "桃園\n捷運","state": "assets/home/light_normal.png","url":"桃園運後端API"},
 ];
