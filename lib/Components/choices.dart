@@ -100,3 +100,19 @@ List<Map<String, String>> publicTransport = [
   {'value': '捷運', 'title': '捷運', 'body': '鐵路'},
   {'value': '輕軌', 'title': '輕軌', 'body': '鐵路'},
 ];
+
+List<Map<String, String>> stationList = [
+  {"time": "10","id": "201","station": "國立雲林科技大學站"},
+  {"time": "10","id": "201","station": "國立雲林科技大學站"},
+  {"time": "10","id": "201","station": "國立雲林科技大學站"},
+  {"time": "10","id": "201","station": "國立雲林科技大學站"},
+  {"time": "10","id": "201","station": "國立雲林科技大學站"},
+  {"time": "10","id": "201","station": "國立雲林科技大學站"},
+];
+List<Map<String, String>> operationList = [
+  {"type": "台鐵","state": "assets/home/light_normal.png"},
+  {"type": "高鐵","state": "assets/home/light_abnormal.png"},
+  {"type": "台北\n捷運","state": "assets/home/light_abnormal.png"},
+  {"type": "新北\n捷運","state": "assets/home/light_partialAdnormal.png"},
+  {"type": "桃園\n捷運","state": "assets/home/light_normal.png"},
+];

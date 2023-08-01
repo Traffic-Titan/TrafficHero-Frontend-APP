@@ -90,6 +90,14 @@ flutter:
     - assets/topbar/select_Public_Transport.png
     - assets/topbar/select_scooter.png
     - .env
+    - assets/home/batterystop.png
+    - assets/home/convientStore.png
+    - assets/home/gaspump.png
+    - assets/home/parkinglot.png
+    - assets/home/light_normal.png
+    - assets/home/light_abnormal.png
+    - assets/home/light_partialAdnormal.png
+    - assets/roadSign_icon/countyRoad/countyRoad_7.png
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
