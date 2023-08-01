@@ -1,7 +1,7 @@
-// ignore_for_file: sized_box_for_whitespace, avoid_print, file_names, unnecessary_set_literal, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, non_constant_identifier_names
+// ignore_for_file: sized_box_for_whitespace, avoid_print, file_names, unnecessary_set_literal, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, non_constant_identifier_names, avoid_unnecessary_containers, sort_child_properties_last
 
 import 'package:traffic_hero/imports.dart';
-import 'package:traffic_hero/Components/choices.dart' as choices;
+import 'package:traffic_hero/Components/Choices.dart' as choices;
 
 class News extends StatefulWidget {
   const News({super.key});
@@ -12,6 +12,7 @@ class News extends StatefulWidget {
 
 class _NewsState extends State<News> {
   late stateManager state;
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -22,28 +23,27 @@ class _NewsState extends State<News> {
       setState(() {
         List_City = choices.city;
         List_2 = choices.way;
+
         select_name = '選擇道路';
-        select_name_English = 'choose way';
+        select_name_English = 'Choose Way';
       });
     } else if (state.modeName == 'scooter') {
       setState(() {
         List_City = choices.city;
         List_2 = choices.scooterway;
         select_name = '選擇道路';
-        select_name_English = 'choose way';
+        select_name_English = 'Choose Way';
       });
     } else {
       setState(() {
         List_City = choices.city;
         List_2 = choices.publicTransport;
         select_name = '選擇交通工具';
-        select_name_English = 'choose publicTransport';
+        select_name_English = 'Choose Public Transport';
       });
     }
   }
 
-  var pp =
-      'iVBORw0KGgoAAAANSUhEUgAAB4AAAAOfCAYAAAApbd6bAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAABmJLR0QA/wD/AP+gvaeTAACAAElEQVR42uzde5zldUH/8ffnzGVZrl7wAlaa5q2yn4q6iDdIYGZnd2Z2lVkw72lYWhplXgBrSkC7aVpZeeuiYswCO7fd2VlWwSuiKFppVy9liSiarOiyczmf3x9aaalcdmfOZZ7PP6zsAXvmdRbmfPc9n++3BAAA4CCdPn/6Eeuy7u5Zzj16e3JsbebYlHr3JPeoybEpObY0c1gtOSbJYbVmffnW/9749t+iL8mRSgIAcCveNjU4+wwZAOD765UAAAC4NZtnNt+r0d+8X6mN+yXlx5J6v6TcJ6nHp+TY1KxPatJImjVJ+V9/g5rU7/jvStEUAIDbqdYPLNTmzwkBAD+YP3YBAACSJFuu3HKn5YXlh/ek+cDUb428NeV+KbnftwZeAABolfq5RunfsGNgx5e0AIAfzAAMAABr0JYrt9yp3LL8k8ulnlCSE5J6QlIe7BoBAIA29PUsNx8ztWnX30oBALfOLaABAKDLbd279a7N5cWTavLwUvPwJA+vB5Z+qJbvXHvtvgAAtKXl1Jxl/AWA284ADAAAXWZkauSosm55Q9I4NamnNpcWH5akYeIFAKDTlNQXT27cuUsJALg93z8BAICONnbl2JELB7554n8NvkkelqShDAAAnawkb50cnH2OEgBw+zgBDAAAHWZ8fLzxiQ3XbmiWMlpST1s4sP//JaUnqeIAANAlypV3P/YLP68DANyB76ISAABA+9u4a+O6/kbjcSllOMmTU3MvVQAA6Ea15jN1qWyYGZ65UQ0AuP0MwAAA0Ka2XLnlTs1bFk8r3xp9R5McrQoAAF1uXzPlpJnBmU9KAQB3jFtAAwBAG9m6d+tdm4tLZ6bUrfXA8hNKKX2qAACwRiwl9ckzg7PGXwA4CAZgAABosbGJsZ6Fo795SlKe0VxePCMl67/1//FMXwAA1pBaXjS1cXavEABwcNwCGgAAWmR49/BPNJKnJ/VZSe6hCAAAa1bJ66cGZl8kBAAcPCeAAQBgFY3tHrjLYuk9I7U8r6Y+XBEAAMj8Tf03/6oMAHBoGIABAGCl1ZQtVwyf1mzWX1pIBlN9DgcAgG9/WP5Uf8+BM6865aolLQDg0HALaAAAWCEnX3nyYcccOHJbkl9L8pOKAADAd/lKTePE6cHpf5ECAA4dJw8AAOAQe9LugeOate959UB+McldFQEAgP+tLNY0x4y/AHDoGYABAOAQ2TK/6YRay4uWk6ek+KwNAADfT019wfTgziuVAIBDzx9KAQDAQRibGOtZOPqWM5P6K7XmBEUAAOAHq8nvTA/OvkkJAFgZBmAAALgDxsfHGx/b8JEnL5T9v5XkQYoAAMBtULJr3U3rzxUCAFby2y0AAHCb/dfwW0ox/AIAwO3zyYXm8klzQ3P7pACAlWMABgCA28DwCwAAB+WLzZ6yYea0mX+TAgBWlgEYAAB+AMMvAAActFuazXLKzNDMh6QAgJVnAAYAgO9jZG7Tk0opFyV5oBoAAHCH1FLLUyc3zrxTCgBYHb0SAADAdxvZNfKw9DRfW2qeoAYAANxxpea3jL8AsMrffyUAAIBvGZ4ZPrbRX1+Rmhck6VEEAAAOymVTA7NjKalSAMDqcQIYAIA1b2xirP/A0ft/oaT+VmqOVgQAAA5OST62vFieYfwFgJZ8HwYAgLVrdH7zcG3mD0rJfdUAAIBD4gs9zeUNlw/N/bsUALD6nAAGAGBNGtk18rDSaL4uNY8rfiwSAAAOlW/UZmPz5UOzxl8AaBEDMAAAa8rYxNj6xaP2v7SW5suT9CsCAACHTE3Jc6aHpq+TAgBaxwAMAMCaMbp70+MWsv+NSR6kBgAAHGKlnDs1MHOJEADQ4m/JEgAA0O3Grjj1mIXmYb+Vml9M0lAEAAAOubdNDc4+QwYAaD0ngAEA6Gqj85uHF5bzhiQ/pAYAAKyIDy40l39OBgBoD04AAwDQlYZ2Dt2zr6fxO0mergYAAKyU+rlG6d+wY2DHl7QAgPZgAAYAoOuMzG96ZqnlD5LcSQ0AAFgx+xqlPmbHwM6/kwIA2odbQAMA0DU27tp4dH/peUNqnqoGAACsqGZKnmb8BYD2YwAGAKArDM8NP7JR8s6k3k8NAABYWSX1VycHds4oAQDtpyEBAAAdraaM7N78okbJB4y/AACw8kry1snBnX+gBAC0JyeAAQDoWCN7R+5R5pt/mWQgqYIAAMDKe1/fvvW/IAMAtK8iAQAAnWh49/BoI/UtSe6qBgAArLxa85m6VDbMDM/cqAYAtC8ngAEA6CgnX3nyYccsHPH7qfX5agAAwKr5z6QxNDM8bfwFgDZnAAYAoGNsntl8r54D5bKkblADAABWzVJSt01vnP5HKQCg/RmAAQDoCKPzm05KzWVJvacaAACwekqpL5wc2LlXCQDoDA0JAABod1vmN52dWq5MYvwFAIDVVPL6yYGdfyIEAHQOJ4ABAGhbJ195cu8xB466oNb6UjUAAGDVzd/Uf/OvygAAncUADABAWxqeGT62cSATST1FDQAAWHX/UNb1nnXVKVctSQEAncUADABA29myZ+ihtdnckZT7qAEAAKvuKzWN4alTJr8mBQB0Hs8ABgCgrYzMbTqr1sYHjb8AANASC0ndOj04/S9SAEBnMgADANA2RueGX1hKeUdq1qsBAACrrya/ODW4831KAEDnMgADANB6NWXL3ObxlPo6n1EBAKBVym9PD86+SQcA6GyeAQwAQEudfOXJvUfvOeJPa8lz1AAAgBYp2dV/02HnCQEA3fBtHQAAWuT0+dOPWJ/+idQMqQEAAC3z8f516x+3/ZTtN0sBAJ3PAAwAQEuM7R64y0L6ZpKcpAYAALTMF5s9ZcPMaTP/JgUAdAe3gAYAYNU9aefQvRfS2J3kQWoAAEDL3NJslq0zg8ZfAOgmBmAAAFbV6M6hhyz3NHYnOV4NAABomVprffbM0OyHpACA7mIABgBg1YzsGnlYGs0rktxVDQAAaJ1S81tTG3f+tRIA0IXf5yUAAGA1bJnfdEKtZU+Su6gBAAAtddnUwOxYSqoUANB9GhIAALDSRuc3nVRreXeMvwAA0FIl+VhzsTzD+AsAXf39HgAAVs7o7k2PS8rOJEepAQAALfXvPVl81OWD89dLAQDdywlgAABWzOj80AbjLwAAtIGS/c1anmT8BYDuZwAGAGBFbN29+f+lNnbF+AsAAK1Wkzx7ZuPMR6QAgO5nAAYA4JAbmRt5YDOZj2f+AgBA65Vy7tTA7CVCAMAa+dYvAQAAh9LmPZvv39PMe5PcUw0AAGi5v5oanH2mDACwdjgBDADAITO2a+PdepvZGeMvAAC0gw8uNJfPlgEA1hYDMAAAh8TwzPDhCz090zW5vxoAANBq9XON0rd1bmjugBYAsLYYgAEAOGhjE2M9PX3Ni1NzohoAANByX89yHdkxsONLUgDA2mMABgDg4NSUxaP3v7GmjIoBAAAt10zJU6c27fpbKQBgbTIAAwBwUEbnN43X5GeVAACA1iupvzo1MDujBACs5c8DAABwB22ZG35OLfXNSgAAQOuV5K2Tg7PPUQIA1rZeCQAAuCNG5zYP1VL/VAkAAGgH5b19+w77BR0AACeAAQC43Ybnhh/ZKPXKJEeoAQAArVWSf+7L4onbB+e/qgYAYAAGAOB2GdkzcnypzQ+n5l5qAABAy+1rppw0MzjzSSkAgCRpSAAAwG01NjG2vtFsThp/AQCgLSwl9cnGXwDgOxmAAQC4TcbHxxsLR++/uCaPVAMAAFqvlPrCqcGde5UAAL6TARgAgNvkYyde+6okW5QAAIDWK8nrJgd2/okSAMD/1isBAAC3ZnT35mckeYkSAADQFua/tu7mF8sAAHwvRQIAAH6QkT0jjynN5ruSrFMDAABa7u/Lut6TJk+Z/JoUAMD3YgAGAOD72jK35T61LF2T5O5qAABAy32lpnHi9OD0v0gBAHw/ngEMAMD3NDI1clRtLE/H+AsAAG2gLNbUMeMvAHBrDMAAAPwfYxNjPVnXvDi1PkQNAABovZr6gunBnVcqAQDcGgMwAAD/x8Ix+19Tks1KAABAOyi/PT04+yYdAIDbwgAMAMB32TI3/JzUvFAJAABoAyW7+vcddp4QAMBt//gAAADfNjI/9PhSG1ck6VcDAABa7uP969Y/bvsp22+WAgC4rQzAAAAkSUbmRh5YSvPqJHdWAwAAWu6LzZ6yYea0mX+TAgC4PdwCGgCAjO0euEspzekYfwEAoB3c0myWrcZfAOCOMAADAKxxZ197Qt9C+iaSPEANAABouVpLnjszNPMhKQCAO8IADACwxt1w43GvT/JEJQAAoPVKzW9ND8y+QwkA4A5/npAAAGDtGp0fPie1vkYJAABoAzWXTg3ObktJFQMAuKOcAAYAWKNGdg8NptbfVQIAAFqvJB9rLpVnGn8BgEPwuQIAgLVm6xWbHtxcblyd1GPUAACAlvtCT3N5w+VDc/8uBQBwsJwABgBYY7bu3XrX5nJjxvgLAABtoGR/s5Ytxl8A4FAxAAMArCFjE2P9y8uLlyX1fmoAAEDL1VLLs2Y2znxECgDgUOmVAABg7Vg4ev+bS80TlAAAgDZQyrmTAzMTQgAAh5ITwAAAa8To7k3nJnm6EgAA0Bb+ampg5tUyAACHmhPAAABrwOjc5q1JXqkEAAC0gVo/sFCbZwsBAKyEIgEAQHcb2TXysNJovi/JEWoAAECr1c81Sv+GHQM7vqQFALASeiQAAOheT9o9cFwtjXclOVYNAABoua9nuZ42uXHms1IAACvFM4ABALrU2MTY+uX070jyw2oAAEDLNVPy1KlNu/5WCgBgJRmAAQC6UU05cPQ335LUDWIAAEDrldRfnRqYnVECAFhpBmAAgC40Mj/8myXlKUoAAEDrleStk4M7/0AJAGA19EoAANBdRuY2jZXU85UAAIB2UN7bt++wX9ABAFi1Tx8SAAB0j5E9Q48ozcZ7khyuBgAAtFat+UxdKhtmhmduVAMAWC0GYACALrF5ZvO9evpzTWrupQYAALTcvmbKSTODM5+UAgBYTZ4BDADQBcauHDuy0Zedxl8AAGgLS0l9svEXAGgFAzAAQIcbHx9vLB745ttL8v/UAACA1iulvnBqcOdeJQCAVuiVAACgs1234SO/nZRRJQAAoPVK8rrJgZ1/ogQA0CpOAAMAdLAtc8PPSikvVgIAANrC/NfW3ezzOQDQUkUCAIDOtHVu+LHNUvcmWacGAAC03N+Xdb0nTZ4y+TUpAIBWMgADAHSg4fnhHy21XlOSu6kBAAAt95WaxonTg9P/IgUA0GpuAQ0A0GE27tp4dKPWaeMvAAC0g7JYas4w/gIA7cIADADQQcYmxnr6G70XJ/lJNQAAoPVq6gsmN85epQQA0C4MwAAAHWTh6P2vS+omJQAAoB2U354enH2TDgBAOzEAAwB0iNHdw89N8gIlAACgDZTs6t932HlCAADt9zEFAIC2NzI/clqpzV1JetUAAICW+3j/uvWP237K9pulAADajQEYAKDNjcyNPLCU5tVJ7qwGAAC03BebPWXDzGkz/yYFANCO3AIaAKCNbd279a6lNGdj/AUAgNYr2Z/S3GL8BQDamQEYAKBNnX3tCX11cXEiyY+pAQAALVdLszxnamDXNVIAAO3MM+QAANrUDV+55x+m5KeVAACA1iupvza5cfadSgAA7f+5BQCAtjM6P/zi1Pq7SgAAQFt489Tg7M/JAAB0AieAAQDazOj85uHU+molAACgDZTsuqn/5l8QAgDoFJ4BDADQRkZ3jf54anlbkh41AACg5T7c37/+zKtOuWpJCgCgU7gFNABAmxieGT629NZrSsl91QAAgNYqyT+X0vfYHQM7vqQGANBJnAAGAGgDJ1958mGNvjpt/AUAgDZQ8h+N5eZpxl8AoBMZgAEAWq2mHHPLkW9O8mgxAACg5W5sNOppl2/a9a9SAACdqFcCAIDWGtm9+byUPFUJAABoua/VRnPjjtN2/b0UAECn8gxgAIAWGpnb9KRSyva4MwsAALTa12qjedr06buulQIA6GQGYACAFhnePfzwRup7kxyhBgAAtFK5qVlz2szGmY9oAQB0uh4JAABW35N2DxyXNN6d5Fg1AACglcpNJfX06Y2zxl8AoCu41SAAwCobmxhbv5y+ySQ/pAYAALRSuSlleWBycPbDWgAA3cIADACwmmrKwlH735rkUWIAAEBL7Ws2Mzg1sOsaKQCAbtIrAQDA6hmdH74gpZ6lBAAAtNQ3amkOzwzt+pAUAEC3KRIAAKyOkblNTyul/JXPYAAA0ErlppTm0NTAzg9qAQB05acdCQAAVt7o/KaTUsu7k6xTAwAAWuaG2mxsnB6avk4KAKBbGYABAFbYk3YO3Xu5p3FNknuoAQAALfOvjeXm6Ts27fonKQCAbtaQAABg5YxMjRy13NOYjvEXAABa6R9Seh5n/AUA1gIDMADAChmbGOsp6+o7k/yUGgAA0DIfbPT2PXZqYOrzUgAAa4EBGABghSwc9c3fTeomJQAAoEVKdvTvW3/qjlN3fEUMAGCtMAADAKyA0d2bn51SzlECAABapOT1D7v6EWds37Z9vxgAwNr6GAQAwCG1ZW7zybWUPUntUwMAAFbdckr5tamBmddKAQCsRQZgAIBDaHh++EdLrdeU5G5qAADAqttXa3369Mad01IAAGtVrwQAAIfGxl0bj27UOhPjLwAAtMI/NXrqlh2n7fx7KQCAtcwzgAEADoGTrzy5t7/Rc1mSn1ADAABWWcmusq53g/EXAMAADABwSByzcMTrkpyqBAAArKqalN9+2NWPGJ48ZfJrcgAAeAYwAMBB2zK/6ZdqLa9XAgAAVtU3UvKsqYHZS6UAAPgfBmAAgIOwZc/w6bVZdybpVQMAAFbN50upWycHdn5UCgCA79YjAQDAHTO6a/THk7o7yeFqAADAKqnZ0+jrO33y9OlPiwEA8H95BjAAwB2wde/Wu6axPJXUY9QAAIBVsVRqfvNh1zxi445Td3xFDgCA780toAEAbqezrz2h74Ybj59P6ilqAADAqvhss1l+ZmZo5kNSAAD8YE4AAwDcTl/88vF/ZPwFAIBV87b+det/yvgLAHDb9EoAAHDbbdm9+SU19WwlAABgxe2rJc+fHph9hxQAALedW0ADANxGo3Obh1IynaRHDQAAWFEfLs3ln5kcmvu0FAAAt48BGADgNti6e/P/aybvT3KkGgAAsGKWasqr9q37+m9ddcpVS3IAANx+bgENAHArhnYO3bOZTMf4CwAAK+lvSvJzU4MzH5YCAOCOa0gAAPD9nXzlyYf19TZ2JPkRNQAAYEXcUmp+s3/f+kdODs4afwEADpITwAAA309NOWb3kW9OyYliAADASnzmrh9oNhrPnRmc+QcxAAAODSeAAQC+j5E9m389JU9VAgAADrVyU01++WHXPPLxMwPGXwCAQ/pJSwIAgP9ry+7hJ9fU7T4vAQDAoVWT2VJ6nj81MPV5NQAADj1/oAkA8L8Mzw0/stGo70nNejUAAOAQKfmPJL88NTB7qRgAACv5sQsAgP82smfk+NJsXpPkh9QAAIBD4ptJ+cN6oFw4PTr9dTkAAFZWrwQAAN8yNjG2frG5f7IafwEA4FCopZRL0+x5yeTGyc/JAQCwOgzAAABJUlMOzH/zL0rKI8UAAICDU5KPNBuNc6ZOn/6AGgAAq8sADACQZHT35otSsk0JAAA4KP+e5LzJgdm3paTKAQCw+jwDGABY80Z3b35Gkr9UAgAA7rCbU8qr+2867DXbt23fLwcAQOsYgAGANW1kz8hjSrP5riTr1AAAgNvtGyl5y+JS81W7Nu36ohwAAK1nAAYA1qwtc1vuU8vSNUnurgYAANwuhl8AgDblGcAAwJo0MjVyVG0sT6cafwEA4HYw/AIAtDkDMACw5oyPjzc+tu7ai1PzEDUAAOA2MfwCAHQIAzAAsOZ8/MRrX1OSzUoAAMCt2peUP+lvLv3+9qG5L8sBAND+PAMYAFhTRuY3/Wyp5S1KAADAD1I+nTTfVNb1/dnkKZNf0wMAoIM+yUkAAKwVI/NDjy+1cUWSfjUAAOB7qPUDNXnduq8ffvn2bduXBQEA6DwGYABgTXjy3k33XVoq1yQ5Vg0AAPgutyTZ3ij1d3YM7Pw7OQAAOptnAAMAXW/T7KY7Ly2VuRh/AQDgO32h1Lyp9PX94Y5Td3xFDgCA7mAABgC62tnXntB3w41le5IHqAEAALmllDJTU992U//Nc1edctWSJAAA3cUADAB0tS/eePzrSuoTlQAAYI37aE3eti6Lb9s+MP9VOQAAupcBGADoWlt2b/rlmvoLSgAAsEZ9PikX15Q3Tw9O/4scAABrQ5EAAOhGW+aHN9ZaZ5L0qAEAwBrylVrqZKn5y6mBne9PSZUEAGBtMQADAF1n6xWbHtxcblyd1GPUAABgDfjXWst8adTZe9z1+t1vfMRHFyUBAFi7DMAAQFfZunfrXZtLix9K8mNqAADQveqnksZMo2Z2x+DMB5z0BQDgv3gGMADQNTbu2rhueWlxshh/AQDoPgsl9T01ZSqlZ3pqYOrzkgAA8L0YgAGArtHf6PmjJI9VAgCALrCU5BNJ2ZtSP7CwvPyeuaG5fbIAAHBrDMAAQFcYmdv88iTPVQIAgA61nOTj/zX49jduee/20/beJAsAALeXZwADAB1vdG7z1pRcmqShBgAAHeLGknpdTeMjNcvvW7fuiPdvP2X7zbIAAHCwDMAAQEfbsmfoobXZeH+SI9QAAKA9leuT+smUfCo1H22mfHRmYOZTKanaAABwyD99SgAAdKon7R44bjl9H07yQ2oAANAGvpKUf0nqp2vN35XUjzUa/dftGNjxJWkAAFgtngEMAHSksYmx9Qu5ZUdSjb8AAKym/0zymVLKZ2rNZ0ppfqY0G5+qh/X83eQpk1+TBwCAVjMAAwCdp6YcmP/mX5SUDWIAAHBQSvYn+WpSvlpTv1pq/rMkX60pX0zNDTXN63vSuH6xp95wc9/Nn7/qlKtuEQ0AgHZmAAYAOs7o/KbxpGxTAgDoaiX7U3Njar2hlvLlkny5pny1JAeS5n+mNBZKmt9Is/H1ZppL//WX1dJYaKT5DQG/pdFsLNae5s1J0mz2LPb1Ld+8mJ5vNHoaB5zYBQCgOy8lAAA6yJa54afUUt/hcwwA0MGWas2/NUr9dE35dFI/V2rjhtLIjUvLuTE9ueFADnxpz8AeIy4AAHC7+YNTAKBjjM4PbUhtXJXkMDUAgDZ3S1I/k5R/Sa2fTimfrml+utlofPr4u1z/uTc+4qOLEgEAACvBAAwAdISRPSPHl9r8cGrupQYA0Ga+nlr/Jo3y0ZL6ydJsfKr364d9ePu27QvSAAAAq80zgAGAtjd25diRBw7s35UYfwGAVis3pTb/Lo3y0dR8tJny0RM+dMLfj4+PN7UBAADa4qpFAgCgnY2Pjzc+fuJHLq8po2oAAC3wxdRclZSraspV0xun/1ESAACgnTkBDAC0tesefe2rU42/AMCq+VJNPlxS319K9k6evvNjKamyAAAAncIJYACgbY3u3vzsJG9VAgBYQTeXlD019d3NlKtmBmY+ZfAFAAA6mQEYAGhLW+eGH9ssdW+SdWoAAIfYjUnmaq0ztzQWd+0Z2PMNSQAAgG5hAAYA2s6WuS33aZalD5fkbmoAAIdCrflMaWQ2tc7ctO4bV111ylVLqgAAAN3IM4ABgLYydsWpxywsL+4sKcZfAOBg1KR8OCWTjUZzasdpO/9eEgAAYC0wAAMAbWNsYqznwPL+t5fkx9UAAO6gf0/KO5Yb9S2zp8/8sxwAAMBaYwAGANrG4tH7/6Akm5UAAG6Xkv0lZbbW5hun';
   var tttt = [
     {
       "Region": "TRTC",
@@ -833,9 +833,6 @@ class _NewsState extends State<News> {
     }
   ];
 
-  var test;
-  var selected = [];
-  var selected1 = [];
   List<String> Select_1 = [];
   List<String> Select_2 = [];
   var List_City;
@@ -843,6 +840,75 @@ class _NewsState extends State<News> {
   var select_name;
   var select_name_English;
   Color get primaryColor => Theme.of(context).primaryColor;
+
+   test111(){
+    print('object');
+  }
+
+  get_User() async {
+    var response;
+    var url = '/News/MRT';
+    var jwt = state.accountState;
+    print(jwt);
+    try {
+      response = await api().api_Get(url, 'eee');
+      print(response.body);
+    } catch (e) {
+      print('object');
+    }
+
+    if (response.statusCode == 200) {
+      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+  }
+
+
+
+  Widget text() {
+    return SmartSelect<String>.multiple(
+        title: '選擇縣市',
+        placeholder: 'Choose City',
+        selectedValue: Select_1,
+        onChange: (selected) =>
+            setState(() => {Select_1 = selected.value, print(Select_1)}),
+        choiceItems: S2Choice.listFrom<String, Map<String, String>>(
+          source: List_City,
+          value: (index, item) => item['value'] ?? '',
+          title: (index, item) => item['title'] ?? '',
+          group: (index, item) => item['body'] ?? '',
+        ),
+        choiceActiveStyle: const S2ChoiceStyle(color: Colors.redAccent),
+        modalType: S2ModalType.bottomSheet,
+        modalConfirm: true,
+        modalFilter: true,
+        groupEnabled: true,
+        groupSortBy: S2GroupSort.byCountInDesc(),
+        groupBuilder: (context, state, group) {
+          return StickyHeader(
+            header: state.groupHeader(group),
+            content: state.groupChoices(group),
+          );
+        },
+        groupHeaderBuilder: (context, state, group) {
+          return Container(
+            color: primaryColor,
+            padding: const EdgeInsets.all(15),
+            alignment: Alignment.centerLeft,
+            child: S2Text(
+              text: group.name,
+              highlight: state.filter?.value,
+              highlightColor: Colors.teal,
+              style: const TextStyle(color: Colors.white),
+            ),
+          );
+        },
+        tileBuilder: (context, state) {
+          return S2Tile.fromState(
+            state,
+            isTwoLine: true,
+          );
+        });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -852,135 +918,58 @@ class _NewsState extends State<News> {
             width: 600,
             child: Column(
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Container(
+                Row(children: [
+                  Expanded(
+                    child: Container(
                         width: 250,
                         color: Color.fromARGB(40, 82, 145, 228),
-                        child: SmartSelect<String>.multiple(
-                          title: '選擇縣市',
-                          placeholder: 'Choose City',
-                          selectedValue: Select_1,
-                          onChange: (selected) => setState(() =>
-                              {Select_1 = selected.value, print(Select_1)}),
-                          choiceItems:
-                              S2Choice.listFrom<String, Map<String, String>>(
-                            source: List_City,
-                            value: (index, item) => item['value'] ?? '',
-                            title: (index, item) => item['title'] ?? '',
-                            group: (index, item) => item['body'] ?? '',
-                          ),
-                          choiceActiveStyle:
-                              const S2ChoiceStyle(color: Colors.redAccent),
-                          modalType: S2ModalType.bottomSheet,
-                          modalConfirm: true,
-                          modalFilter: true,
-                          groupEnabled: true,
-                          groupSortBy: S2GroupSort.byCountInDesc(),
-                          groupBuilder: (context, state, group) {
-                            return StickyHeader(
-                              header: state.groupHeader(group),
-                              content: state.groupChoices(group),
-                            );
-                          },
-                          groupHeaderBuilder: (context, state, group) {
-                            return Container(
-                              color: primaryColor,
-                              padding: const EdgeInsets.all(15),
-                              alignment: Alignment.centerLeft,
-                              child: S2Text(
-                                text: group.name,
-                                highlight: state.filter?.value,
-                                highlightColor: Colors.teal,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            );
-                          },
-                          tileBuilder: (context, state) {
-                            return S2Tile.fromState(
-                              state,
-                              isTwoLine: true,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Container(
+                        child: dropDown_Select(
+                            select_name: '選擇縣市',
+                            List_value: List_City,
+                            Select_Value: Select_1,
+                            primaryColor: primaryColor,
+                            select_name_English: "Choose City",
+                            onChange: test111(),)),
+                  ),
+                  Expanded(
+                    child: Container(
                         width: 300,
                         color: Color.fromARGB(40, 82, 145, 228),
-                        child: SmartSelect<String>.multiple(
-                          title: select_name,
-                          placeholder: select_name_English,
-                          selectedValue: Select_2,
-                          onChange: (selected) =>
-                              setState(() => {Select_2 = selected.value}),
-                          choiceItems:
-                              S2Choice.listFrom<String, Map<String, String>>(
-                            source:  List_2,
-                            value: (index, item) => item['value'] ?? '',
-                            title: (index, item) => item['title'] ?? '',
-                            group: (index, item) => item['body'] ?? '',
-                          ),
-                          choiceActiveStyle:
-                              const S2ChoiceStyle(color: Colors.redAccent),
-                          modalType: S2ModalType.bottomSheet,
-                          modalConfirm: true,
-                          modalFilter: true,
-                          groupEnabled: true,
-                          groupSortBy: S2GroupSort.byCountInDesc(),
-                          groupBuilder: (context, state, group) {
-                            return StickyHeader(
-                              header: state.groupHeader(group),
-                              content: state.groupChoices(group),
-                            );
-                          },
-                          groupHeaderBuilder: (context, state, group) {
-                            return Container(
-                              color: primaryColor,
-                              padding: const EdgeInsets.all(15),
-                              alignment: Alignment.centerLeft,
-                              child: S2Text(
-                                text: group.name,
-                                highlight: state.filter?.value,
-                                highlightColor: Colors.teal,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            );
-                          },
-                          tileBuilder: (context, state) {
-                            return S2Tile.fromState(
-                              state,
-                              isTwoLine: true,
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                    Column(
-                      children: [
-                        Container(
-                            width: 80,
-                            height: 73,
-                            color: Color.fromARGB(40, 82, 145, 228),
-                            child: InkWell(
-                              child: Center(
-                                  child: SizedBox(
-                                width: 20,
-                                child: Text('清除'),
-                              )),
-                              onTap: () {
-                                setState(() {
-                                  Select_1 = [];
-                                  Select_2 = [];
-                                });
-                              },
+                        child: dropDown_Select(
+                          select_name: select_name,
+                            List_value: List_2,
+                            Select_Value: Select_2,
+                            primaryColor: primaryColor,
+                            select_name_English: select_name_English,
+                            onChange: (){
+                              setState(() {
+                                test111();
+                              });
+                            },
                             )),
-                      ],
-                    )
-                  ],
-                ),
+                  ),
+                  Column(
+                    children: [
+                      Container(
+                          width: 80,
+                          height: 73,
+                          color: Color.fromARGB(40, 82, 145, 228),
+                          child: InkWell(
+                            child: Center(
+                                child: SizedBox(
+                              width: 20,
+                              child: Text('清除'),
+                            )),
+                            onTap: () {
+                              setState(() {
+                                Select_1 = [];
+                                Select_2 = [];
+                              });
+                            },
+                          )),
+                    ],
+                  ),
+                ]),
                 Expanded(
                     child: ListView.builder(
                         itemCount: tttt.length,
@@ -994,12 +983,17 @@ class _NewsState extends State<News> {
                                 leading: Column(
                                   children: [
                                     Container(
-                                        child: Image.memory(
-                                      base64Decode(state.profile['avatar']),
+                                      child:
+
+                                          // Image.asset(
+                                          //     'assets/login_icon/MRT.png'),
+                                          Image.network(
+                                              'https://upload.wikimedia.org/wikipedia/zh/thumb/d/d1/Taipei_Metro_Logo.svg/1200px-Taipei_Metro_Logo.svg.png'),
+
                                       width: 50,
                                       height: 50,
-                                      fit: BoxFit.cover,
-                                    )),
+                                      // fit: BoxFit.cover,
+                                    )
                                   ],
                                 ),
                                 contentPadding: const EdgeInsets.symmetric(
@@ -1046,8 +1040,13 @@ class _NewsState extends State<News> {
                                                 WebViewExample(
                                                     tt: news['NewsURL']
                                                         .toString())));
-                                  }else{
-
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => NewsCardView(
+                                                  list_view: news,
+                                                )));
                                   }
                                 },
                               ));

@@ -3,7 +3,6 @@ import 'package:traffic_hero/imports.dart';
 
 class jwt {
   JWT jwtdecode (token){
-     
     return JWT.decode(token);
   }
 }
