@@ -264,9 +264,7 @@ class _Login extends State<Login> {
                       child: const block_button(
                         functionName: '登入',
                       ),
-                      onTap: () async {
-                        
-                        // EasyLoading.show(status: 'loading...');
+                      onTap: () {
                         userSignIn();
                       },
                     ),
