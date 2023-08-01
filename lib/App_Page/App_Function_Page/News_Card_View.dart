@@ -1,5 +1,5 @@
 // ignore_for_file: file_names, must_be_immutable, prefer_typing_uninitialized_variables, non_constant_identifier_names
-import 'package:traffic_hero/imports.dart';
+import 'package:traffic_hero/Imports.dart';
 
 class NewsCardView extends StatefulWidget {
   NewsCardView({super.key, required this.list_view});

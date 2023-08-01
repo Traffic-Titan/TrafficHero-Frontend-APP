@@ -1,5 +1,5 @@
 // ignore_for_file: sized_box_for_whitespace, avoid_print, file_names, unnecessary_set_literal, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_typing_uninitialized_variables, non_constant_identifier_names, avoid_unnecessary_containers, sort_child_properties_last
-import 'package:traffic_hero/imports.dart';
+import 'package:traffic_hero/Imports.dart';
 import 'package:traffic_hero/Components/Choices.dart' as choices;
 
 class News extends StatefulWidget {
