@@ -86,7 +86,6 @@ flutter:
     - assets/topbar/Default_Avatar.png
     - assets/login_icon/google.png
     - assets/login_icon/sign_in.png
-    - assets/login_icon/MRT.png
     - assets/topbar/select_car.png
     - assets/topbar/select_Public_Transport.png
     - assets/topbar/select_scooter.png
