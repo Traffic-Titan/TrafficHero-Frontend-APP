@@ -9,7 +9,6 @@ List<Map<String, String>> toolList = [
 List<Map<String, String>> fastLocation = [
   {'value': '加油站', 'title': '加油站',  'img': 'assets/home/gaspump.png',  'url': '後端API'},
   {'value': '換電站', 'title': '換電站',  'img': 'assets/home/batterystop.png',  'url': '後端API'},
+  {'value': '充電站', 'title': '充電站',  'img': 'assets/home/chargingStation.png',  'url': '後端API'},
   {'value': '便利商店', 'title': '便利商店',  'img': 'assets/home/convientStore.png',  'url': '後端API'},
-  {'value': '路邊停車費5', 'title': '路邊停車費',  'img': 'assets/home/parkinglot.png',  'url': '後端API'},
-  {'value': '路邊停車費6', 'title': '路邊停車費',  'img': 'assets/home/parkinglot.png',  'url': '後端API'},
 ];

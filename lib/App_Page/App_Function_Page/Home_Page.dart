@@ -29,6 +29,8 @@ class _Home extends State<Home>{
     state = Provider.of<stateManager>(context, listen: false);
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
+      int index = fastLocation.indexWhere((location) => location['value'] == '換電站');
+      int index2 = fastLocation.indexWhere((location) => location['value'] == '充電站');
       setState(() {
         display1 = "工具列";
         display2 = "路況速報";
@@ -37,9 +39,19 @@ class _Home extends State<Home>{
         _nearbyStop = false;
         _operationCondition = false;
         _operationConditionLight = false;
-        fastLocation[1] = _chargingStation;
+        if(index != -1){
+          fastLocation.removeAt(index);
+          if(index2 == -1){
+            fastLocation.add(_chargingStation);
+          }
+        }
+
+        // fastLocation[1] = _chargingStation;
       });
     } else if (state.modeName == 'scooter') {
+      int index = fastLocation.indexWhere((location) => location['value'] == '充電站');
+      int index2 = fastLocation.indexWhere((location) => location['value'] == '換電站');
+
       setState(() {
         display1 = "工具列";
         display2 = "路況速報";
@@ -48,7 +60,15 @@ class _Home extends State<Home>{
         _nearbyStop = false;
         _operationCondition = false;
         _operationConditionLight = false;
-        fastLocation[1] = _batterystop;
+        if(index != -1){
+          fastLocation.removeAt(index);
+          if(index2 == -1){
+            fastLocation.add(_batterystop);
+          }
+        }
+
+        print(fastLocation);
+        // fastLocation[1] = _batterystop;
       });
     } else {
       setState(() {
