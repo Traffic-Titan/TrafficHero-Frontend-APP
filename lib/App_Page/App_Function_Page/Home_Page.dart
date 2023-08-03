@@ -1,6 +1,5 @@
-// ignore_for_file: file_names, avoid_unnecessary_containers, prefer_final_fields
+// ignore_for_file: file_names, avoid_unnecessary_containers, prefer_final_fields, sort_child_properties_last
 import 'package:traffic_hero/Imports.dart';
-import 'package:traffic_hero/Components/Tool.dart' as tools;
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -18,16 +17,29 @@ class _Home extends State<Home> {
       _operationCondition,
       _operationConditionLight;
 
+  Map<String, String> _chargingStation = {
+    'value': '充電站',
+    'title': '充電站',
+    'img': 'assets/home/chargingStation.png',
+    'url': '後端API'
+  };
+  Map<String, String> _batterystop = {
+    'value': '換電站',
+    'title': '換電站',
+    'img': 'assets/home/batterystop.png',
+    'url': '後端API'
+  };
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
-    int indexOfBatterystop =
-    fastLocation.indexWhere((location) => location['value'] == '換電站');
-    int indexOfChargingStation =
-    fastLocation.indexWhere((location) => location['value'] == '充電站');
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
+      int index =
+          fastLocation.indexWhere((location) => location['value'] == '換電站');
+      int index2 =
+          fastLocation.indexWhere((location) => location['value'] == '充電站');
       setState(() {
         display1 = "工具列";
         display2 = "路況速報";
@@ -36,14 +48,19 @@ class _Home extends State<Home> {
         _nearbyStop = false;
         _operationCondition = false;
         _operationConditionLight = false;
-        if (indexOfBatterystop != -1) {
-          fastLocation.removeAt(indexOfBatterystop);
-          if (indexOfChargingStation == -1) {
-            fastLocation.add(tools.fastLocation_chargingStation);
+        if (index != -1) {
+          fastLocation.removeAt(index);
+          if (index2 == -1) {
+            fastLocation.add(_chargingStation);
           }
         }
       });
     } else if (state.modeName == 'scooter') {
+      int index =
+          fastLocation.indexWhere((location) => location['value'] == '充電站');
+      int index2 =
+          fastLocation.indexWhere((location) => location['value'] == '換電站');
+
       setState(() {
         display1 = "工具列";
         display2 = "路況速報";
@@ -52,12 +69,15 @@ class _Home extends State<Home> {
         _nearbyStop = false;
         _operationCondition = false;
         _operationConditionLight = false;
-        if (indexOfChargingStation != -1) {
-          fastLocation.removeAt(indexOfChargingStation);
-          if (indexOfBatterystop == -1) {
-            fastLocation.add(tools.fastLocation_batterystop);
+        if (index != -1) {
+          fastLocation.removeAt(index);
+          if (index2 == -1) {
+            fastLocation.add(_batterystop);
           }
         }
+
+        print(fastLocation);
+        // fastLocation[1] = _batterystop;
       });
     } else {
       setState(() {
@@ -70,6 +90,10 @@ class _Home extends State<Home> {
         _operationConditionLight = true;
       });
     }
+  }
+
+  Function? test(){
+    print('object');
   }
 
   @override
@@ -116,43 +140,9 @@ class _Home extends State<Home> {
                   margin: const EdgeInsets.only(bottom: 15),
                   child: Column(
                     children: [
-                      Expanded(
-                        flex: 5,
-                        child: GridView(
-                          scrollDirection: Axis.horizontal,
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 200,
-                                  childAspectRatio: 3 / 2,
-                                  mainAxisSpacing: 20),
-                          children: List.generate(
-                            toolList.length,
-                            (index) {
-                              final tool = toolList[index];
-                              return InkWell(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 70,
-                                      margin: const EdgeInsets.all(3.0),
-                                      child: Image.asset(
-                                        tool['img'].toString(),
-                                      ),
-                                    ),
-                                    Text(
-                                      tool['title'].toString(),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ],
-                                ),
-                                onTap: () {
-                                  print(tool['value'].toString());
-                                },
-                              );
-                            },
-                          ),
-                        ),
-                      ),
+                      Expanded(flex: 5, child: gridView( (){
+                        test();
+                      })),
                       const Expanded(
                         flex: 1,
                         child: Text(
@@ -357,6 +347,41 @@ class _Home extends State<Home> {
                 )),
           )
         ],
+      ),
+    );
+  }
+
+  Widget gridView( onTap) {
+    return GridView(
+      scrollDirection: Axis.horizontal,
+      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+          maxCrossAxisExtent: 200,
+          childAspectRatio: 3 / 2,
+          mainAxisSpacing: 20),
+      children: List.generate(
+        toolList.length,
+        (index) {
+          final tool = toolList[index];
+          return InkWell(
+            child: Column(
+              children: [
+                Container(
+                  width: 70,
+                  margin: const EdgeInsets.all(3.0),
+                  child: Image.asset(
+                    tool['img'].toString(),
+                  ),
+                ),
+                Text(
+                  tool['title'].toString(),
+                  textAlign: TextAlign.center,
+                )
+              ],
+            ),
+            onTap: onTap,
+    
+          );
+        },
       ),
     );
   }
