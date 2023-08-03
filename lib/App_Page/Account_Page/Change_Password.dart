@@ -149,16 +149,6 @@ class new_password_page extends State<ChangePassword> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
-        // appBar: AppBar(
-        //   backgroundColor: Colors.transparent,
-        //   elevation: 0,
-        //   leading: IconButton(
-        //     icon: const Icon(Icons.arrow_back_ios),
-        //     onPressed: () {
-        //       Navigator.of(context).pop();
-        //     },
-        //   ),
-        // ),
         backgroundColor: const Color.fromARGB(168, 1, 99, 148),
         body: SafeArea(
           child: Center(
@@ -229,8 +219,6 @@ class new_password_page extends State<ChangePassword> {
                       EasyLoading.show(status: 'loading...');
                       change_password_function(context);
                     }
-
-                    // change_password_function(context);
                   },
                 ),
               ],

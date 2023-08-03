@@ -55,8 +55,6 @@ class _Home extends State<Home> {
             fastLocation.add(_chargingStation);
           }
         }
-
-        // fastLocation[1] = _chargingStation;
       });
     } else if (state.modeName == 'scooter') {
       int index =

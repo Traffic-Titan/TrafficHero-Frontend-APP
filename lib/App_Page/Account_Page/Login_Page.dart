@@ -30,7 +30,6 @@ class _Login extends State<Login> {
   }
 
   handlesignIn(GoogleSignInAccount? account) async {
-
     request_body = {
       "email": googleController.googleAccount.value?.email ?? '',
       "Google_ID": googleController.googleAccount.value?.id ?? '',
@@ -40,17 +39,18 @@ class _Login extends State<Login> {
     request_url = '/Account/Google_SSO';
 
     if (account != null) {
-
-      response = await api().Api_Post(request_body, request_url,'');
-
+      response = await api().Api_Post(request_body, request_url, '');
 
       if (response.statusCode == 200) {
         //顯示成功訊息
-        EasyLoading.showSuccess( jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
+        EasyLoading.showSuccess(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
         //將狀態寫入
-        state.updateAccountState(await jsonDecode(response.body)['Token'] ?? '');
+        state
+            .updateAccountState(await jsonDecode(response.body)['Token'] ?? '');
         //跳轉頁面
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const All_Page()));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const All_Page()));
       } else if (response.statusCode == 403) {
         //SSO回傳訊息403，判斷為未註冊，跳轉註冊頁面
         state.google_sso_status_Set('register');
@@ -66,7 +66,7 @@ class _Login extends State<Login> {
       } else if (response.statusCode == 401) {
         //401為帳戶未綁定SSO因此會先將firebase的帳戶狀態先登出
         googleController.google_signOut();
-          //顯示錯誤訊息
+        //顯示錯誤訊息
         EasyLoading.showError(
             jsonDecode(utf8.decode(response.bodyBytes))['detail']);
       } else {
@@ -123,7 +123,7 @@ class _Login extends State<Login> {
     response = await api().Api_Post({
       "email": usernameController.text,
       "password": Sha256().sha256Function(passwordController.text)
-    }, '/Account/login','');
+    }, '/Account/login', '');
 
     if (response == null) {
       return false;
@@ -144,7 +144,9 @@ class _Login extends State<Login> {
         EasyLoading.dismiss();
         setState(() {
           error_text =
-              jsonDecode(utf8.decode(response.bodyBytes ?? ''))['detail'].toString() ?? '';
+              jsonDecode(utf8.decode(response.bodyBytes ?? ''))['detail']
+                      .toString() ??
+                  '';
           login_error_show = true;
         });
         return false;
@@ -167,13 +169,11 @@ class _Login extends State<Login> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: const Color.fromARGB(168, 1, 99, 148),
-       
         body: SingleChildScrollView(
           reverse: true,
           child: SafeArea(
             child: Center(
-              child: 
-              Container(
+              child: Container(
                 width: 310,
                 child: Column(
                   children: [
@@ -305,14 +305,11 @@ class _Login extends State<Login> {
                             child: const SquareTitle(
                               imagePath: 'assets/login_icon/google.png',
                             ),
-                            onTap: ()async {
-
+                            onTap: () async {
                               try {
-                                if (googleController.googleAccount.value == null) {
-                                  
-                                  
-                                    googleController.google();
-                                  
+                                if (googleController.googleAccount.value ==
+                                    null) {
+                                  googleController.google();
                                 } else {
                                   googleController.google_signOut();
                                 }

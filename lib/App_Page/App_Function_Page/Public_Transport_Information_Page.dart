@@ -1,6 +1,6 @@
 // ignore_for_file: file_names, camel_case_types
 
-import 'package:traffic_hero/imports.dart';
+import 'package:traffic_hero/Imports.dart';
 
 class Public_Transport_Information extends StatefulWidget {
   const Public_Transport_Information({super.key});
