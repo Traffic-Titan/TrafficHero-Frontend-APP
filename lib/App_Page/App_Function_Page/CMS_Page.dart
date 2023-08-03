@@ -12,6 +12,6 @@ class CMS extends StatefulWidget {
 class _CMSState extends State<CMS> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Text("CMS");
   }
 }
