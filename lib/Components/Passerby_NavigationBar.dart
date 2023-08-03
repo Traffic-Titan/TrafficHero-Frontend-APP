@@ -1,5 +1,5 @@
 // ignore_for_file: file_names, camel_case_types, prefer_typing_uninitialized_variables, prefer_const_constructors, non_constant_identifier_names
-import 'package:traffic_hero/imports.dart';
+import 'package:traffic_hero/Imports.dart';
 
 //主程式
 class PasserbyPage extends StatefulWidget {
@@ -29,23 +29,28 @@ class _PasserbyPage extends State<PasserbyPage> {
 
     carAndScooterBottonTabs = [
       const BottomNavigationBarItem(
-          label: '首頁', icon: Icon(CupertinoIcons.home), tooltip: "首頁"),
+          label: '首頁', icon: Icon(CupertinoIcons.home), tooltip: "首頁",backgroundColor: Colors.blue),
       const BottomNavigationBarItem(
           label: '最新消息',
           icon: Icon(CupertinoIcons.news_solid),
-          tooltip: "最新消息"),
+          tooltip: "最新消息",
+          backgroundColor: Colors.blue),
+          
       const BottomNavigationBarItem(
           label: '即時訊息推播',
           icon: Icon(CupertinoIcons.text_bubble),
-          tooltip: "即時訊息推播"),
+          tooltip: "即時訊息推播",
+          backgroundColor: Colors.blue),
       BottomNavigationBarItem(
           label: navigationBar_text.toString(),
           icon: Icon(CupertinoIcons.news_solid),
-          tooltip: navigationBar_text.toString()),
+          tooltip: navigationBar_text.toString(),
+          backgroundColor: Colors.blue),
       const BottomNavigationBarItem(
           label: '觀光資訊',
           icon: Icon(CupertinoIcons.news_solid),
-          tooltip: "觀光資訊"),
+          tooltip: "觀光資訊",
+          backgroundColor: Colors.blue),
     ];
   }
 
@@ -77,8 +82,9 @@ class _PasserbyPage extends State<PasserbyPage> {
 
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
+        type: BottomNavigationBarType.shifting,
         currentIndex: currentIndex,
+        fixedColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
         items: bottonTabs,
         onTap: (index) {

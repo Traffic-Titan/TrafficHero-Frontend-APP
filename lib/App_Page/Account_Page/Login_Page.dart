@@ -86,6 +86,7 @@ class _Login extends State<Login> {
         count++;
       });
       if (count <= 1) {
+        EasyLoading.show(status: 'Loading.......');
         handlesignIn(account);
       }
     }).onError((err) {
@@ -143,10 +144,8 @@ class _Login extends State<Login> {
       } else {
         EasyLoading.dismiss();
         setState(() {
-          error_text =
-              jsonDecode(utf8.decode(response.bodyBytes ?? ''))['detail']
-                      .toString() ??
-                  '';
+          error_text = jsonDecode(utf8.decode(response.bodyBytes))['detail']
+                  .toString() ;
           login_error_show = true;
         });
         return false;

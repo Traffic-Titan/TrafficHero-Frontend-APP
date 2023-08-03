@@ -1,4 +1,6 @@
-import 'package:traffic_hero/imports.dart';
+// ignore_for_file: camel_case_types, file_names
+
+import 'package:traffic_hero/Imports.dart';
 
 class Route_Planning extends StatefulWidget {
   const Route_Planning({super.key});

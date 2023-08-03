@@ -16,9 +16,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:webview_flutter_android/webview_flutter_android.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
- String test = '''
-<p> <strong class="ql-size-large" style="color: rgb(230, 0, 0);">「台中公車」App</strong><span class="ql-size-large">與「</span><strong class="ql-size-large" style="color: rgb(230, 0, 0);">台中友善公車」App</strong><span class="ql-size-large">，</span><strong class="ql-size-large" style="color: rgb(230, 0, 0);">自112年6月1日正式合併為「台中公車」App</strong><span class="ql-size-large">，原「台中友善公車」App所有功能都整併成「台中公車」App內之無障礙版本，民眾下載「台中公車」App後，透過設定功能，選擇使用一般操作版或無障礙版，搭公車資訊雙效合一，為使用者帶來更為便利和友善的大眾運輸乘車體驗。</span></p><p><span class="ql-size-large">「雙效合一，搭公車更便利！」，「台中公車」App保留原有搭乘公車一般功能以外，收納原「台中友善公車」App所有功能成為無障礙版本，無論是一般民眾或是視覺障礙朋友，都能運用「台中公車」App享受到公車路線即時資訊、預約服務和路線規劃等功能，提供更全面、更智慧的乘車輔助工具。未來您下載或更新「台中公車」App後，即可使用功能服務完整的台中公車手機APP，</span><strong class="ql-size-large" style="color: rgb(230, 0, 0);">「台中友善公車」App將於今(112)年7月1日起下架。</strong></p><p><br></p><p><img src="https://citybus.taichung.gov.tw/ebus/strapi/uploads/App_e18c13ae1f.png" style="width: 100%"></p>
-''';
+
 
  String kNavigationExamplePage = '''<h1>
 <p> <strong class="ql-size-large" style="color: rgb(230, 0, 0);">「台中公車」App</strong><span class="ql-size-large">與「</span><strong class="ql-size-large" style="color: rgb(230, 0, 0);">台中友善公車」App</strong><span class="ql-size-large">，</span><strong class="ql-size-large" style="color: rgb(230, 0, 0);">自112年6月1日正式合併為「台中公車」App</strong><span class="ql-size-large">，原「台中友善公車」App所有功能都整併成「台中公車」App內之無障礙版本，民眾下載「台中公車」App後，透過設定功能，選擇使用一般操作版或無障礙版，搭公車資訊雙效合一，為使用者帶來更為便利和友善的大眾運輸乘車體驗。</span></p><p><span class="ql-size-large">「雙效合一，搭公車更便利！」，「台中公車」App保留原有搭乘公車一般功能以外，收納原「台中友善公車」App所有功能成為無障礙版本，無論是一般民眾或是視覺障礙朋友，都能運用「台中公車」App享受到公車路線即時資訊、預約服務和路線規劃等功能，提供更全面、更智慧的乘車輔助工具。未來您下載或更新「台中公車」App後，即可使用功能服務完整的台中公車手機APP，</span><strong class="ql-size-large" style="color: rgb(230, 0, 0);">「台中友善公車」App將於今(112)年7月1日起下架。</strong></p><p><br></p><p><img src="https://citybus.taichung.gov.tw/ebus/strapi/uploads/App_e18c13ae1f.png" style="width: 100%"></p>

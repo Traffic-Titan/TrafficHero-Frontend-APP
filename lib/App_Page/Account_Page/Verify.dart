@@ -85,7 +85,7 @@ class _verify_pageState extends State<verify_page> {
         state.forgetTokenSet(jsonDecode(response.body)['Token']);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ChangePassword()),
+          MaterialPageRoute(builder: (context) => const ChangePassword()),
         );
       } else {
         EasyLoading.dismiss();

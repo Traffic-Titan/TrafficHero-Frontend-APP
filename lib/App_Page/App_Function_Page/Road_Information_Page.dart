@@ -11,6 +11,6 @@ class Road_Information extends StatefulWidget {
 class _Road_InformationState extends State<Road_Information> {
   @override
   Widget build(BuildContext context) {
-    return Text("道路資訊");
+    return const Text("道路資訊");
   }
 }

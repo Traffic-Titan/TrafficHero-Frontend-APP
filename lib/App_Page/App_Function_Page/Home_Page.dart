@@ -1,5 +1,7 @@
-// ignore_for_file: file_names, avoid_unnecessary_containers, prefer_final_fields, sort_child_properties_last
-import 'package:traffic_hero/Imports.dart';
+// ignore_for_file: file_names, avoid_unnecessary_containers, prefer_final_fields, sort_child_properties_last, unused_import, library_prefixes, avoid_print
+import 'package:traffic_hero/Imports.dart' ;
+import  'package:traffic_hero/Components/Tool.dart' as Tool; 
+
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -17,18 +19,7 @@ class _Home extends State<Home> {
       _operationCondition,
       _operationConditionLight;
 
-  Map<String, String> _chargingStation = {
-    'value': '充電站',
-    'title': '充電站',
-    'img': 'assets/home/chargingStation.png',
-    'url': '後端API'
-  };
-  Map<String, String> _batterystop = {
-    'value': '換電站',
-    'title': '換電站',
-    'img': 'assets/home/batterystop.png',
-    'url': '後端API'
-  };
+
 
   @override
   void didChangeDependencies() {
@@ -51,7 +42,7 @@ class _Home extends State<Home> {
         if (index != -1) {
           fastLocation.removeAt(index);
           if (index2 == -1) {
-            fastLocation.add(_chargingStation);
+            fastLocation.add(Tool.fastLocation_chargingStation);
           }
         }
       });
@@ -72,7 +63,7 @@ class _Home extends State<Home> {
         if (index != -1) {
           fastLocation.removeAt(index);
           if (index2 == -1) {
-            fastLocation.add(_batterystop);
+            fastLocation.add(Tool.fastLocation_batterystop);
           }
         }
 
@@ -92,7 +83,7 @@ class _Home extends State<Home> {
     }
   }
 
-  Function? test(){
+ test(){
     print('object');
   }
 

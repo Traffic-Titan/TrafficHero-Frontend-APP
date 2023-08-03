@@ -4,7 +4,6 @@ import 'imports.dart';
 class stateManager with ChangeNotifier {
   String _modeName = 'car';
   var _accountState = '';
-  var _test = [];
   String _verifyEmail = '';
   String _forgetToken = '';
   String _veriffyState = '';
@@ -28,11 +27,6 @@ class stateManager with ChangeNotifier {
 
   void updateAccountState(newValue) {
     _accountState = newValue;
-    notifyListeners();
-  }
-
-  void addNewState(newValue) {
-    _test.add(newValue);
     notifyListeners();
   }
 

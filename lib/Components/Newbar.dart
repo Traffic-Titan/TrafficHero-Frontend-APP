@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, use_key_in_widget_constructors, prefer_typing_uninitialized_variables, unnecessary_null_comparison, non_constant_identifier_names
+// ignore_for_file: avoid_print, use_key_in_widget_constructors, prefer_typing_uninitialized_variables, unnecessary_null_comparison, non_constant_identifier_names, file_names
 import 'package:traffic_hero/imports.dart';
 
 class Navbar extends StatefulWidget {
@@ -42,12 +42,12 @@ class _NavbarState extends State<Navbar> {
         accountName:  Text(
           state.profile?["name"] ?? '',
           // '1',
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
         accountEmail:  Text(
           state.profile?["email"] ?? '',
 
-          style: TextStyle(color: Colors.white),
+          style: const TextStyle(color: Colors.white),
         ),
         currentAccountPicture: CircleAvatar(
           child: ClipOval(
