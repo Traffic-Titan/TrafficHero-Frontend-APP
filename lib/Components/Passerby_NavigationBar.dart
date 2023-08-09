@@ -53,11 +53,17 @@ class _PasserbyPage extends State<PasserbyPage> {
           backgroundColor: Colors.blue),
     ];
   }
-
+  void _navigateToCMS(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CMS()), // 創建新的空白頁面
+    );
+  }
   final List carAndScooterNavigationBar = [
     const Home(),
     const News(),
-    const CMS(),
+    const Text('CMS'),
+    // _navigateToNewPage(context);,
     const Road_Information(),
     const Tourist_Information(),
   ];
@@ -89,8 +95,15 @@ class _PasserbyPage extends State<PasserbyPage> {
         items: bottonTabs,
         onTap: (index) {
           setState(() {
-            currentIndex = index;
-            currentPage = tabBodies[currentIndex];
+            if (index == 2) {
+              //跳轉CMS葉面
+              _navigateToCMS(context);
+            } else {
+              setState(() {
+                currentIndex = index;
+                currentPage = tabBodies[currentIndex];
+              });
+            }
           });
         },
       ),

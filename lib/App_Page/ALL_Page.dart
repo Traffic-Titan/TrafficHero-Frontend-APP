@@ -18,6 +18,7 @@ class _All_PageState extends State<All_Page> {
   bool login_after_state = false;
   final googleController = Get.put(googlesso());
 
+
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
@@ -30,7 +31,6 @@ class _All_PageState extends State<All_Page> {
     } catch (e) {
       print('object');
     }
-
     if (response.statusCode == 200) {
       state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
     }
@@ -44,8 +44,19 @@ class _All_PageState extends State<All_Page> {
         login_before_state = false;
       });
     }
+    //螢幕方向轉正
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
   }
-
+  // @override
+  // void iniState(){
+  //   super.initState();
+  //
+  // }
   void selectedMode(value) {
     setState(() {
       mode = value;
@@ -80,84 +91,85 @@ class _All_PageState extends State<All_Page> {
   @override
   Widget build(BuildContext context) {
     final scaffoldKey = GlobalKey<ScaffoldState>();
-    return Scaffold(
-      key: scaffoldKey,
-      endDrawer: Drawer(
-        child: Navbar(
-          context: context,
-        ),
-      ),
-      appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(46, 117, 182, 1),
-        elevation: 0,
-        title: Center(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              IconButton(
-                icon: Image.asset(car),
-                iconSize: 50,
-                onPressed: () {
-                  selectedMode('car');
-                  setState(() {
-                    car = 'assets/topbar/Mode_Car.png';
-                    scooter = 'assets/topbar/select_scooter.png';
-                    public_Transport =
-                        'assets/topbar/select_Public_Transport.png';
-                  });
-                  //將狀態儲存為car
-                  state.updateModeState('car');
-                },
-              ),
-              IconButton(
-                icon: Image.asset(scooter),
-                iconSize: 50,
-                onPressed: () {
-                  selectedMode('scooter');
-                  setState(() {
-                    car = 'assets/topbar/select_car.png';
-                    scooter = 'assets/topbar/Mode_Scooter.png';
-                    public_Transport =
-                        'assets/topbar/select_Public_Transport.png';
-                  });
-                  state.updateModeState('scooter');
-                },
-              ),
-              IconButton(
-                icon: Image.asset(public_Transport),
-                iconSize: 50,
-                onPressed: () {
-                  setState(() {
-                    car = 'assets/topbar/select_car.png';
-                    scooter = 'assets/topbar/select_scooter.png';
-                    public_Transport =
-                        'assets/topbar/Mode_Public_Transport.png';
-                  });
-                  selectedMode('publicTransport');
-                  state.updateModeState('publicTransport');
-                },
-              ),
-            ],
+    return  Scaffold(
+        key: scaffoldKey,
+        endDrawer: Drawer(
+          child: Navbar(
+            context: context,
           ),
         ),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Image.asset('assets/topbar/SmartAssistant.png'),
-          iconSize: 50,
-          onPressed: () => print('object'),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: Image.asset("assets/topbar/Default_Avatar.png"),
+        appBar:AppBar(
+          backgroundColor: const Color.fromRGBO(46, 117, 182, 1),
+          elevation: 0,
+          title: Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Image.asset(car),
+                  iconSize: 50,
+                  onPressed: () {
+                    selectedMode('car');
+                    setState(() {
+                      car = 'assets/topbar/Mode_Car.png';
+                      scooter = 'assets/topbar/select_scooter.png';
+                      public_Transport =
+                      'assets/topbar/select_Public_Transport.png';
+                    });
+                    //將狀態儲存為car
+                    state.updateModeState('car');
+                  },
+                ),
+                IconButton(
+                  icon: Image.asset(scooter),
+                  iconSize: 50,
+                  onPressed: () {
+                    selectedMode('scooter');
+                    setState(() {
+                      car = 'assets/topbar/select_car.png';
+                      scooter = 'assets/topbar/Mode_Scooter.png';
+                      public_Transport =
+                      'assets/topbar/select_Public_Transport.png';
+                    });
+                    state.updateModeState('scooter');
+                  },
+                ),
+                IconButton(
+                  icon: Image.asset(public_Transport),
+                  iconSize: 50,
+                  onPressed: () {
+                    setState(() {
+                      car = 'assets/topbar/select_car.png';
+                      scooter = 'assets/topbar/select_scooter.png';
+                      public_Transport =
+                      'assets/topbar/Mode_Public_Transport.png';
+                    });
+                    selectedMode('publicTransport');
+                    state.updateModeState('publicTransport');
+                  },
+                ),
+              ],
+            ),
+          ),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Image.asset('assets/topbar/SmartAssistant.png'),
             iconSize: 50,
-            onPressed: () async {
-              scaffoldKey.currentState!.openEndDrawer();
-              get_User();
-            },
+            onPressed: () => print('object'),
           ),
-        ],
-      ),
-      body: changeMode(),
+          actions: <Widget>[
+            IconButton(
+              icon: Image.asset("assets/topbar/Default_Avatar.png"),
+              iconSize: 50,
+              onPressed: () async {
+                scaffoldKey.currentState!.openEndDrawer();
+                get_User();
+              },
+            ),
+          ],
+        ),
+        body: changeMode(),
     );
+
   }
 }
