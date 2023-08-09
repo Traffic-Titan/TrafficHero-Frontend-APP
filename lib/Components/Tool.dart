@@ -42,26 +42,50 @@ List<Map<String, String>> fastLocation = [
   {
     'value': '加油站',
     'title': '加油站',
-    'img': 'assets/home/gaspump.png',
+    'img': 'assets/fastLocation/gaspumpStop.png',
     'url': '後端API'
   },
   {
     'value': '便利商店',
     'title': '便利商店',
-    'img': 'assets/home/convientStore.png',
+    'img': 'assets/fastLocation/convenientShop.png',
     'url': '後端API'
   },
   {
     'value': '換電站',
     'title': '換電站',
-    'img': 'assets/home/batterystop.png',
+    'img': 'assets/fastLocation/batteryStop.png',
     'url': '後端API'
   },
   {
     'value': '充電站',
     'title': '充電站',
-    'img': 'assets/home/chargingStation.png',
+    'img': 'assets/fastLocation/chargingStation.png',
     'url': '後端API'
+  },
+];
+
+//CMS List
+List<Map<String, String>> cmsList = [
+  {
+    'type': '科技執法',
+    'title': '前方有測速照相，速限50km/h',
+    'img': 'assets/fastLocation/gaspumpStop.png',
+  },
+  {
+    'type': '道路施工',
+    'title': '龍潭路123號進行道路施工',
+    'img': 'assets/fastLocation/batteryStop.png',
+  },
+  {
+    'type': '道路壅塞',
+    'title': '前方道路壅塞，建議改道通行',
+    'img': 'assets/fastLocation/chargingStation.png',
+  },
+  {
+    'type': '科技執法',
+    'title': '前方有測速照相，速限40km/h',
+    'img': 'assets/fastLocation/gaspumpStop.png',
   },
 ];
 
@@ -69,37 +93,27 @@ List<Map<String, String>> fastLocation = [
 Map<String, String> fastLocation_chargingStation = {
   'value': '充電站',
   'title': '充電站',
-  'img': 'assets/home/chargingStation.png',
+  'img': 'assets/fastLocation/chargingStation.png',
   'url': '後端API'
 };
 Map<String, String> fastLocation_batterystop = {
   'value': '換電站',
   'title': '換電站',
-  'img': 'assets/home/batterystop.png',
+  'img': 'assets/fastLocation/batteryStop.png',
   'url': '後端API'
 };
 Map<String, String> fastLocation_gaspump = {
   'value': '加油站',
   'title': '加油站',
-  'img': 'assets/home/gaspump.png',
+  'img': 'assets/fastLocation/gaspumpStop.png',
   'url': '後端API'
 };
 Map<String, String> fastLocation_convientStore = {
   'value': '便利商店',
   'title': '便利商店',
-  'img': 'assets/home/convientStore.png',
+  'img': 'assets/fastLocation/convenientShop.png',
   'url': '後端API'
 };
 
-Map<String, String> _chargingStation = {
-  'value': '充電站',
-  'title': '充電站',
-  'img': 'assets/home/chargingStation.png',
-  'url': '後端API'
-};
-Map<String, String> _batterystop = {
-  'value': '換電站',
-  'title': '換電站',
-  'img': 'assets/home/batterystop.png',
-  'url': '後端API'
-};
+
+
