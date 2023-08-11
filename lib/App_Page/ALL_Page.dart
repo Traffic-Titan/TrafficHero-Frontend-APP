@@ -161,16 +161,10 @@ class _All_PageState extends State<All_Page> {
           leading: IconButton(
             icon: Image.asset('assets/topbar/SmartAssistant.png'),
 
-        centerTitle: true,
-        leading: IconButton(
-          icon: 
-          Image.asset('assets/topbar/SmartAssistant.png'),
-          iconSize: 50,
-          onPressed: () => print('object'),
-        ),
-        actions: <Widget>[
-          IconButton(
-            icon: 
+       
+        // actions: <Widget>[
+        //   IconButton(
+        //     icon: 
         //     CircleAvatar(
         //   child:
           
@@ -184,7 +178,7 @@ class _All_PageState extends State<All_Page> {
         //     ),
         //   ),
         // ),
-            Image.asset("assets/topbar/Default_Avatar.png"),
+            // Image.asset("assets/topbar/Default_Avatar.png"),
 
             iconSize: 50,
             onPressed: () => print('object'),

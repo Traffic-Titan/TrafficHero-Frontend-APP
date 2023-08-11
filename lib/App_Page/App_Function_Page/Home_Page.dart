@@ -29,6 +29,7 @@ class _Home extends State<Home> {
     super.didChangeDependencies();
 
     state = Provider.of<stateManager>(context, listen: false);
+    print(state.accountState);
 ii();
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {

@@ -101,7 +101,9 @@ flutter:
     - assets/home/light_normal.png
     - assets/home/light_abnormal.png
     - assets/home/light_partialAdnormal.png
+    - assets/home/Etag_Logo.png
     - assets/roadSign_icon/countyRoad/countyRoad_7.png
+    
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

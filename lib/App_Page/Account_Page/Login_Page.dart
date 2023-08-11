@@ -37,7 +37,7 @@ class _Login extends State<Login> {
       "Google_Avatar": googleController.googleAccount.value?.photoUrl ?? ''
     };
 
-    request_url = '/Account/Google_SSO';
+    request_url = '/Account/GoogleSSO';
 
     if (account != null) {
       response = await api().Api_Post(request_body, request_url, '');

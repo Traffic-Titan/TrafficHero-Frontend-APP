@@ -7,6 +7,20 @@ List<Map<String, String>> toolList = [
     'img': 'assets/home/parkinglot.png',
     'url': '後端API'
   },
+    {
+    'value': 'Etag',
+    'title': 'Etag',
+    'img': 'assets/home/Etag_Logo.png',
+    'url': '後端API'
+  },
+    {
+    'value': '交通罰緩',
+    'title': '交通罰緩',
+    'img': 'assets/home/parkinglot.png',
+    'url': '後端API'
+  },
+
+
 
 
 ];
