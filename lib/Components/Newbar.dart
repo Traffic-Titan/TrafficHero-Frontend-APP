@@ -28,6 +28,7 @@ class _NavbarState extends State<Navbar> {
   Log_Out() {
     googleController.google_signOut();
     state.updateAccountState('');
+    state.updateModeState('car');
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const Login()));
   }
@@ -52,9 +53,6 @@ class _NavbarState extends State<Navbar> {
         currentAccountPicture: CircleAvatar(
           child: ClipOval(
             child: 
-            // Image.asset('assets/topbar/Mode_Car.png', width: 90,
-            //   height: 90,
-            //   fit: BoxFit.cover,),
             Image.memory(
              base64Decode(state.profile?["avatar"] ?? ''),
               width: 90,

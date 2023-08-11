@@ -16,11 +16,11 @@ class _forget_password_pageState extends State<forget_password_page> {
   //設定狀態管理變數
   late stateManager state;
 
-  var birthday = '生日';
-  var forget_password_error_show = true;
-  var forget_password_error_text = '';
-  var forget_password_email = true;
-  var response = null;
+  var birthday = '生日',
+      forget_password_error_show = true,
+      forget_password_error_text = '',
+      forget_password_email = true,
+      response = null;
 
   //當頁面創造時執行
   @override
@@ -33,7 +33,7 @@ class _forget_password_pageState extends State<forget_password_page> {
   void forget_password_function(context) async {
     var Body = {"email": forget_email.text, "birthday": birthday};
     var url = '/Account/forgot_password';
-    response = await api().Api_Post(Body, url,state.accountState);
+    response = await api().Api_Post(Body, url, state.accountState);
     if (response.statusCode == 200) {
       EasyLoading.showSuccess('驗證碼已寄送');
       state.VerifyEmailSet(forget_email.text);

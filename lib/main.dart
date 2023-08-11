@@ -5,6 +5,9 @@ void main() async{
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+
+      await geolocator().updataPosition();
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => stateManager(),

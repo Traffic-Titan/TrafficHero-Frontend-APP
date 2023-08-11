@@ -23,6 +23,7 @@ class _All_PageState extends State<All_Page> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
+
     var response;
     var url = '/Account/profile';
     var jwt = state.accountState;
@@ -51,12 +52,16 @@ class _All_PageState extends State<All_Page> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
+
+    
   }
-  // @override
-  // void iniState(){
-  //   super.initState();
-  //
-  // }
+  @override
+  void initState() {
+    super.initState();
+
+
+  }
+
   void selectedMode(value) {
     setState(() {
       mode = value;
@@ -98,6 +103,7 @@ class _All_PageState extends State<All_Page> {
             context: context,
           ),
         ),
+
         appBar:AppBar(
           backgroundColor: const Color.fromRGBO(46, 117, 182, 1),
           elevation: 0,
@@ -154,6 +160,32 @@ class _All_PageState extends State<All_Page> {
           centerTitle: true,
           leading: IconButton(
             icon: Image.asset('assets/topbar/SmartAssistant.png'),
+
+        centerTitle: true,
+        leading: IconButton(
+          icon: 
+          Image.asset('assets/topbar/SmartAssistant.png'),
+          iconSize: 50,
+          onPressed: () => print('object'),
+        ),
+        actions: <Widget>[
+          IconButton(
+            icon: 
+        //     CircleAvatar(
+        //   child:
+          
+        //    ClipOval(
+        //     child: 
+        //     Image.memory(
+        //      base64Decode( state.profile?["avatar"] ) ,
+        //       width: 90,
+        //       height: 90,
+        //       fit: BoxFit.cover,
+        //     ),
+        //   ),
+        // ),
+            Image.asset("assets/topbar/Default_Avatar.png"),
+
             iconSize: 50,
             onPressed: () => print('object'),
           ),

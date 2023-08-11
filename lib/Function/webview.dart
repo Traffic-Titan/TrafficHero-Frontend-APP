@@ -63,16 +63,16 @@ const String kTransparentBackgroundPage = '''
   </html>
 ''';
 
-class WebViewExample extends StatefulWidget {
-   const WebViewExample({super.key,required this.tt});
+class WebView extends StatefulWidget {
+   const WebView({super.key,required this.tt});
 
   final String tt;
 
   @override
-  State<WebViewExample> createState() => _WebViewExampleState();
+  State<WebView> createState() => _WebViewState();
 }
 
-class _WebViewExampleState extends State<WebViewExample> {
+class _WebViewState extends State<WebView> {
   
   late final WebViewController _controller;
    final String contentBase64 = base64Encode(

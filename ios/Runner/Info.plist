@@ -19,6 +19,11 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>LSApplicationQueriesSchemes</key>
+<array>
+  <string>sms</string>
+  <string>tel</string>
+</array>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -64,5 +69,18 @@
 			</array>
 	</dict>
 </array>
+<key>LSApplicationQueriesSchemes</key>
+<array>
+  <string>https</string>
+</array>
+<key>NSLocationWhenInUseUsageDescription</key>
+<string>This app needs access to location when open.</string>
+<key>NSLocationAlwaysUsageDescription</key>
+<string>This app needs access to location when in the background.</string>
+<key>NSLocationTemporaryUsageDescriptionDictionary</key>
+<dict>
+  <key>YourPurposeKey</key>
+  <string>The example App requires temporary access to the device&apos;s precise location.</string>
+</dict>
 </dict>
 </plist>
