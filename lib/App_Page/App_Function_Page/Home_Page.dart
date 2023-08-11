@@ -171,15 +171,16 @@ List<Placemark> placemarks = await placemarkFromCoordinates(test.latitude, test.
                                   children: [
                                     Container(
                                       width: 70,
+                                      height: 100,
                                       margin: const EdgeInsets.all(3.0),
                                       child: Image.asset(
                                         fastList['img'].toString(),
                                       ),
                                     ),
-                                    Text(
-                                      fastList['title'].toString(),
-                                      textAlign: TextAlign.center,
-                                    )
+                                    // Text(
+                                    //   fastList['title'].toString(),
+                                    //   textAlign: TextAlign.center,
+                                    // )
                                   ],
                                 ),
                                 onTap: () {
