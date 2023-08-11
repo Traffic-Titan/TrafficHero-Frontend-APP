@@ -10,26 +10,34 @@ class register extends StatefulWidget {
 }
 
 class _registerState extends State<register> {
+  //設定輸入匡的控制器
   final registerNameController = TextEditingController();
   final registerEmailController = TextEditingController();
   final registerPasswordController = TextEditingController();
   final registercheckPasswordController = TextEditingController();
+
+  //給生日顯示格式
   final DateFormat formatter = DateFormat('yyyy/MM/dd');
+  //預設米瑪顯示變數隱藏
   var show_password = true;
   var show_password_ckeck = true;
   // ignore: prefer_typing_uninitialized_variables
+
   var response;
+  //給性別及生日預設變數
   var gender = '性別';
   var birthday = '生日';
+  //控制輸入匡顯示錯誤是否顯示
   var error_email = true;
   var error_name = true;
   var error_password = true;
   var error_check_password = true;
   var error_gender = true;
   var error_born = true;
+  //設立密碼長度文字
   var length_error_password_text = '';
   late stateManager state;
-  var body;
+  late var body = <String, String>{};
 
   //創造時
   @override
@@ -44,6 +52,7 @@ class _registerState extends State<register> {
     }
   }
 
+//控制使否要顯示密碼
   void Show_Password() {
     if (show_password == true) {
       setState(() {
@@ -56,6 +65,7 @@ class _registerState extends State<register> {
     }
   }
 
+//控制使否要顯示密碼
   void Show_Password_check() {
     if (show_password_ckeck == true) {
       setState(() {
@@ -67,7 +77,22 @@ class _registerState extends State<register> {
       });
     }
   }
+//確認密碼是否一樣
+    check_password_function() {
+    if (registerPasswordController.text !=
+        registercheckPasswordController.text) {
+      EasyLoading.dismiss();
+      setState(() {
+        error_check_password = false;
+      });
+      return false;
+    } else {
+      EasyLoading.dismiss();
+      return true;
+    }
+  }
 
+//確認密碼輸入長度
   bool text_lengh() {
     if (registerPasswordController.text == '') {
       setState(() {
@@ -91,20 +116,18 @@ class _registerState extends State<register> {
   }
 
   // ignore: non_constant_identifier_names
+  //註冊後端API
   void register_function(context) async {
     if (state.google_sso_status == 'register') {
-      setState(() {
-        body = {
-          "name": registerNameController.text,
-          "email": registerEmailController.text,
-          "password": Sha256()
-              .sha256Function(registerPasswordController.text)
-              .toString(),
-          "gender": gender,
-          "birthday": birthday,
-          "Google_ID": state.google_sso.value?.id ?? ''
-        };
-      });
+      body = {
+        "name": registerNameController.text,
+        "email": registerEmailController.text,
+        "password":
+            Sha256().sha256Function(registerPasswordController.text).toString(),
+        "gender": gender,
+        "birthday": birthday,
+        "Google_ID": state.google_sso.value?.id ?? ''
+      };
     } else {
       setState(() {
         body = {
@@ -133,25 +156,6 @@ class _registerState extends State<register> {
     }
   }
 
-   check_password_function() {
-    if (registerPasswordController.text !=
-        registercheckPasswordController.text) {
-      EasyLoading.dismiss();
-      setState(() {
-        error_check_password = false;
-      });
-      return false;
-    } else {
-      EasyLoading.dismiss();
-      return true;
-    }
-  }
-
-  void set_gender(Gender) {
-    setState(() {
-      gender = Gender;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -235,52 +239,8 @@ class _registerState extends State<register> {
                     width: 310,
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 0),
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(50),
-                        ),
-                        child: Padding(
-                            padding: const EdgeInsets.only(left: 10, right: 30),
-                            child: Container(
-                              margin: const EdgeInsets.all(3),
-                              child: DropdownButton(
-                                borderRadius: BorderRadius.circular(20),
-                                value: gender,
-                                items: const [
-                                  DropdownMenuItem(
-                                    value: "性別",
-                                    child: Text("性別"),
-                                  ),
-                                  DropdownMenuItem(
-                                      value: "male", child: Text("男")),
-                                  DropdownMenuItem(
-                                    value: "female",
-                                    child: Text("女"),
-                                  )
-                                ],
-                                onChanged: (value) {
-                                  setState(() {
-                                    gender = value.toString();
-                                  });
-                                },
-                                icon: const Padding(
-                                    padding: EdgeInsets.only(left: 20),
-                                    child: Icon(Icons.arrow_circle_down_sharp)),
-                                iconEnabledColor:
-                                    const Color.fromARGB(255, 0, 0, 0),
-                                style: const TextStyle(
-                                  //te
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontSize: 17,
-                                ),
-                                dropdownColor:
-                                    const Color.fromARGB(255, 255, 249, 249),
-                                underline: Container(),
-                                isExpanded: true,
-                              ),
-                            )),
-                      ),
+                      child: 
+                      decoratedBox()
                     ),
                   ),
                   const SizedBox(
@@ -325,4 +285,51 @@ class _registerState extends State<register> {
           ),
         ));
   }
+
+  Widget decoratedBox() {
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(50),
+      ),
+      child: Padding(
+          padding: const EdgeInsets.only(left: 13, right: 30),
+          child: Container(
+            margin: const EdgeInsets.all(3),
+            child: DropdownButton(
+              borderRadius: BorderRadius.circular(20),
+              value: gender,
+              items: const [
+                DropdownMenuItem(
+                  value: "性別",
+                  child: Text("性別"),
+                ),
+                DropdownMenuItem(value: "male", child: Text("男")),
+                DropdownMenuItem(
+                  value: "female",
+                  child: Text("女"),
+                )
+              ],
+              onChanged: (value) {
+                setState(() {
+                  gender = value.toString();
+                });
+              },
+              icon: const Padding(
+                  padding: EdgeInsets.only(left: 20),
+                  child: Icon(Icons.arrow_circle_down_sharp)),
+              iconEnabledColor: const Color.fromARGB(255, 0, 0, 0),
+              style: const TextStyle(
+                //te
+                color: Color.fromARGB(255, 0, 0, 0),
+                fontSize: 17,
+              ),
+              dropdownColor: const Color.fromARGB(255, 255, 249, 249),
+              underline: Container(),
+              isExpanded: true,
+            ),
+          )),
+    );
+  }
+
 }

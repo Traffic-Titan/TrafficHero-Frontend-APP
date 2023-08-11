@@ -13,29 +13,31 @@ class new_password_page extends State<ChangePassword> {
   //設定狀態管理變數
   late stateManager state;
   //設定輸入框的控制器
-  final change_new_password_Controller = TextEditingController();
-  final change_check_password_Controller = TextEditingController();
-  final change_old_password_Controller = TextEditingController();
+  final change_new_password_Controller = TextEditingController(),
+      change_check_password_Controller = TextEditingController(),
+      change_old_password_Controller = TextEditingController();
+
   var old_input_showState = false;
   //顯示密碼是否在8位元
   var change_password_error_show = false;
   //密碼是否相同
   var change_Password_Synchronize = true;
   //控制密碼顯示的變數
-  var show_old_password = true;
-  var show_new_password = true;
-  var show_check_password = true;
-  //控制Textfield顯示error文字
-  var show_password_error_text = true;
-  var password_text_length_error = '';
-  var show_old_password_error_text = true;
-  //設定儲存API回傳直的變數
-  var response;
+  var show_old_password = true,
+      show_new_password = true,
+      show_check_password = true,
+      //控制Textfield顯示error文字
+      show_password_error_text = true,
+      password_text_length_error = '',
+      show_old_password_error_text = true,
+      //設定儲存API回傳直的變數
+      response;
 
   //當頁面創造時執行
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
+
     if (state.accountState != '') {
       setState(() {
         old_input_showState = true;
@@ -100,7 +102,8 @@ class new_password_page extends State<ChangePassword> {
     var Body = {};
     var url = '/Account/change_password';
     //判斷新密碼與確認密碼使否相同
-    if (change_new_password_Controller.text != change_check_password_Controller.text) {
+    if (change_new_password_Controller.text !=
+        change_check_password_Controller.text) {
       EasyLoading.dismiss();
       setState(() {
         //使Textfield顯示error狀態
@@ -113,7 +116,8 @@ class new_password_page extends State<ChangePassword> {
         Body = {
           "email": state.verifyEmail,
           "old_password": state.forgetToken,
-          "new_password": Sha256().sha256Function(change_new_password_Controller.text)
+          "new_password":
+              Sha256().sha256Function(change_new_password_Controller.text)
         };
       } else {
         var accountemail = jwt().jwtdecode(state.accountState).payload;
@@ -123,11 +127,13 @@ class new_password_page extends State<ChangePassword> {
         });
         Body = {
           "email": accountemail['data']['email'],
-          "old_password": Sha256().sha256Function(change_old_password_Controller.text),
-          "new_password": Sha256().sha256Function(change_new_password_Controller.text)
+          "old_password":
+              Sha256().sha256Function(change_old_password_Controller.text),
+          "new_password":
+              Sha256().sha256Function(change_new_password_Controller.text)
         };
       }
-      response = await api().Api_Put(Body, url,'');
+      response = await api().Api_Put(Body, url, '');
 
       if (response.statusCode == 200) {
         EasyLoading.showSuccess('修改成功');

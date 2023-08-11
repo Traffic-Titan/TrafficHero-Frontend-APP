@@ -22,28 +22,33 @@ class _All_PageState extends State<All_Page> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
-    var response;
-    var url = '/Account/profile';
-    var jwt = state.accountState;
-    try {
-      response = await api().api_Get(url, jwt);
-    } catch (e) {
-      print('object');
-    }
+    // var response;
+    // var url = '/Account/profile';
+    // var jwt = state.accountState;
+    // try {
+    //   response = await api().api_Get(url, jwt);
+    // } catch (e) {
+    //   print('object');
+    // }
 
-    if (response.statusCode == 200) {
-      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
-    }
-    if (state.accountState == '') {
-      setState(() {
-        login_before_state = true;
-      });
-    } else {
-      setState(() {
-        login_after_state = true;
-        login_before_state = false;
-      });
-    }
+    // if (response.statusCode == 200) {
+    //   state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
+    // }
+    // if (state.accountState == '') {
+    //   setState(() {
+    //     login_before_state = true;
+    //   });
+    // } else {
+    //   setState(() {
+    //     login_after_state = true;
+    //     login_before_state = false;
+    //   });
+    // }
+  }
+  @override
+  void initState() {
+    super.initState();
+
   }
 
   void selectedMode(value) {
@@ -142,13 +147,28 @@ class _All_PageState extends State<All_Page> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Image.asset('assets/topbar/SmartAssistant.png'),
+          icon: 
+          Image.asset('assets/topbar/SmartAssistant.png'),
           iconSize: 50,
           onPressed: () => print('object'),
         ),
         actions: <Widget>[
           IconButton(
-            icon: Image.asset("assets/topbar/Default_Avatar.png"),
+            icon: 
+        //     CircleAvatar(
+        //   child:
+          
+        //    ClipOval(
+        //     child: 
+        //     Image.memory(
+        //      base64Decode( state.profile?["avatar"] ) ,
+        //       width: 90,
+        //       height: 90,
+        //       fit: BoxFit.cover,
+        //     ),
+        //   ),
+        // ),
+            Image.asset("assets/topbar/Default_Avatar.png"),
             iconSize: 50,
             onPressed: () async {
               scaffoldKey.currentState!.openEndDrawer();

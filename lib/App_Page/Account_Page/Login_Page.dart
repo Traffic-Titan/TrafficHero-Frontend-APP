@@ -27,6 +27,7 @@ class _Login extends State<Login> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
+    EasyLoading.dismiss();
   }
 
   handlesignIn(GoogleSignInAccount? account) async {
@@ -49,6 +50,7 @@ class _Login extends State<Login> {
         state
             .updateAccountState(await jsonDecode(response.body)['Token'] ?? '');
         //跳轉頁面
+        get_User();
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const All_Page()));
       } else if (response.statusCode == 403) {
@@ -104,6 +106,21 @@ class _Login extends State<Login> {
       setState(() {
         show_password = true;
       });
+    }
+  }
+
+void get_User() async {
+    var response;
+    var url = '/Account/profile';
+    var jwt = state.accountState;
+    try {
+      response = await api().api_Get(url, jwt);
+    } catch (e) {
+      print('object');
+    }
+
+    if (response.statusCode == 200) {
+      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
     }
   }
 
@@ -177,10 +194,7 @@ class _Login extends State<Login> {
                 child: Column(
                   children: [
                     const SizedBox(
-                      height: 100,
-                    ),
-                    const SizedBox(
-                      height: 10,
+                      height: 160,
                     ),
                     const Text(
                       '歡迎使用',

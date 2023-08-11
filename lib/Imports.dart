@@ -18,6 +18,10 @@ export 'package:flutter_dotenv/flutter_dotenv.dart';
 export  'package:flutter_awesome_select/flutter_awesome_select.dart';
 export 'package:sticky_headers/sticky_headers.dart';
 export 'package:webview_flutter/webview_flutter.dart';
+export 'package:url_launcher/url_launcher.dart';
+export 'package:geolocator/geolocator.dart';
+export 'package:flutter_tts/flutter_tts.dart';
+export 'package:flutter_dialogs/flutter_dialogs.dart';
 
 
 //引入頁面
@@ -38,6 +42,8 @@ export 'package:traffic_hero/App_Page/App_Function_Page/CMS_Page.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/Road_Information_Page.dart';
 export  'package:traffic_hero/App_Page/App_Function_Page/Route_Planning.dart';
 export  'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page.dart';
+export  'package:traffic_hero/App_Page/App_Function_Page/Parking_Fee_Inquiry.dart';
+export  'package:traffic_hero/App_Page/App_Function_Page/License_Plate_Input.dart';
 
 //Function
 export 'package:traffic_hero/Function/JWT.dart';
@@ -45,6 +51,7 @@ export 'package:traffic_hero/State_manager.dart';
 export 'package:traffic_hero/function/SHA256.dart';
 export 'package:traffic_hero/Function/Api.dart';
 export 'package:traffic_hero/Function/Google_SSO.dart';
+export 'package:traffic_hero/Function/Geolocator.dart';
 
 
 //Components

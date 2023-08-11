@@ -60,6 +60,9 @@ dependencies:
   sticky_headers: ^0.3.0+2
   webview_flutter: ^4.2.2
   path_provider: ^2.0.15
+  geolocator: ^9.0.2
+  flutter_tts: ^3.7.0
+  flutter_dialogs: ^3.0.0
 
 dev_dependencies:
   flutter_test:

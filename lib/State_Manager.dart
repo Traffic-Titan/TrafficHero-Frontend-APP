@@ -10,6 +10,7 @@ class stateManager with ChangeNotifier {
   var _google_sso_status;
   var _google_sso;
   var _profile;
+  var _appBar;
 
   String get modeName => _modeName;
   String get accountState => _accountState;
@@ -19,6 +20,7 @@ class stateManager with ChangeNotifier {
   get google_sso_status => _google_sso_status;
   get google_sso => _google_sso;
  get profile => _profile;
+ get appBar => _appBar;
 
   void updateModeState(String newValue) {
     _modeName = newValue;
@@ -60,6 +62,10 @@ class stateManager with ChangeNotifier {
 
   void updateprofileState(newValue) {
     _profile = newValue;
+    notifyListeners();
+  }
+   void updateappBar(newValue) {
+    _appBar = newValue;
     notifyListeners();
   }
 }

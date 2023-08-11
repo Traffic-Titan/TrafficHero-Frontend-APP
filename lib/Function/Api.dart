@@ -28,7 +28,7 @@ class api {
     } catch (e) {
       EasyLoading.showError('伺服器連線失敗');
       print(e.toString());
-      rethrow;
+      throw e;
     }
   }
 
