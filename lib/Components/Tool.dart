@@ -11,13 +11,13 @@ List<Map<String, String>> toolList = [
     'value': 'Etag',
     'title': 'Etag',
     'img': 'assets/home/Etag_Logo.png',
-    'url': '後端API'
+    'url': 'https://www.fetc.net.tw/UX/'
   },
     {
     'value': '交通罰緩',
     'title': '交通罰緩',
-    'img': 'assets/home/parkinglot.png',
-    'url': '後端API'
+    'img': 'assets/home/監理站_Logo.png',
+    'url': 'https://www.mvdis.gov.tw/m3-emv-vil/vil/penaltyQueryPay#gsc.tab=0'
   },
 
 

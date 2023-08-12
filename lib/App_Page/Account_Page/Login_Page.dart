@@ -51,8 +51,7 @@ class _Login extends State<Login> {
             .updateAccountState(await jsonDecode(response.body)['Token'] ?? '');
         //跳轉頁面
         get_User();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const All_Page()));
+       
       } else if (response.statusCode == 403) {
         //SSO回傳訊息403，判斷為未註冊，跳轉註冊頁面
         state.google_sso_status_Set('register');
@@ -111,7 +110,7 @@ class _Login extends State<Login> {
 
 void get_User() async {
     var response;
-    var url = '/Account/profile';
+    var url = '/Account/Profile';
     var jwt = state.accountState;
     try {
       response = await api().api_Get(url, jwt);
@@ -121,6 +120,9 @@ void get_User() async {
 
     if (response.statusCode == 200) {
       state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
+      print(state.profile);
+       Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const All_Page()));
     }
   }
 
@@ -141,7 +143,7 @@ void get_User() async {
     response = await api().Api_Post({
       "email": usernameController.text,
       "password": Sha256().sha256Function(passwordController.text)
-    }, '/Account/login', '');
+    }, '/Account/Login', '');
 
     if (response == null) {
       return false;

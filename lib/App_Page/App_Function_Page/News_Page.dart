@@ -62,7 +62,7 @@ class _NewsState extends State<News> {
     } else {
       setState(() {
         List_City = choices.city_Chiness;
-        url_api = '/News/Public_Transport';
+        url_api = '/News/PublicTransport';
         List_2 = choices.publicTransport;
         select_Name = '選擇類別';
         select_Name_English = 'All';
