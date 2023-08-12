@@ -71,7 +71,9 @@ class _NavbarState extends State<Navbar> {
           leading: const Icon(Icons.logout_outlined),
           title: const Text('登出'),
           onTap: () {
+            EasyLoading.dismiss();
             Log_Out();
+            
           },
         ),
        

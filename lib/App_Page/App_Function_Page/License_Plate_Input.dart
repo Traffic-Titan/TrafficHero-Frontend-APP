@@ -1,5 +1,7 @@
 // ignore_for_file: unused_import, file_names
 
+
+
 import 'package:traffic_hero/Imports.dart';
 // Make sure to import other necessary dependencies here
 
@@ -13,12 +15,60 @@ class LicensePlateInput extends StatefulWidget {
 class _LicensePlateInputState extends State<LicensePlateInput> {
   final afterLicensePlateController = TextEditingController();
   final beforeLicensePlateController = TextEditingController();
-  String? type = 'car';
+  late stateManager state;
+  
+  String? type = 'C';
+
+  
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    state = Provider.of<stateManager>(context, listen: false);
     EasyLoading.dismiss();
+  }
+
+  get_Amount(LicensePlateNumber,type) async {
+    var Body = {
+      "LicensePlateNumber": LicensePlateNumber,
+      "Type": type
+    };
+    var response;
+    var url = '/Home/ParkingFee';
+    var jwt = state.accountState;
+    try {
+      response = await api().Api_Post(Body, url, jwt);
+    } catch (e) {
+      print(e);
+    }
+
+    if (response.statusCode == 200) {
+      var list = [];
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      for (var i = 0; i < responseBody["Detail"].length; i++) {
+        if (responseBody["Detail"][i]["Amount"] != 0) {
+          print(responseBody["Detail"][i]);
+          list.add(responseBody["Detail"][i]);
+        }
+      }
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ParkingFeeInquiry(
+            list_Amount: list,
+          ),
+        ),
+      );
+    }
+  }
+
+  Binding_License_Plate (){
+    var BindingLicensePlate = [];
+    BindingLicensePlate.add({
+      
+      "LicensePlateNumber": '${beforeLicensePlateController.text}-${afterLicensePlateController.text}',
+      "Type": type
+    });
   }
 
   @override
@@ -142,14 +192,8 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                   const SizedBox(height: 20),
                   InkWell(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ParkingFeeInquiry(
-                            text: afterLicensePlateController.text,
-                          ),
-                        ),
-                      );
+                      EasyLoading.show(status: 'Loading...');
+                      get_Amount('${beforeLicensePlateController.text}-${afterLicensePlateController.text}',type);
                     },
                     child: sizebox('送出', Colors.blue.shade800, Colors.white),
                   ),
@@ -214,11 +258,11 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
             value: type,
             items: const [
               DropdownMenuItem(
-                value: 'car',
+                value: 'C',
                 child: Text('汽車'),
               ),
               DropdownMenuItem(
-                value: 'scooter',
+                value: 'M',
                 child: Text('機車'),
               ),
             ],

@@ -87,7 +87,7 @@ class _NewsState extends State<News> {
     if (response.statusCode == 200) {
       setState(() {
         listView = jsonDecode(utf8.decode(response.bodyBytes));
-        FlutterTts().speak('限速60公里您已超速');
+        
         EasyLoading.dismiss();
       });
     }

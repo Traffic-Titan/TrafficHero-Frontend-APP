@@ -28,6 +28,7 @@ class _Login extends State<Login> {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
     EasyLoading.dismiss();
+    FlutterTts().speak('歡迎來到 Traffic Hero');
   }
 
   handlesignIn(GoogleSignInAccount? account) async {
@@ -151,14 +152,15 @@ void get_User() async {
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
         EasyLoading.showSuccess(
-            jsonDecode(utf8.decode(response.bodyBytes))['message'] ?? '');
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
         state.updateAccountState(await jsonDecode(response.body)['Token']);
         setState(() {
           response = response;
           login_error_show = false;
         });
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const All_Page()));
+        get_User();
+        // Navigator.push(
+        //     context, MaterialPageRoute(builder: (context) => const All_Page()));
         return true;
       } else {
         EasyLoading.dismiss();
@@ -326,6 +328,7 @@ void get_User() async {
                                     null) {
                                   googleController.google();
                                 } else {
+                                  //確保在登錄界面保持登出
                                   googleController.google_signOut();
                                 }
                               } catch (e) {
