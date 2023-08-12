@@ -1,11 +1,10 @@
 // ignore_for_file: unused_import, file_names
 
-// import 'dart:math';
 import 'package:traffic_hero/Imports.dart';
 // Make sure to import other necessary dependencies here
 
 class LicensePlateInput extends StatefulWidget {
-   const LicensePlateInput({Key? key}) : super(key: key);
+  const LicensePlateInput({Key? key}) : super(key: key);
 
   @override
   State<LicensePlateInput> createState() => _LicensePlateInputState();
@@ -15,6 +14,12 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
   final afterLicensePlateController = TextEditingController();
   final beforeLicensePlateController = TextEditingController();
   String? type = 'car';
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    EasyLoading.dismiss();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
               child: Column(
                 children: [
                   const SizedBox(height: 20),
-                  sizebox('已綁定車牌',Colors.blue.shade200,Colors.blue.shade900),
+                  sizebox('已綁定車牌', Colors.blue.shade200, Colors.blue.shade900),
                   const SizedBox(height: 20),
                   SizedBox(
                     child: Card(
@@ -50,9 +55,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                                 color: Colors.blueGrey,
                               ),
                             ),
-                            onTap: () {
-                              
-                            },
+                            onTap: () {},
                           ),
                           const Divider(),
                           ListView.builder(
@@ -73,9 +76,8 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                       ),
                     ),
                   ),
-
                   const SizedBox(height: 20),
-                  sizebox('查詢車牌',Colors.blue.shade200,Colors.blue.shade900),
+                  sizebox('查詢車牌', Colors.blue.shade200, Colors.blue.shade900),
                   const SizedBox(height: 20),
                   SizedBox(
                     width: 390,
@@ -84,43 +86,60 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text('車種',style: TextStyle(fontSize: 20,color: Color.fromARGB(255, 14, 70, 134))),
+                            Text('車種',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Color.fromARGB(255, 14, 70, 134))),
                           ],
                         ),
-                        const SizedBox(height: 10,),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         decoratedBox(),
                       ],
                     ),
                   ),
                   const SizedBox(height: 10),
-               
-
                   SizedBox(
                     width: 390,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
-                      
                       children: [
                         const Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
-                            Text('車牌',style: TextStyle(fontSize: 20,color: Color.fromARGB(255, 14, 70, 134)),),
+                            Text(
+                              '車牌',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color.fromARGB(255, 14, 70, 134)),
+                            ),
                           ],
                         ),
-                        const SizedBox(height: 10,),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                           Expanded(child: inputTextField(beforeLicensePlateController,'ABC'),),
-                                      const Text('  -  ',style: TextStyle(fontSize: 40),),
-                            Expanded(child: inputTextField(afterLicensePlateController,'1234'),),
-                          
+                            Expanded(
+                              child: inputTextField(
+                                  beforeLicensePlateController, 'ABC'),
+                            ),
+                            const Text(
+                              '  -  ',
+                              style: TextStyle(fontSize: 40),
+                            ),
+                            Expanded(
+                              child: inputTextField(
+                                  afterLicensePlateController, '1234'),
+                            ),
                           ],
                         ),
                       ],
                     ),
                   ),
-                   const SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   InkWell(
                     onTap: () {
                       Navigator.push(
@@ -132,7 +151,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                         ),
                       );
                     },
-                    child: sizebox('送出',Colors.blue.shade800,Colors.white),
+                    child: sizebox('送出', Colors.blue.shade800, Colors.white),
                   ),
                 ],
               ),
@@ -143,45 +162,41 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
     );
   }
 
-  Widget inputTextField (controller,hintText){
+  Widget inputTextField(controller, hintText) {
     return SizedBox(
-                    width: 10,
-                    child: TextField(
-                      controller: controller,
-                      
-                      
-                      decoration: InputDecoration(
-                        hintText: hintText,
-                        fillColor: Colors.blue.shade900,
-          enabledBorder:   OutlineInputBorder(
-              borderSide:  BorderSide(color: Colors.blue.shade900,style: BorderStyle.solid),
-              borderRadius:  const BorderRadius.all(Radius.circular(0))),
-          focusedBorder:   OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.blue.shade900),
-              borderRadius:  const BorderRadius.all(Radius.circular(0))),
-                    )
-                    ));
-                  
+        width: 10,
+        child: TextField(
+            controller: controller,
+            decoration: InputDecoration(
+              hintText: hintText,
+              fillColor: Colors.blue.shade900,
+              enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Colors.blue.shade900, style: BorderStyle.solid),
+                  borderRadius: const BorderRadius.all(Radius.circular(0))),
+              focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.blue.shade900),
+                  borderRadius: const BorderRadius.all(Radius.circular(0))),
+            )));
   }
 
-  Widget sizebox(String sizeboxtext,Color,textcolor){
+  Widget sizebox(String sizeboxtext, Color, textcolor) {
     return SizedBox(
-                    height: 40,
-                    width: 400,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Color,
-                      ),
-                      child:  Center(
-                        child: Text(
-                          sizeboxtext.toString() ,
-                          
-                          style: TextStyle(fontSize: 20, color: textcolor),
-                        ),
-                      ),
-                    ),
-                  );
+      height: 40,
+      width: 400,
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Color,
+        ),
+        child: Center(
+          child: Text(
+            sizeboxtext.toString(),
+            style: TextStyle(fontSize: 20, color: textcolor),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget decoratedBox() {

@@ -1,9 +1,7 @@
 // ignore_for_file: file_names, avoid_unnecessary_containers, prefer_final_fields, sort_child_properties_last, unused_import, library_prefixes, avoid_print, await_only_futures, unused_local_variable, prefer_typing_uninitialized_variables, prefer_const_constructors, deprecated_member_use
 import 'package:geocoding/geocoding.dart';
-import 'package:traffic_hero/Imports.dart' ;
-import  'package:traffic_hero/Components/Tool.dart' as Tool; 
-
-
+import 'package:traffic_hero/Imports.dart';
+import 'package:traffic_hero/Components/Tool.dart' as Tool;
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -22,15 +20,13 @@ class _Home extends State<Home> {
       _operationCondition,
       _operationConditionLight;
 
-
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
 
     state = Provider.of<stateManager>(context, listen: false);
     print(state.accountState);
-ii();
+    ii();
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
       int index =
@@ -89,11 +85,14 @@ ii();
     }
   }
 
-ii ()async{
-test=await geolocator().updataPosition();
-List<Placemark> placemarks = await placemarkFromCoordinates(test.latitude, test.longitude);
-                       print((placemarks.isNotEmpty ? placemarks[0].administrativeArea.toString() : null)! );
-}
+  ii() async {
+    test = await geolocator().updataPosition();
+    List<Placemark> placemarks =
+        await placemarkFromCoordinates(test.latitude, test.longitude);
+    print((placemarks.isNotEmpty
+        ? placemarks[0].administrativeArea.toString()
+        : null)!);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -139,13 +138,60 @@ List<Placemark> placemarks = await placemarkFromCoordinates(test.latitude, test.
                   margin: const EdgeInsets.only(bottom: 15),
                   child: Column(
                     children: [
-                      Expanded(flex: 5, child: gridView( () async{
-                        // launch("https://www.google.com/maps/dir/?api=1&destination=%E8%87%BA%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E6%A6%AE%E6%B3%89%E9%87%8C%E4%B8%AD%E5%B1%B1%E8%B7%AF3%E6%AE%B51165%E8%99%9F&travelmode=driving");
-                        // launch('https://www.google.com/maps/dir/25.1737288,121.4341894/414%E5%8F%B0%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E4%B8%AD%E5%B1%B1%E8%B7%AF%E4%B8%89%E6%AE%B51165%E8%99%9F/@24.6413693,120.3359623,9z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x34693ec40c7103e3:0xcd8e2812aa561111!2m2!1d120.590033!2d24.1133503!11m1!6b1?entry=ttu');
-                      // FlutterTts().speak('限速60公里您已超速');
-
-                      Navigator.push(context, MaterialPageRoute(builder: (context) =>  LicensePlateInput()));
-                      })),
+                      Expanded(
+                        flex: 5,
+                        child: GridView(
+                          scrollDirection: Axis.horizontal,
+                          gridDelegate:
+                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 200,
+                                  childAspectRatio: 3 / 2,
+                                  mainAxisSpacing: 20),
+                          children: List.generate(
+                            toolList.length,
+                            (index) {
+                              final tool = toolList[index];
+                              return InkWell(
+                                child: Column(
+                                  children: [
+                                    Container(
+                                      width: 70,
+                                      margin: const EdgeInsets.all(3.0),
+                                      child: Image.asset(
+                                        tool['img'].toString(),
+                                      ),
+                                    ),
+                                    Text(
+                                      tool['title'].toString(),
+                                      textAlign: TextAlign.center,
+                                    )
+                                  ],
+                                ),
+                                onTap: () {
+                                             EasyLoading.show(status: 'loading...');
+                                  // launch("https://www.google.com/maps/dir/?api=1&destination=%E8%87%BA%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E6%A6%AE%E6%B3%89%E9%87%8C%E4%B8%AD%E5%B1%B1%E8%B7%AF3%E6%AE%B51165%E8%99%9F&travelmode=driving");
+                                  // launch('https://www.google.com/maps/dir/25.1737288,121.4341894/414%E5%8F%B0%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E4%B8%AD%E5%B1%B1%E8%B7%AF%E4%B8%89%E6%AE%B51165%E8%99%9F/@24.6413693,120.3359623,9z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x34693ec40c7103e3:0xcd8e2812aa561111!2m2!1d120.590033!2d24.1133503!11m1!6b1?entry=ttu');
+                                  // FlutterTts().speak('限速60公里您已超速');
+                                  if (tool['value'] == '路邊停車費') {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                LicensePlateInput()));
+                                  }else{
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                WebView(tt: tool['url'].toString())));
+                                    
+                                  }
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ),
                       const Expanded(
                         flex: 1,
                         child: Text(
@@ -354,41 +400,4 @@ List<Placemark> placemarks = await placemarkFromCoordinates(test.latitude, test.
       ),
     );
   }
-
-  Widget gridView( onTap) {
-    return GridView(
-      scrollDirection: Axis.horizontal,
-      gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-          maxCrossAxisExtent: 200,
-          childAspectRatio: 3 / 2,
-          mainAxisSpacing: 20),
-      children: List.generate(
-        toolList.length,
-        (index) {
-          final tool = toolList[index];
-          return InkWell(
-            child: Column(
-              children: [
-                Container(
-                  width: 70,
-                  margin: const EdgeInsets.all(3.0),
-                  child: Image.asset(
-                    tool['img'].toString(),
-                  ),
-                ),
-                Text(
-                  tool['title'].toString(),
-                  textAlign: TextAlign.center,
-                )
-              ],
-            ),
-            onTap: onTap,
-    
-          );
-        },
-      ),
-    );
-  }
 }
-
-

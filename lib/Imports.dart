@@ -1,4 +1,6 @@
 //套件
+// ignore_for_file: undefined_hidden_name
+
 export 'package:provider/provider.dart';
 export 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 export 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -66,4 +68,4 @@ export 'package:traffic_hero/Components/Newbar.dart';
 export 'package:traffic_hero/Components/Choices.dart';
 export 'package:traffic_hero/Components/DropDown_Select.dart';
 export 'package:traffic_hero/Components/Tool.dart' ;
-export 'package:flutter/services.dart';
+export 'package:flutter/services.dart' hide Hero;
