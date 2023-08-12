@@ -4,8 +4,8 @@ import 'package:traffic_hero/Imports.dart';
 import 'package:traffic_hero/Imports.dart' as choices;
 
 class ParkingFeeInquiry extends StatefulWidget {
-  ParkingFeeInquiry({super.key, required this.text});
-  var text;
+  ParkingFeeInquiry({super.key, required this.list_Amount});
+  var list_Amount;
 
   @override
   State<ParkingFeeInquiry> createState() => _ParkingFeeInquiryState();
@@ -16,7 +16,8 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
   void initState() {
     
     super.initState();
-    print(widget.text);
+    print(widget.list_Amount);
+    EasyLoading.dismiss();
   }
 
   @override
@@ -36,7 +37,7 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text('選擇區域，車牌號： ' + widget.text),
+                  Text('選擇區域' ),
                 ],
               )),
               Expanded(child: listview(),)
@@ -49,9 +50,9 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
 
   Widget listview() {
     return ListView.builder(
-        itemCount: choices.city_Chiness.length,
+        itemCount: widget.list_Amount.length,
         itemBuilder: (context, index) {
-          final list = choices.city_Chiness[index];
+          final list = widget.list_Amount[index];
           return Column(
             children: [
               Column(
@@ -66,9 +67,8 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
                           Row(
                             children: [
                               Text(
-                                list['title'].toString() == '台北市'
-                                    ? '臺北市'
-                                    : list['title'].toString(),
+                                
+                                   list["Area"].toString(),
                                 style: TextStyle(fontSize: 15),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
@@ -81,12 +81,12 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
                     trailing: SizedBox(
                         width: 150,
                         child: Row(
-                          children: const [
+                          children:  [
                             Expanded(
                               child: Visibility(
                                 visible: true,
                                 child: Text(
-                                  '總金額： 200',
+                                  '金額： '+  list["Amount"].toString(),
                                   maxLines: 1,
                                 ),
                               ),
@@ -104,7 +104,7 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
                         builder: (context) => BasicDialogAlert(
                           title: Column(
                             children: [
-                              Text(list['title'].toString()),
+                              Text(list["Area"].toString()),
                               Divider(color: Colors.black,)
                             ],
                           ),
@@ -112,19 +112,22 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
                             margin: EdgeInsets.symmetric(horizontal: 1),
                             height: 600,
                             child: ListView.builder(
-                                itemCount: 10,
+                                itemCount: list['Bill'].length,
                                 itemBuilder: (context, index) {
+                                  final Bill = list['Bill'][index];
                                   return Column(
                                     children: [
-                                      Divider(color: Colors.black,),
+                                      
                                       Container(
                                         width: 300,
                                         height: 30,
                                         child: ListTile(
                                           
-                                          title: Text('停車費'),
+                                          title: Text( Bill['ParkingDate'].toString()),
                                         ),
                                       ),
+                                      SizedBox(height: 20,),
+                                      Divider(color: Colors.black,),
                                       
                                     ],
                                   );
