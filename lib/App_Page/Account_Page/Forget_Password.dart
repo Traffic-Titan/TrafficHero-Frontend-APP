@@ -32,8 +32,9 @@ class _forget_password_pageState extends State<forget_password_page> {
   //控制忘記密碼的Function
   void forget_password_function(context) async {
     var Body = {"email": forget_email.text, "birthday": birthday};
-    var url = '/Account/forgot_password';
-    response = await api().Api_Post(Body, url, state.accountState);
+    var url = dotenv.env['ForgotPassword'].toString();
+    var jwt = state.accountState;
+    response = await api().Api_Post(Body, url, jwt);
     if (response.statusCode == 200) {
       EasyLoading.showSuccess('驗證碼已寄送');
       state.VerifyEmailSet(forget_email.text);

@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, non_constant_identifier_names, prefer_typing_uninitialized_variables, file_names, use_build_context_synchronously, dead_code_catch_following_catch, unnecessary_null_comparison, sized_box_for_whitespace
+// ignore_for_file: avoid_print, non_constant_identifier_names, prefer_typing_uninitialized_variables, file_names, use_build_context_synchronously, dead_code_catch_following_catch, unnecessary_null_comparison, sized_box_for_whitespace, prefer_interpolation_to_compose_strings
 import 'package:traffic_hero/Imports.dart';
 
 class Login extends StatefulWidget {
@@ -28,7 +28,7 @@ class _Login extends State<Login> {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
     EasyLoading.dismiss();
-    FlutterTts().speak('歡迎來到 Traffic Hero');
+    // FlutterTts().speak('歡迎來到 Traffic Hero');
   }
 
   handlesignIn(GoogleSignInAccount? account) async {
@@ -38,7 +38,8 @@ class _Login extends State<Login> {
       "Google_Avatar": googleController.googleAccount.value?.photoUrl ?? ''
     };
 
-    request_url = '/Account/GoogleSSO';
+    request_url = dotenv.env['GoogleSSO'].toString();
+    print(request_url);
 
     if (account != null) {
       response = await api().Api_Post(request_body, request_url, '');
@@ -82,6 +83,7 @@ class _Login extends State<Login> {
   @override
   void initState() {
     super.initState();
+    EasyLoading.dismiss();
     googleController.googleSignIn.onCurrentUserChanged
         .listen((GoogleSignInAccount? account) {
       setState(() {
@@ -111,12 +113,13 @@ class _Login extends State<Login> {
 
 void get_User() async {
     var response;
-    var url = '/Account/Profile';
-    var jwt = state.accountState;
+    var url = dotenv.env['Profile'].toString();
+    var jwt =','+ state.accountState.toString();
+    print(jwt);
     try {
       response = await api().api_Get(url, jwt);
     } catch (e) {
-      print('object');
+      print(e);
     }
 
     if (response.statusCode == 200) {
@@ -124,6 +127,8 @@ void get_User() async {
       print(state.profile);
        Navigator.push(
             context, MaterialPageRoute(builder: (context) => const All_Page()));
+    }else{
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
     }
   }
 
@@ -141,10 +146,12 @@ void get_User() async {
 
 //一般登陸function
   Future<bool> userSignIn() async {
+    var url = dotenv.env['Login'].toString();
+    var jwt = '';
     response = await api().Api_Post({
       "email": usernameController.text,
       "password": Sha256().sha256Function(passwordController.text)
-    }, '/Account/Login', '');
+    }, url, jwt);
 
     if (response == null) {
       return false;
@@ -158,6 +165,7 @@ void get_User() async {
           response = response;
           login_error_show = false;
         });
+        print(jsonDecode(response.body)['Token']);
         get_User();
         // Navigator.push(
         //     context, MaterialPageRoute(builder: (context) => const All_Page()));
@@ -282,6 +290,7 @@ void get_User() async {
                         functionName: '登入',
                       ),
                       onTap: () {
+                        print(dotenv.env['appToken'].toString());
                         userSignIn();
                       },
                     ),

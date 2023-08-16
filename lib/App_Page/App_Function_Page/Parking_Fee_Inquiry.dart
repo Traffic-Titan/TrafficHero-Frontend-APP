@@ -1,157 +1,112 @@
-// ignore_for_file: unused_import, file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, prefer_interpolation_to_compose_strings, avoid_print, prefer_typing_uninitialized_variables, must_be_immutable, unnecessary_new
+// ignore_for_file: non_constant_identifier_names, library_private_types_in_public_api, file_names, avoid_print, sized_box_for_whitespace, avoid_unnecessary_containers
 
 import 'package:traffic_hero/Imports.dart';
 import 'package:traffic_hero/Imports.dart' as choices;
 
 class ParkingFeeInquiry extends StatefulWidget {
-  ParkingFeeInquiry({super.key, required this.list_Amount});
-  var list_Amount;
+  const ParkingFeeInquiry({Key? key, required this.list_Amount}) : super(key: key);
+  final List<dynamic> list_Amount;
 
   @override
-  State<ParkingFeeInquiry> createState() => _ParkingFeeInquiryState();
+  _ParkingFeeInquiryState createState() => _ParkingFeeInquiryState();
 }
 
 class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
   @override
   void initState() {
-    
     super.initState();
     print(widget.list_Amount);
     EasyLoading.dismiss();
   }
 
+   text(name) {
+    for (var i = 0; i < choices.city_Chiness.length; i++) {
+      if (choices.city_Chiness[i]['title'] == name) {
+        return choices.city_Chiness[i]['value'];
+      } else if (choices.city_English[i]['title'] == name) {
+        return choices.city_English[i]['value'];
+      } else if (choices.city_ios[i]['title'] == name) {
+        return choices.city_ios[i]['value'];
+      }
+    }
+    return ''; // Return a default value if no match is found
+  }
+
+   font2(name) {
+    for (var i = 0; i < choices.city_Chiness.length; i++) {
+      if (name == 'Taipei_City') {
+        return '臺北市';
+      } else if (choices.city_Chiness[i]['value'] == name) {
+        return choices.city_Chiness[i]['title'];
+      }
+    }
+    return name; // Return the original name if no match is found
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 193, 229, 255),
       appBar: AppBar(
         elevation: 0,
-        title: Text('停車費查詢'),
+        title: const Text('停車費查詢'),
       ),
-      body: SizedBox(
-        width: 600,
-        child: Column(
-          children: [
-            SizedBox(
-              
-              height: 30,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text('選擇區域' ),
-                ],
-              )),
-              Expanded(child: listview(),)
-            
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget listview() {
-    return ListView.builder(
-        itemCount: widget.list_Amount.length,
-        itemBuilder: (context, index) {
-          final list = widget.list_Amount[index];
-          return Column(
+      body: SingleChildScrollView(
+        child: Container(
+          width: 600,
+          child: Column(
             children: [
-              Column(
-                children: [
-                  ListTile(
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 0, horizontal: 30),
-                    title: Expanded(
-                      flex: 2,
-                      child: Row(
+              const SizedBox(height: 20),
+              Container(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: widget.list_Amount.length,
+                  itemBuilder: (context, index) {
+                    final list = widget.list_Amount[index];
+                    return Card(
+                      elevation: 1,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14.0),
+                      ),
+                      child: Column(
                         children: [
-                          Row(
-                            children: [
-                              Text(
-                                
-                                   list["Area"].toString(),
-                                style: TextStyle(fontSize: 15),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
+                          ListTile(
+                            title: Text(
+                              font2(list["Area"]).toString(),
+                              style: const TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.blueGrey,
                               ),
-                            ],
+                            ),
+                            onTap: () {
+                              // Handle onTap action here
+                            },
+                          ),
+                          const Divider(),
+                          ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: list["Bill"].length,
+                            itemBuilder: (context, index) {
+                              return ListTile(
+                                title: Text(
+                                  '内容 $index',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
                         ],
                       ),
-                    ),
-                    trailing: SizedBox(
-                        width: 150,
-                        child: Row(
-                          children:  [
-                            Expanded(
-                              child: Visibility(
-                                visible: true,
-                                child: Text(
-                                  '金額： '+  list["Amount"].toString(),
-                                  maxLines: 1,
-                                ),
-                              ),
-                            ),
-
-                            Icon(
-                              Icons.arrow_forward_ios,
-                              size: 30,
-                            ),
-                          ],
-                        )),
-                    onTap: () {
-                      showPlatformDialog(
-                        context: context,
-                        builder: (context) => BasicDialogAlert(
-                          title: Column(
-                            children: [
-                              Text(list["Area"].toString()),
-                              Divider(color: Colors.black,)
-                            ],
-                          ),
-                          content: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 1),
-                            height: 600,
-                            child: ListView.builder(
-                                itemCount: list['Bill'].length,
-                                itemBuilder: (context, index) {
-                                  final Bill = list['Bill'][index];
-                                  return Column(
-                                    children: [
-                                      
-                                      Container(
-                                        width: 300,
-                                        height: 30,
-                                        child: ListTile(
-                                          
-                                          title: Text( Bill['ParkingDate'].toString()),
-                                        ),
-                                      ),
-                                      SizedBox(height: 20,),
-                                      Divider(color: Colors.black,),
-                                      
-                                    ],
-                                  );
-                                }),
-                          ),
-                          actions: <Widget>[
-                            BasicDialogAction(
-                              title: Text("Cancel"),
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                            ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-              new Divider(
-                color: Colors.black,
+                    );
+                  },
+                ),
               ),
             ],
-          );
-        });
+          ),
+        ),
+      ),
+    );
   }
 }

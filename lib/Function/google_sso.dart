@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, avoid_print, unnecessary_null_in_if_null_operators, non_constant_identifier_names
+// ignore_for_file: camel_case_types, avoid_print, unnecessary_null_in_if_null_operators, non_constant_identifier_names, file_names
 import 'package:traffic_hero/imports.dart';
 
 class googlesso extends GetxController {

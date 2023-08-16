@@ -100,7 +100,8 @@ class new_password_page extends State<ChangePassword> {
   //控制修改密碼的Function
   void change_password_function(context) async {
     var Body = {};
-    var url = '/Account/change_password';
+    var url = dotenv.env['ChangePassword'].toString();
+    var jwt = state.accountState;
     //判斷新密碼與確認密碼使否相同
     if (change_new_password_Controller.text !=
         change_check_password_Controller.text) {
@@ -120,20 +121,20 @@ class new_password_page extends State<ChangePassword> {
               Sha256().sha256Function(change_new_password_Controller.text)
         };
       } else {
-        var accountemail = jwt().jwtdecode(state.accountState).payload;
+        var accountemail = state.profile['email'];
         setState(() {
           //使用狀態管理判斷是忘記密碼還是修改密碼顯示舊密碼的輸入，通過是否有儲存帳戶資訊來判斷
           old_input_showState = true;
         });
         Body = {
-          "email": accountemail['data']['email'],
+          "email": accountemail,
           "old_password":
               Sha256().sha256Function(change_old_password_Controller.text),
           "new_password":
               Sha256().sha256Function(change_new_password_Controller.text)
         };
       }
-      response = await api().Api_Put(Body, url, '');
+      response = await api().Api_Put(Body, url, jwt);
 
       if (response.statusCode == 200) {
         EasyLoading.showSuccess('修改成功');

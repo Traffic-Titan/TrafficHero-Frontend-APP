@@ -141,8 +141,10 @@ class _registerState extends State<register> {
         };
       });
     }
+    var url = dotenv.env['Register'].toString();
+    
 
-    response = await api().Api_Post(body, '/Account/register', '');
+    response = await api().Api_Post(body, url, '');
     if (response.statusCode == 200) {
       state.VerifyEmailSet(registerEmailController.text);
       state.veriffyStateSet('register');

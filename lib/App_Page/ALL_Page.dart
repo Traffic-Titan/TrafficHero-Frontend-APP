@@ -42,20 +42,20 @@ class _All_PageState extends State<All_Page> {
     });
   }
 
-  void get_User() async {
-    var response;
-    var url = '/Account/Profile';
-    var jwt = state.accountState;
-    try {
-      response = await api().api_Get(url, jwt);
-    } catch (e) {
-      print('object');
-    }
+  // void get_User() async {
+  //   var response;
+  //   var url = '/Account/Profile';
+  //   var jwt = state.accountState;
+  //   try {
+  //     response = await api().api_Get(url, jwt);
+  //   } catch (e) {
+  //     print('object');
+  //   }
 
-    if (response.statusCode == 200) {
-      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
+  //   }
+  // }
 
   Widget changeMode() {
     if (mode == 'car') {
@@ -150,7 +150,7 @@ class _All_PageState extends State<All_Page> {
             iconSize: 50,
             onPressed: () async {
               scaffoldKey.currentState!.openEndDrawer();
-              get_User();
+              // get_User();
             },
           ),
         ],

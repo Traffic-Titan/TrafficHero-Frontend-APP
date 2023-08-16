@@ -1,5 +1,5 @@
 //套件
-// ignore_for_file: undefined_hidden_name
+// ignore_for_file: undefined_hidden_name, file_names
 
 export 'package:provider/provider.dart';
 export 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
@@ -24,6 +24,7 @@ export 'package:url_launcher/url_launcher.dart';
 export 'package:geolocator/geolocator.dart';
 export 'package:flutter_tts/flutter_tts.dart';
 export 'package:flutter_dialogs/flutter_dialogs.dart';
+export 'package:google_maps_flutter/google_maps_flutter.dart';
 
 
 //引入頁面

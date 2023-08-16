@@ -45,7 +45,7 @@ class _NewsState extends State<News> {
     if (state.modeName == 'car') {
       setState(() {
         print(listView);
-        url_api = '/News/Car';
+        url_api = dotenv.env['News_Car'].toString();
         List_City = choices.city;
         List_2 = choices.way;
 
@@ -62,7 +62,7 @@ class _NewsState extends State<News> {
     } else {
       setState(() {
         List_City = choices.city_Chiness;
-        url_api = '/News/PublicTransport';
+        url_api = dotenv.env['News_PublicTransport'].toString();
         List_2 = choices.publicTransport;
         select_Name = '選擇類別';
         select_Name_English = 'All';
@@ -77,7 +77,7 @@ class _NewsState extends State<News> {
         url_test +
         "&types=" +
         Select_2.join(',').toString();
-    var jwt = state.accountState;
+    var jwt = ','+state.accountState;
     try {
       response = await api().api_Get(url, jwt);
     } catch (e) {
@@ -220,7 +220,7 @@ class _NewsState extends State<News> {
                                   EasyLoading.show(status: 'Loading.....');
                                 },
                                 child: Text(
-                                  '預設',
+                                  '目前位置',
                                   style: TextStyle(
                                       fontSize: 15,
                                       color:
@@ -310,7 +310,7 @@ class _NewsState extends State<News> {
                                       });
                                     },
                                     child: Text(
-                                      '預設',
+                                      '全選',
                                       style: TextStyle(
                                           fontSize: 15,
                                           color: const Color.fromARGB(
@@ -380,7 +380,7 @@ class _NewsState extends State<News> {
                       children: [
                         Text(
                           news['UpdateTime'].toString(),
-                          style: TextStyle(fontSize: 10),
+                          style: TextStyle(fontSize: 12),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                         ),

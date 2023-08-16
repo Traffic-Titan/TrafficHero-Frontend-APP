@@ -1,3 +1,5 @@
+// ignore_for_file: non_constant_identifier_names
+
 import 'package:awesome_select/awesome_select.dart' show S2Choice;
 
 List<S2Choice<String>> days = [

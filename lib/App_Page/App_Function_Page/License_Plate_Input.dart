@@ -1,6 +1,4 @@
-// ignore_for_file: unused_import, file_names
-
-
+// ignore_for_file: unused_import, file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print, avoid_types_as_parameter_names
 
 import 'package:traffic_hero/Imports.dart';
 // Make sure to import other necessary dependencies here
@@ -16,10 +14,11 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
   final afterLicensePlateController = TextEditingController();
   final beforeLicensePlateController = TextEditingController();
   late stateManager state;
-  
-  String? type = 'C';
+  var test = [
+    {"LicensePlateNumber": 'NKJ-5657', "Type": 'M'}
+  ];
 
-  
+  String? type = 'C';
 
   @override
   void didChangeDependencies() {
@@ -28,13 +27,10 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
     EasyLoading.dismiss();
   }
 
-  get_Amount(LicensePlateNumber,type) async {
-    var Body = {
-      "LicensePlateNumber": LicensePlateNumber,
-      "Type": type
-    };
+  get_Amount(LicensePlateNumber, type) async {
+    var Body = {"LicensePlateNumber": LicensePlateNumber, "Type": type};
     var response;
-    var url = '/Home/ParkingFee';
+    var url = dotenv.env['ParkingFee'].toString();
     var jwt = state.accountState;
     try {
       response = await api().Api_Post(Body, url, jwt);
@@ -47,7 +43,6 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       for (var i = 0; i < responseBody["Detail"].length; i++) {
         if (responseBody["Detail"][i]["Amount"] != 0) {
-          print(responseBody["Detail"][i]);
           list.add(responseBody["Detail"][i]);
         }
       }
@@ -59,14 +54,33 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
           ),
         ),
       );
+    } else {
+      showPlatformDialog(
+        context: context,
+        builder: (context) => BasicDialogAlert(
+          title: const Text(
+            "查詢結果",
+            style: TextStyle(fontSize: 20),
+          ),
+          content: const Text("未查詢到任何停車費"),
+          actions: <Widget>[
+            BasicDialogAction(
+              title: const Text("Discard"),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        ),
+      );
     }
   }
 
-  Binding_License_Plate (){
+  Binding_License_Plate() {
     var BindingLicensePlate = [];
     BindingLicensePlate.add({
-      
-      "LicensePlateNumber": '${beforeLicensePlateController.text}-${afterLicensePlateController.text}',
+      "LicensePlateNumber":
+          '${beforeLicensePlateController.text}-${afterLicensePlateController.text}',
       "Type": type
     });
   }
@@ -105,20 +119,46 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                                 color: Colors.blueGrey,
                               ),
                             ),
-                            onTap: () {},
+                            onTap: () {
+                              showPlatformDialog(
+                                context: context,
+                                builder: (context) => BasicDialogAlert(
+                                  title: const Text(
+                                    "車牌綁定",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  content: const Text(""),
+                                  actions: <Widget>[
+                                    BasicDialogAction(
+                                      title: const Text("Discard"),
+                                      onPressed: () {
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              );
+                            },
                           ),
                           const Divider(),
                           ListView.builder(
                             shrinkWrap: true,
-                            itemCount: 0, // Replace with your actual item count
+                            itemCount: test
+                                .length, // Replace with your actual item count
                             itemBuilder: (context, index) {
+                              final list = test[index];
                               return ListTile(
                                 title: Text(
-                                  '内容 $index',
+                                  list['LicensePlateNumber'].toString(),
                                   style: const TextStyle(
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
+                                onTap: () {
+                                  get_Amount(
+                                      list['LicensePlateNumber'].toString(),
+                                      list['type'].toString());
+                                },
                               );
                             },
                           ),
@@ -193,7 +233,9 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                   InkWell(
                     onTap: () {
                       EasyLoading.show(status: 'Loading...');
-                      get_Amount('${beforeLicensePlateController.text}-${afterLicensePlateController.text}',type);
+                      get_Amount(
+                          '${beforeLicensePlateController.text}-${afterLicensePlateController.text}',
+                          type);
                     },
                     child: sizebox('送出', Colors.blue.shade800, Colors.white),
                   ),
