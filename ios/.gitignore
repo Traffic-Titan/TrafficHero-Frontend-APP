@@ -28,6 +28,7 @@ Flutter/flutter_export_environment.sh
 ServiceDefinitions.json
 Runner/GeneratedPluginRegistrant.*
 .env
+env
 
 # Exceptions to above rules.
 !default.mode1v3
