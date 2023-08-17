@@ -55,6 +55,7 @@ class _NewsState extends State<News> {
     } else if (state.modeName == 'scooter') {
       setState(() {
         List_City = choices.city;
+         url_api = dotenv.env['News_Scooter'].toString();
         List_2 = choices.scooterway;
         select_Name = '選擇道路';
         select_Name_English = 'All';

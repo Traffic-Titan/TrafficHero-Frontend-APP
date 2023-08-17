@@ -28,10 +28,10 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
   }
 
   get_Amount(LicensePlateNumber, type) async {
-    var Body = {"LicensePlateNumber": LicensePlateNumber, "Type": type};
+    var Body = {"licensePlateNumber": LicensePlateNumber, "type": type};
     var response;
     var url = dotenv.env['ParkingFee'].toString();
-    var jwt = state.accountState;
+    var jwt = ','+state.accountState;
     try {
       response = await api().Api_Post(Body, url, jwt);
     } catch (e) {

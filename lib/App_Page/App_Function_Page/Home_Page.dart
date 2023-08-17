@@ -133,68 +133,76 @@ class _Home extends State<Home> {
             visible: _toolList,
             child: Expanded(
               child: Container(
-                height: 30,
+                  height: 20,
                   color: const Color.fromRGBO(221, 235, 247, 1),
-                  padding: const EdgeInsets.only(top: 8, left: 8),
-                  margin: const EdgeInsets.only(bottom: 15),
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.only(bottom: 30),
                   child: Column(
                     children: [
+                      SizedBox(
+                        height: 20,
+                      ),
                       Expanded(
                         flex: 5,
-                        child: GridView(
-                          scrollDirection: Axis.horizontal,
-                          gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 200,
-                                  childAspectRatio: 3 / 2,
-                                  mainAxisSpacing: 20),
-                          children: List.generate(
-                            toolList.length,
-                            (index) {
-                              final tool = toolList[index];
-                              return InkWell(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 70,
-                                      margin: const EdgeInsets.all(3.0),
-                                      child: Image.asset(
-                                        tool['img'].toString(),
-                                      ),
+                        child: Container(
+                          height: 100,
+                          child: GridView(
+                            scrollDirection: Axis.horizontal,
+                            gridDelegate:
+                                const SliverGridDelegateWithMaxCrossAxisExtent(
+                                    maxCrossAxisExtent: 200,
+                                    childAspectRatio: 3 / 2,
+                                    mainAxisSpacing: 20),
+                            children: List.generate(
+                              toolList.length,
+                              (index) {
+                                final tool = toolList[index];
+                                return Container(
+                                  height: 30,
+                                  child: InkWell(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          width: 70,
+                                          height: 70,
+                                          margin: const EdgeInsets.all(3.0),
+                                          child: Image.asset(
+                                            tool['img'].toString(),
+                                          ),
+                                        ),
+                                        Text(
+                                          tool['title'].toString(),
+                                          textAlign: TextAlign.center,
+                                        )
+                                      ],
                                     ),
-                                    Text(
-                                      tool['title'].toString(),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ],
-                                ),
-                                onTap: () {
-                                  EasyLoading.show(status: 'loading...');
-                                  // launch("https://www.google.com/maps/dir/?api=1&destination=%E8%87%BA%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E6%A6%AE%E6%B3%89%E9%87%8C%E4%B8%AD%E5%B1%B1%E8%B7%AF3%E6%AE%B51165%E8%99%9F&travelmode=driving");
-                                  // launch('https://www.google.com/maps/dir/25.1737288,121.4341894/414%E5%8F%B0%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E4%B8%AD%E5%B1%B1%E8%B7%AF%E4%B8%89%E6%AE%B51165%E8%99%9F/@24.6413693,120.3359623,9z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x34693ec40c7103e3:0xcd8e2812aa561111!2m2!1d120.590033!2d24.1133503!11m1!6b1?entry=ttu');
-                                  // FlutterTts().speak('限速60公里您已超速');
-                                  if (tool['value'] == '路邊停車費') {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                LicensePlateInput()));
-                                  } else {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => WebView(
-                                                tt: tool['url'].toString())));
-                                  }
-                                },
-                              );
-                            },
+                                    onTap: () {
+                                      EasyLoading.show(status: 'loading...');
+                                      // launch("https://www.google.com/maps/dir/?api=1&destination=%E8%87%BA%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E6%A6%AE%E6%B3%89%E9%87%8C%E4%B8%AD%E5%B1%B1%E8%B7%AF3%E6%AE%B51165%E8%99%9F&travelmode=driving");
+                                      // launch('https://www.google.com/maps/dir/25.1737288,121.4341894/414%E5%8F%B0%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E4%B8%AD%E5%B1%B1%E8%B7%AF%E4%B8%89%E6%AE%B51165%E8%99%9F/@24.6413693,120.3359623,9z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x34693ec40c7103e3:0xcd8e2812aa561111!2m2!1d120.590033!2d24.1133503!11m1!6b1?entry=ttu');
+                                      // FlutterTts().speak('限速60公里您已超速');
+                                      if (tool['value'] == '路邊停車費') {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LicensePlateInput()));
+                                      } else {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => WebView(
+                                                    tt: tool['url']
+                                                        .toString())));
+                                      }
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         ),
                       ),
-                    
-                    
-                      
                     ],
                   )),
             ),
@@ -213,14 +221,12 @@ class _Home extends State<Home> {
             child: Expanded(
               child: Container(
                   color: const Color.fromRGBO(221, 235, 247, 1),
-                  padding: const EdgeInsets.only(top: 8, left: 8),
-                  margin: const EdgeInsets.only(bottom: 15),
+                  padding: const EdgeInsets.all(10),
+                  margin: const EdgeInsets.only(bottom: 30),
                   child: Column(
                     children: [
-
-                     
                       SizedBox(
-                        height: 20,
+                        height: 30,
                       ),
                       Expanded(
                         flex: 5,
@@ -235,26 +241,25 @@ class _Home extends State<Home> {
                             fastLocation.length,
                             (index) {
                               final fastList = fastLocation[index];
-                              return InkWell(
-                                child: Column(
-                                  children: [
-                                    Container(
-                                      width: 70,
-                                      height: 100,
-                                      margin: const EdgeInsets.all(3.0),
-                                      child: Image.asset(
-                                        fastList['img'].toString(),
+                              return Container(
+                                height: 30,
+                                child: InkWell(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 70,
+                                        height: 70,
+                                        margin: const EdgeInsets.all(3.0),
+                                        child: Image.asset(
+                                          fastList['img'].toString(),
+                                        ),
                                       ),
-                                    ),
-                                    // Text(
-                                    //   fastList['title'].toString(),
-                                    //   textAlign: TextAlign.center,
-                                    // )
-                                  ],
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    launch(fastList['value'].toString());
+                                  },
                                 ),
-                                onTap: () {
-                                  launch(fastList['value'].toString());
-                                },
                               );
                             },
                           ),

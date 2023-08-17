@@ -9,6 +9,8 @@ class api {
     url,
     jwt,
   ) async {
+    DateTime startTime = DateTime.now();
+
     try {
       Response response = await post(Uri.parse(api_Url + url),
       // dotenv.env['appToken'].toString()  +
@@ -18,13 +20,16 @@ class api {
           },
           body: jsonEncode(Body));
       if (response.statusCode == 200) {
+        DateTime endTime = DateTime.now();
+        Duration durationInMilliseconds = endTime.difference(startTime);
+        print('${durationInMilliseconds.inSeconds}秒');
         return response;
       } else {
         EasyLoading.showError(jsonDecode(utf8.decode(response.bodyBytes))['detail']
                   .toString());
         print(utf8.decode(response.bodyBytes));
 
-        print('failed');
+
         return response;
       }
     } catch (e) {
@@ -35,6 +40,8 @@ class api {
   }
 
   Future<Response> Api_Put(Body, url, jwt) async {
+    DateTime startTime = DateTime.now();
+
     // var api_Url = dotenv.env['TrafficHero-Backend'].toString();
     try {
       Response response = await put(Uri.parse(api_Url + url),
@@ -44,6 +51,9 @@ class api {
           },
           body: jsonEncode(Body));
       if (response.statusCode == 200) {
+         DateTime endTime = DateTime.now();
+        Duration durationInMilliseconds = endTime.difference(startTime);
+        print('${durationInMilliseconds.inMicroseconds}秒');
         return response;
       } else {
         print(utf8.decode(response.bodyBytes));
@@ -62,6 +72,8 @@ class api {
     url,
     jwt,
   ) async {
+    DateTime startTime = DateTime.now();
+
     try {
       Response response = await get(
         Uri.parse(api_Url + url),
@@ -71,6 +83,9 @@ class api {
         },
       );
       if (response.statusCode == 200) {
+        DateTime endTime = DateTime.now();
+        int durationInMilliseconds = endTime.difference(startTime).inMilliseconds;
+        print(durationInMilliseconds.toString()+'秒');
         return response;
       } else {
         print(utf8.decode(response.bodyBytes));

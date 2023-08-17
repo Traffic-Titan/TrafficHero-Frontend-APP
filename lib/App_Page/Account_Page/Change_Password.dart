@@ -101,7 +101,7 @@ class new_password_page extends State<ChangePassword> {
   void change_password_function(context) async {
     var Body = {};
     var url = dotenv.env['ChangePassword'].toString();
-    var jwt = state.accountState;
+    var jwt =','+ state.accountState;
     //判斷新密碼與確認密碼使否相同
     if (change_new_password_Controller.text !=
         change_check_password_Controller.text) {

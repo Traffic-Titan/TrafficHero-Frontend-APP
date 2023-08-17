@@ -675,6 +675,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DENV_FILE_PATH \"$(SRCROOT)/Runner/.env\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.TrafficTitan.TrafficHero.trafficHero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
@@ -698,6 +699,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				"OTHER_SWIFT_FLAGS[arch=*]" = "-DENV_FILE_PATH=\"\\\"$(SRCROOT)/Runner/.env\\\"\"";
 				PRODUCT_BUNDLE_IDENTIFIER = com.TrafficTitan.TrafficHero.trafficHero;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";

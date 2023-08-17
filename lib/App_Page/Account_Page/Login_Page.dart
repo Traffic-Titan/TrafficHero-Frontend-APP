@@ -13,8 +13,8 @@ class _Login extends State<Login> {
   late stateManager state;
   final usernameController = TextEditingController();
   final passwordController = TextEditingController();
-  var error_text = '';
-  var response;
+  var error_text = '',response;
+
   var show_password = true;
   final googleController = Get.put(googlesso());
   var isAuth;

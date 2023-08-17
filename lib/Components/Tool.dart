@@ -3,7 +3,7 @@
 List<Map<String, String>> toolList = [
   {
     'value': '路邊停車費',
-    'title': '路邊\n停車費',
+    'title': '停車費',
     'img': 'assets/home/parkinglot.png',
     'url': '後端API'
   },
@@ -19,10 +19,6 @@ List<Map<String, String>> toolList = [
     'img': 'assets/home/監理站_Logo.png',
     'url': 'https://www.mvdis.gov.tw/m3-emv-vil/vil/penaltyQueryPay#gsc.tab=0'
   },
-
-
-
-
 ];
 List<Map<String, String>> fastLocation = [
   {
