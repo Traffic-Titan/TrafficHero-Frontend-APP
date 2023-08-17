@@ -1,0 +1,21 @@
+TrafficHero-Backend = 'https://api.traffic-hero.eddie.tw'
+# TrafficHero-Backend = 'http://192.168.0.100:8000'
+GOOGLE_MAPS_API_KEY="AIzaSyCmeA4InwS5g-IACJq30QM5nLMaP77DJB4"
+appToken = "hBRukhnc6d"
+
+Login = "/APP/Account/Login"
+Register = "/APP/Account/Register"
+GoogleSSO = "/APP/Account/GoogleSSO"
+ChangePassword = "/APP/Account/ChangePassword"
+ForgotPassword = "/APP/Account/ForgotPassword"
+VerifyCode = "/APP/Account/VerifyCode"
+Profile = "/APP/Account/Profile"
+Profile_Email = "/APP/Account/Profile/Email"
+GasStation = "/APP/Home/QuickSearch/GasStation"
+ConvenientStore = "/APP/Home/QuickSearch/ConvenientStore"
+GetLink = "/APP/Home/Weather/GetLink"
+ParkingFee = "/APP/Home/ParkingFee"
+News_Car = "/APP/News/Car"
+News_PublicTransport = "/APP/News/PublicTransport"
+
+    # var url = dotenv.env['ChangePassword'].toString();
