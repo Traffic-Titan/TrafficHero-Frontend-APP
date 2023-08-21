@@ -96,6 +96,7 @@ flutter:
     - assets/fastLocation/convenientShop.png
     - assets/fastLocation/gaspumpStop.png
     - assets/fastLocation/chargingStation.png
+    - assets/fastLocation/transparent.png
     - assets/home/parkinglot.png
     - assets/home/light_normal.png
     - assets/home/light_abnormal.png

@@ -120,14 +120,17 @@ class _Home extends State<Home> {
                   )),
             ],
           ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            color: const Color.fromRGBO(47, 125, 195, 1),
-            child: Text(
-              display1,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 20, color: Colors.white),
-            ),
+          Visibility(
+            visible: !_toolList,
+            child: Container(
+                width: MediaQuery.of(context).size.width,
+                color: const Color.fromRGBO(47, 125, 195, 1),
+                child: Text(
+                  display1,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 20, color: Colors.white),
+                ),
+              ),
           ),
           Visibility(
             visible: _toolList,
@@ -135,30 +138,39 @@ class _Home extends State<Home> {
               child: Container(
                   height: 20,
                   color: const Color.fromRGBO(221, 235, 247, 1),
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.only(bottom: 30),
+                  // padding: const EdgeInsets.all(5),
+                  margin: const EdgeInsets.only(bottom: 20),
                   child: Column(
                     children: [
-                      SizedBox(
-                        height: 20,
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: const Color.fromRGBO(47, 125, 195, 1),
+                        // decoration: BoxDecoration(
+                        //   color: const Color.fromRGBO(47, 125, 195, 1),
+                        //   borderRadius: new BorderRadius.circular(20),
+                        // ),
+                        child: Text(
+                          "工具列",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
-                      Expanded(
-                        flex: 5,
-                        child: Container(
-                          height: 100,
+                        SizedBox(
+                          height: 170,
                           child: GridView(
-                            scrollDirection: Axis.horizontal,
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 200,
-                                    childAspectRatio: 3 / 2,
-                                    mainAxisSpacing: 20),
+                            padding: EdgeInsets.zero,
+                            // scrollDirection: Axis.horizontal,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 4, //横轴三个子widget
+                                childAspectRatio: 0.95
+                            ),
                             children: List.generate(
                               toolList.length,
                               (index) {
                                 final tool = toolList[index];
                                 return Container(
-                                  height: 30,
+                                  // height: 30,
                                   child: InkWell(
                                     child: Column(
                                       children: [
@@ -202,54 +214,44 @@ class _Home extends State<Home> {
                             ),
                           ),
                         ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: const Color.fromRGBO(47, 125, 195, 1),
+                        // decoration: BoxDecoration(
+                        //   color: Color.fromRGBO(190, 210, 238, 1),
+                        //   borderRadius: new BorderRadius.circular(20),
+                        // ),
+                        child: Text(
+                          "快速尋找地點",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
-                    ],
-                  )),
-            ),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width,
-            color: const Color.fromRGBO(47, 125, 195, 1),
-            child: Text(
-              "快速尋找地點",
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 20, color: Colors.white),
-            ),
-          ),
-          Visibility(
-            visible: _toolList,
-            child: Expanded(
-              child: Container(
-                  color: const Color.fromRGBO(221, 235, 247, 1),
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.only(bottom: 30),
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Expanded(
-                        flex: 5,
+                      Container(
+                        height: 100,
+                        padding: const EdgeInsets.all(10),
+                        // margin: const EdgeInsets.only(bottom: 30),
                         child: GridView(
                           scrollDirection: Axis.horizontal,
                           gridDelegate:
-                              const SliverGridDelegateWithMaxCrossAxisExtent(
-                                  maxCrossAxisExtent: 200,
-                                  childAspectRatio: 3 / 2,
-                                  mainAxisSpacing: 20),
+                          const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 200,
+                              childAspectRatio: 3 / 2,
+                              //按鈕彼此間距
+                              mainAxisSpacing: 20),
                           children: List.generate(
                             fastLocation.length,
-                            (index) {
+                                (index) {
                               final fastList = fastLocation[index];
                               return Container(
-                                height: 30,
+                                // height: 30,
                                 child: InkWell(
                                   child: Column(
                                     children: [
                                       Container(
-                                        width: 70,
+                                        width:70,
                                         height: 70,
-                                        margin: const EdgeInsets.all(3.0),
+                                        // margin: const EdgeInsets.all(3.0),
                                         child: Image.asset(
                                           fastList['img'].toString(),
                                         ),
@@ -264,7 +266,8 @@ class _Home extends State<Home> {
                             },
                           ),
                         ),
-                      ),
+                      ) ,
+                      // ),
                     ],
                   )),
             ),
