@@ -110,7 +110,7 @@ class _verify_pageState extends State<verify_page> {
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
       // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
+      //   backgroundColor: Colors.transparent.png,
       //   elevation: 0,
       //   leading: IconButton(
       //     icon: const Icon(Icons.arrow_back_ios),

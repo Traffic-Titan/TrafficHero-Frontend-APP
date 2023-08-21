@@ -15,7 +15,7 @@ class api {
       Response response = await post(Uri.parse(api_Url + url),
       // dotenv.env['appToken'].toString()  +
           headers: {
-            "Authorization": 'Bearer ' + api_jwt_header + jwt.toString(),
+            "Authorization": 'Bearer ' + 'hBRukhnc6d',
             "Content-Type": "application/json",
           },
           body: jsonEncode(Body));
@@ -78,7 +78,7 @@ class api {
       Response response = await get(
         Uri.parse(api_Url + url),
         headers: {
-          "Authorization": 'Bearer ' + api_jwt_header + jwt.toString(),
+          "Authorization": 'Bearer ' + 'hBRukhnc6d' + jwt.toString(),
           "Content-Type": "application/json",
         },
       );
