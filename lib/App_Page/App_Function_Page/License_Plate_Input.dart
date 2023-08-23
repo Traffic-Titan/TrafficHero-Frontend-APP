@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print, avoid_types_as_parameter_names
+// ignore_for_file: unused_import, file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print, avoid_types_as_parameter_names, use_build_context_synchronously
 
 import 'package:traffic_hero/Imports.dart';
 // Make sure to import other necessary dependencies here
@@ -14,8 +14,11 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
   final afterLicensePlateController = TextEditingController();
   final beforeLicensePlateController = TextEditingController();
   late stateManager state;
+  
+  //綁定車牌測試用
   var test = [
-    {"LicensePlateNumber": 'NKJ-5657', "Type": 'M'}
+    {"LicensePlateNumber": 'NKJ-5657', "Type": "M"},
+    {"LicensePlateNumber": 'AVZ-6300', "Type": "C"}
   ];
 
   String? type = 'C';
@@ -51,6 +54,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
         MaterialPageRoute(
           builder: (context) => ParkingFeeInquiry(
             list_Amount: list,
+            listUser: jsonDecode(utf8.decode(response.bodyBytes)),
           ),
         ),
       );
@@ -79,9 +83,9 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
   Binding_License_Plate() {
     var BindingLicensePlate = [];
     BindingLicensePlate.add({
-      "LicensePlateNumber":
+      "licensePlateNumber":
           '${beforeLicensePlateController.text}-${afterLicensePlateController.text}',
-      "Type": type
+      "type": type
     });
   }
 
@@ -132,6 +136,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                                     BasicDialogAction(
                                       title: const Text("Discard"),
                                       onPressed: () {
+                                        
                                         Navigator.pop(context);
                                       },
                                     ),
@@ -155,9 +160,11 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                                   ),
                                 ),
                                 onTap: () {
+                                  EasyLoading.show(status: 'Loading...');
+                                  print(list['type'].toString());
                                   get_Amount(
                                       list['LicensePlateNumber'].toString(),
-                                      list['type'].toString());
+                                      list['Type'].toString());
                                 },
                               );
                             },

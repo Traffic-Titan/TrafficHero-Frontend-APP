@@ -14,7 +14,7 @@ class stateManager with ChangeNotifier {
   var _appBarState = true;
   var _navigationBarState = true;
   var _floatingBtnState = true;
-
+  var _OperationalStatus;
 
   String get modeName => _modeName;
   String get accountState => _accountState;
@@ -23,7 +23,7 @@ class stateManager with ChangeNotifier {
   String get veriffyState => _veriffyState;
   get google_sso_status => _google_sso_status;
   get google_sso => _google_sso;
-
+get OperationalStatus => _OperationalStatus;
   get profile => _profile;
 
 
@@ -48,6 +48,11 @@ class stateManager with ChangeNotifier {
     } else {
       _forgetToken = newValue;
     }
+    notifyListeners();
+  }
+
+  void updateOperationalStatus(newValue) {
+    _OperationalStatus = newValue;
     notifyListeners();
   }
 

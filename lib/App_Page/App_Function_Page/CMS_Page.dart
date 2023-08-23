@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 import 'package:traffic_hero/imports.dart';
+import 'package:geocoding/geocoding.dart';
 
 class CMS extends StatefulWidget {
   const CMS({super.key});
@@ -8,6 +9,10 @@ class CMS extends StatefulWidget {
   State<CMS> createState() => _CMSState();
 }
 
+
+
+
+
 class _CMSState extends State<CMS> {
   late stateManager state;
   late Icon phoneIcon = const Icon(CupertinoIcons.device_phone_landscape,size: 40,);
@@ -15,6 +20,10 @@ class _CMSState extends State<CMS> {
   String displayText='';
   String displayImg='assets/fastLocation/transparent.png';
   Timer? timer;
+    StreamSubscription<Position>? _positionStreamSubscription;
+  late List<Placemark> placemarks;
+  var positionNow;
+  String speed = '0';
 
 //當頁面創造時執行
   @override
@@ -30,6 +39,67 @@ class _CMSState extends State<CMS> {
     super.initState();
     setDisplay();
   }
+
+
+  location() async {
+    positionNow = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.best,
+    );
+
+    try {
+      setState(() {
+    var speed1 = positionNow!.speed.toInt().ceil() <= 0 ? 0 : positionNow!.speed.toInt().ceil();
+    if(speed1 >= 20){
+      // FlutterTts().speak('限速10公里，您已超速！');
+    }
+    speed = speed1.toString();
+
+      });
+    } catch (e) {
+      print(e.toString());
+    }
+    
+  }
+
+  @override
+  void dispose() {
+    _stopTrackingPosition(); // 停止追踪位置更新
+    super.dispose();
+  }
+
+  Future<void> _getCurrentLocation() async {
+    try {
+      // 取得目前位置
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+      location();
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error getting current location: $e');
+    }
+  }
+
+  void _startTrackingPosition() {
+    // 订阅位置更新的流
+    _positionStreamSubscription = Geolocator.getPositionStream().listen(
+      (Position position) {
+        location();
+      },
+      onError: (error) {
+        // ignore: avoid_print
+        print('Position stream error: $error');
+      },
+    );
+  }
+
+  void _stopTrackingPosition() {
+    // 取消位置更新的订阅
+    timer?.cancel();
+    _positionStreamSubscription?.cancel();
+  }
+
+
+
   void setDisplay(){
     int index = 0;
     timer = Timer.periodic(const Duration(seconds: 5), (timer) {
@@ -46,6 +116,18 @@ class _CMSState extends State<CMS> {
     });
   }
 
+  changeWidget(context){
+    if(directionState){
+        //設置垂直
+  
+        return straightPage(context);
+      }else{
+        //設置橫向
+       
+        return horizontalPage(context);
+      }
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
@@ -59,7 +141,7 @@ class _CMSState extends State<CMS> {
           phoneIcon = const Icon(CupertinoIcons.device_phone_landscape,size: 40,);
           directionState = true;
         });
-        return straightPage(context);
+       
       }else{
         //設置橫向
         SystemChrome.setPreferredOrientations([
@@ -70,8 +152,9 @@ class _CMSState extends State<CMS> {
           phoneIcon = const Icon(CupertinoIcons.device_phone_portrait,size: 40,);
           directionState = false;
         });
-        return horizontalPage(context);
+        
       }
+      return changeWidget(context);
   }
 
   @override
@@ -80,9 +163,9 @@ class _CMSState extends State<CMS> {
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          const Expanded(
+           Expanded(
             //時速表
-            child:Text("65km/h",style: TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
+            child:Text(  "${speed}km/h",style: TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
           ),
           Expanded(
             //CMS
@@ -173,9 +256,9 @@ class _CMSState extends State<CMS> {
       backgroundColor: Colors.black,
       body: Column(
         children: [
-          const Expanded(
+           Expanded(
             //時速表
-            child:Text("75km/h",style: TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
+            child:Text("${speed}km/h",style: TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
           ),
           Expanded(
             //CMS
@@ -265,3 +348,5 @@ class _CMSState extends State<CMS> {
     );
   }
 }
+
+

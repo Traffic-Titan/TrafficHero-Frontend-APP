@@ -33,9 +33,8 @@ class _MyAppState extends State<MyApp> {
         primarySwatch:   Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const Home(),
+      home: const Login(),
       debugShowCheckedModeBanner: false,
-      routes: <String, WidgetBuilder>{'/ALLpage': (_) => new All_Page()},
       builder: EasyLoading.init(),
     );
   }

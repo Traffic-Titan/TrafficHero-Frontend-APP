@@ -11,13 +11,13 @@ class verify_page extends StatefulWidget {
 class _verify_pageState extends State<verify_page> {
   final verifyController = TextEditingController();
   var response;
-  var input_error_text = '';
-  var error_state = true;
+  var InputErrorText = '';
+  var errorState = true;
   late Timer _timer;
   int _countdownTime = 600; // 十分钟的秒数
   late stateManager state;
-  var countdown_display_control = true;
-  var get_verification_code_again = false;
+  var countdownDisplayControl = true;
+  var getVerificationCodeAgain = false;
 
   @override
   void didChangeDependencies() {
@@ -38,8 +38,8 @@ class _verify_pageState extends State<verify_page> {
       setState(() {
         if (_countdownTime < 1) {
           setState(() {
-            countdown_display_control = false;
-            get_verification_code_again = true;
+            countdownDisplayControl = false;
+            getVerificationCodeAgain = true;
           });
           timer.cancel();
         } else {
@@ -74,8 +74,8 @@ class _verify_pageState extends State<verify_page> {
       } else if (state.veriffyState == '') {
         EasyLoading.dismiss();
         setState(() {
-          error_state = false;
-          input_error_text =
+          errorState = false;
+          InputErrorText =
               jsonDecode(utf8.decode(response.bodyBytes))['detail'];
         });
       }
@@ -90,8 +90,8 @@ class _verify_pageState extends State<verify_page> {
       } else {
         EasyLoading.dismiss();
         setState(() {
-          error_state = false;
-          input_error_text = '';
+          errorState = false;
+          InputErrorText = '';
           jsonDecode(utf8.decode(response.bodyBytes))['detail'];
         });
       }
@@ -138,13 +138,13 @@ class _verify_pageState extends State<verify_page> {
                 controller: verifyController,
                 hintText: '請輸入驗證',
                 obscurText: false,
-                error_status: error_state,
-                error_text: input_error_text,
+                error_status: errorState,
+                error_text: InputErrorText,
               ),
               const SizedBox(
                 height: 10,
               ),
-              if (countdown_display_control)
+              if (countdownDisplayControl)
                 Text(
                   '${formatCountdownTime(_countdownTime)}後重新獲取',
                   style: const TextStyle(
@@ -152,7 +152,7 @@ class _verify_pageState extends State<verify_page> {
                     color: Colors.white,
                   ),
                 ),
-              if (get_verification_code_again)
+              if (getVerificationCodeAgain)
                 InkWell(
                   child:const Text(
                   '重新獲取驗證碼',

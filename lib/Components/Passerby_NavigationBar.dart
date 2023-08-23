@@ -10,7 +10,7 @@ class PasserbyPage extends StatefulWidget {
 
 class _PasserbyPage extends State<PasserbyPage> {
   late stateManager? state;
-  var navigationBar_text = '';
+  var navigationBarText = '';
   late List<BottomNavigationBarItem> carAndScooterBottonTabs;
 
   @override
@@ -19,11 +19,11 @@ class _PasserbyPage extends State<PasserbyPage> {
     state = Provider.of<stateManager>(context, listen: false);
     if (state!.modeName == 'publicTransport') {
       setState(() {
-        navigationBar_text = '大眾運輸資訊';
+        navigationBarText = '大眾運輸資訊';
       });
     } else {
       setState(() {
-        navigationBar_text = '道路資訊';
+        navigationBarText = '道路資訊';
       });
     }
 
@@ -42,9 +42,9 @@ class _PasserbyPage extends State<PasserbyPage> {
           tooltip: "即時訊息推播",
           backgroundColor: Colors.blue),
       BottomNavigationBarItem(
-          label: navigationBar_text.toString(),
+          label: navigationBarText.toString(),
           icon: Icon(CupertinoIcons.news_solid),
-          tooltip: navigationBar_text.toString(),
+          tooltip: navigationBarText.toString(),
           backgroundColor: Colors.blue),
       const BottomNavigationBarItem(
           label: '觀光資訊',

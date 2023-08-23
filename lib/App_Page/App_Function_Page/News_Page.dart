@@ -14,12 +14,12 @@ class _NewsState extends State<News> {
   late stateManager state;
   var response,
       test,
-      List_City,
-      List_2,
-      select_City_subText = '',
-      select_Name,
-      select_Name_English,
-      url_api,
+      listCity,
+      listType,
+      selectCitySubText = '',
+      selectName,
+      selectNameEnglish,
+      urlApi,
       url_test;
 
   List<String> Select_City = [], Select_2 = ['All'];
@@ -45,35 +45,35 @@ class _NewsState extends State<News> {
     if (state.modeName == 'car') {
       setState(() {
         print(listView);
-        url_api = dotenv.env['News_Car'].toString();
-        List_City = choices.city;
-        List_2 = choices.way;
+        urlApi = dotenv.env['News_Car'].toString();
+        listCity = choices.city;
+        listType = choices.way;
 
-        select_Name = '選擇道路';
-        select_Name_English = 'All';
+        selectName = '選擇道路';
+        selectNameEnglish = 'All';
       });
     } else if (state.modeName == 'scooter') {
       setState(() {
-        List_City = choices.city;
-         url_api = dotenv.env['News_Scooter'].toString();
-        List_2 = choices.scooterway;
-        select_Name = '選擇道路';
-        select_Name_English = 'All';
+        listCity = choices.city;
+         urlApi = dotenv.env['News_Scooter'].toString();
+        listType = choices.scooterway;
+        selectName = '選擇道路';
+        selectNameEnglish = 'All';
       });
     } else {
       setState(() {
-        List_City = choices.city_Chiness;
-        url_api = dotenv.env['News_PublicTransport'].toString();
-        List_2 = choices.publicTransport;
-        select_Name = '選擇類別';
-        select_Name_English = 'All';
+        listCity = choices.city_Chiness;
+        urlApi = dotenv.env['News_PublicTransport'].toString();
+        listType = choices.publicTransport;
+        selectName = '選擇類別';
+        selectNameEnglish = 'All';
       });
     }
   }
 
 //取得最新消息
   get_News() async {
-    var url = url_api.toString() +
+    var url = urlApi.toString() +
         '?areas=' +
         url_test +
         "&types=" +
@@ -103,7 +103,7 @@ class _NewsState extends State<News> {
             : '') ==
         'Taiwan') {
       setState(() {
-        select_City_subText = font2(text((placemarks.isNotEmpty
+        selectCitySubText = font2(text((placemarks.isNotEmpty
             ? placemarks[0].subAdministrativeArea
             : "")!));
         url_test = text((placemarks.isNotEmpty
@@ -115,7 +115,7 @@ class _NewsState extends State<News> {
       print(url_test);
     } else {
       setState(() {
-        select_City_subText = font2(text((placemarks.isNotEmpty
+        selectCitySubText = font2(text((placemarks.isNotEmpty
                 ? placemarks[0].administrativeArea.toString()
                 : '')
             .toString())).toString();
@@ -178,7 +178,7 @@ class _NewsState extends State<News> {
                           });
                         },
                         title: '選擇區域',
-                        placeholder: select_City_subText ,
+                        placeholder: selectCitySubText ,
                         selectedValue: Select_City,
                         onChange: (selected) {
                           setState(() {
@@ -192,7 +192,7 @@ class _NewsState extends State<News> {
                         },
                         choiceItems:
                             S2Choice.listFrom<String, Map<String, String>>(
-                          source: List_City,
+                          source: listCity,
                           value: (index, item) => item['value'] ?? '',
                           title: (index, item) => item['title'] ?? '',
                           group: (index, item) => item['body'] ?? '',
@@ -266,8 +266,8 @@ class _NewsState extends State<News> {
                                 Select_2.clear();
                               });
                             },
-                            title: select_Name,
-                            placeholder: select_Name_English,
+                            title: selectName,
+                            placeholder: selectNameEnglish,
                             selectedValue: Select_2,
                             onChange: (selected) {
                               setState(() => {
@@ -279,7 +279,7 @@ class _NewsState extends State<News> {
                             },
                             choiceItems:
                                 S2Choice.listFrom<String, Map<String, String>>(
-                              source: List_2,
+                              source: listType,
                               value: (index, item) => item['value'] ?? '',
                               title: (index, item) => item['title'] ?? '',
                               group: (index, item) => item['body'] ?? '',
@@ -420,7 +420,7 @@ class _NewsState extends State<News> {
                         context,
                         MaterialPageRoute(
                             builder: (context) => NewsCardView(
-                                  list_view: news,
+                                  listView: news,
                                 )));
                   }
                 },

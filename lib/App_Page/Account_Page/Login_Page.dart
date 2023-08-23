@@ -9,18 +9,14 @@ class Login extends StatefulWidget {
 }
 
 class _Login extends State<Login> {
-  var login_error_show = false;
   late stateManager state;
-  final usernameController = TextEditingController();
-  final passwordController = TextEditingController();
-  var error_text = '',response;
+  final usernameController = TextEditingController(),
+      passwordController = TextEditingController(),
+      googleController = Get.put(googlesso());
 
-  var show_password = true;
-  final googleController = Get.put(googlesso());
-  var isAuth;
+  var showLoginError = false, showPassword = true, errorText = '', response;
+
   int count = 0;
-  var request_body;
-  var request_url;
 
 //當頁面創造時執行
   @override
@@ -31,51 +27,102 @@ class _Login extends State<Login> {
     // FlutterTts().speak('歡迎來到 Traffic Hero');
   }
 
+  Future<void> getHome() async {
+    await getUser();
+    await getOperationalStatus();
+    //顯示成功訊息
+    EasyLoading.showSuccess(
+        jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
+
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => const All_Page()));
+  }
+
+  getOperationalStatus() async {
+    var url = dotenv.env['OperationalStatus'].toString();
+    var jwt = ',' + state.accountState.toString();
+
+    // var response = await api().api_Get(url, jwt);
+    if (response.statusCode == 200) {
+      state
+          .updateOperationalStatus(jsonDecode(utf8.decode(response.bodyBytes)));
+      print(state.OperationalStatus);
+    } else {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+  }
+
+  getUser() async {
+    var response;
+    var url = dotenv.env['Profile'].toString();
+    var jwt = ',' + state.accountState.toString();
+    print(jwt);
+    try {
+      // response = await api().api_Get(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+
+    if (response.statusCode == 200) {
+      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
+    } else {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+  }
+
   handlesignIn(GoogleSignInAccount? account) async {
-    request_body = {
+    var body = {
       "email": googleController.googleAccount.value?.email ?? '',
       "Google_ID": googleController.googleAccount.value?.id ?? '',
       "Google_Avatar": googleController.googleAccount.value?.photoUrl ?? ''
     };
 
-    request_url = dotenv.env['GoogleSSO'].toString();
-    print(request_url);
+    var url = dotenv.env['GoogleSSO'].toString();
+    var jwt = '';
 
     if (account != null) {
-      response = await api().Api_Post(request_body, request_url, '');
+      try {
+        response = await api().Api_Post(body, url, jwt);
+      } catch (e) {
+        print(e);
+      }
 
-      if (response.statusCode == 200) {
-        //顯示成功訊息
-        EasyLoading.showSuccess(
-            jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
-        //將狀態寫入
-        state
-            .updateAccountState(await jsonDecode(response.body)['Token'] ?? '');
-        //跳轉頁面
-        get_User();
-       
-      } else if (response.statusCode == 403) {
-        //SSO回傳訊息403，判斷為未註冊，跳轉註冊頁面
-        state.google_sso_status_Set('register');
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const register()),
-            (route) => false);
-        //將google帳戶資訊寫入全局，方便調用
-        state.google_sso_Set(googleController.googleAccount);
-        //顯示錯誤訊息
-        EasyLoading.showSuccess(
-            jsonDecode(utf8.decode(response.bodyBytes))['detail']);
-      } else if (response.statusCode == 401) {
-        //401為帳戶未綁定SSO因此會先將firebase的帳戶狀態先登出
-        googleController.google_signOut();
-        //顯示錯誤訊息
-        EasyLoading.showError(
-            jsonDecode(utf8.decode(response.bodyBytes))['detail']);
-      } else {
-        googleController.google_signOut();
+      try {
+        if (response.statusCode == 200) {
+          //將狀態寫入
+          state.updateAccountState(
+              await jsonDecode(response.body)['Token'] ?? '');
+          //跳轉頁面
+          getHome();
+          //SSO回傳訊息403，判斷為未註冊，跳轉註冊頁面
+        } else if (response.statusCode == 403) {
+          //將需要註冊狀態寫入狀態管理
+          state.google_sso_status_Set('register');
+          //跳轉頁面到註冊
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const register()),
+              (route) => false);
+          //將google帳戶資訊寫入全局，方便調用
+          state.google_sso_Set(googleController.googleAccount);
+          //顯示錯誤訊息
+          EasyLoading.showSuccess(
+              jsonDecode(utf8.decode(response.bodyBytes))['detail']);
+        } else if (response.statusCode == 401) {
+          //401為帳戶未綁定SSO因此會先將firebase的帳戶狀態先登出
+          googleController.google_signOut();
+          //顯示錯誤訊息
+          EasyLoading.showError(
+              jsonDecode(utf8.decode(response.bodyBytes))['detail']);
+        } else {
+          //確保google sso 保持登出
+          googleController.google_signOut();
+        }
+      } catch (e) {
+        print(e);
       }
     } else {
+      //確保google sso 保持登出
       googleController.google_signOut();
     }
   }
@@ -100,35 +147,14 @@ class _Login extends State<Login> {
 
 //此為顯示密碼function
   void Show_Password() {
-    if (show_password == true) {
+    if (showPassword == true) {
       setState(() {
-        show_password = false;
+        showPassword = false;
       });
     } else {
       setState(() {
-        show_password = true;
+        showPassword = true;
       });
-    }
-  }
-
-void get_User() async {
-    var response;
-    var url = dotenv.env['Profile'].toString();
-    var jwt =','+ state.accountState.toString();
-    print(jwt);
-    try {
-      response = await api().api_Get(url, jwt);
-    } catch (e) {
-      print(e);
-    }
-
-    if (response.statusCode == 200) {
-      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
-      print(state.profile);
-       Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const All_Page()));
-    }else{
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
     }
   }
 
@@ -136,7 +162,7 @@ void get_User() async {
   bool text_lengh() {
     if (passwordController.text.length < 8) {
       setState(() {
-        error_text = "密碼長度小於8字元";
+        errorText = "密碼長度小於8字元";
       });
       return false;
     } else {
@@ -163,19 +189,19 @@ void get_User() async {
         state.updateAccountState(await jsonDecode(response.body)['Token']);
         setState(() {
           response = response;
-          login_error_show = false;
+          showLoginError = false;
         });
         print(jsonDecode(response.body)['Token']);
-        get_User();
+        getHome();
         // Navigator.push(
         //     context, MaterialPageRoute(builder: (context) => const All_Page()));
         return true;
       } else {
         EasyLoading.dismiss();
         setState(() {
-          error_text = jsonDecode(utf8.decode(response.bodyBytes))['detail']
-                  .toString() ;
-          login_error_show = true;
+          errorText =
+              jsonDecode(utf8.decode(response.bodyBytes))['detail'].toString();
+          showLoginError = true;
         });
         return false;
       }
@@ -232,7 +258,7 @@ void get_User() async {
                     Textfield_password(
                       controller: passwordController,
                       hintText: '密碼',
-                      obscurText: show_password,
+                      obscurText: showPassword,
                       error_status: true,
                       error_text: '',
                       onTap: () {
@@ -277,9 +303,9 @@ void get_User() async {
                     const SizedBox(
                       height: 10,
                     ),
-                    if (login_error_show)
+                    if (showLoginError)
                       Text(
-                        error_text,
+                        errorText,
                         style: const TextStyle(color: Colors.white),
                       ),
                     const SizedBox(
@@ -290,7 +316,6 @@ void get_User() async {
                         functionName: '登入',
                       ),
                       onTap: () {
-                        print(dotenv.env['appToken'].toString());
                         userSignIn();
                       },
                     ),
@@ -342,7 +367,7 @@ void get_User() async {
                                 }
                               } catch (e) {
                                 EasyLoading.dismiss();
-                                EasyLoading.showError('Google 伺服器錯誤');
+                                EasyLoading.showError(e.toString());
                               }
 
                               // google_sso_function();

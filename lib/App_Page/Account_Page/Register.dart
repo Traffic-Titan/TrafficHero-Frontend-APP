@@ -19,8 +19,8 @@ class _registerState extends State<register> {
   //給生日顯示格式
   final DateFormat formatter = DateFormat('yyyy/MM/dd');
   //預設米瑪顯示變數隱藏
-  var show_password = true;
-  var show_password_ckeck = true;
+  var showPassword = true;
+  var showPasswordCkeck = true;
   // ignore: prefer_typing_uninitialized_variables
 
   var response;
@@ -28,12 +28,12 @@ class _registerState extends State<register> {
   var gender = '性別';
   var birthday = '生日';
   //控制輸入匡顯示錯誤是否顯示
-  var error_email = true;
-  var error_name = true;
-  var error_password = true;
-  var error_check_password = true;
-  var error_gender = true;
-  var error_born = true;
+  var errorEmail = true;
+  var errorName = true;
+  var errorPassword = true;
+  var errorCheckPassword = true;
+  var errorGender = true;
+  var errorBorn = true;
   //設立密碼長度文字
   var length_error_password_text = '';
   late stateManager state;
@@ -54,26 +54,26 @@ class _registerState extends State<register> {
 
 //控制使否要顯示密碼
   void Show_Password() {
-    if (show_password == true) {
+    if (showPassword == true) {
       setState(() {
-        show_password = false;
+        showPassword = false;
       });
     } else {
       setState(() {
-        show_password = true;
+        showPassword = true;
       });
     }
   }
 
 //控制使否要顯示密碼
   void Show_Password_check() {
-    if (show_password_ckeck == true) {
+    if (showPasswordCkeck == true) {
       setState(() {
-        show_password_ckeck = false;
+        showPasswordCkeck = false;
       });
     } else {
       setState(() {
-        show_password_ckeck = true;
+        showPasswordCkeck = true;
       });
     }
   }
@@ -83,7 +83,7 @@ class _registerState extends State<register> {
         registercheckPasswordController.text) {
       EasyLoading.dismiss();
       setState(() {
-        error_check_password = false;
+        errorCheckPassword = false;
       });
       return false;
     } else {
@@ -96,7 +96,7 @@ class _registerState extends State<register> {
   bool text_lengh() {
     if (registerPasswordController.text == '') {
       setState(() {
-        error_password = false;
+        errorPassword = false;
         length_error_password_text = "請輸入密碼";
       });
       EasyLoading.dismiss();
@@ -105,7 +105,7 @@ class _registerState extends State<register> {
     } else if (registerPasswordController.text.length < 8) {
       EasyLoading.dismiss();
       setState(() {
-        error_password = false;
+        errorPassword = false;
         length_error_password_text = "密碼長度小於8字元";
       });
       return false;
@@ -195,7 +195,7 @@ class _registerState extends State<register> {
                     controller: registerNameController,
                     hintText: '姓名',
                     obscurText: false,
-                    error_status: error_name,
+                    error_status: errorName,
                     error_text: '沒有輸入姓名',
                   ),
                   const SizedBox(
@@ -205,7 +205,7 @@ class _registerState extends State<register> {
                     controller: registerEmailController,
                     hintText: '電子郵件',
                     obscurText: false,
-                    error_status: error_email,
+                    error_status: errorEmail,
                     error_text: '電子郵件錯誤',
                   ),
                   const SizedBox(
@@ -214,8 +214,8 @@ class _registerState extends State<register> {
                   Textfield_password(
                     controller: registerPasswordController,
                     hintText: '輸入密碼',
-                    obscurText: show_password,
-                    error_status: error_password,
+                    obscurText: showPassword,
+                    error_status: errorPassword,
                     error_text: length_error_password_text,
                     onTap: () {
                       Show_Password();
@@ -227,8 +227,8 @@ class _registerState extends State<register> {
                   Textfield_password(
                     controller: registercheckPasswordController,
                     hintText: '確認密碼',
-                    obscurText: show_password_ckeck,
-                    error_status: error_check_password,
+                    obscurText: showPasswordCkeck,
+                    error_status: errorCheckPassword,
                     error_text: '密碼不相符',
                     onTap: () {
                       Show_Password_check();

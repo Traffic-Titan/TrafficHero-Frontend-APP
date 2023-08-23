@@ -2,20 +2,22 @@
 import 'package:traffic_hero/imports.dart';
 
 class api {
-  var api_Url = dotenv.env['TrafficHero-Backend'].toString();
-  var api_jwt_header = dotenv.env['appToken'].toString();
+  var apiUrl = dotenv.env['TrafficHero-Backend'].toString();
+  var apiJwtHeader = dotenv.env['appToken'].toString();
   Future<Response> Api_Post(
     Body,
     url,
     jwt,
   ) async {
+      print(apiJwtHeader + jwt.toString(),);
     DateTime startTime = DateTime.now();
 
     try {
-      Response response = await post(Uri.parse(api_Url + url),
+  
+      Response response = await post(Uri.parse(apiUrl + url),
       // dotenv.env['appToken'].toString()  +
           headers: {
-            "Authorization": 'Bearer ' + 'hBRukhnc6d',
+            "Authorization": 'Bearer ' + apiJwtHeader,
             "Content-Type": "application/json",
           },
           body: jsonEncode(Body));
@@ -44,9 +46,9 @@ class api {
 
     // var api_Url = dotenv.env['TrafficHero-Backend'].toString();
     try {
-      Response response = await put(Uri.parse(api_Url + url),
+      Response response = await put(Uri.parse(apiUrl + url),
           headers: {
-            "Authorization": 'Bearer ' + api_jwt_header + jwt.toString(),
+            "Authorization": 'Bearer ' + apiJwtHeader + jwt.toString(),
             "Content-Type": "application/json",
           },
           body: jsonEncode(Body));
@@ -76,7 +78,7 @@ class api {
 
     try {
       Response response = await get(
-        Uri.parse(api_Url + url),
+        Uri.parse(apiUrl + url),
         headers: {
           "Authorization": 'Bearer ' + 'hBRukhnc6d' + jwt.toString(),
           "Content-Type": "application/json",

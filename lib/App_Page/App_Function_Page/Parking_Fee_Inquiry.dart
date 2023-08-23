@@ -4,8 +4,12 @@ import 'package:traffic_hero/Imports.dart';
 import 'package:traffic_hero/Imports.dart' as choices;
 
 class ParkingFeeInquiry extends StatefulWidget {
-  const ParkingFeeInquiry({Key? key, required this.list_Amount}) : super(key: key);
+   ParkingFeeInquiry({Key? key, required this.list_Amount,required this.listUser})
+      : super(key: key);
   final List<dynamic> list_Amount;
+  // ignore: prefer_typing_uninitialized_variables
+  var listUser;
+
 
   @override
   _ParkingFeeInquiryState createState() => _ParkingFeeInquiryState();
@@ -16,10 +20,11 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
   void initState() {
     super.initState();
     print(widget.list_Amount);
+    print(widget.listUser);
     EasyLoading.dismiss();
   }
 
-   text(name) {
+  text(name) {
     for (var i = 0; i < choices.city_Chiness.length; i++) {
       if (choices.city_Chiness[i]['title'] == name) {
         return choices.city_Chiness[i]['value'];
@@ -32,7 +37,7 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
     return ''; // Return a default value if no match is found
   }
 
-   font2(name) {
+  font2(name) {
     for (var i = 0; i < choices.city_Chiness.length; i++) {
       if (name == 'Taipei_City') {
         return '臺北市';
@@ -56,8 +61,25 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
           width: 600,
           child: Column(
             children: [
+               const SizedBox(height: 20),
+              Container(
+                width: 350,
+                child: Card(
+                  elevation: 1,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(14.0),
+                  ),
+                  child: Column(
+                    children: [
+                      ListTile(title: const Text('車種'),trailing: Text(widget.listUser['Type'].toString()),),
+                       ListTile(title: const Text('車號'),trailing: Text(widget.listUser['LicensePlateNumber']),),
+                    ],
+                  ),
+                ),
+              ),
               const SizedBox(height: 20),
               Container(
+                width: 350,
                 child: ListView.builder(
                   shrinkWrap: true,
                   itemCount: widget.list_Amount.length,

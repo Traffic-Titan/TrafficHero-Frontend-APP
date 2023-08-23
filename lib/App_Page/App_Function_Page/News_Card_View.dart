@@ -2,9 +2,9 @@
 import 'package:traffic_hero/Imports.dart';
 
 class NewsCardView extends StatefulWidget {
-  NewsCardView({super.key, required this.list_view});
+  NewsCardView({super.key, required this.listView});
 
-  var list_view;
+  var listView;
 
   @override
   State<NewsCardView> createState() => _NewsCardViewState();
@@ -34,7 +34,7 @@ class _NewsCardViewState extends State<NewsCardView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      widget.list_view['NewsCategory'].toString(),
+                      widget.listView['NewsCategory'].toString(),
                       style: const TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                     const Text(
@@ -42,13 +42,13 @@ class _NewsCardViewState extends State<NewsCardView> {
                       style: TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                     Text(
-                      widget.list_view['UpdateTime'].toString(),
+                      widget.listView['UpdateTime'].toString(),
                       style: const TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                   ],
                 ),
                 Text(
-                  widget.list_view['Title'].toString(),
+                  widget.listView['Title'].toString(),
                   style: TextStyle(fontSize: 25),
                 ),
                 const SizedBox(
@@ -56,7 +56,7 @@ class _NewsCardViewState extends State<NewsCardView> {
                 ),
                 Center(
                     child: Text(
-                  widget.list_view['Description'].toString(),
+                  widget.listView['Description'].toString(),
                   style:const TextStyle(fontSize: 19),
                 ))
               ],
