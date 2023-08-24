@@ -12,13 +12,14 @@ class Home extends StatefulWidget {
 
 class _Home extends State<Home> {
   late stateManager state;
-  late var test;
+  late var positionNow;
   late String display1, display2;
   late bool _toolList,
       _trafficReport,
       _nearbyStop,
       _operationCondition,
       _operationConditionLight;
+        var operationalStatus = [];
 
   @override
   void didChangeDependencies() {
@@ -26,6 +27,10 @@ class _Home extends State<Home> {
 
     state = Provider.of<stateManager>(context, listen: false);
     print(state.accountState);
+    setState(() {
+       operationalStatus = state.OperationalStatus;
+    });
+   
     ii();
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
@@ -81,17 +86,41 @@ class _Home extends State<Home> {
         _nearbyStop = true;
         _operationCondition = true;
         _operationConditionLight = true;
+         
       });
     }
   }
 
   ii() async {
-    test = await geolocator().updataPosition();
+    positionNow = await geolocator().updataPosition();
     List<Placemark> placemarks =
-        await placemarkFromCoordinates(test.latitude, test.longitude);
+        await placemarkFromCoordinates(positionNow.latitude, positionNow.longitude);
     print((placemarks.isNotEmpty
         ? placemarks[0].administrativeArea.toString()
         : null)!);
+  }
+
+   changeColor(color) {
+    if (color == 'green') {
+      return 'assets/home/light_normal.png';
+    } else if (color == 'red') {
+      return 'assets/home/light_abnormal.png';
+    } else {
+      return 'assets/home/light_partialAdnormal.png';
+    }
+  }
+
+    String splitTextIntoChunks(String text, int chunkSize) {
+    List<String> chunks = [];
+    for (int i = 0; i < text.length; i += chunkSize) {
+      int endIndex = i + chunkSize;
+      if (endIndex > text.length) {
+        endIndex = text.length;
+      }
+      chunks.add(text.substring(i, endIndex));
+    }
+
+    return chunks.join('\n'); // 使用換行符串起每組文字
   }
 
   @override
@@ -156,7 +185,7 @@ class _Home extends State<Home> {
                         ),
                       ),
                         SizedBox(
-                          height: 170,
+                          height: 120,
                           child: GridView(
                             padding: EdgeInsets.zero,
                             // scrollDirection: Axis.horizontal,
@@ -347,7 +376,7 @@ class _Home extends State<Home> {
               ),
             ),
           ),
-          Visibility(
+           Visibility(
             visible: _operationCondition,
             child: Expanded(
               flex: 2,
@@ -362,9 +391,9 @@ class _Home extends State<Home> {
                       childAspectRatio: 3 / 2,
                       mainAxisSpacing: 20),
                   children: List.generate(
-                    operationList.length,
+                    operationalStatus.length,
                     (index) {
-                      final operationNews = operationList[index];
+                      final operationNews = operationalStatus[index];
                       return InkWell(
                         child: Column(
                           children: [
@@ -372,19 +401,18 @@ class _Home extends State<Home> {
                               width: 70,
                               margin: const EdgeInsets.all(3.0),
                               child: Image.asset(
-                                operationNews["state"].toString(),
-                                height: 30,
+                                changeColor(operationNews["Status"].toString()),
+                                height: 40,
                               ),
                             ),
                             Text(
-                              operationNews["type"].toString(),
+                              splitTextIntoChunks(
+                                  operationNews["Name"].toString(), 3), // 每行兩個字
                               style: const TextStyle(fontSize: 20),
-                            ),
+                            )
                           ],
                         ),
-                        onTap: () {
-                          print(operationNews["url"].toString());
-                        },
+                        onTap: () {},
                       );
                     },
                   ),
@@ -406,13 +434,13 @@ class _Home extends State<Home> {
                       height: 15,
                     ),
                     const Text(
-                      "正常行駛  ",
+                      " 正常營運  ",
                       style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
                     ),
                     Image.asset("assets/home/light_partialAdnormal.png",
                         height: 15),
                     const Text(
-                      "部分行駛  ",
+                      " 部分營運  ",
                       style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
                     ),
                     Image.asset(
@@ -420,7 +448,7 @@ class _Home extends State<Home> {
                       height: 15,
                     ),
                     const Text(
-                      "全部行駛",
+                      " 停止營運",
                       style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
                     ),
                   ],

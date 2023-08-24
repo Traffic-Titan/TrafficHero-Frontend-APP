@@ -35,7 +35,7 @@ class _registerState extends State<register> {
   var errorGender = true;
   var errorBorn = true;
   //設立密碼長度文字
-  var length_error_password_text = '';
+  var lengthErrorPasswordText = '';
   late stateManager state;
   late var body = <String, String>{};
 
@@ -97,7 +97,7 @@ class _registerState extends State<register> {
     if (registerPasswordController.text == '') {
       setState(() {
         errorPassword = false;
-        length_error_password_text = "請輸入密碼";
+        lengthErrorPasswordText = "請輸入密碼";
       });
       EasyLoading.dismiss();
 
@@ -106,7 +106,7 @@ class _registerState extends State<register> {
       EasyLoading.dismiss();
       setState(() {
         errorPassword = false;
-        length_error_password_text = "密碼長度小於8字元";
+        lengthErrorPasswordText = "密碼長度小於8字元";
       });
       return false;
     } else {
@@ -216,7 +216,7 @@ class _registerState extends State<register> {
                     hintText: '輸入密碼',
                     obscurText: showPassword,
                     error_status: errorPassword,
-                    error_text: length_error_password_text,
+                    error_text: lengthErrorPasswordText,
                     onTap: () {
                       Show_Password();
                     },

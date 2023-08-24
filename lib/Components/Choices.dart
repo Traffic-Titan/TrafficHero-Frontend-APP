@@ -83,9 +83,8 @@ List<S2Choice<String>> sorts = [
 //   {'value': '連江縣', 'title': '連江縣', 'body': '5. 離島區域'},
 // ];
 
-
 List<Map<String, String>> city = [
-   {'value': 'All', 'title': 'All', 'body': '0. All'},
+  {'value': 'All', 'title': 'All', 'body': '全選'},
   {'value': 'Keelung_City', 'title': '基隆市', 'body': '1. 北部區域'},
   {'value': 'New_Taipei_City', 'title': '新北市', 'body': '1. 北部區域'},
   {'value': 'Taipei_City', 'title': '臺北市', 'body': '1. 北部區域'},
@@ -110,8 +109,8 @@ List<Map<String, String>> city = [
   {'value': 'Lienchiang_County', 'title': '連江縣', 'body': '5. 離島區域'},
 ];
 
-
 List<Map<String, String>> city_English = [
+        {'value': 'All', 'title': 'All', 'body': '全選'},
   {'value': 'Keelung_City', 'title': 'Keelung City'},
   {'value': 'New_Taipei_City', 'title': 'New Taipei City'},
   {'value': 'Taipei_City', 'title': 'Taipei City'},
@@ -137,6 +136,7 @@ List<Map<String, String>> city_English = [
 ];
 
 List<Map<String, String>> city_ios = [
+      {'value': 'All', 'title': 'All', 'body': '全選'},
   {'value': 'Keelung_City', 'title': 'KEE'},
   {'value': 'New_Taipei_City', 'title': 'NWT'},
   {'value': 'Taipei_City', 'title': 'TPE'},
@@ -162,6 +162,7 @@ List<Map<String, String>> city_ios = [
 ];
 
 List<Map<String, String>> city_Chiness = [
+      {'value': 'All', 'title': 'All', 'body': '全選'},
   {'value': 'Keelung_City', 'title': '基隆市', 'body': '1. 北部區域'},
   {'value': 'New_Taipei_City', 'title': '新北市', 'body': '1. 北部區域'},
   {'value': 'Taipei_City', 'title': '台北市', 'body': '1. 北部區域'},
@@ -186,41 +187,52 @@ List<Map<String, String>> city_Chiness = [
   {'value': 'Lienchiang_County', 'title': '連江縣', 'body': '5. 離島區域'},
 ];
 
-
-
 List<Map<String, String>> way = [
-  {'value': '國道', 'title': '國道', 'body': '道路'},
-  {'value': 'Provincial_Highway', 'title': '省道', 'body': '道路'},
-  {'value': '一般道路', 'title': '一般道路', 'body': '道路'},
+  {'value': 'Freeway', 'title': '國道', 'body': '道路'},
+  {'value': 'ProvincialHighway', 'title': '省道', 'body': '道路'},
+  {'value': 'LocalRoad', 'title': '一般道路', 'body': '道路'},
 ];
 
 List<Map<String, String>> scooterway = [
-
-  {'value': '省道', 'title': '省道', 'body': '道路'},
-  {'value': '一般道路', 'title': '一般道路', 'body': '道路'},
+  {'value': 'ProvincialHighway', 'title': '省道', 'body': '道路'},
+  {'value': 'LocalRoad', 'title': '一般道路', 'body': '道路'},
 ];
 
 List<Map<String, String>> publicTransport = [
   {'value': 'Bus', 'title': '公車', 'body': '公路'},
   {'value': 'InterCityBus', 'title': '公路客運', 'body': '公路'},
+  {'value': 'TaiwanTouristShuttle', 'title': '台灣好行公車', 'body': '公路'},
   {'value': '共享單車', 'title': '共享單車', 'body': '公路'},
   {'value': 'TRA', 'title': '台鐵', 'body': '鐵路'},
   {'value': 'MRT', 'title': '捷運', 'body': '鐵路'},
   {'value': 'THSR', 'title': '高鐵', 'body': '鐵路'},
+  {'value': 'AlishanForestRailway', 'title': '阿里山林業鐵路', 'body': '鐵路'},
 ];
 
 List<Map<String, String>> stationList = [
-  {"time": "10","id": "201","station": "國立雲林科技大學站"},
-  {"time": "10","id": "201","station": "國立雲林科技大學站"},
-  {"time": "10","id": "201","station": "國立雲林科技大學站"},
-  {"time": "10","id": "201","station": "國立雲林科技大學站"},
-  {"time": "10","id": "201","station": "國立雲林科技大學站"},
-  {"time": "10","id": "201","station": "國立雲林科技大學站"},
+  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
+  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
+  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
+  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
+  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
+  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
 ];
 List<Map<String, String>> operationList = [
-  {"type": "台鐵","state": "assets/home/light_normal.png","url":"台鐵後端API"},
-  {"type": "高鐵","state": "assets/home/light_abnormal.png","url":"高鐵後端API"},
-  {"type": "台北\n捷運","state": "assets/home/light_abnormal.png","url":"台北捷運後端API"},
-  {"type": "新北\n捷運","state": "assets/home/light_partialAdnormal.png","url":"新北運後端API"},
-  {"type": "桃園\n捷運","state": "assets/home/light_normal.png","url":"桃園運後端API"},
+  {"type": "台鐵", "state": "assets/home/light_normal.png", "url": "台鐵後端API"},
+  {"type": "高鐵", "state": "assets/home/light_abnormal.png", "url": "高鐵後端API"},
+  {
+    "type": "台北\n捷運",
+    "state": "assets/home/light_abnormal.png",
+    "url": "台北捷運後端API"
+  },
+  {
+    "type": "新北\n捷運",
+    "state": "assets/home/light_partialAdnormal.png",
+    "url": "新北運後端API"
+  },
+  {
+    "type": "桃園\n捷運",
+    "state": "assets/home/light_normal.png",
+    "url": "桃園運後端API"
+  },
 ];

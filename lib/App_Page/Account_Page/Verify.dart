@@ -173,9 +173,9 @@ class _verify_pageState extends State<verify_page> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  const forget_password_page()));
-                    }
-                  },
+                                  const forgetPasswordPage()));
+
+                    }}
                 ),
               const SizedBox(
                 height: 80,

@@ -22,7 +22,7 @@ class _NewsState extends State<News> {
       urlApi,
       url_test;
 
-  List<String> Select_City = [], Select_2 = ['All'];
+  List<String> selectCity = [], selectType = ['All'];
   late List<Placemark> placemarks;
   StreamSubscription<Position>? _positionStreamSubscription;
   // Color get primaryColor => Theme.of(context).primaryColor;
@@ -55,7 +55,7 @@ class _NewsState extends State<News> {
     } else if (state.modeName == 'scooter') {
       setState(() {
         listCity = choices.city;
-         urlApi = dotenv.env['News_Scooter'].toString();
+        urlApi = dotenv.env['News_Scooter'].toString();
         listType = choices.scooterway;
         selectName = '選擇道路';
         selectNameEnglish = 'All';
@@ -73,14 +73,16 @@ class _NewsState extends State<News> {
 
 //取得最新消息
   get_News() async {
+    print(url_test);
+
     var url = urlApi.toString() +
         '?areas=' +
         url_test +
         "&types=" +
-        Select_2.join(',').toString();
-    var jwt = ','+state.accountState;
+        selectType.join(',').toString();
+    var jwt = ',' + state.accountState;
     try {
-      response = await api().api_Get(url, jwt);
+      response = await api().Api_Get(url, jwt);
     } catch (e) {
       EasyLoading.showError(e.toString());
     }
@@ -88,7 +90,7 @@ class _NewsState extends State<News> {
     if (response.statusCode == 200) {
       setState(() {
         listView = jsonDecode(utf8.decode(response.bodyBytes));
-        
+
         EasyLoading.dismiss();
       });
     }
@@ -116,9 +118,10 @@ class _NewsState extends State<News> {
     } else {
       setState(() {
         selectCitySubText = font2(text((placemarks.isNotEmpty
-                ? placemarks[0].administrativeArea.toString()
-                : '')
-            .toString())).toString();
+                    ? placemarks[0].administrativeArea.toString()
+                    : '')
+                .toString()))
+            .toString();
         url_test = text((placemarks.isNotEmpty
                 ? placemarks[0].administrativeArea.toString()
                 : ''))
@@ -131,23 +134,27 @@ class _NewsState extends State<News> {
   }
 
   text(name) {
-    for (var i = 0; i <= choices.city_ios.length; i++) {
-      if (choices.city_Chiness[i]['title'] == name) {
-        return choices.city_Chiness[i]['value'];
-      } else if (choices.city_English[i]['title'] == name) {
-        return choices.city_English[i]['value'];
-      } else if (choices.city_ios[i]['title'] == name) {
-        return choices.city_ios[i]['value'];
+    try {
+      for (var i = 0; i <= choices.city_ios.length; i++) {
+        if (choices.city_Chiness[i]['title'] == name) {
+          return choices.city_Chiness[i]['value'];
+        } else if (choices.city_English[i]['title'] == name) {
+          return choices.city_English[i]['value'];
+        } else if (choices.city_ios[i]['title'] == name) {
+          return choices.city_ios[i]['value'];
+        }
       }
+    } catch (e) {
+      EasyLoading.showError(e.toString());
     }
   }
 
   font2(name) {
     print(name + '2');
     for (var i = 0; i < choices.city_Chiness.length; i++) {
-      if (name == 'Taipei_City'  ) {
-        return  '臺北市';
-      }else if(choices.city_Chiness[i]['value'] == name  ){
+      if (name == 'Taipei_City') {
+        return '臺北市';
+      } else if (choices.city_Chiness[i]['value'] == name) {
         print('object');
         return choices.city_Chiness[i]['title'];
       }
@@ -173,17 +180,16 @@ class _NewsState extends State<News> {
                       child: SmartSelect<String>.multiple(
                         onModalOpen: (state) {
                           setState(() {
-                           
-                            Select_City = [];
+                            selectCity = [];
                           });
                         },
                         title: '選擇區域',
-                        placeholder: selectCitySubText ,
-                        selectedValue: Select_City,
+                        placeholder: selectCitySubText,
+                        selectedValue: selectCity,
                         onChange: (selected) {
                           setState(() {
-                            Select_City = selected.value;
-                            url_test = Select_City.join(',').toString();
+                            selectCity = selected.value;
+                            url_test = selectCity.join(',').toString();
                             print(url_test);
                             EasyLoading.show(status: 'Loading.....');
                             get_News();
@@ -214,23 +220,31 @@ class _NewsState extends State<News> {
                         modalFilterToggleBuilder: (context, value) {
                           return Center(
                             child: Container(
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                  get_News();
-                                  EasyLoading.show(status: 'Loading.....');
-                                },
-                                child: Text(
-                                  '目前位置',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      color:
-                                          const Color.fromARGB(255, 0, 0, 0)),
-                                ),
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.pop(context);
+                                      location();
+                                      EasyLoading.show(status: 'Loading.....');
+                                    },
+                                    child: Text(
+                                      '目前位置',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color:
+                                              const Color.fromARGB(255, 0, 0, 0)),
+                                    ),
+                                  ),
+                                  SizedBox(width: 10,),
+                                 
+                                ],
                               ),
+                              
                             ),
                           );
                         },
+                        
                         groupHeaderBuilder: (context, state, group) {
                           return Container(
                             color: Colors.blue,
@@ -263,15 +277,15 @@ class _NewsState extends State<News> {
                         child: SmartSelect<String>.multiple(
                             onModalOpen: (state) {
                               setState(() {
-                                Select_2.clear();
+                                selectType.clear();
                               });
                             },
                             title: selectName,
                             placeholder: selectNameEnglish,
-                            selectedValue: Select_2,
+                            selectedValue: selectType,
                             onChange: (selected) {
                               setState(() => {
-                                    Select_2 = selected.value,
+                                    selectType = selected.value,
                                     EasyLoading.show(status: 'Loading.....'),
                                     get_News(),
                                     // _stopTrackingPosition()
@@ -305,8 +319,8 @@ class _NewsState extends State<News> {
                                       Navigator.pop(context);
                                       EasyLoading.show(status: 'Loading.....');
                                       setState(() {
-                                        Select_2 = ['All'];
-                                        print(Select_2);
+                                        selectType = ['All'];
+                                        print(selectType);
                                         get_News();
                                       });
                                     },
@@ -357,7 +371,7 @@ class _NewsState extends State<News> {
         itemBuilder: (context, index) {
           final news = listView[index];
           return Card(
-            elevation: 3,
+              elevation: 3,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),

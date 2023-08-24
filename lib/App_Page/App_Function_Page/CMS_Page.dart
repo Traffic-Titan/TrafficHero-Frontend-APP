@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, sort_child_properties_last
 import 'package:traffic_hero/imports.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -160,12 +160,24 @@ class _CMSState extends State<CMS> {
   @override
   Widget straightPage(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+        leading: Text(''),
+      ),
       backgroundColor: Colors.black,
       body: Column(
         children: [
            Expanded(
             //時速表
-            child:Text(  "${speed}km/h",style: TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
+            child:Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(  "${speed}",style: const TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
+                Text('Km/s',style: TextStyle(fontSize: 30,color: Colors.yellow), textAlign: TextAlign.right)
+              
+              ],
+            ),
           ),
           Expanded(
             //CMS
@@ -178,10 +190,10 @@ class _CMSState extends State<CMS> {
                       height: 80,
                     ),
                     Padding(//與螢幕距離
-                      padding: EdgeInsets.all(8.0),
+                      padding: const EdgeInsets.all(8.0),
                       child:Text(
                         displayText,
-                        style: TextStyle(fontSize: 35,color: Colors.red,),
+                        style: const TextStyle(fontSize: 35,color: Colors.red,),
                         textAlign: TextAlign.center,
                         softWrap: true,
                       ),
@@ -222,13 +234,15 @@ class _CMSState extends State<CMS> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FloatingActionButton(
-                  child: Icon(CupertinoIcons.placemark_fill,size: 40,),
+                  heroTag: "btn1",
+                  child: const Icon(CupertinoIcons.placemark_fill,size: 40,),
                   backgroundColor: Colors.blueAccent,
                   onPressed: () {
                   },
                 ),
                 const SizedBox(height: 10,),
                 FloatingActionButton(
+                  heroTag: "btn2",
                   child: phoneIcon,
                   backgroundColor: Colors.blueAccent,
                   onPressed: () {
@@ -237,7 +251,8 @@ class _CMSState extends State<CMS> {
                 ),
                 const SizedBox(height: 10,),
                 FloatingActionButton(
-                  child: Icon(Icons.output_outlined,size: 40,),
+                  heroTag: "btn3",
+                  child: const Icon(Icons.output_outlined,size: 40,),
                   backgroundColor: Colors.blueAccent,
                   onPressed: () {
                     //顯示導航及最頂端列
@@ -258,7 +273,7 @@ class _CMSState extends State<CMS> {
         children: [
            Expanded(
             //時速表
-            child:Text("${speed}km/h",style: TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
+            child:Text("${speed}km/h",style: const TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
           ),
           Expanded(
             //CMS
@@ -270,10 +285,10 @@ class _CMSState extends State<CMS> {
                     displayImg,
                     height: 100,
                   ),
-                  SizedBox(width: 20,),
+                  const SizedBox(width: 20,),
                   Text(
                     displayText,
-                    style: TextStyle(fontSize: 50,color: Colors.red),
+                    style: const TextStyle(fontSize: 50,color: Colors.red),
                     softWrap: true,
                   ),
                 ],
@@ -312,13 +327,15 @@ class _CMSState extends State<CMS> {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 FloatingActionButton(
-                  child: Icon(CupertinoIcons.placemark_fill,size: 40,),
+                  heroTag: "btn1",
+                  child: const Icon(CupertinoIcons.placemark_fill,size: 40,),
                   backgroundColor: Colors.blueAccent,
                   onPressed: () {
                   },
                 ),
                 const SizedBox(height: 10,),
                 FloatingActionButton(
+                  heroTag: "btn2",
                   child: phoneIcon,
                   backgroundColor: Colors.blueAccent,
                   onPressed: () {
@@ -327,7 +344,8 @@ class _CMSState extends State<CMS> {
                 ),
                 const SizedBox(height: 10,),
                 FloatingActionButton(
-                  child: Icon(Icons.output_outlined,size: 40,),
+                  heroTag: "btn3",
+                  child: const Icon(Icons.output_outlined,size: 40,),
                   backgroundColor: Colors.blueAccent,
                   onPressed: () {
                     if(!directionState){

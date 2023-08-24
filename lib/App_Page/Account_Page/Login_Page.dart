@@ -28,21 +28,24 @@ class _Login extends State<Login> {
   }
 
   Future<void> getHome() async {
-    await getUser();
-    await getOperationalStatus();
+
+      await getUser();
+      await getOperationalStatus();
+
+
     //顯示成功訊息
     EasyLoading.showSuccess(
         jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
 
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const All_Page()));
+        context, MaterialPageRoute(builder: (context) => const AllPage()));
   }
 
   getOperationalStatus() async {
     var url = dotenv.env['OperationalStatus'].toString();
     var jwt = ',' + state.accountState.toString();
 
-    // var response = await api().api_Get(url, jwt);
+    var response = await api().Api_Get(url, jwt);
     if (response.statusCode == 200) {
       state
           .updateOperationalStatus(jsonDecode(utf8.decode(response.bodyBytes)));
@@ -54,11 +57,12 @@ class _Login extends State<Login> {
 
   getUser() async {
     var response;
-    var url = dotenv.env['Profile'].toString();
+    var url = dotenv.env['Profile'];
+        print(url.toString()+'login');
     var jwt = ',' + state.accountState.toString();
     print(jwt);
     try {
-      // response = await api().api_Get(url, jwt);
+      response = await api().Api_Get(url, jwt);
     } catch (e) {
       print(e);
     }
@@ -210,7 +214,7 @@ class _Login extends State<Login> {
 
   void forgetpassword(context) {
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const forget_password_page()));
+        MaterialPageRoute(builder: (context) => const forgetPasswordPage()));
   }
 
   void register_page(context) {

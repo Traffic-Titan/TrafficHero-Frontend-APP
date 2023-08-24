@@ -3,14 +3,14 @@ import 'package:traffic_hero/imports.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 
-class forget_password_page extends StatefulWidget {
-  const forget_password_page({super.key});
+class forgetPasswordPage extends StatefulWidget {
+  const forgetPasswordPage({super.key});
 
   @override
-  State<forget_password_page> createState() => _forget_password_pageState();
+  State<forgetPasswordPage> createState() => _forgetPasswordPageState();
 }
 
-class _forget_password_pageState extends State<forget_password_page> {
+class _forgetPasswordPageState extends State<forgetPasswordPage> {
   //設立忘記密碼的電子郵件輸入框
   final forget_email = TextEditingController();
   //設定狀態管理變數

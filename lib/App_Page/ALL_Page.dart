@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, file_names, avoid_print
 import 'package:traffic_hero/imports.dart';
 
-class All_Page extends StatefulWidget {
-  const All_Page({super.key});
+class AllPage extends StatefulWidget {
+  const AllPage({super.key});
 
   @override
-  State<All_Page> createState() => _All_PageState();
+  State<AllPage> createState() => _AllPageState();
 }
 
-class _All_PageState extends State<All_Page> {
+class _AllPageState extends State<AllPage> {
   late stateManager state;
   var mode = 'car';
   var car = 'assets/topbar/Mode_Car.png';
@@ -42,20 +42,6 @@ class _All_PageState extends State<All_Page> {
     });
   }
 
-  // void get_User() async {
-  //   var response;
-  //   var url = '/Account/Profile';
-  //   var jwt = state.accountState;
-  //   try {
-  //     response = await api().api_Get(url, jwt);
-  //   } catch (e) {
-  //     print('object');
-  //   }
-
-  //   if (response.statusCode == 200) {
-  //     state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
-  //   }
-  // }
 
   Widget changeMode() {
     if (mode == 'car') {
