@@ -4,7 +4,8 @@ import 'package:traffic_hero/imports.dart';
 class api {
   var apiUrl = dotenv.env['TrafficHero-Backend'].toString();
   var apiJwtHeader = dotenv.env['appToken'].toString();
-  Future<Response> Api_Post(
+
+  Future<Response> apiPost(
     Body,
     url,
     jwt,
@@ -17,7 +18,7 @@ class api {
             "Content-Type": "application/json",
           },
           body: jsonEncode(Body));
-      print(await response);
+
       if (response.statusCode == 200) {
         DateTime endTime = DateTime.now();
         Duration durationInMilliseconds = endTime.difference(startTime);
@@ -37,7 +38,7 @@ class api {
     }
   }
 
-  Future<Response> Api_Put(Body, url, jwt) async {
+  Future<Response> apiPut(Body, url, jwt) async {
     DateTime startTime = DateTime.now();
     try {
       Response response = await put(Uri.parse(apiUrl + url),
@@ -64,7 +65,7 @@ class api {
     }
   }
 
-  Future<Response> Api_Get(
+  Future<Response> apiGet(
     url,
     jwt,
   ) async {

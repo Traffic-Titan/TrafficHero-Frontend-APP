@@ -14,7 +14,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
   final afterLicensePlateController = TextEditingController();
   final beforeLicensePlateController = TextEditingController();
   late stateManager state;
-  
+
   //綁定車牌測試用
   var test = [
     {"LicensePlateNumber": 'NKJ-5657', "Type": "M"},
@@ -30,63 +30,16 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
     EasyLoading.dismiss();
   }
 
-  get_Amount(LicensePlateNumber, type) async {
-    var Body = {"licensePlateNumber": LicensePlateNumber, "type": type};
-    var response;
-    var url = dotenv.env['ParkingFee'].toString();
-    var jwt = ','+state.accountState;
-    try {
-      response = await api().Api_Post(Body, url, jwt);
-    } catch (e) {
-      print(e);
-    }
-
-    if (response.statusCode == 200) {
-      var list = [];
-      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-      for (var i = 0; i < responseBody["Detail"].length; i++) {
-        if (responseBody["Detail"][i]["Amount"] != 0) {
-          list.add(responseBody["Detail"][i]);
-        }
-      }
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ParkingFeeInquiry(
-            list_Amount: list,
-            listUser: jsonDecode(utf8.decode(response.bodyBytes)),
-          ),
+  pushNextPage(licensePlateNumber, type) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ParkingFeeInquiry(
+          licensePlateNumber: licensePlateNumber,
+          type: type,
         ),
-      );
-    } else {
-      showPlatformDialog(
-        context: context,
-        builder: (context) => BasicDialogAlert(
-          title: const Text(
-            "查詢結果",
-            style: TextStyle(fontSize: 20),
-          ),
-          content: const Text("未查詢到任何停車費"),
-          actions: <Widget>[
-            BasicDialogAction(
-              title: const Text("Discard"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-  Binding_License_Plate() {
-    var BindingLicensePlate = [];
-    BindingLicensePlate.add({
-      "licensePlateNumber":
-          '${beforeLicensePlateController.text}-${afterLicensePlateController.text}',
-      "type": type
-    });
+      ),
+    );
   }
 
   @override
@@ -136,7 +89,6 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                                     BasicDialogAction(
                                       title: const Text("Discard"),
                                       onPressed: () {
-                                        
                                         Navigator.pop(context);
                                       },
                                     ),
@@ -162,7 +114,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                                 onTap: () {
                                   EasyLoading.show(status: 'Loading...');
                                   print(list['type'].toString());
-                                  get_Amount(
+                                  pushNextPage(
                                       list['LicensePlateNumber'].toString(),
                                       list['Type'].toString());
                                 },
@@ -240,7 +192,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                   InkWell(
                     onTap: () {
                       EasyLoading.show(status: 'Loading...');
-                      get_Amount(
+                      pushNextPage(
                           '${beforeLicensePlateController.text}-${afterLicensePlateController.text}',
                           type);
                     },

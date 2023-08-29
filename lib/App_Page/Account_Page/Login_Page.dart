@@ -31,8 +31,6 @@ class _Login extends State<Login> {
 
       await getUser();
       await getOperationalStatus();
-
-
     //顯示成功訊息
     EasyLoading.showSuccess(
         jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
@@ -45,7 +43,7 @@ class _Login extends State<Login> {
     var url = dotenv.env['OperationalStatus'].toString();
     var jwt = ',' + state.accountState.toString();
 
-    var response = await api().Api_Get(url, jwt);
+    var response = await api().apiGet(url, jwt);
     if (response.statusCode == 200) {
       state
           .updateOperationalStatus(jsonDecode(utf8.decode(response.bodyBytes)));
@@ -62,7 +60,7 @@ class _Login extends State<Login> {
     var jwt = ',' + state.accountState.toString();
     print(jwt);
     try {
-      response = await api().Api_Get(url, jwt);
+      response = await api().apiGet(url, jwt);
     } catch (e) {
       print(e);
     }
@@ -86,7 +84,7 @@ class _Login extends State<Login> {
 
     if (account != null) {
       try {
-        response = await api().Api_Post(body, url, jwt);
+        response = await api().apiPost(body, url, jwt);
       } catch (e) {
         print(e);
       }
@@ -178,7 +176,7 @@ class _Login extends State<Login> {
   Future<bool> userSignIn() async {
     var url = dotenv.env['Login'].toString();
     var jwt = '';
-    response = await api().Api_Post({
+    response = await api().apiPost({
       "email": usernameController.text,
       "password": Sha256().sha256Function(passwordController.text)
     }, url, jwt);

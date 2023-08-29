@@ -19,7 +19,7 @@ class _Home extends State<Home> {
       _nearbyStop,
       _operationCondition,
       _operationConditionLight;
-        var operationalStatus = [];
+  var operationalStatus = [];
 
   @override
   void didChangeDependencies() {
@@ -28,9 +28,9 @@ class _Home extends State<Home> {
     state = Provider.of<stateManager>(context, listen: false);
     print(state.accountState);
     setState(() {
-       operationalStatus = state.OperationalStatus;
+      operationalStatus = state.OperationalStatus;
     });
-   
+
     ii();
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
@@ -86,21 +86,20 @@ class _Home extends State<Home> {
         _nearbyStop = true;
         _operationCondition = true;
         _operationConditionLight = true;
-         
       });
     }
   }
 
   ii() async {
     positionNow = await geolocator().updataPosition();
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(positionNow.latitude, positionNow.longitude);
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        positionNow.latitude, positionNow.longitude);
     print((placemarks.isNotEmpty
         ? placemarks[0].administrativeArea.toString()
         : null)!);
   }
 
-   changeColor(color) {
+  changeColor(color) {
     if (color == 'green') {
       return 'assets/home/light_normal.png';
     } else if (color == 'red') {
@@ -110,7 +109,7 @@ class _Home extends State<Home> {
     }
   }
 
-    String splitTextIntoChunks(String text, int chunkSize) {
+  String splitTextIntoChunks(String text, int chunkSize) {
     List<String> chunks = [];
     for (int i = 0; i < text.length; i += chunkSize) {
       int endIndex = i + chunkSize;
@@ -152,14 +151,14 @@ class _Home extends State<Home> {
           Visibility(
             visible: !_toolList,
             child: Container(
-                width: MediaQuery.of(context).size.width,
-                color: const Color.fromRGBO(47, 125, 195, 1),
-                child: Text(
-                  display1,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
-                ),
+              width: MediaQuery.of(context).size.width,
+              color: const Color.fromRGBO(47, 125, 195, 1),
+              child: Text(
+                display1,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 20, color: Colors.white),
               ),
+            ),
           ),
           Visibility(
             visible: _toolList,
@@ -181,68 +180,68 @@ class _Home extends State<Home> {
                         child: Text(
                           "工具列",
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 18, color: Colors.white),
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.white),
                         ),
                       ),
-                        SizedBox(
-                          height: 120,
-                          child: GridView(
-                            padding: EdgeInsets.zero,
-                            // scrollDirection: Axis.horizontal,
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4, //横轴三个子widget
-                                childAspectRatio: 0.95
-                            ),
-                            children: List.generate(
-                              toolList.length,
-                              (index) {
-                                final tool = toolList[index];
-                                return Container(
-                                  // height: 30,
-                                  child: InkWell(
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          width: 70,
-                                          height: 70,
-                                          margin: const EdgeInsets.all(3.0),
-                                          child: Image.asset(
-                                            tool['img'].toString(),
-                                          ),
+                      SizedBox(
+                        height: 120,
+                        child: GridView(
+                          padding: EdgeInsets.zero,
+                          // scrollDirection: Axis.horizontal,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4, //横轴三个子widget
+                                  childAspectRatio: 0.95),
+                          children: List.generate(
+                            toolList.length,
+                            (index) {
+                              final tool = toolList[index];
+                              return Container(
+                                // height: 30,
+                                child: InkWell(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 70,
+                                        height: 70,
+                                        margin: const EdgeInsets.all(3.0),
+                                        child: Image.asset(
+                                          tool['img'].toString(),
                                         ),
-                                        Text(
-                                          tool['title'].toString(),
-                                          textAlign: TextAlign.center,
-                                        )
-                                      ],
-                                    ),
-                                    onTap: () {
-                                      EasyLoading.show(status: 'loading...');
-                                      // launch("https://www.google.com/maps/dir/?api=1&destination=%E8%87%BA%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E6%A6%AE%E6%B3%89%E9%87%8C%E4%B8%AD%E5%B1%B1%E8%B7%AF3%E6%AE%B51165%E8%99%9F&travelmode=driving");
-                                      // launch('https://www.google.com/maps/dir/25.1737288,121.4341894/414%E5%8F%B0%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E4%B8%AD%E5%B1%B1%E8%B7%AF%E4%B8%89%E6%AE%B51165%E8%99%9F/@24.6413693,120.3359623,9z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x34693ec40c7103e3:0xcd8e2812aa561111!2m2!1d120.590033!2d24.1133503!11m1!6b1?entry=ttu');
-                                      // FlutterTts().speak('限速60公里您已超速');
-                                      if (tool['value'] == '路邊停車費') {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LicensePlateInput()));
-                                      } else {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => WebView(
-                                                    tt: tool['url']
-                                                        .toString())));
-                                      }
-                                    },
+                                      ),
+                                      Text(
+                                        tool['title'].toString(),
+                                        textAlign: TextAlign.center,
+                                      )
+                                    ],
                                   ),
-                                );
-                              },
-                            ),
+                                  onTap: () {
+                                    EasyLoading.show(status: 'loading...');
+                                    // launch("https://www.google.com/maps/dir/?api=1&destination=%E8%87%BA%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E6%A6%AE%E6%B3%89%E9%87%8C%E4%B8%AD%E5%B1%B1%E8%B7%AF3%E6%AE%B51165%E8%99%9F&travelmode=driving");
+                                    // launch('https://www.google.com/maps/dir/25.1737288,121.4341894/414%E5%8F%B0%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E4%B8%AD%E5%B1%B1%E8%B7%AF%E4%B8%89%E6%AE%B51165%E8%99%9F/@24.6413693,120.3359623,9z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x34693ec40c7103e3:0xcd8e2812aa561111!2m2!1d120.590033!2d24.1133503!11m1!6b1?entry=ttu');
+                                    // FlutterTts().speak('限速60公里您已超速');
+                                    if (tool['value'] == '路邊停車費') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LicensePlateInput()));
+                                    } else {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => WebView(
+                                                  tt: tool['url'].toString())));
+                                    }
+                                  },
+                                ),
+                              );
+                            },
                           ),
                         ),
+                      ),
                       Container(
                         width: MediaQuery.of(context).size.width,
                         color: const Color.fromRGBO(47, 125, 195, 1),
@@ -253,7 +252,8 @@ class _Home extends State<Home> {
                         child: Text(
                           "快速尋找地點",
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 18, color: Colors.white),
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.white),
                         ),
                       ),
                       Container(
@@ -263,14 +263,14 @@ class _Home extends State<Home> {
                         child: GridView(
                           scrollDirection: Axis.horizontal,
                           gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 200,
-                              childAspectRatio: 3 / 2,
-                              //按鈕彼此間距
-                              mainAxisSpacing: 20),
+                              const SliverGridDelegateWithMaxCrossAxisExtent(
+                                  maxCrossAxisExtent: 200,
+                                  childAspectRatio: 3 / 2,
+                                  //按鈕彼此間距
+                                  mainAxisSpacing: 20),
                           children: List.generate(
                             fastLocation.length,
-                                (index) {
+                            (index) {
                               final fastList = fastLocation[index];
                               return Container(
                                 // height: 30,
@@ -278,7 +278,7 @@ class _Home extends State<Home> {
                                   child: Column(
                                     children: [
                                       Container(
-                                        width:70,
+                                        width: 70,
                                         height: 70,
                                         // margin: const EdgeInsets.all(3.0),
                                         child: Image.asset(
@@ -295,7 +295,7 @@ class _Home extends State<Home> {
                             },
                           ),
                         ),
-                      ) ,
+                      ),
                       // ),
                     ],
                   )),
@@ -376,7 +376,7 @@ class _Home extends State<Home> {
               ),
             ),
           ),
-           Visibility(
+          Visibility(
             visible: _operationCondition,
             child: Expanded(
               flex: 2,

@@ -58,7 +58,7 @@ class _verify_pageState extends State<verify_page> {
   void verify_function(BuildContext context) async {
     var Body = {"email": state.verifyEmail, "code": verifyController.text};
     var url = '/Account/verify_code';
-    var res = await api().Api_Post(Body, url,'');
+    var res = await api().apiPost(Body, url, '');
     setState(() {
       response = res;
     });
@@ -154,29 +154,27 @@ class _verify_pageState extends State<verify_page> {
                 ),
               if (getVerificationCodeAgain)
                 InkWell(
-                  child:const Text(
-                  '重新獲取驗證碼',
-                  style:  TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                  ),
-                ),
-                  onTap: () {
-
-                    if (state.veriffyState == 'register') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const register()));
-                    } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const forgetPasswordPage()));
-
-                    }}
-                ),
+                    child: const Text(
+                      '重新獲取驗證碼',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: () {
+                      if (state.veriffyState == 'register') {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const register()));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const forgetPasswordPage()));
+                      }
+                    }),
               const SizedBox(
                 height: 80,
               ),

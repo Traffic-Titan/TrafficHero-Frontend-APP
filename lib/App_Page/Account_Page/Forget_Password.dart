@@ -34,7 +34,7 @@ class _forgetPasswordPageState extends State<forgetPasswordPage> {
     var Body = {"email": forget_email.text, "birthday": birthday};
     var url = dotenv.env['ForgotPassword'].toString();
     var jwt = state.accountState;
-    response = await api().Api_Post(Body, url, jwt);
+    response = await api().apiPost(Body, url, jwt);
     if (response.statusCode == 200) {
       EasyLoading.showSuccess('驗證碼已寄送');
       state.VerifyEmailSet(forget_email.text);

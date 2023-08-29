@@ -77,8 +77,9 @@ class _registerState extends State<register> {
       });
     }
   }
+
 //確認密碼是否一樣
-    check_password_function() {
+  check_password_function() {
     if (registerPasswordController.text !=
         registercheckPasswordController.text) {
       EasyLoading.dismiss();
@@ -142,9 +143,8 @@ class _registerState extends State<register> {
       });
     }
     var url = dotenv.env['Register'].toString();
-    
 
-    response = await api().Api_Post(body, url, '');
+    response = await api().apiPost(body, url, '');
     if (response.statusCode == 200) {
       state.VerifyEmailSet(registerEmailController.text);
       state.veriffyStateSet('register');
@@ -157,7 +157,6 @@ class _registerState extends State<register> {
           jsonDecode(utf8.decode(response.bodyBytes))['detail']);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -240,10 +239,8 @@ class _registerState extends State<register> {
                   Container(
                     width: 310,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 0),
-                      child: 
-                      decoratedBox()
-                    ),
+                        padding: const EdgeInsets.symmetric(horizontal: 0),
+                        child: decoratedBox()),
                   ),
                   const SizedBox(
                     height: 10,
@@ -333,5 +330,4 @@ class _registerState extends State<register> {
           )),
     );
   }
-
 }

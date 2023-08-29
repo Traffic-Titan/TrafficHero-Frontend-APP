@@ -82,7 +82,7 @@ class _NewsState extends State<News> {
         selectType.join(',').toString();
     var jwt = ',' + state.accountState;
     try {
-      response = await api().Api_Get(url, jwt);
+      response = await api().apiGet(url, jwt);
     } catch (e) {
       EasyLoading.showError(e.toString());
     }
@@ -232,19 +232,18 @@ class _NewsState extends State<News> {
                                       '目前位置',
                                       style: TextStyle(
                                           fontSize: 15,
-                                          color:
-                                              const Color.fromARGB(255, 0, 0, 0)),
+                                          color: const Color.fromARGB(
+                                              255, 0, 0, 0)),
                                     ),
                                   ),
-                                  SizedBox(width: 10,),
-                                 
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                 ],
                               ),
-                              
                             ),
                           );
                         },
-                        
                         groupHeaderBuilder: (context, state, group) {
                           return Container(
                             color: Colors.blue,

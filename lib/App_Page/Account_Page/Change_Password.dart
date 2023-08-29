@@ -137,7 +137,8 @@ class new_password_page extends State<ChangePassword> {
       // response = await api().Api_Put(body, url, jwt);
 
       if (response.statusCode == 200) {
-        EasyLoading.showSuccess(jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
+        EasyLoading.showSuccess(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
         state.updateAccountState('');
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Login()));
@@ -146,7 +147,8 @@ class new_password_page extends State<ChangePassword> {
           showOldPasswordErrorText = false;
         });
       } else {
-        EasyLoading.showError(jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
+        EasyLoading.showError(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
       }
     }
   }
