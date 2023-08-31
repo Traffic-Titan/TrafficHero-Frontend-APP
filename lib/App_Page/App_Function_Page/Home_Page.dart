@@ -28,7 +28,7 @@ class _Home extends State<Home> {
     state = Provider.of<stateManager>(context, listen: false);
     print(state.accountState);
     setState(() {
-       operationalStatus = state.OperationalStatus;
+      //  operationalStatus = state.OperationalStatus;
     });
    
     ii();

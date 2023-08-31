@@ -33,28 +33,33 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
   get_Amount(LicensePlateNumber, type) async {
     var Body = {"licensePlateNumber": LicensePlateNumber, "type": type};
     var response;
-    var url = dotenv.env['ParkingFee'].toString();
+    var url = dotenv.env['ParkingFee'].toString()+ '?LicensePlateNumber=${LicensePlateNumber}&Type=${type}';
     var jwt = ','+state.accountState;
     try {
-      response = await api().Api_Post(Body, url, jwt);
+      response = await api().Api_Get( url, jwt);
     } catch (e) {
       print(e);
     }
 
     if (response.statusCode == 200) {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
       var list = [];
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-      for (var i = 0; i < responseBody["Detail"].length; i++) {
-        if (responseBody["Detail"][i]["Amount"] != 0) {
-          list.add(responseBody["Detail"][i]);
-        }
-      }
+      for(var i =0 ; i<responseBody['Detail'].length;i++){if(responseBody['Detail'] == '服務維護中'){
+
+      }else{
+       print(responseBody['Detail'][i]);
+       list.add(responseBody['Detail'][i]);
+      }}
+      
+      // print(responseBody);
       Navigator.push(
         context,
         MaterialPageRoute(
           builder: (context) => ParkingFeeInquiry(
-            list_Amount: list,
+            
             listUser: jsonDecode(utf8.decode(response.bodyBytes)),
+            listAmount: list,
           ),
         ),
       );
@@ -161,7 +166,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                                 ),
                                 onTap: () {
                                   EasyLoading.show(status: 'Loading...');
-                                  print(list['type'].toString());
+                                 
                                   get_Amount(
                                       list['LicensePlateNumber'].toString(),
                                       list['Type'].toString());

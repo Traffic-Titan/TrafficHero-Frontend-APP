@@ -4,12 +4,11 @@ import 'package:traffic_hero/Imports.dart';
 import 'package:traffic_hero/Imports.dart' as choices;
 
 class ParkingFeeInquiry extends StatefulWidget {
-   ParkingFeeInquiry({Key? key, required this.list_Amount,required this.listUser})
-      : super(key: key);
-  final List<dynamic> list_Amount;
+  ParkingFeeInquiry({Key? key, required this.listUser,required this.listAmount}) : super(key: key);
+
   // ignore: prefer_typing_uninitialized_variables
   var listUser;
-
+  var listAmount;
 
   @override
   _ParkingFeeInquiryState createState() => _ParkingFeeInquiryState();
@@ -19,7 +18,6 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
   @override
   void initState() {
     super.initState();
-    print(widget.list_Amount);
     print(widget.listUser);
     EasyLoading.dismiss();
   }
@@ -61,7 +59,7 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
           width: 600,
           child: Column(
             children: [
-               const SizedBox(height: 20),
+              const SizedBox(height: 20),
               Container(
                 width: 350,
                 child: Card(
@@ -71,8 +69,14 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
                   ),
                   child: Column(
                     children: [
-                      ListTile(title: const Text('車種'),trailing: Text(widget.listUser['Type'].toString()),),
-                       ListTile(title: const Text('車號'),trailing: Text(widget.listUser['LicensePlateNumber']),),
+                      ListTile(
+                        title: const Text('車種'),
+                        trailing: Text(widget.listUser['Type'].toString()),
+                      ),
+                      ListTile(
+                        title: const Text('車號'),
+                        trailing: Text(widget.listUser['LicensePlateNumber']),
+                      ),
                     ],
                   ),
                 ),
@@ -81,12 +85,16 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
               Container(
                 width: 350,
                 child: ListView.builder(
+                  physics: NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
-                  itemCount: widget.list_Amount.length,
+                  itemCount: widget.listAmount.length,
                   itemBuilder: (context, index) {
-                    final list = widget.list_Amount[index];
+                    final list = widget.listAmount[index];
+                    var isExpanded = false; // 初始狀態為收起
                     return Card(
                       elevation: 1,
+                      
+
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14.0),
                       ),
@@ -100,25 +108,90 @@ class _ParkingFeeInquiryState extends State<ParkingFeeInquiry> {
                                 color: Colors.blueGrey,
                               ),
                             ),
+                            trailing: Text("總金額：${list['Amount']}") ,
                             onTap: () {
-                              // Handle onTap action here
+                              print(list);
+                              setState(() {
+                                isExpanded = true;
+                             
+                              });
                             },
                           ),
                           const Divider(),
-                          ListView.builder(
-                            shrinkWrap: true,
-                            itemCount: list["Bill"].length,
-                            itemBuilder: (context, index) {
-                              return ListTile(
-                                title: Text(
-                                  '内容 $index',
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
-                                ),
-                              );
-                            },
+                          Visibility(
+                            visible: true,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: list["Bills"] == null ? 5 :list["Bills"].length,
+                              itemBuilder: (context, index) {
+                               var bills = list["Bills"][index];
+                                return ListTile(
+                                  title: 
+                                      Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                bills['ParkingDate'],
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text('累積停車時間： ${bills['ParkingHours']} 小時'),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                     
+                                    
+                                  
+                                  trailing: Text('付款金額： ${bills['PayAmount']}'),
+                                );
+                                
+                              },
+                            ),
                           ),
+                                                    Visibility(
+                            visible: true,
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: list["Reminders"] == null ? 0 :list["Reminders"].length,
+                              itemBuilder: (context, index) {
+                               var bills = list["Reminders"][index] ;
+                                return ListTile(
+                                  title: 
+                                      Column(
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Text(
+                                                bills['Bills']['ParkingDate']??'',
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Text('累積停車時間： ${bills['ParkingHours']} 小時'),
+                                            ],
+                                          )
+                                        ],
+                                      ),
+                                     
+                                    
+                                  
+                                  trailing: Text('付款金額： ${bills['PayAmount']}'),
+                                );
+                                
+                              },
+                            ),
+                          )
                         ],
                       ),
                     );

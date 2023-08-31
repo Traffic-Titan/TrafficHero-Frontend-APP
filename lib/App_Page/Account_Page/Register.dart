@@ -126,7 +126,9 @@ class _registerState extends State<register> {
             Sha256().sha256Function(registerPasswordController.text).toString(),
         "gender": gender,
         "birthday": birthday,
-        "Google_ID": state.google_sso.value?.id ?? ''
+        "google_id": state.google_sso.value?.id ?? '',
+        "google_avatar" : state.google_sso.value.photoUrl ?? ''
+    
       };
     } else {
       setState(() {
@@ -137,7 +139,9 @@ class _registerState extends State<register> {
               .sha256Function(registerPasswordController.text)
               .toString(),
           "gender": gender,
-          "birthday": birthday
+          "birthday": birthday,
+           "google_id": '',
+        "google_avatar" : ''
         };
       });
     }
@@ -149,8 +153,12 @@ class _registerState extends State<register> {
       state.VerifyEmailSet(registerEmailController.text);
       state.veriffyStateSet('register');
       EasyLoading.dismiss();
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const verify_page()));
+        if (state.google_sso_status == 'register') {
+          Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const Login()));
+        }else{Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const verify_page()));};
+      
     } else {
       EasyLoading.dismiss();
       EasyLoading.showError(
