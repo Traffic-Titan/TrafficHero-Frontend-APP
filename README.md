@@ -13,13 +13,28 @@ Traffic Hero APP
 
 ![Alt text](/readme_image/image.png)
 
-## 2. 環境變數的設定：
+## 2. Flutter環境變數的設定：
 
 ### - Windows :
 
+1. 在開始中找到設定
 
+    ![Alt text](/readme_image/image-18.png)
+2. 在設定中找到系統資訊
 
+    ![Alt text](/readme_image/image-19.png)
+3. 在裝置規格中點選進階系統設定
 
+    ![Alt text](/readme_image/image-20.png)
+4. 找到環境變數
+
+    ![Alt text](/readme_image/image-21.png)
+5. 在系統變數中找到Path
+
+    ![Alt text](/readme_image/image-22.png)
+6. 按編輯進入，並輸入Flutter SDK 路徑
+
+    ![Alt text](/readme_image/image-23.png)
 
 
 ### - MacOS : 
@@ -111,8 +126,8 @@ Google SSO 文件需要到Firebase(https://firebase.google.com/)下載
 
 裡面有個
 
-![Alt text](/readme_image/image-9.png)
-![Alt text](/readme_image/image-10.png)
+ ![Alt text](/readme_image/image-9.png)
+ ![Alt text](/readme_image/image-10.png)
 
 分別是兩個文件的Google SSO 驗證文件
 
@@ -132,7 +147,7 @@ IOS：
 
 找到Open in Xcode並點擊
 
-![Alt text](/readme_image/image-13.png)
+ ![Alt text](/readme_image/image-13.png)
 
 找到Runner並點擊右鍵找到 Add File to 'Runner'
 
