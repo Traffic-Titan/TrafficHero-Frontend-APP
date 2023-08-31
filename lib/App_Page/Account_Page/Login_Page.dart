@@ -25,12 +25,14 @@ class _Login extends State<Login> {
     state = Provider.of<stateManager>(context, listen: false);
     EasyLoading.dismiss();
     // FlutterTts().speak('歡迎來到 Traffic Hero');
+
+    // userSignIn('kent900919@gmail.com', '09190919');
   }
 
   Future<void> getHome() async {
 
       await getUser();
-      await getOperationalStatus();
+      // await getOperationalStatus();
 
 
     //顯示成功訊息
@@ -77,8 +79,7 @@ class _Login extends State<Login> {
   handlesignIn(GoogleSignInAccount? account) async {
     var body = {
       "email": googleController.googleAccount.value?.email ?? '',
-      "Google_ID": googleController.googleAccount.value?.id ?? '',
-      "Google_Avatar": googleController.googleAccount.value?.photoUrl ?? ''
+      "google_id": googleController.googleAccount.value?.id ?? '',
     };
 
     var url = dotenv.env['GoogleSSO'].toString();
@@ -175,12 +176,12 @@ class _Login extends State<Login> {
   }
 
 //一般登陸function
-  Future<bool> userSignIn() async {
+  Future<bool> userSignIn(email,password) async {
     var url = dotenv.env['Login'].toString();
     var jwt = '';
     response = await api().Api_Post({
-      "email": usernameController.text,
-      "password": Sha256().sha256Function(passwordController.text)
+      "email": email,
+      "password": Sha256().sha256Function(password)
     }, url, jwt);
 
     if (response == null) {
@@ -197,8 +198,6 @@ class _Login extends State<Login> {
         });
         print(jsonDecode(response.body)['Token']);
         getHome();
-        // Navigator.push(
-        //     context, MaterialPageRoute(builder: (context) => const All_Page()));
         return true;
       } else {
         EasyLoading.dismiss();
@@ -320,7 +319,7 @@ class _Login extends State<Login> {
                         functionName: '登入',
                       ),
                       onTap: () {
-                        userSignIn();
+                        userSignIn(usernameController.text,passwordController.text);
                       },
                     ),
                     const SizedBox(

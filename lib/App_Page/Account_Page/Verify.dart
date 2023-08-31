@@ -14,7 +14,7 @@ class _verify_pageState extends State<verify_page> {
   var InputErrorText = '';
   var errorState = true;
   late Timer _timer;
-  int _countdownTime = 600; // 十分钟的秒数
+  int _countdownTime = 600; 
   late stateManager state;
   var countdownDisplayControl = true;
   var getVerificationCodeAgain = false;
@@ -57,7 +57,7 @@ class _verify_pageState extends State<verify_page> {
 
   void verify_function(BuildContext context) async {
     var Body = {"email": state.verifyEmail, "code": verifyController.text};
-    var url = '/Account/verify_code';
+var url = dotenv.env['VerifyCode'].toString();
     var res = await api().Api_Post(Body, url,'');
     setState(() {
       response = res;
