@@ -26,7 +26,7 @@ class _Login extends State<Login> {
     EasyLoading.dismiss();
     // FlutterTts().speak('歡迎來到 Traffic Hero');
 
-    // userSignIn('kent900919@gmail.com', '09190919');
+ 
   }
 
   Future<void> getHome() async {
