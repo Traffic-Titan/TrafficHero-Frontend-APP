@@ -17,7 +17,7 @@ class _forgetPasswordPageState extends State<forgetPasswordPage> {
   late stateManager state;
 
   var birthday = '生日',
-      forget_password_error_show = true,
+      showForgetPasswordError = true,
       forget_password_error_text = '',
       forget_password_email = true,
       response = null;
@@ -30,7 +30,7 @@ class _forgetPasswordPageState extends State<forgetPasswordPage> {
   }
 
   //控制忘記密碼的Function
-  void forget_password_function(context) async {
+  void forgetPasswordFunction(context) async {
     var Body = {"email": forget_email.text, "birthday": birthday};
     var url = dotenv.env['ForgotPassword'].toString();
     var jwt = state.accountState;
@@ -119,7 +119,7 @@ class _forgetPasswordPageState extends State<forgetPasswordPage> {
                   child: const block_button(functionName: "送出"),
                   onTap: () {
                     EasyLoading.show(status: 'loading...');
-                    forget_password_function(context);
+                    forgetPasswordFunction(context);
                   },
                 ),
               ],

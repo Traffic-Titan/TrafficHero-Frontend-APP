@@ -19,7 +19,7 @@ Traffic Hero APP
 
 1. 在開始中找到設定
 
-    ![Alt text](/readme_image/image-18.png)
+    ![Alt text](/readme_image/image-18.png )
 2. 在設定中找到系統資訊
 
     ![Alt text](/readme_image/image-19.png)
@@ -154,6 +154,38 @@ IOS：
 ![Alt text](/readme_image/image-14.png)
 
 選擇驗證文件按確定就好了
+
+### Google SSO 如果要在電腦上做Android 應用程式測試需要使用SHA 憑證指紋來做電腦上的驗證
+1. 要先確定電腦有沒有安裝java
+2. 打開CMD OR 終端機，輸入
+
+windows
+```
+keytool -list -v \ -alias androiddebugkey -keystore %USERPROFILE%\.android\debug.keystore
+```
+
+MacOS
+```
+keytool -list -v \ -alias androiddebugkey -keystore ~/.android/debug.keystore
+```
+
+就會得到（以下為官方文件提供之範例）
+```
+> Task :app:signingReport
+Variant: debug
+Config: debug
+Store: ~/.android/debug.keystore
+Alias: AndroidDebugKey
+MD5: A5:88:41:04:8D:06:71:6D:FE:33:76:87:AC:AD:19:23
+SHA1: A7:89:E5:05:C8:17:A1:22:EA:90:6E:A6:EA:A3:D4:8B:3A:30:AB:18
+SHA-256: 05:A2:2C:35:EE:F2:51:23:72:4D:72:67:A5:6C:8C:58:22:2A:00:D6:DB:F6:45:D5:C1:82:D2:80:A4:69:A8:FE
+Valid until: Wednesday, August 10, 2044
+```
+
+再到FireBase 輸入SHA指紋(只需輸入SHA1、SHA-256)
+
+
+![Alt text](/readme_image/image-24.png)
 
 ## 4. 啟動虛擬機
 

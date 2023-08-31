@@ -14,7 +14,7 @@ class _verify_pageState extends State<verify_page> {
   var InputErrorText = '';
   var errorState = true;
   late Timer _timer;
-  int _countdownTime = 600; 
+  int _countdownTime = 600;
   late stateManager state;
   var countdownDisplayControl = true;
   var getVerificationCodeAgain = false;
@@ -57,8 +57,8 @@ class _verify_pageState extends State<verify_page> {
 
   void verify_function(BuildContext context) async {
     var Body = {"email": state.verifyEmail, "code": verifyController.text};
-var url = dotenv.env['VerifyCode'].toString();
-    var res = await api().Api_Post(Body, url,'');
+    var url = dotenv.env['VerifyCode'].toString();
+    var res = await api().Api_Post(Body, url, '');
     setState(() {
       response = res;
     });
@@ -109,16 +109,6 @@ var url = dotenv.env['VerifyCode'].toString();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent.png,
-      //   elevation: 0,
-      //   leading: IconButton(
-      //     icon: const Icon(Icons.arrow_back_ios),
-      //     onPressed: () {
-      //       Navigator.of(context).pop();
-      //     },
-      //   ),
-      // ),
       backgroundColor: const Color.fromARGB(168, 1, 99, 148),
       body: SafeArea(
         child: Center(
@@ -154,29 +144,27 @@ var url = dotenv.env['VerifyCode'].toString();
                 ),
               if (getVerificationCodeAgain)
                 InkWell(
-                  child:const Text(
-                  '重新獲取驗證碼',
-                  style:  TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                  ),
-                ),
-                  onTap: () {
-
-                    if (state.veriffyState == 'register') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const register()));
-                    } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const forgetPasswordPage()));
-
-                    }}
-                ),
+                    child: const Text(
+                      '重新獲取驗證碼',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: () {
+                      if (state.veriffyState == 'register') {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const register()));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const forgetPasswordPage()));
+                      }
+                    }),
               const SizedBox(
                 height: 80,
               ),
