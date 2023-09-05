@@ -118,7 +118,7 @@ class _AllPageState extends State<AllPage> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Image.asset('assets/topbar/SmartAssistant.png'),
+          icon: Image.asset('assets/topbar/message.png'),
           iconSize: 50,
           onPressed: () => print('object'),
         ),

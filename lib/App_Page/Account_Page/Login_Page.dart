@@ -211,6 +211,7 @@ class _Login extends State<Login> {
     } else {
       if (response.statusCode == 200) {
         EasyLoading.dismiss();
+        await getHome();
         EasyLoading.showSuccess(
             jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
         state.updateAccountState(await jsonDecode(response.body)['token']);
@@ -219,7 +220,7 @@ class _Login extends State<Login> {
           showLoginError = false;
         });
         print(jsonDecode(response.body)['token']);
-        getHome();
+        
         return true;
       } else {
         EasyLoading.dismiss();

@@ -84,7 +84,7 @@ flutter:
     - assets/topbar/Mode_Car.png
     - assets/topbar/Mode_Scooter.png
     - assets/topbar/Mode_Public_Transport.png
-    - assets/topbar/SmartAssistant.png
+    - assets/topbar/message.png
     - assets/topbar/Default_Avatar.png
     - assets/login_icon/google.png
     - assets/login_icon/sign_in.png
