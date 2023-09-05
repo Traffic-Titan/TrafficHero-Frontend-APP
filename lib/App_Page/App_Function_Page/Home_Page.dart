@@ -21,6 +21,7 @@ class _Home extends State<Home> {
       _operationConditionLight;
   var operationalStatus = [];
   var weather;
+  Color colorStatus = Colors.green;
 
   @override
   void didChangeDependencies() {
@@ -30,7 +31,7 @@ class _Home extends State<Home> {
     print(state.accountState);
     setState(() {
       weather = state.weather;
-       operationalStatus = state.OperationalStatus;
+      operationalStatus = state.OperationalStatus;
     });
 
     ii();
@@ -111,6 +112,14 @@ class _Home extends State<Home> {
     }
   }
 
+  // changeColor(color) async {
+  //   if(color == green){
+  //     setState(() {
+  //       colorStatus = Colors.green;
+  //     });
+  //   }
+  // }
+
   String splitTextIntoChunks(String text, int chunkSize) {
     List<String> chunks = [];
     for (int i = 0; i < text.length; i += chunkSize) {
@@ -137,70 +146,68 @@ class _Home extends State<Home> {
                   MaterialPageRoute(
                       builder: (context) => WebView(tt: weather['url'])));
             },
-            child:  SizedBox(
-                height: 100,
-                width: 600,
-                child: Column(
-                
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${weather['temperature']}°',
-                          style: TextStyle(
-                            fontSize: 75,
-                            color: Color.fromRGBO(46, 117, 182, 1),
-                          ),
+            child: SizedBox(
+              height: 100,
+              width: 600,
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '${weather['temperature']}°',
+                        style: TextStyle(
+                          fontSize: 75,
+                          color: Color.fromRGBO(46, 117, 182, 1),
                         ),
-                        //今日溫度
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(weather['area'].toString(),
+                      ),
+                      //今日溫度
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(weather['area'].toString(),
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Color.fromRGBO(46, 117, 182, 1),
+                              )),
+                          Row(
+                            children: [
+                              Text(
+                                '最高 ${weather['the_highest_temperature']}°',
                                 style: TextStyle(
-                                  fontSize: 20,
+                                  fontSize: 18,
                                   color: Color.fromRGBO(46, 117, 182, 1),
-                                )),
-                            Row(
-                              children: [
-                                Text(
-                                  '最高 ${weather['the_highest_temperature']}°',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color.fromRGBO(46, 117, 182, 1),
-                                  ),
                                 ),
-                                SizedBox(
-                                  width: 5,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                '最低 ${weather['the_lowest_temperature']}°',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  color: Color.fromRGBO(46, 117, 182, 1),
                                 ),
-                                Text(
-                                  '最低 ${weather['the_lowest_temperature']}°',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color.fromRGBO(46, 117, 182, 1),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Image.network(
-                              weather['weather_icon_url'].toString(),
-                              height: 100,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                              )
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Image.network(
+                            weather['weather_icon_url'].toString(),
+                            height: 100,
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
             ),
-          
+          ),
           Visibility(
             visible: !_toolList,
             child: Container(
@@ -216,42 +223,39 @@ class _Home extends State<Home> {
           Visibility(
             visible: _toolList,
             child: Container(
-                  height: 300,
-                  color: const Color.fromRGBO(221, 235, 247, 1),
-                  // padding: const EdgeInsets.all(5),
-                  margin: const EdgeInsets.only(bottom: 20),
-                  child: 
-                  
-                  Column(
-                    children: [
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: const Color.fromRGBO(47, 125, 195, 1),
-                        child: Text(
-                          "工具列",
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 18, color: Colors.white),
-                        ),
+                height: 300,
+                color: const Color.fromRGBO(221, 235, 247, 1),
+                // padding: const EdgeInsets.all(5),
+                margin: const EdgeInsets.only(bottom: 20),
+                child: Column(
+                  children: [
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: const Color.fromRGBO(47, 125, 195, 1),
+                      child: Text(
+                        "工具列",
+                        textAlign: TextAlign.center,
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.white),
                       ),
-                      SizedBox(
-                        height: 110,
-                        child: GridView(
-                          padding: EdgeInsets.zero,
-                          // scrollDirection: Axis.horizontal,
-                          physics: NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 4, //横轴三个子widget
-                                  childAspectRatio: 0.01),
-                          children: List.generate(
-                            toolList.length,
-                            (index) {
-                              final tool = toolList[index];
-                              return SizedBox(
-                                height: 70,
-                                child: 
-                                Expanded(child:  InkWell(
+                    ),
+                    SizedBox(
+                      height: 110,
+                      child: GridView(
+                        padding: EdgeInsets.zero,
+                        // scrollDirection: Axis.horizontal,
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4, //横轴三个子widget
+                            childAspectRatio: 0.01),
+                        children: List.generate(
+                          toolList.length,
+                          (index) {
+                            final tool = toolList[index];
+                            return SizedBox(
+                              height: 70,
+                              child: Expanded(
+                                child: InkWell(
                                   child: Column(
                                     children: [
                                       Container(
@@ -284,43 +288,44 @@ class _Home extends State<Home> {
                                                   tt: tool['url'].toString())));
                                     }
                                   },
-                                ),),
-                               
-                              );
-                            },
-                          ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: const Color.fromRGBO(47, 125, 195, 1),
-                        child: Text(
-                          "快速尋找地點",
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 18, color: Colors.white),
-                        ),
+                    ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: const Color.fromRGBO(47, 125, 195, 1),
+                      child: Text(
+                        "快速尋找地點",
+                        textAlign: TextAlign.center,
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.white),
                       ),
-                      SizedBox(height: 10,),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
 
-                         SizedBox(
-                        height: 130,
-                        child: GridView(
-                          padding: EdgeInsets.zero,
-                          // scrollDirection: Axis.horizontal,
-                          physics: NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 4, //横轴三个子widget
-                                  childAspectRatio: 0.01),
-                          children: List.generate(
-                            fastLocation.length,
-                            (index) {
+                    SizedBox(
+                      height: 130,
+                      child: GridView(
+                        padding: EdgeInsets.zero,
+                        // scrollDirection: Axis.horizontal,
+                        physics: NeverScrollableScrollPhysics(),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 4, //横轴三个子widget
+                            childAspectRatio: 0.01),
+                        children: List.generate(
+                          fastLocation.length,
+                          (index) {
                             final fastList = fastLocation[index];
-                              return SizedBox(
-                                height: 70,
-                                child: 
-                                Expanded(child:  InkWell(
+                            return SizedBox(
+                              height: 70,
+                              child: Expanded(
+                                child: InkWell(
                                   child: Column(
                                     children: [
                                       Container(
@@ -339,20 +344,19 @@ class _Home extends State<Home> {
                                   ),
                                   onTap: () {
                                     EasyLoading.show(status: 'loading...');
-                           launch(fastList['value'].toString());
+                                    launch(fastList['value'].toString());
                                   },
-                                ),),
-                               
-                              );
-                            },
-                          ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
-                     
-                      // ),
-                    ],
-                  )),
-            
+                    ),
+
+                    // ),
+                  ],
+                )),
           ),
           Visibility(
             visible: _nearbyStop,
@@ -451,24 +455,24 @@ class _Home extends State<Home> {
                         child: Column(
                           children: [
                             Container(
-                              width: 70,
-                              margin: const EdgeInsets.all(3.0),
-                              child:
-                            Container(
-      padding:const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-          border: Border.all(color: Colors.white),
-          borderRadius: BorderRadius.circular(40),
-          color:const Color.fromARGB(255, 255, 255, 255),
-      ),
-      
-      child: SizedBox(),
-    )
-                              //  Image.asset(
-                              //   changeColor(operationNews["status"].toString()),
-                              //   height: 40,
-                              // ),
-                            ),
+                                width: 40,
+                                height: 40,
+                                margin: const EdgeInsets.all(3.0),
+                                child: SizedBox(
+                                    height: 40,
+                                    width: 40,
+                                    child: Container(
+                                      decoration: BoxDecoration(
+                                          color: colorStatus,
+                                          borderRadius:
+                                              BorderRadius.circular(50)),
+                                    ))
+
+                                //  Image.asset(
+                                //   changeColor(operationNews["status"].toString()),
+                                //   height: 40,
+                                // ),
+                                ),
                             Text(
                               splitTextIntoChunks(
                                   operationNews["name"].toString(), 3), // 每行兩個字

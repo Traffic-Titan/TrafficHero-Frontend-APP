@@ -31,7 +31,7 @@ class api {
         return response;
       }
     } catch (e) {
-      EasyLoading.showError(e.toString());
+      EasyLoading.showError('伺服器錯誤');
       print(e.toString());
       throw e;
     }
@@ -58,7 +58,7 @@ class api {
         return response;
       }
     } catch (e) {
-      EasyLoading.showError(e.toString());
+      EasyLoading.showError('伺服器錯誤');
       print(e.toString());
       rethrow;
     }
@@ -90,7 +90,7 @@ class api {
         return response;
       }
     } catch (e) {
-      EasyLoading.showError(e.toString());
+     EasyLoading.showError('伺服器錯誤');
       print(e.toString());
       throw e;
     }

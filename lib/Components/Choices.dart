@@ -200,13 +200,13 @@ List<Map<String, String>> scooterway = [
 
 List<Map<String, String>> publicTransport = [
   {'value': 'Bus', 'title': '公車', 'body': '公路'},
-  {'value': 'InterCityBus', 'title': '公路客運', 'body': '公路'},
-  {'value': 'TaiwanTouristShuttle', 'title': '台灣好行公車', 'body': '公路'},
-  {'value': '共享單車', 'title': '共享單車', 'body': '公路'},
-  {'value': 'TRA', 'title': '台鐵', 'body': '鐵路'},
-  {'value': 'MRT', 'title': '捷運', 'body': '鐵路'},
-  {'value': 'THSR', 'title': '高鐵', 'body': '鐵路'},
-  {'value': 'AlishanForestRailway', 'title': '阿里山林業鐵路', 'body': '鐵路'},
+  {'value': 'intercity_bus', 'title': '公路客運', 'body': '公路'},
+  {'value': 'taiwan_tourist_shuttle', 'title': '台灣好行公車', 'body': '公路'},
+  {'value': 'public_bicycle', 'title': '共享單車', 'body': '公路'},
+  {'value': 'taiwan_railway', 'title': '台鐵', 'body': '鐵路'},
+  {'value': 'mrt', 'title': '捷運', 'body': '鐵路'},
+  {'value': 'taiwan_high_speed_rail', 'title': '高鐵', 'body': '鐵路'},
+  {'value': 'alishan_forest_railway', 'title': '阿里山林業鐵路', 'body': '鐵路'},
 ];
 
 List<Map<String, String>> stationList = [

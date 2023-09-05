@@ -118,7 +118,7 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
                         borderRadius: BorderRadius.circular(14.0),
                       ),
                       child: Column(
-                        children: [
+                        children: [    
                           ListTile(
                             title: Text(
                               font2(list["area"]).toString(),
@@ -137,7 +137,7 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
                           ),
                           const Divider(),
                           Visibility(
-                            visible: true,
+                            visible: isExpanded,
                             child:
                             
                             Column(
