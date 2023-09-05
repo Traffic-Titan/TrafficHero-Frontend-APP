@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-// ignore_for_file: public_member_api_docs, unnecessary_brace_in_string_interps, unnecessary_import, depend_on_referenced_packages
+// ignore_for_file: public_member_api_docs, unnecessary_brace_in_string_interps, unnecessary_import, depend_on_referenced_packages, file_names
 
 import 'dart:async';
 import 'dart:convert';

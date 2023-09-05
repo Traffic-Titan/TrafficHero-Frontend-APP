@@ -85,7 +85,7 @@ class _verify_pageState extends State<verify_page> {
         state.forgetTokenSet(jsonDecode(response.body)['Token']);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ChangePassword()),
+          MaterialPageRoute(builder: (context) => const changePassword()),
         );
       } else {
         EasyLoading.dismiss();
@@ -156,13 +156,13 @@ class _verify_pageState extends State<verify_page> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const register()));
+                                builder: (context) => const registerPage()));
                       } else {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    const forgetPasswordPage()));
+                                  const forgetPasswordPage()));
                       }
                     }),
               const SizedBox(

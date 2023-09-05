@@ -3,13 +3,13 @@ import 'package:intl/intl.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:traffic_hero/imports.dart';
 
-class register extends StatefulWidget {
-  const register({super.key});
+class registerPage extends StatefulWidget {
+  const registerPage({super.key});
   @override
-  State<register> createState() => _registerState();
+  State<registerPage> createState() => _registerPage();
 }
 
-class _registerState extends State<register> {
+class _registerPage extends State<registerPage> {
   //設定輸入匡的控制器
   final registerNameController = TextEditingController();
   final registerEmailController = TextEditingController();
@@ -68,6 +68,7 @@ class _registerState extends State<register> {
 //控制使否要顯示密碼
   void Show_Password_check() {
     if (showPasswordCkeck == true) {
+      //如果為顯示就改成不顯示
       setState(() {
         showPasswordCkeck = false;
       });
@@ -77,8 +78,9 @@ class _registerState extends State<register> {
       });
     }
   }
+
 //確認密碼是否一樣
-    check_password_function() {
+  check_password_function() {
     if (registerPasswordController.text !=
         registercheckPasswordController.text) {
       EasyLoading.dismiss();
@@ -127,8 +129,7 @@ class _registerState extends State<register> {
         "gender": gender,
         "birthday": birthday,
         "google_id": state.google_sso.value?.id ?? '',
-        "google_avatar" : state.google_sso.value.photoUrl ?? ''
-    
+        "google_avatar": state.google_sso.value.photoUrl ?? ''
       };
     } else {
       setState(() {
@@ -140,24 +141,25 @@ class _registerState extends State<register> {
               .toString(),
           "gender": gender,
           "birthday": birthday,
-           "google_id": '',
-        "google_avatar" : ''
+          "google_id": '',
+          "google_avatar": ''
         };
       });
     }
     var url = dotenv.env['Register'].toString();
-    
 
     response = await api().Api_Post(body, url, '');
     if (response.statusCode == 200) {
       state.VerifyEmailSet(registerEmailController.text);
       state.veriffyStateSet('register');
       EasyLoading.dismiss();
-        if (state.google_sso_status == 'register') {
-          Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const Login()));
-        }else{Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const verify_page()));};
+      if (state.google_sso_status == 'register') {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const Login()));
+      } else {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const verify_page()));
+      }
       
     } else {
       EasyLoading.dismiss();
@@ -165,7 +167,6 @@ class _registerState extends State<register> {
           jsonDecode(utf8.decode(response.bodyBytes))['detail']);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -248,10 +249,8 @@ class _registerState extends State<register> {
                   Container(
                     width: 310,
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 0),
-                      child: 
-                      decoratedBox()
-                    ),
+                        padding: const EdgeInsets.symmetric(horizontal: 0),
+                        child: decoratedBox()),
                   ),
                   const SizedBox(
                     height: 10,
@@ -341,5 +340,4 @@ class _registerState extends State<register> {
           )),
     );
   }
-
 }

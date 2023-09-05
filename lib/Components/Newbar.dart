@@ -29,6 +29,7 @@ class _NavbarState extends State<Navbar> {
     googleController.google_signOut();
     state.updateAccountState('');
     state.updateModeState('car');
+    EasyLoading.dismiss();
     Navigator.pushReplacement(
         context, MaterialPageRoute(builder: (context) => const Login()));
   }
@@ -42,12 +43,10 @@ class _NavbarState extends State<Navbar> {
       UserAccountsDrawerHeader(
         accountName:  Text(
           state.profile?["name"] ?? '',
-          // '1',
           style: const TextStyle(color: Colors.white),
         ),
         accountEmail:  Text(
           state.profile?["email"] ?? '',
-
           style: const TextStyle(color: Colors.white),
         ),
         currentAccountPicture: CircleAvatar(
@@ -66,7 +65,6 @@ class _NavbarState extends State<Navbar> {
          
         ),
       ),
-      if (state.accountState != '')
         ListTile(
           leading: const Icon(Icons.logout_outlined),
           title: const Text('登出'),

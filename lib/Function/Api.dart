@@ -17,7 +17,7 @@ class api {
             "Content-Type": "application/json",
           },
           body: jsonEncode(Body));
-      print(await response);
+     
       if (response.statusCode == 200) {
         DateTime endTime = DateTime.now();
         Duration durationInMilliseconds = endTime.difference(startTime);

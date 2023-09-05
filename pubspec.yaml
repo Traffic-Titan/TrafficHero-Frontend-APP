@@ -101,6 +101,7 @@ flutter:
     - assets/home/light_normal.png
     - assets/home/light_abnormal.png
     - assets/home/light_partialAdnormal.png
+    - assets/home/light_no_data.png
     - assets/home/Etag_Logo.png
     - assets/home/監理站_Logo.png
     - assets/roadSign_icon/countyRoad/countyRoad_7.png

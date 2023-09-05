@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print, avoid_types_as_parameter_names, use_build_context_synchronously
+// ignore_for_file: unused_import, file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print, avoid_types_as_parameter_names, use_build_context_synchronously, unnecessary_brace_in_string_interps
 
 import 'package:traffic_hero/Imports.dart';
 // Make sure to import other necessary dependencies here
@@ -14,7 +14,8 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
   final afterLicensePlateController = TextEditingController();
   final beforeLicensePlateController = TextEditingController();
   late stateManager state;
-  
+  var list2 = [];
+
   //綁定車牌測試用
   var test = [
     {"LicensePlateNumber": 'NKJ-5657', "Type": "M"},
@@ -31,12 +32,12 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
   }
 
   get_Amount(LicensePlateNumber, type) async {
-    var Body = {"licensePlateNumber": LicensePlateNumber, "type": type};
+    EasyLoading.show(status: '查詢中...');
     var response;
-    var url = dotenv.env['ParkingFee'].toString()+ '?LicensePlateNumber=${LicensePlateNumber}&Type=${type}';
-    var jwt = ','+state.accountState;
+    var url = '${dotenv.env['ParkingFee']}?license_plate_number=${LicensePlateNumber}&type=${type}';
+    var jwt = ',${state.accountState}';
     try {
-      response = await api().Api_Get( url, jwt);
+      response = await api().Api_Get(url, jwt);
     } catch (e) {
       print(e);
     }
@@ -44,25 +45,30 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
     if (response.statusCode == 200) {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
       var list = [];
-      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-      for(var i =0 ; i<responseBody['Detail'].length;i++){if(responseBody['Detail'] == '服務維護中'){
 
-      }else{
-       print(responseBody['Detail'][i]);
-       list.add(responseBody['Detail'][i]);
-      }}
-      
-      // print(responseBody);
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ParkingFeeInquiry(
-            
-            listUser: jsonDecode(utf8.decode(response.bodyBytes)),
-            listAmount: list,
-          ),
-        ),
-      );
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      print(responseBody['detail'].length);
+      for (var i = 0; i < responseBody['detail'].length.toInt(); i++) {
+        if (responseBody['detail'][i]['amount'] == -1) {
+          list2.add(responseBody['detail'][i]);
+          print(list2);
+        } else {
+          print(responseBody['detail'][i]);
+          list.add(responseBody['detail'][i]);
+        }
+      }
+
+
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => parkingFeeInquiry(
+      //       listUser: jsonDecode(utf8.decode(response.bodyBytes)),
+      //       listAmount: list,
+      //       list2: list2,
+      //     ),
+      //   ),
+      // );
     } else {
       showPlatformDialog(
         context: context,
@@ -141,7 +147,6 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                                     BasicDialogAction(
                                       title: const Text("Discard"),
                                       onPressed: () {
-                                        
                                         Navigator.pop(context);
                                       },
                                     ),
@@ -164,12 +169,40 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                                     fontWeight: FontWeight.w500,
                                   ),
                                 ),
-                                onTap: () {
-                                  EasyLoading.show(status: 'Loading...');
-                                 
-                                  get_Amount(
+                                onTap: () async {
+                                  await get_Amount(
                                       list['LicensePlateNumber'].toString(),
                                       list['Type'].toString());
+                                  try{
+                                    if (list2.isNotEmpty) {
+                                    showPlatformDialog(
+                                      context: context,
+                                      builder: (context) => BasicDialogAlert(
+                                        title: const Text(
+                                          "維護中",
+                                          style: TextStyle(fontSize: 20),
+                                        ),
+                                        content:  ListView.builder(itemCount: list2.length,itemBuilder: (context,index) {
+                                          return ListTile(
+                                            title: Text(list['area'].toString()),
+                                          );
+                                        }),
+                                        actions: <Widget>[
+                                          BasicDialogAction(
+                                            title: const Text("Discard"),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                              
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                  }catch(e){
+                                    print(e);
+                                  }
+                                  
                                 },
                               );
                             },
@@ -244,7 +277,6 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                   const SizedBox(height: 20),
                   InkWell(
                     onTap: () {
-                      EasyLoading.show(status: 'Loading...');
                       get_Amount(
                           '${beforeLicensePlateController.text}-${afterLicensePlateController.text}',
                           type);

@@ -24,16 +24,14 @@ class _Login extends State<Login> {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
     EasyLoading.dismiss();
-    // FlutterTts().speak('歡迎來到 Traffic Hero');
-
- 
   }
 
+
+
   Future<void> getHome() async {
-
-      await getUser();
-      // await getOperationalStatus();
-
+    await getUser();
+    await getOperationalStatus();
+    await getWeather();
 
     //顯示成功訊息
     EasyLoading.showSuccess(
@@ -44,10 +42,12 @@ class _Login extends State<Login> {
   }
 
   getOperationalStatus() async {
-    var url = dotenv.env['OperationalStatus'].toString();
+     var position =await geolocator().updataPosition();
+    var url = dotenv.env['OperationalStatus'].toString() + '?longitude=${position.longitude}&latitude=${position.latitude}';
     var jwt = ',' + state.accountState.toString();
 
     var response = await api().Api_Get(url, jwt);
+    print(jsonDecode(utf8.decode(response.bodyBytes)));
     if (response.statusCode == 200) {
       state
           .updateOperationalStatus(jsonDecode(utf8.decode(response.bodyBytes)));
@@ -57,10 +57,29 @@ class _Login extends State<Login> {
     }
   }
 
+  getWeather() async {
+    var position =await geolocator().updataPosition();
+    var response;
+    var url = dotenv.env['Weather'].toString() + '?longitude=${position.longitude}&latitude=${position.latitude}';
+    var jwt = ',' + state.accountState.toString();
+    print(jwt);
+    try {
+      response = await api().Api_Get(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+
+    if (response.statusCode == 200) {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+      state.updateWeatherState(jsonDecode(utf8.decode(response.bodyBytes)));
+    } else {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+  }
+
   getUser() async {
     var response;
     var url = dotenv.env['Profile'];
-        print(url.toString()+'login');
     var jwt = ',' + state.accountState.toString();
     print(jwt);
     try {
@@ -77,6 +96,7 @@ class _Login extends State<Login> {
   }
 
   handlesignIn(GoogleSignInAccount? account) async {
+    
     var body = {
       "email": googleController.googleAccount.value?.email ?? '',
       "google_id": googleController.googleAccount.value?.id ?? '',
@@ -96,7 +116,7 @@ class _Login extends State<Login> {
         if (response.statusCode == 200) {
           //將狀態寫入
           state.updateAccountState(
-              await jsonDecode(response.body)['Token'] ?? '');
+              await jsonDecode(response.body)['token'] ?? '');
           //跳轉頁面
           getHome();
           //SSO回傳訊息403，判斷為未註冊，跳轉註冊頁面
@@ -106,7 +126,7 @@ class _Login extends State<Login> {
           //跳轉頁面到註冊
           Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => const register()),
+              MaterialPageRoute(builder: (context) => const registerPage()),
               (route) => false);
           //將google帳戶資訊寫入全局，方便調用
           state.google_sso_Set(googleController.googleAccount);
@@ -124,6 +144,8 @@ class _Login extends State<Login> {
           googleController.google_signOut();
         }
       } catch (e) {
+        googleController.google_signOut();
+        
         print(e);
       }
     } else {
@@ -142,7 +164,7 @@ class _Login extends State<Login> {
         count++;
       });
       if (count <= 1) {
-        EasyLoading.show(status: 'Loading.......');
+        
         handlesignIn(account);
       }
     }).onError((err) {
@@ -176,13 +198,13 @@ class _Login extends State<Login> {
   }
 
 //一般登陸function
-  Future<bool> userSignIn(email,password) async {
+  Future<bool> userSignIn(email, password) async {
     var url = dotenv.env['Login'].toString();
     var jwt = '';
-    response = await api().Api_Post({
-      "email": email,
-      "password": Sha256().sha256Function(password)
-    }, url, jwt);
+    response = await api().Api_Post(
+        {"email": email, "password": Sha256().sha256Function(password)},
+        url,
+        jwt);
 
     if (response == null) {
       return false;
@@ -191,12 +213,12 @@ class _Login extends State<Login> {
         EasyLoading.dismiss();
         EasyLoading.showSuccess(
             jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
-        state.updateAccountState(await jsonDecode(response.body)['Token']);
+        state.updateAccountState(await jsonDecode(response.body)['token']);
         setState(() {
           response = response;
           showLoginError = false;
         });
-        print(jsonDecode(response.body)['Token']);
+        print(jsonDecode(response.body)['token']);
         getHome();
         return true;
       } else {
@@ -218,7 +240,7 @@ class _Login extends State<Login> {
 
   void register_page(context) {
     Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const register()));
+        context, MaterialPageRoute(builder: (context) => const registerPage()));
   }
 
   @override
@@ -319,7 +341,9 @@ class _Login extends State<Login> {
                         functionName: '登入',
                       ),
                       onTap: () {
-                        userSignIn(usernameController.text,passwordController.text);
+                        EasyLoading.show(status: '登入中...');
+                        userSignIn(
+                            usernameController.text, passwordController.text);
                       },
                     ),
                     const SizedBox(
@@ -363,6 +387,7 @@ class _Login extends State<Login> {
                               try {
                                 if (googleController.googleAccount.value ==
                                     null) {
+                                      EasyLoading.show(status: '登入中...');
                                   googleController.google();
                                 } else {
                                   //確保在登錄界面保持登出

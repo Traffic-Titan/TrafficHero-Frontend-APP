@@ -379,7 +379,7 @@ class _NewsState extends State<News> {
                 leading: Column(
                   children: [
                     Container(
-                      child: Image.network(news["LogoURL"].toString()),
+                      child: Image.network(news["logo_url"].toString()),
                       width: 50,
                       height: 50,
                       // fit: BoxFit.cover,
@@ -394,7 +394,7 @@ class _NewsState extends State<News> {
                     Row(
                       children: [
                         Text(
-                          news['UpdateTime'].toString(),
+                          news['update_time'].toString(),
                           style: TextStyle(fontSize: 12),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -405,7 +405,7 @@ class _NewsState extends State<News> {
                       children: [
                         Expanded(
                           child: Text(
-                            news['Title'].toString(),
+                            news['title'].toString(),
                             style: TextStyle(fontSize: 15),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -415,19 +415,19 @@ class _NewsState extends State<News> {
                     ),
                   ],
                 ),
-                subtitle: Text(news['NewsCategory'].toString()),
+                subtitle: Text(news['news_category'].toString()),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                   size: 30,
                 ),
                 onTap: () {
                   EasyLoading.show(status: 'loading...');
-                  if (news['NewsURL'].toString() != '') {
+                  if (news['news_url'].toString() != '') {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                WebView(tt: news['NewsURL'].toString())));
+                                WebView(tt: news['news_url'].toString())));
                   } else {
                     print(news);
                     Navigator.push(

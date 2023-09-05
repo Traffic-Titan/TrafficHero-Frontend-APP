@@ -19,7 +19,8 @@ class _Home extends State<Home> {
       _nearbyStop,
       _operationCondition,
       _operationConditionLight;
-        var operationalStatus = [];
+  var operationalStatus = [];
+  var weather;
 
   @override
   void didChangeDependencies() {
@@ -28,9 +29,10 @@ class _Home extends State<Home> {
     state = Provider.of<stateManager>(context, listen: false);
     print(state.accountState);
     setState(() {
-      //  operationalStatus = state.OperationalStatus;
+      weather = state.weather;
+       operationalStatus = state.OperationalStatus;
     });
-   
+
     ii();
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
@@ -86,21 +88,20 @@ class _Home extends State<Home> {
         _nearbyStop = true;
         _operationCondition = true;
         _operationConditionLight = true;
-         
       });
     }
   }
 
   ii() async {
     positionNow = await geolocator().updataPosition();
-    List<Placemark> placemarks =
-        await placemarkFromCoordinates(positionNow.latitude, positionNow.longitude);
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+        positionNow.latitude, positionNow.longitude);
     print((placemarks.isNotEmpty
         ? placemarks[0].administrativeArea.toString()
         : null)!);
   }
 
-   changeColor(color) {
+  changeColor(color) {
     if (color == 'green') {
       return 'assets/home/light_normal.png';
     } else if (color == 'red') {
@@ -110,7 +111,7 @@ class _Home extends State<Home> {
     }
   }
 
-    String splitTextIntoChunks(String text, int chunkSize) {
+  String splitTextIntoChunks(String text, int chunkSize) {
     List<String> chunks = [];
     for (int i = 0; i < text.length; i += chunkSize) {
       int endIndex = i + chunkSize;
@@ -129,177 +130,229 @@ class _Home extends State<Home> {
       margin: const EdgeInsets.only(left: 15, right: 15),
       child: Column(
         children: [
-          const Row(
-            children: [
-              SizedBox(
-                height: 15,
-              ),
-              Text(
-                '23°',
-                style: TextStyle(
-                  fontSize: 80,
-                  color: Color.fromRGBO(46, 117, 182, 1),
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => WebView(tt: weather['url'])));
+            },
+            child:  SizedBox(
+                height: 100,
+                width: 600,
+                child: Column(
+                
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${weather['temperature']}°',
+                          style: TextStyle(
+                            fontSize: 75,
+                            color: Color.fromRGBO(46, 117, 182, 1),
+                          ),
+                        ),
+                        //今日溫度
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(weather['area'].toString(),
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Color.fromRGBO(46, 117, 182, 1),
+                                )),
+                            Row(
+                              children: [
+                                Text(
+                                  '最高 ${weather['the_highest_temperature']}°',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color.fromRGBO(46, 117, 182, 1),
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text(
+                                  '最低 ${weather['the_lowest_temperature']}°',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color.fromRGBO(46, 117, 182, 1),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Image.network(
+                              weather['weather_icon_url'].toString(),
+                              height: 100,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  ],
                 ),
               ),
-              //今日溫度
-              Text('雲林縣斗六市',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Color.fromRGBO(46, 117, 182, 1),
-                  )),
-            ],
-          ),
+            ),
+          
           Visibility(
             visible: !_toolList,
             child: Container(
-                width: MediaQuery.of(context).size.width,
-                color: const Color.fromRGBO(47, 125, 195, 1),
-                child: Text(
-                  display1,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 20, color: Colors.white),
-                ),
+              width: MediaQuery.of(context).size.width,
+              color: const Color.fromRGBO(47, 125, 195, 1),
+              child: Text(
+                display1,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 20, color: Colors.white),
               ),
+            ),
           ),
           Visibility(
             visible: _toolList,
-            child: Expanded(
-              child: Container(
-                  height: 20,
+            child: Container(
+                  height: 300,
                   color: const Color.fromRGBO(221, 235, 247, 1),
                   // padding: const EdgeInsets.all(5),
                   margin: const EdgeInsets.only(bottom: 20),
-                  child: Column(
+                  child: 
+                  
+                  Column(
                     children: [
                       Container(
                         width: MediaQuery.of(context).size.width,
                         color: const Color.fromRGBO(47, 125, 195, 1),
-                        // decoration: BoxDecoration(
-                        //   color: const Color.fromRGBO(47, 125, 195, 1),
-                        //   borderRadius: new BorderRadius.circular(20),
-                        // ),
                         child: Text(
                           "工具列",
                           textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 18, color: Colors.white),
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.white),
                         ),
                       ),
-                        SizedBox(
-                          height: 120,
-                          child: GridView(
-                            padding: EdgeInsets.zero,
-                            // scrollDirection: Axis.horizontal,
-                            physics: NeverScrollableScrollPhysics(),
-                            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 4, //横轴三个子widget
-                                childAspectRatio: 0.95
-                            ),
-                            children: List.generate(
-                              toolList.length,
-                              (index) {
-                                final tool = toolList[index];
-                                return Container(
-                                  // height: 30,
-                                  child: InkWell(
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          width: 70,
-                                          height: 70,
-                                          margin: const EdgeInsets.all(3.0),
-                                          child: Image.asset(
-                                            tool['img'].toString(),
-                                          ),
-                                        ),
-                                        Text(
-                                          tool['title'].toString(),
-                                          textAlign: TextAlign.center,
-                                        )
-                                      ],
-                                    ),
-                                    onTap: () {
-                                      EasyLoading.show(status: 'loading...');
-                                      // launch("https://www.google.com/maps/dir/?api=1&destination=%E8%87%BA%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E6%A6%AE%E6%B3%89%E9%87%8C%E4%B8%AD%E5%B1%B1%E8%B7%AF3%E6%AE%B51165%E8%99%9F&travelmode=driving");
-                                      // launch('https://www.google.com/maps/dir/25.1737288,121.4341894/414%E5%8F%B0%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E4%B8%AD%E5%B1%B1%E8%B7%AF%E4%B8%89%E6%AE%B51165%E8%99%9F/@24.6413693,120.3359623,9z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x34693ec40c7103e3:0xcd8e2812aa561111!2m2!1d120.590033!2d24.1133503!11m1!6b1?entry=ttu');
-                                      // FlutterTts().speak('限速60公里您已超速');
-                                      if (tool['value'] == '路邊停車費') {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    LicensePlateInput()));
-                                      } else {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => WebView(
-                                                    tt: tool['url']
-                                                        .toString())));
-                                      }
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                      Container(
-                        width: MediaQuery.of(context).size.width,
-                        color: const Color.fromRGBO(47, 125, 195, 1),
-                        // decoration: BoxDecoration(
-                        //   color: Color.fromRGBO(190, 210, 238, 1),
-                        //   borderRadius: new BorderRadius.circular(20),
-                        // ),
-                        child: Text(
-                          "快速尋找地點",
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(fontSize: 18, color: Colors.white),
-                        ),
-                      ),
-                      Container(
-                        height: 100,
-                        padding: const EdgeInsets.all(10),
-                        // margin: const EdgeInsets.only(bottom: 30),
+                      SizedBox(
+                        height: 110,
                         child: GridView(
-                          scrollDirection: Axis.horizontal,
+                          padding: EdgeInsets.zero,
+                          // scrollDirection: Axis.horizontal,
+                          physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
-                          const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 200,
-                              childAspectRatio: 3 / 2,
-                              //按鈕彼此間距
-                              mainAxisSpacing: 20),
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4, //横轴三个子widget
+                                  childAspectRatio: 0.01),
                           children: List.generate(
-                            fastLocation.length,
-                                (index) {
-                              final fastList = fastLocation[index];
-                              return Container(
-                                // height: 30,
-                                child: InkWell(
+                            toolList.length,
+                            (index) {
+                              final tool = toolList[index];
+                              return SizedBox(
+                                height: 70,
+                                child: 
+                                Expanded(child:  InkWell(
                                   child: Column(
                                     children: [
                                       Container(
-                                        width:70,
+                                        width: 70,
                                         height: 70,
-                                        // margin: const EdgeInsets.all(3.0),
+                                        margin: const EdgeInsets.all(3.0),
                                         child: Image.asset(
-                                          fastList['img'].toString(),
+                                          tool['img'].toString(),
                                         ),
                                       ),
+                                      Text(
+                                        tool['title'].toString(),
+                                        textAlign: TextAlign.center,
+                                      )
                                     ],
                                   ),
                                   onTap: () {
-                                    launch(fastList['value'].toString());
+                                    EasyLoading.show(status: 'loading...');
+                                    if (tool['value'] == '路邊停車費') {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  LicensePlateInput()));
+                                    } else {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => WebView(
+                                                  tt: tool['url'].toString())));
+                                    }
                                   },
-                                ),
+                                ),),
+                               
                               );
                             },
                           ),
                         ),
-                      ) ,
+                      ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: const Color.fromRGBO(47, 125, 195, 1),
+                        child: Text(
+                          "快速尋找地點",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.white),
+                        ),
+                      ),
+                      SizedBox(height: 10,),
+
+                         SizedBox(
+                        height: 130,
+                        child: GridView(
+                          padding: EdgeInsets.zero,
+                          // scrollDirection: Axis.horizontal,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 4, //横轴三个子widget
+                                  childAspectRatio: 0.01),
+                          children: List.generate(
+                            fastLocation.length,
+                            (index) {
+                            final fastList = fastLocation[index];
+                              return SizedBox(
+                                height: 70,
+                                child: 
+                                Expanded(child:  InkWell(
+                                  child: Column(
+                                    children: [
+                                      Container(
+                                        width: 85,
+                                        height: 85,
+                                        margin: const EdgeInsets.all(3.0),
+                                        child: Image.asset(
+                                          fastList['img'].toString(),
+                                        ),
+                                      ),
+                                      // Text(
+                                      //   tool['title'].toString(),
+                                      //   textAlign: TextAlign.center,
+                                      // )
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    EasyLoading.show(status: 'loading...');
+                           launch(fastList['value'].toString());
+                                  },
+                                ),),
+                               
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                     
                       // ),
                     ],
                   )),
-            ),
+            
           ),
           Visibility(
             visible: _nearbyStop,
@@ -376,7 +429,7 @@ class _Home extends State<Home> {
               ),
             ),
           ),
-           Visibility(
+          Visibility(
             visible: _operationCondition,
             child: Expanded(
               flex: 2,
@@ -400,14 +453,25 @@ class _Home extends State<Home> {
                             Container(
                               width: 70,
                               margin: const EdgeInsets.all(3.0),
-                              child: Image.asset(
-                                changeColor(operationNews["Status"].toString()),
-                                height: 40,
-                              ),
+                              child:
+                            Container(
+      padding:const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+          border: Border.all(color: Colors.white),
+          borderRadius: BorderRadius.circular(40),
+          color:const Color.fromARGB(255, 255, 255, 255),
+      ),
+      
+      child: SizedBox(),
+    )
+                              //  Image.asset(
+                              //   changeColor(operationNews["status"].toString()),
+                              //   height: 40,
+                              // ),
                             ),
                             Text(
                               splitTextIntoChunks(
-                                  operationNews["Name"].toString(), 3), // 每行兩個字
+                                  operationNews["name"].toString(), 3), // 每行兩個字
                               style: const TextStyle(fontSize: 20),
                             )
                           ],
