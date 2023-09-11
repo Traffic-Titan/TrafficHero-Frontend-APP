@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names, library_private_types_in_public_api, file_names, avoid_print, sized_box_for_whitespace, avoid_unnecessary_containers, must_be_immutable, camel_case_types, prefer_typing_uninitialized_variables, unused_local_variable
+// ignore_for_file: non_constant_identifier_names, library_private_types_in_public_api, file_names, avoid_print, sized_box_for_whitespace, avoid_unnecessary_containers, must_be_immutable, camel_case_types, prefer_typing_uninitialized_variables, unused_local_variable, use_build_context_synchronously
 
 import 'package:traffic_hero/Imports.dart';
 import 'package:traffic_hero/Imports.dart' as choices;
@@ -33,6 +33,7 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
     EasyLoading.dismiss();
+    print(widget.listAmount);
     if(widget.list2.length != 0){
       
     }
@@ -63,6 +64,26 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
     return name; // Return the original name if no match is found
   }
 
+    goLicensePlateInput() async {
+    EasyLoading.show(status: '查詢中...');
+    var licensePlate;
+    var response;
+    var url = dotenv.env['Vehicle'];
+    var jwt = ',${state.accountState}';
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      licensePlate = responseBody['vehicle'];
+      print('eee');
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => LicensePlateInput(vehicle: licensePlate,)));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,6 +91,7 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
       appBar: AppBar(
         elevation: 0,
         title: const Text('停車費查詢'),
+       
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -135,20 +157,19 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
                               });
                             },
                           ),
-                          const Divider(),
+                          
                           Visibility(
-                            visible: isExpanded,
+                            visible: true,
                             child:
                             
                             Column(
                               children: [
+                                const Divider(),
                                 const Text('未過期'),
                                 ListView.builder(
                                    physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount: list["bills"] == null
-                                      ? 0
-                                      : list["bills"].length,
+                                  itemCount: list["bills"].length ,
                                   itemBuilder: (context, index) {
                                     var bills = list["bills"][index];
                                     return ListTile(

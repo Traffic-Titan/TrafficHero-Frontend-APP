@@ -210,12 +210,12 @@ List<Map<String, String>> publicTransport = [
 ];
 
 List<Map<String, String>> stationList = [
-  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
-  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
-  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
-  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
-  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
-  {"time": "10", "id": "201", "station": "國立雲林科技大學站"},
+  {"time": "01", "id": "756", "station": "北門"},
+  {"time": "05", "id": "208", "station": "新店"},
+  {"time": "10", "id": "251", "station": "台北車站"},
+  {"time": "15", "id": "承德幹線(原266)", "station": "新北投"},
+  {"time": "20", "id": "310", "station": "士林"},
+  {"time": "40", "id": "218", "station": "萬華"},
 ];
 List<Map<String, String>> operationList = [
   {"type": "台鐵", "state": "assets/home/light_normal.png", "url": "台鐵後端API"},

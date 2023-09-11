@@ -1,5 +1,5 @@
 //套件
-// ignore_for_file: undefined_hidden_name, file_names
+// ignore_for_file: undefined_hidden_name, file_names, depend_on_referenced_packages
 
 export 'package:provider/provider.dart';
 export 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
@@ -25,6 +25,7 @@ export 'package:geolocator/geolocator.dart';
 export 'package:flutter_tts/flutter_tts.dart';
 export 'package:flutter_dialogs/flutter_dialogs.dart';
 export 'package:google_maps_flutter/google_maps_flutter.dart';
+export  'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
 
 
 //引入頁面
@@ -47,6 +48,7 @@ export  'package:traffic_hero/App_Page/App_Function_Page/Route_Planning.dart';
 export  'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page.dart';
 export  'package:traffic_hero/App_Page/App_Function_Page/Parking_Fee_Inquiry.dart';
 export  'package:traffic_hero/App_Page/App_Function_Page/License_Plate_Input.dart';
+export  'package:traffic_hero/App_Page/App_Function_Page/Binding_License _Plate.dart';
 
 //Function
 export 'package:traffic_hero/Function/JWT.dart';

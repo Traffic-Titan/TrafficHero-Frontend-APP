@@ -58,7 +58,7 @@ class _verify_pageState extends State<verify_page> {
   void verify_function(BuildContext context) async {
     var Body = {"email": state.verifyEmail, "code": verifyController.text};
     var url = dotenv.env['VerifyCode'].toString();
-    var res = await api().Api_Post(Body, url, '');
+    var res = await api().apiPost(Body, url, '');
     setState(() {
       response = res;
     });

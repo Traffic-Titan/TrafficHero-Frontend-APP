@@ -23,6 +23,8 @@ class _registerPage extends State<registerPage> {
   var showPasswordCkeck = true;
   // ignore: prefer_typing_uninitialized_variables
 
+
+
   var response;
   //給性別及生日預設變數
   var gender = '性別';
@@ -148,7 +150,7 @@ class _registerPage extends State<registerPage> {
     }
     var url = dotenv.env['Register'].toString();
 
-    response = await api().Api_Post(body, url, '');
+    response = await api().apiPost(body, url, '');
     if (response.statusCode == 200) {
       state.VerifyEmailSet(registerEmailController.text);
       state.veriffyStateSet('register');
@@ -160,7 +162,6 @@ class _registerPage extends State<registerPage> {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const verify_page()));
       }
-      
     } else {
       EasyLoading.dismiss();
       EasyLoading.showError(
@@ -184,21 +185,17 @@ class _registerPage extends State<registerPage> {
           ),
         ),
         backgroundColor: const Color.fromARGB(168, 1, 99, 148),
-        body: SingleChildScrollView(
-          reverse: true,
-          child: SafeArea(
-            child: Center(
+        body:Center(
+            child: SingleChildScrollView(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(
-                    height: 50,
-                  ),
                   const Text(
                     '註冊',
                     style: TextStyle(color: Colors.white, fontSize: 40),
                   ),
                   const SizedBox(
-                    height: 40,
+                    height: 20,
                   ),
                   MyTextfield(
                     controller: registerNameController,
@@ -277,7 +274,7 @@ class _registerPage extends State<registerPage> {
                     },
                   ),
                   const SizedBox(
-                    height: 80,
+                    height: 50,
                   ),
                   InkWell(
                     child: const block_button(functionName: "送出"),
@@ -292,7 +289,7 @@ class _registerPage extends State<registerPage> {
               ),
             ),
           ),
-        ));
+        );
   }
 
   Widget decoratedBox() {

@@ -1,4 +1,5 @@
-// ignore_for_file: file_names, avoid_unnecessary_containers, prefer_final_fields, sort_child_properties_last, unused_import, library_prefixes, avoid_print, await_only_futures, unused_local_variable, prefer_typing_uninitialized_variables, prefer_const_constructors, deprecated_member_use
+// ignore_for_file: file_names, avoid_unnecessary_containers, prefer_final_fields, sort_child_properties_last, unused_import, library_prefixes, avoid_print, await_only_futures, unused_local_variable, prefer_typing_uninitialized_variables, prefer_const_constructors, deprecated_member_use, use_build_context_synchronously
+
 import 'package:geocoding/geocoding.dart';
 import 'package:traffic_hero/Imports.dart';
 import 'package:traffic_hero/Components/Tool.dart' as Tool;
@@ -29,12 +30,12 @@ class _Home extends State<Home> {
 
     state = Provider.of<stateManager>(context, listen: false);
     print(state.accountState);
+    print(state.OperationalStatus);
     setState(() {
       weather = state.weather;
       operationalStatus = state.OperationalStatus;
     });
 
-    ii();
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
       int index =
@@ -93,32 +94,57 @@ class _Home extends State<Home> {
     }
   }
 
-  ii() async {
-    positionNow = await geolocator().updataPosition();
-    List<Placemark> placemarks = await placemarkFromCoordinates(
-        positionNow.latitude, positionNow.longitude);
-    print((placemarks.isNotEmpty
-        ? placemarks[0].administrativeArea.toString()
-        : null)!);
-  }
-
   changeColor(color) {
     if (color == 'green') {
-      return 'assets/home/light_normal.png';
+      return Colors.green;
     } else if (color == 'red') {
-      return 'assets/home/light_abnormal.png';
-    } else {
-      return 'assets/home/light_partialAdnormal.png';
+      return Colors.red;
+    } else if (color == 'yellow') {
+      return Colors.yellow;
     }
   }
 
-  // changeColor(color) async {
-  //   if(color == green){
-  //     setState(() {
-  //       colorStatus = Colors.green;
-  //     });
-  //   }
-  // }
+  goLicensePlateInput() async {
+    EasyLoading.show(status: '查詢中...');
+    var licensePlate;
+    var response;
+    var url = dotenv.env['Vehicle'];
+    var jwt = ',${state.accountState}';
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      licensePlate = responseBody['vehicle'];
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => LicensePlateInput(vehicle: licensePlate,)));
+    }
+  }
+
+  findPlacesQuickly(url) async {
+    var position = await geolocator().updataPosition();
+    var urlPosition =
+        url + '?longitude=${position.longitude}&latitude=${position.latitude}';
+    var jwt = ',${state.accountState}';
+
+    var response = await api().apiGet(urlPosition, jwt);
+    print(jsonDecode(utf8.decode(response.bodyBytes)));
+    var res = jsonDecode(utf8.decode(response.bodyBytes))['url'];
+    if (response.statusCode == 200) {
+      EasyLoading.dismiss();
+      try{
+        await launch(res);
+      }catch(e){
+        print(e.toString());
+        EasyLoading.showError(e.toString());
+      }
+    } else {
+      EasyLoading.dismiss();
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+  }
 
   String splitTextIntoChunks(String text, int chunkSize) {
     List<String> chunks = [];
@@ -151,58 +177,60 @@ class _Home extends State<Home> {
               width: 600,
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        '${weather['temperature']}°',
-                        style: TextStyle(
-                          fontSize: 75,
-                          color: Color.fromRGBO(46, 117, 182, 1),
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '${weather['temperature']}°',
+                          style: TextStyle(
+                            fontSize: 75,
+                            color: Color.fromRGBO(46, 117, 182, 1),
+                          ),
                         ),
-                      ),
-                      //今日溫度
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(weather['area'].toString(),
-                              style: TextStyle(
-                                fontSize: 20,
-                                color: Color.fromRGBO(46, 117, 182, 1),
-                              )),
-                          Row(
-                            children: [
-                              Text(
-                                '最高 ${weather['the_highest_temperature']}°',
+                        //今日溫度
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(weather['area'].toString(),
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 20,
                                   color: Color.fromRGBO(46, 117, 182, 1),
+                                )),
+                            Row(
+                              children: [
+                                Text(
+                                  '最高 ${weather['the_highest_temperature']}°',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color.fromRGBO(46, 117, 182, 1),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                '最低 ${weather['the_lowest_temperature']}°',
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Color.fromRGBO(46, 117, 182, 1),
+                                SizedBox(
+                                  width: 5,
                                 ),
-                              )
-                            ],
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Image.network(
-                            weather['weather_icon_url'].toString(),
-                            height: 100,
-                          ),
-                        ],
-                      )
-                    ],
+                                Text(
+                                  '最低 ${weather['the_lowest_temperature']}°',
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Color.fromRGBO(46, 117, 182, 1),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Image.network(
+                              weather['weather_icon_url'].toString(),
+                              height: 100,
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -223,10 +251,11 @@ class _Home extends State<Home> {
           Visibility(
             visible: _toolList,
             child: Container(
-                height: 300,
-                color: const Color.fromRGBO(221, 235, 247, 1),
-                // padding: const EdgeInsets.all(5),
-                margin: const EdgeInsets.only(bottom: 20),
+              height: 300,
+              color: const Color.fromRGBO(221, 235, 247, 1),
+              // padding: const EdgeInsets.all(5),
+              margin: const EdgeInsets.only(bottom: 20),
+              child: Expanded(
                 child: Column(
                   children: [
                     Container(
@@ -272,14 +301,10 @@ class _Home extends State<Home> {
                                       )
                                     ],
                                   ),
-                                  onTap: () {
+                                  onTap: () async {
                                     EasyLoading.show(status: 'loading...');
                                     if (tool['value'] == '路邊停車費') {
-                                      Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  LicensePlateInput()));
+                                      await goLicensePlateInput();
                                     } else {
                                       Navigator.push(
                                           context,
@@ -344,7 +369,9 @@ class _Home extends State<Home> {
                                   ),
                                   onTap: () {
                                     EasyLoading.show(status: 'loading...');
-                                    launch(fastList['value'].toString());
+                                    print(fastList['url']);
+                                    findPlacesQuickly(fastList['url']);
+                                    // launch(fastList['value'].toString());
                                   },
                                 ),
                               ),
@@ -356,7 +383,9 @@ class _Home extends State<Home> {
 
                     // ),
                   ],
-                )),
+                ),
+              ),
+            ),
           ),
           Visibility(
             visible: _nearbyStop,
@@ -451,37 +480,30 @@ class _Home extends State<Home> {
                     operationalStatus.length,
                     (index) {
                       final operationNews = operationalStatus[index];
-                      return InkWell(
-                        child: Column(
-                          children: [
-                            Container(
-                                width: 40,
-                                height: 40,
-                                margin: const EdgeInsets.all(3.0),
-                                child: SizedBox(
-                                    height: 40,
-                                    width: 40,
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                          color: colorStatus,
-                                          borderRadius:
-                                              BorderRadius.circular(50)),
-                                    ))
-
-                                //  Image.asset(
-                                //   changeColor(operationNews["status"].toString()),
-                                //   height: 40,
-                                // ),
-                                ),
-                            Text(
-                              splitTextIntoChunks(
-                                  operationNews["name"].toString(), 3), // 每行兩個字
-                              style: const TextStyle(fontSize: 20),
-                            )
-                          ],
-                        ),
-                        onTap: () {},
-                      );
+                      return Expanded(
+                          child: Column(
+                        children: [
+                          Container(
+                              width: 40,
+                              height: 40,
+                              margin: const EdgeInsets.all(3.0),
+                              child: SizedBox(
+                                  height: 40,
+                                  width: 40,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                        color: changeColor(
+                                            operationNews["status"]),
+                                        borderRadius:
+                                            BorderRadius.circular(50)),
+                                  ))),
+                          Text(
+                            splitTextIntoChunks(
+                                operationNews["name"].toString(), 3), // 每行兩個字
+                            style: const TextStyle(fontSize: 20),
+                          )
+                        ],
+                      ));
                     },
                   ),
                 ),

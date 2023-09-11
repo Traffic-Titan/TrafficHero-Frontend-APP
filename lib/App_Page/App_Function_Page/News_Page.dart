@@ -82,7 +82,7 @@ class _NewsState extends State<News> {
         selectType.join(',').toString();
     var jwt = ',' + state.accountState;
     try {
-      response = await api().Api_Get(url, jwt);
+      response = await api().apiGet(url, jwt);
     } catch (e) {
       EasyLoading.showError(e.toString());
     }
@@ -90,7 +90,6 @@ class _NewsState extends State<News> {
     if (response.statusCode == 200) {
       setState(() {
         listView = jsonDecode(utf8.decode(response.bodyBytes));
-
         EasyLoading.dismiss();
       });
     }

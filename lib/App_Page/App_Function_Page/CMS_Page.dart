@@ -175,7 +175,7 @@ class _CMSState extends State<CMS> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(  speed,style: const TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
-                const Text('Km/s',style: TextStyle(fontSize: 30,color: Colors.yellow), textAlign: TextAlign.right)
+                const Text('km/h',style: TextStyle(fontSize: 30,color: Colors.yellow), textAlign: TextAlign.right)
               
               ],
             ),

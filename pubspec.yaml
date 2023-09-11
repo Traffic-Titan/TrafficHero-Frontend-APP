@@ -63,6 +63,7 @@ dependencies:
   flutter_tts: ^3.7.0
   flutter_dialogs: ^3.0.0
   google_maps_flutter: ^2.4.0
+  flutter_datetime_picker: ^1.5.1
 
 dev_dependencies:
   flutter_test:
@@ -105,6 +106,7 @@ flutter:
     - assets/home/Etag_Logo.png
     - assets/home/監理站_Logo.png
     - assets/roadSign_icon/countyRoad/countyRoad_7.png
+    - assets/construction.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
