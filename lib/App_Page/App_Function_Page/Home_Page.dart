@@ -118,8 +118,12 @@ class _Home extends State<Home> {
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
       licensePlate = responseBody['vehicle'];
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => LicensePlateInput(vehicle: licensePlate,)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LicensePlateInput(
+                    vehicle: licensePlate,
+                  )));
     }
   }
 
@@ -134,9 +138,9 @@ class _Home extends State<Home> {
     var res = jsonDecode(utf8.decode(response.bodyBytes))['url'];
     if (response.statusCode == 200) {
       EasyLoading.dismiss();
-      try{
+      try {
         await launch(res);
-      }catch(e){
+      } catch (e) {
         print(e.toString());
         EasyLoading.showError(e.toString());
       }
@@ -159,73 +163,72 @@ class _Home extends State<Home> {
     return chunks.join('\n'); // 使用換行符串起每組文字
   }
 
-  Widget weather1(screenWidth)  {
+  Widget weather1(screenWidth) {
     return Column(
+      children: [
+        Expanded(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                '${weather['temperature']}°',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.2,
+                  color: Color.fromRGBO(46, 117, 182, 1),
+                ),
+              ),
+              //今日溫度
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${weather['temperature']}°',
-                          style: TextStyle(
-                            fontSize: screenWidth * 0.2,
-                            color: Color.fromRGBO(46, 117, 182, 1),
-                          ),
+                  Text(weather['area'].toString(),
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Color.fromRGBO(46, 117, 182, 1),
+                      )),
+                  Row(
+                    children: [
+                      Text(
+                        '最高 ${weather['the_highest_temperature']}°',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromRGBO(46, 117, 182, 1),
                         ),
-                        //今日溫度
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(weather['area'].toString(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Color.fromRGBO(46, 117, 182, 1),
-                                )),
-                            Row(
-                              children: [
-                                Text(
-                                  '最高 ${weather['the_highest_temperature']}°',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color.fromRGBO(46, 117, 182, 1),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  '最低 ${weather['the_lowest_temperature']}°',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color.fromRGBO(46, 117, 182, 1),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
+                      ),
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        '最低 ${weather['the_lowest_temperature']}°',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromRGBO(46, 117, 182, 1),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Image.network(
-                              weather['weather_icon_url'].toString(),
-                              height: screenWidth * 0.2,
-                            
-                              fit: BoxFit.contain,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   ),
                 ],
-              );
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Image.network(
+                    weather['weather_icon_url'].toString(),
+                    height: screenWidth * 0.2,
+                    fit: BoxFit.contain,
+                  ),
+                ],
+              )
+            ],
+          ),
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-     double screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Container(
       margin: const EdgeInsets.only(left: 15, right: 15),
       child: Column(
@@ -291,7 +294,6 @@ class _Home extends State<Home> {
                             Image.network(
                               weather['weather_icon_url'].toString(),
                               height: screenWidth * 0.2,
-                            
                               fit: BoxFit.contain,
                             ),
                           ],
@@ -335,122 +337,122 @@ class _Home extends State<Home> {
           //                   const TextStyle(fontSize: 18, color: Colors.white),
           //             ),
           //           ),
-                    // SizedBox(
-                    //   height: 110,
-                    //   child: GridView(
-                    //     padding: EdgeInsets.zero,
-                    //     // scrollDirection: Axis.horizontal,
-                    //     physics: NeverScrollableScrollPhysics(),
-                    //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    //         crossAxisCount: 4, //横轴三个子widget
-                    //         childAspectRatio: 0.01),
-                    //     children: List.generate(
-                    //       toolList.length,
-                    //       (index) {
-                    //         final tool = toolList[index];
-                    //         return SizedBox(
-                    //           height: 70,
-                    //           child: Expanded(
-                    //             child: InkWell(
-                    //               child: Column(
-                    //                 children: [
-                    //                   Container(
-                    //                     width: 70,
-                    //                     height: 70,
-                    //                     margin: const EdgeInsets.all(3.0),
-                    //                     child: Image.asset(
-                    //                       tool['img'].toString(),
-                    //                     ),
-                    //                   ),
-                    //                   Text(
-                    //                     tool['title'].toString(),
-                    //                     textAlign: TextAlign.center,
-                    //                   )
-                    //                 ],
-                    //               ),
-                    //               onTap: () async {
-                    //                 EasyLoading.show(status: 'loading...');
-                    //                 if (tool['value'] == '路邊停車費') {
-                    //                   await goLicensePlateInput();
-                    //                 } else {
-                    //                   Navigator.push(
-                    //                       context,
-                    //                       MaterialPageRoute(
-                    //                           builder: (context) => WebView(
-                    //                               tt: tool['url'].toString())));
-                    //                 }
-                    //               },
-                    //             ),
-                    //           ),
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
-                    // Container(
-                    //   width: MediaQuery.of(context).size.width,
-                    //   color: const Color.fromRGBO(47, 125, 195, 1),
-                    //   child: Text(
-                    //     "快速尋找地點",
-                    //     textAlign: TextAlign.center,
-                    //     style:
-                    //         const TextStyle(fontSize: 18, color: Colors.white),
-                    //   ),
-                    // ),
-                    SizedBox(
-                      height: 10,
-                    ),
+          // SizedBox(
+          //   height: 110,
+          //   child: GridView(
+          //     padding: EdgeInsets.zero,
+          //     // scrollDirection: Axis.horizontal,
+          //     physics: NeverScrollableScrollPhysics(),
+          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //         crossAxisCount: 4, //横轴三个子widget
+          //         childAspectRatio: 0.01),
+          //     children: List.generate(
+          //       toolList.length,
+          //       (index) {
+          //         final tool = toolList[index];
+          //         return SizedBox(
+          //           height: 70,
+          //           child: Expanded(
+          //             child: InkWell(
+          //               child: Column(
+          //                 children: [
+          //                   Container(
+          //                     width: 70,
+          //                     height: 70,
+          //                     margin: const EdgeInsets.all(3.0),
+          //                     child: Image.asset(
+          //                       tool['img'].toString(),
+          //                     ),
+          //                   ),
+          //                   Text(
+          //                     tool['title'].toString(),
+          //                     textAlign: TextAlign.center,
+          //                   )
+          //                 ],
+          //               ),
+          //               onTap: () async {
+          //                 EasyLoading.show(status: 'loading...');
+          //                 if (tool['value'] == '路邊停車費') {
+          //                   await goLicensePlateInput();
+          //                 } else {
+          //                   Navigator.push(
+          //                       context,
+          //                       MaterialPageRoute(
+          //                           builder: (context) => WebView(
+          //                               tt: tool['url'].toString())));
+          //                 }
+          //               },
+          //             ),
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //   ),
+          // ),
+          // Container(
+          //   width: MediaQuery.of(context).size.width,
+          //   color: const Color.fromRGBO(47, 125, 195, 1),
+          //   child: Text(
+          //     "快速尋找地點",
+          //     textAlign: TextAlign.center,
+          //     style:
+          //         const TextStyle(fontSize: 18, color: Colors.white),
+          //   ),
+          // ),
+          SizedBox(
+            height: 10,
+          ),
 
-                    // SizedBox(
-                    //   height: 130,
-                    //   child: GridView(
-                    //     padding: EdgeInsets.zero,
-                    //     // scrollDirection: Axis.horizontal,
-                    //     physics: NeverScrollableScrollPhysics(),
-                    //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    //         crossAxisCount: 4, //横轴三个子widget
-                    //         childAspectRatio: 0.01),
-                    //     children: List.generate(
-                    //       fastLocation.length,
-                    //       (index) {
-                    //         final fastList = fastLocation[index];
-                    //         return SizedBox(
-                    //           height: 70,
-                    //           child: Expanded(
-                    //             child: InkWell(
-                    //               child: Column(
-                    //                 children: [
-                    //                   Container(
-                    //                     width: 85,
-                    //                     height: 85,
-                    //                     margin: const EdgeInsets.all(3.0),
-                    //                     child: Image.asset(
-                    //                       fastList['img'].toString(),
-                    //                     ),
-                    //                   ),
-                    //                   // Text(
-                    //                   //   tool['title'].toString(),
-                    //                   //   textAlign: TextAlign.center,
-                    //                   // )
-                    //                 ],
-                    //               ),
-                    //               onTap: () {
-                    //                 EasyLoading.show(status: 'loading...');
-                    //                 print(fastList['url']);
-                    //                 findPlacesQuickly(fastList['url']);
-                    //                 // launch(fastList['value'].toString());
-                    //               },
-                    //             ),
-                    //           ),
-                    //         );
-                    //       },
-                    //     ),
-                    //   ),
-                    // ),
+          // SizedBox(
+          //   height: 130,
+          //   child: GridView(
+          //     padding: EdgeInsets.zero,
+          //     // scrollDirection: Axis.horizontal,
+          //     physics: NeverScrollableScrollPhysics(),
+          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          //         crossAxisCount: 4, //横轴三个子widget
+          //         childAspectRatio: 0.01),
+          //     children: List.generate(
+          //       fastLocation.length,
+          //       (index) {
+          //         final fastList = fastLocation[index];
+          //         return SizedBox(
+          //           height: 70,
+          //           child: Expanded(
+          //             child: InkWell(
+          //               child: Column(
+          //                 children: [
+          //                   Container(
+          //                     width: 85,
+          //                     height: 85,
+          //                     margin: const EdgeInsets.all(3.0),
+          //                     child: Image.asset(
+          //                       fastList['img'].toString(),
+          //                     ),
+          //                   ),
+          //                   // Text(
+          //                   //   tool['title'].toString(),
+          //                   //   textAlign: TextAlign.center,
+          //                   // )
+          //                 ],
+          //               ),
+          //               onTap: () {
+          //                 EasyLoading.show(status: 'loading...');
+          //                 print(fastList['url']);
+          //                 findPlacesQuickly(fastList['url']);
+          //                 // launch(fastList['value'].toString());
+          //               },
+          //             ),
+          //           ),
+          //         );
+          //       },
+          //     ),
+          //   ),
+          // ),
 
-                    // ),
-                //   ],
-                // ),
+          // ),
+          //   ],
+          // ),
           //     ),
           //   ),
           // ),
