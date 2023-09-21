@@ -27,7 +27,7 @@ class api {
 
   Future<Response> apiPut(Body, url, jwt) async {
     DateTime startTime = DateTime.now();
-     print(apiJwtHeader + jwt.toString());
+    print(apiJwtHeader + jwt.toString());
     try {
       Response response = await put(Uri.parse(apiUrl + url),
           headers: {
@@ -58,7 +58,7 @@ class api {
     jwt,
   ) async {
     DateTime startTime = DateTime.now();
- print(apiJwtHeader + jwt.toString());
+    print(apiJwtHeader + jwt.toString());
     try {
       Response response =
           await get(Uri.parse(apiUrl + url.toString()), headers: {
@@ -69,7 +69,7 @@ class api {
       if (response.statusCode == 200) {
         DateTime endTime = DateTime.now();
         Duration durationInMilliseconds = endTime.difference(startTime);
-        print('${durationInMilliseconds.inSeconds}秒');
+        print('${durationInMilliseconds.inMilliseconds}秒');
         return response;
       } else {
         EasyLoading.showError(

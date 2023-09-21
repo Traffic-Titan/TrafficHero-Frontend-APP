@@ -22,18 +22,21 @@ class _Home extends State<Home> {
       _operationConditionLight;
   var operationalStatus = [];
   var weather;
+  var homePageModel;
+  var screenWidth;
   Color colorStatus = Colors.green;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    screenWidth = MediaQuery.of(context).size.width;
 
     state = Provider.of<stateManager>(context, listen: false);
     print(state.accountState);
     print(state.OperationalStatus);
     setState(() {
       weather = state.weather;
-      operationalStatus = state.OperationalStatus;
+      // operationalStatus = state.OperationalStatus;
     });
 
     //依照模式判斷顯示內容
@@ -43,6 +46,7 @@ class _Home extends State<Home> {
       int index2 =
           fastLocation.indexWhere((location) => location['value'] == '充電站');
       setState(() {
+        homePageModel = carHomePage(context);
         display1 = "工具列";
         display2 = "路況速報";
         _toolList = true;
@@ -64,6 +68,7 @@ class _Home extends State<Home> {
           fastLocation.indexWhere((location) => location['value'] == '換電站');
 
       setState(() {
+        homePageModel = scooterHomePage(context);
         display1 = "工具列";
         display2 = "路況速報";
         _toolList = true;
@@ -83,6 +88,7 @@ class _Home extends State<Home> {
       });
     } else {
       setState(() {
+        homePageModel = publicTransportInformationPageHomePage(context);
         display1 = "附近站點";
         display2 = "營運狀況";
         _toolList = false;
@@ -94,6 +100,7 @@ class _Home extends State<Home> {
     }
   }
 
+//修改大眾運輸頁面營運通組顏色
   changeColor(color) {
     if (color == 'green') {
       return Colors.green;
@@ -104,6 +111,7 @@ class _Home extends State<Home> {
     }
   }
 
+//跳轉停車費頁面
   goLicensePlateInput() async {
     EasyLoading.show(status: '查詢中...');
     var licensePlate;
@@ -163,458 +171,504 @@ class _Home extends State<Home> {
     return chunks.join('\n'); // 使用換行符串起每組文字
   }
 
-  Widget weather1(screenWidth) {
-    return Column(
-      children: [
-        Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                '${weather['temperature']}°',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.2,
-                  color: Color.fromRGBO(46, 117, 182, 1),
-                ),
-              ),
-              //今日溫度
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(weather['area'].toString(),
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Color.fromRGBO(46, 117, 182, 1),
-                      )),
-                  Row(
-                    children: [
-                      Text(
-                        '最高 ${weather['the_highest_temperature']}°',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color.fromRGBO(46, 117, 182, 1),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        '最低 ${weather['the_lowest_temperature']}°',
-                        style: TextStyle(
-                          fontSize: 18,
-                          color: Color.fromRGBO(46, 117, 182, 1),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  Image.network(
-                    weather['weather_icon_url'].toString(),
-                    height: screenWidth * 0.2,
-                    fit: BoxFit.contain,
-                  ),
-                ],
-              )
-            ],
-          ),
-        ),
-      ],
-    );
-  }
+//頁面組件
+  // Widget weather1() {
+  //   return Container(
+  //     child: Column(
+  //       children: [
+  //         Expanded(
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: [
+  //               Text(
+  //                 '${weather['temperature']}°',
+  //                 style: TextStyle(
+  //                   fontSize: 10,
+  //                   color: Color.fromRGBO(46, 117, 182, 1),
+  //                 ),
+  //               ),
+  //               //今日溫度
+  //               Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: [
+  //                   Text(weather['area'].toString(),
+  //                       style: TextStyle(
+  //                         fontSize: 18,
+  //                         color: Color.fromRGBO(46, 117, 182, 1),
+  //                       )),
+  //                   Row(
+  //                     children: [
+  //                       Text(
+  //                         '最高 ${weather['the_highest_temperature']}°',
+  //                         style: TextStyle(
+  //                           fontSize: 18,
+  //                           color: Color.fromRGBO(46, 117, 182, 1),
+  //                         ),
+  //                       ),
+  //                       SizedBox(
+  //                         width: 5,
+  //                       ),
+  //                       Text(
+  //                         '最低 ${weather['the_lowest_temperature']}°',
+  //                         style: TextStyle(
+  //                           fontSize: 18,
+  //                           color: Color.fromRGBO(46, 117, 182, 1),
+  //                         ),
+  //                       )
+  //                     ],
+  //                   ),
+  //                 ],
+  //               ),
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.end,
+  //                 children: [
+  //                   Image.network(
+  //                     weather['weather_icon_url'].toString(),
+  //                     height: 10,
+  //                     fit: BoxFit.contain,
+  //                   ),
+  //                 ],
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  @override
-  Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    return Container(
-      margin: const EdgeInsets.only(left: 15, right: 15),
-      child: Column(
+  Widget weather1() {
+    return SizedBox(
+      child: Row(
         children: [
-          InkWell(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => WebView(tt: weather['url'])));
-            },
-            child: SizedBox(
-              height: 100,
-              width: 600,
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '${weather['temperature']}°',
-                          style: TextStyle(
-                            fontSize: screenWidth * 0.2,
-                            color: Color.fromRGBO(46, 117, 182, 1),
-                          ),
-                        ),
-                        //今日溫度
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(weather['area'].toString(),
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Color.fromRGBO(46, 117, 182, 1),
-                                )),
-                            Row(
-                              children: [
-                                Text(
-                                  '最高 ${weather['the_highest_temperature']}°',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color.fromRGBO(46, 117, 182, 1),
-                                  ),
-                                ),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Text(
-                                  '最低 ${weather['the_lowest_temperature']}°',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    color: Color.fromRGBO(46, 117, 182, 1),
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Image.network(
-                              weather['weather_icon_url'].toString(),
-                              height: screenWidth * 0.2,
-                              fit: BoxFit.contain,
-                            ),
-                          ],
-                        )
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          // Visibility(
-          //   visible: !_toolList,
-          //   child: Container(
-          //     width: MediaQuery.of(context).size.width,
-          //     color: const Color.fromRGBO(47, 125, 195, 1),
-          //     child: Text(
-          //       display1,
-          //       textAlign: TextAlign.center,
-          //       style: const TextStyle(fontSize: 20, color: Colors.white),
-          //     ),
-          //   ),
-          // ),
-          // Visibility(
-          //   visible: _toolList,
-          //   child: Container(
-          //     height: 300,
-          //     color: const Color.fromRGBO(221, 235, 247, 1),
-          //     // padding: const EdgeInsets.all(5),
-          //     margin: const EdgeInsets.only(bottom: 20),
-          //     child: Expanded(
-          //       child: Column(
-          //         children: [
-          //           Container(
-          //             width: MediaQuery.of(context).size.width,
-          //             color: const Color.fromRGBO(47, 125, 195, 1),
-          //             child: Text(
-          //               "工具列",
-          //               textAlign: TextAlign.center,
-          //               style:
-          //                   const TextStyle(fontSize: 18, color: Colors.white),
-          //             ),
-          //           ),
-          // SizedBox(
-          //   height: 110,
-          //   child: GridView(
-          //     padding: EdgeInsets.zero,
-          //     // scrollDirection: Axis.horizontal,
-          //     physics: NeverScrollableScrollPhysics(),
-          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //         crossAxisCount: 4, //横轴三个子widget
-          //         childAspectRatio: 0.01),
-          //     children: List.generate(
-          //       toolList.length,
-          //       (index) {
-          //         final tool = toolList[index];
-          //         return SizedBox(
-          //           height: 70,
-          //           child: Expanded(
-          //             child: InkWell(
-          //               child: Column(
-          //                 children: [
-          //                   Container(
-          //                     width: 70,
-          //                     height: 70,
-          //                     margin: const EdgeInsets.all(3.0),
-          //                     child: Image.asset(
-          //                       tool['img'].toString(),
-          //                     ),
-          //                   ),
-          //                   Text(
-          //                     tool['title'].toString(),
-          //                     textAlign: TextAlign.center,
-          //                   )
-          //                 ],
-          //               ),
-          //               onTap: () async {
-          //                 EasyLoading.show(status: 'loading...');
-          //                 if (tool['value'] == '路邊停車費') {
-          //                   await goLicensePlateInput();
-          //                 } else {
-          //                   Navigator.push(
-          //                       context,
-          //                       MaterialPageRoute(
-          //                           builder: (context) => WebView(
-          //                               tt: tool['url'].toString())));
-          //                 }
-          //               },
-          //             ),
-          //           ),
-          //         );
-          //       },
-          //     ),
-          //   ),
-          // ),
-          // Container(
-          //   width: MediaQuery.of(context).size.width,
-          //   color: const Color.fromRGBO(47, 125, 195, 1),
-          //   child: Text(
-          //     "快速尋找地點",
-          //     textAlign: TextAlign.center,
-          //     style:
-          //         const TextStyle(fontSize: 18, color: Colors.white),
-          //   ),
-          // ),
-          SizedBox(
-            height: 10,
-          ),
-
-          // SizedBox(
-          //   height: 130,
-          //   child: GridView(
-          //     padding: EdgeInsets.zero,
-          //     // scrollDirection: Axis.horizontal,
-          //     physics: NeverScrollableScrollPhysics(),
-          //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //         crossAxisCount: 4, //横轴三个子widget
-          //         childAspectRatio: 0.01),
-          //     children: List.generate(
-          //       fastLocation.length,
-          //       (index) {
-          //         final fastList = fastLocation[index];
-          //         return SizedBox(
-          //           height: 70,
-          //           child: Expanded(
-          //             child: InkWell(
-          //               child: Column(
-          //                 children: [
-          //                   Container(
-          //                     width: 85,
-          //                     height: 85,
-          //                     margin: const EdgeInsets.all(3.0),
-          //                     child: Image.asset(
-          //                       fastList['img'].toString(),
-          //                     ),
-          //                   ),
-          //                   // Text(
-          //                   //   tool['title'].toString(),
-          //                   //   textAlign: TextAlign.center,
-          //                   // )
-          //                 ],
-          //               ),
-          //               onTap: () {
-          //                 EasyLoading.show(status: 'loading...');
-          //                 print(fastList['url']);
-          //                 findPlacesQuickly(fastList['url']);
-          //                 // launch(fastList['value'].toString());
-          //               },
-          //             ),
-          //           ),
-          //         );
-          //       },
-          //     ),
-          //   ),
-          // ),
-
-          // ),
-          //   ],
-          // ),
-          //     ),
-          //   ),
-          // ),
-          // Visibility(
-          //   visible: _nearbyStop,
-          //   child: Expanded(
-          //     //附近站點內容
-          //     flex: 6, //附近站點內容
-          //     child: Container(
-          //         margin: const EdgeInsets.only(bottom: 10),
-          //         color: const Color.fromRGBO(221, 235, 247, 1),
-          //         width: MediaQuery.of(context).size.width,
-          //         child: ListView.builder(
-          //           itemCount: stationList.length,
-          //           itemBuilder: (context, index) {
-          //             final stationNews = stationList[index];
-          //             return ListTile(
-          //               leading: Container(
-          //                 padding: const EdgeInsets.all(5.0),
-          //                 decoration: BoxDecoration(
-          //                   color: Colors.white,
-          //                   border: Border.all(
-          //                       color: const Color.fromRGBO(29, 73, 153, 1)),
-          //                   borderRadius: BorderRadius.circular(5),
-          //                 ),
-          //                 child: Text(
-          //                   '${stationNews["time"].toString()}分',
-          //                   style: const TextStyle(fontSize: 30),
-          //                 ),
-          //               ),
-          //               title: Text(
-          //                 stationNews["id"].toString(),
-          //                 style:
-          //                     const TextStyle(fontSize: 20, color: Colors.red),
-          //               ),
-          //               subtitle: Text(
-          //                 '往${stationNews["station"].toString()}',
-          //                 style: const TextStyle(
-          //                     fontSize: 20,
-          //                     color: Color.fromRGBO(29, 73, 153, 1)),
-          //               ),
-          //             );
-          //           },
-          //         )),
-          //   ),
-          // ),
-          // Container(
-          //   width: MediaQuery.of(context).size.width,
-          //   color: const Color.fromRGBO(47, 125, 195, 1),
-          //   child: Text(
-          //     display2,
-          //     textAlign: TextAlign.center,
-          //     style: const TextStyle(fontSize: 20, color: Colors.white),
-          //   ),
-          // ),
-          // Visibility(
-          //   visible: _trafficReport,
-          //   child: Expanded(
-          //     child: Container(
-          //       color: const Color.fromRGBO(221, 235, 247, 1),
-          //       padding: const EdgeInsets.only(top: 8, left: 8),
-          //       margin: const EdgeInsets.only(bottom: 15),
-          //       child: Row(children: [
-          //         Image.asset(
-          //           "assets/roadSign_icon/countyRoad/countyRoad_7.png",
-          //           height: 80,
-          //         ),
-          //         const Expanded(
-          //           child: Text(
-          //             "台7線84K+100上邊坡刷坡工程",
-          //             style: TextStyle(fontSize: 35),
-          //             softWrap: true,
-          //           ),
-          //         ),
-          //       ]),
-          //     ),
-          //   ),
-          // ),
-          Visibility(
-            visible: _operationCondition,
-            child: Expanded(
-              flex: 2,
-              child: Container(
-                color: const Color.fromRGBO(221, 235, 247, 1),
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.only(top: 20),
-                child: GridView(
-                  scrollDirection: Axis.horizontal,
-                  gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                      maxCrossAxisExtent: 200,
-                      childAspectRatio: 3 / 2,
-                      mainAxisSpacing: 20),
-                  children: List.generate(
-                    operationalStatus.length,
-                    (index) {
-                      final operationNews = operationalStatus[index];
-                      return Expanded(
-                          child: Column(
-                        children: [
-                          Container(
-                              width: 40,
-                              height: 40,
-                              margin: const EdgeInsets.all(3.0),
-                              child: SizedBox(
-                                  height: 40,
-                                  width: 40,
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                        color: changeColor(
-                                            operationNews["status"]),
-                                        borderRadius:
-                                            BorderRadius.circular(50)),
-                                  ))),
-                          Text(
-                            splitTextIntoChunks(
-                                operationNews["name"].toString(), 3), // 每行兩個字
-                            style: const TextStyle(fontSize: 20),
-                          )
-                        ],
-                      ));
-                    },
-                  ),
-                ),
-              ),
-            ),
-          ),
-          Visibility(
-            visible: _operationConditionLight,
-            child: Container(
-                margin: const EdgeInsets.only(bottom: 15),
-                padding: const EdgeInsets.all(8),
-                width: MediaQuery.of(context).size.width,
-                color: const Color.fromRGBO(193, 219, 241, 1),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      "assets/home/light_normal.png",
-                      height: 15,
-                    ),
-                    const Text(
-                      " 正常營運  ",
-                      style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
-                    ),
-                    Image.asset("assets/home/light_partialAdnormal.png",
-                        height: 15),
-                    const Text(
-                      " 部分營運  ",
-                      style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
-                    ),
-                    Image.asset(
-                      "assets/home/light_abnormal.png",
-                      height: 15,
-                    ),
-                    const Text(
-                      " 停止營運",
-                      style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
-                    ),
-                  ],
-                )),
-          )
+          Text('data'),
+          Text('data'),
         ],
       ),
     );
   }
+
+//創建首頁頁面
+  @override
+  Widget build(BuildContext context) {
+    return homePageModel;
+  }
+
+//編輯首頁不同模式頁面
+  Widget carHomePage(BuildContext context) {
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                children: [weather1()],
+              ),
+              // for (var i = 0; i < 1000; i++) Text(screenWidth.toString() ?? ''),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget scooterHomePage(BuildContext context) {
+    return const Scaffold(body: Text('sc'));
+  }
+
+  Widget publicTransportInformationPageHomePage(BuildContext context) {
+    return const Scaffold(body: Text('pu'));
+  }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   double screenWidth = MediaQuery.of(context).size.width;
+  //   return Container(
+  //     margin: const EdgeInsets.only(left: 15, right: 15),
+  //     child: Column(
+  //       children: [
+  // InkWell(
+  //   onTap: () {
+  //     Navigator.push(
+  //         context,
+  //         MaterialPageRoute(
+  //             builder: (context) => WebView(tt: weather['url'])));
+  //   },
+  //   child: SizedBox(
+  //     height: 100,
+  //     width: 600,
+  //     child: Column(
+  //       children: [
+  //         Expanded(
+  //           child: Row(
+  //             mainAxisAlignment: MainAxisAlignment.center,
+  //             children: [
+  //               Text(
+  //                 '${weather['temperature']}°',
+  //                 style: TextStyle(
+  //                   fontSize: screenWidth * 0.2,
+  //                   color: Color.fromRGBO(46, 117, 182, 1),
+  //                 ),
+  //               ),
+  //               //今日溫度
+  //               Column(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: [
+  //                   Text(weather['area'].toString(),
+  //                       style: TextStyle(
+  //                         fontSize: 18,
+  //                         color: Color.fromRGBO(46, 117, 182, 1),
+  //                       )),
+  //                   Row(
+  //                     children: [
+  //                       Text(
+  //                         '最高 ${weather['the_highest_temperature']}°',
+  //                         style: TextStyle(
+  //                           fontSize: 18,
+  //                           color: Color.fromRGBO(46, 117, 182, 1),
+  //                         ),
+  //                       ),
+  //                       SizedBox(
+  //                         width: 5,
+  //                       ),
+  //                       Text(
+  //                         '最低 ${weather['the_lowest_temperature']}°',
+  //                         style: TextStyle(
+  //                           fontSize: 18,
+  //                           color: Color.fromRGBO(46, 117, 182, 1),
+  //                         ),
+  //                       )
+  //                     ],
+  //                   ),
+  //                 ],
+  //               ),
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.end,
+  //                 children: [
+  //                   Image.network(
+  //                     weather['weather_icon_url'].toString(),
+  //                     height: screenWidth * 0.2,
+  //                     fit: BoxFit.contain,
+  //                   ),
+  //                 ],
+  //               )
+  //             ],
+  //           ),
+  //         ),
+  //       ],
+  //     ),
+  //   ),
+  // ),
+  // Visibility(
+  //   visible: !_toolList,
+  //   child: Container(
+  //     width: MediaQuery.of(context).size.width,
+  //     color: const Color.fromRGBO(47, 125, 195, 1),
+  //     child: Text(
+  //       display1,
+  //       textAlign: TextAlign.center,
+  //       style: const TextStyle(fontSize: 20, color: Colors.white),
+  //     ),
+  //   ),
+  // ),
+  // Visibility(
+  //   visible: _toolList,
+  //   child: Container(
+  //     height: 300,
+  //     color: const Color.fromRGBO(221, 235, 247, 1),
+  //     // padding: const EdgeInsets.all(5),
+  //     margin: const EdgeInsets.only(bottom: 20),
+  //     child: Expanded(
+  //       child: Column(
+  //         children: [
+  //           Container(
+  //             width: MediaQuery.of(context).size.width,
+  //             color: const Color.fromRGBO(47, 125, 195, 1),
+  //             child: Text(
+  //               "工具列",
+  //               textAlign: TextAlign.center,
+  //               style:
+  //                   const TextStyle(fontSize: 18, color: Colors.white),
+  //             ),
+  //           ),
+  // SizedBox(
+  //   height: 110,
+  //   child: GridView(
+  //     padding: EdgeInsets.zero,
+  //     // scrollDirection: Axis.horizontal,
+  //     physics: NeverScrollableScrollPhysics(),
+  //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //         crossAxisCount: 4, //横轴三个子widget
+  //         childAspectRatio: 0.01),
+  //     children: List.generate(
+  //       toolList.length,
+  //       (index) {
+  //         final tool = toolList[index];
+  //         return SizedBox(
+  //           height: 70,
+  //           child: Expanded(
+  //             child: InkWell(
+  //               child: Column(
+  //                 children: [
+  //                   Container(
+  //                     width: 70,
+  //                     height: 70,
+  //                     margin: const EdgeInsets.all(3.0),
+  //                     child: Image.asset(
+  //                       tool['img'].toString(),
+  //                     ),
+  //                   ),
+  //                   Text(
+  //                     tool['title'].toString(),
+  //                     textAlign: TextAlign.center,
+  //                   )
+  //                 ],
+  //               ),
+  //               onTap: () async {
+  //                 EasyLoading.show(status: 'loading...');
+  //                 if (tool['value'] == '路邊停車費') {
+  //                   await goLicensePlateInput();
+  //                 } else {
+  //                   Navigator.push(
+  //                       context,
+  //                       MaterialPageRoute(
+  //                           builder: (context) => WebView(
+  //                               tt: tool['url'].toString())));
+  //                 }
+  //               },
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   ),
+  // ),
+  // Container(
+  //   width: MediaQuery.of(context).size.width,
+  //   color: const Color.fromRGBO(47, 125, 195, 1),
+  //   child: Text(
+  //     "快速尋找地點",
+  //     textAlign: TextAlign.center,
+  //     style:
+  //         const TextStyle(fontSize: 18, color: Colors.white),
+  //   ),
+  // ),
+  // SizedBox(
+  //   height: 10,
+  // ),
+
+  // SizedBox(
+  //   height: 130,
+  //   child: GridView(
+  //     padding: EdgeInsets.zero,
+  //     // scrollDirection: Axis.horizontal,
+  //     physics: NeverScrollableScrollPhysics(),
+  //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+  //         crossAxisCount: 4, //横轴三个子widget
+  //         childAspectRatio: 0.01),
+  //     children: List.generate(
+  //       fastLocation.length,
+  //       (index) {
+  //         final fastList = fastLocation[index];
+  //         return SizedBox(
+  //           height: 70,
+  //           child: Expanded(
+  //             child: InkWell(
+  //               child: Column(
+  //                 children: [
+  //                   Container(
+  //                     width: 85,
+  //                     height: 85,
+  //                     margin: const EdgeInsets.all(3.0),
+  //                     child: Image.asset(
+  //                       fastList['img'].toString(),
+  //                     ),
+  //                   ),
+  //                   // Text(
+  //                   //   tool['title'].toString(),
+  //                   //   textAlign: TextAlign.center,
+  //                   // )
+  //                 ],
+  //               ),
+  //               onTap: () {
+  //                 EasyLoading.show(status: 'loading...');
+  //                 print(fastList['url']);
+  //                 findPlacesQuickly(fastList['url']);
+  //                 // launch(fastList['value'].toString());
+  //               },
+  //             ),
+  //           ),
+  //         );
+  //       },
+  //     ),
+  //   ),
+  // ),
+
+  // ),
+  //   ],
+  // ),
+  //     ),
+  //   ),
+  // ),
+  // Visibility(
+  //   visible: _nearbyStop,
+  //   child: Expanded(
+  //     //附近站點內容
+  //     flex: 6, //附近站點內容
+  //     child: Container(
+  //         margin: const EdgeInsets.only(bottom: 10),
+  //         color: const Color.fromRGBO(221, 235, 247, 1),
+  //         width: MediaQuery.of(context).size.width,
+  //         child: ListView.builder(
+  //           itemCount: stationList.length,
+  //           itemBuilder: (context, index) {
+  //             final stationNews = stationList[index];
+  //             return ListTile(
+  //               leading: Container(
+  //                 padding: const EdgeInsets.all(5.0),
+  //                 decoration: BoxDecoration(
+  //                   color: Colors.white,
+  //                   border: Border.all(
+  //                       color: const Color.fromRGBO(29, 73, 153, 1)),
+  //                   borderRadius: BorderRadius.circular(5),
+  //                 ),
+  //                 child: Text(
+  //                   '${stationNews["time"].toString()}分',
+  //                   style: const TextStyle(fontSize: 30),
+  //                 ),
+  //               ),
+  //               title: Text(
+  //                 stationNews["id"].toString(),
+  //                 style:
+  //                     const TextStyle(fontSize: 20, color: Colors.red),
+  //               ),
+  //               subtitle: Text(
+  //                 '往${stationNews["station"].toString()}',
+  //                 style: const TextStyle(
+  //                     fontSize: 20,
+  //                     color: Color.fromRGBO(29, 73, 153, 1)),
+  //               ),
+  //             );
+  //           },
+  //         )),
+  //   ),
+  // ),
+  // Container(
+  //   width: MediaQuery.of(context).size.width,
+  //   color: const Color.fromRGBO(47, 125, 195, 1),
+  //   child: Text(
+  //     display2,
+  //     textAlign: TextAlign.center,
+  //     style: const TextStyle(fontSize: 20, color: Colors.white),
+  //   ),
+  // ),
+  // Visibility(
+  //   visible: _trafficReport,
+  //   child: Expanded(
+  //     child: Container(
+  //       color: const Color.fromRGBO(221, 235, 247, 1),
+  //       padding: const EdgeInsets.only(top: 8, left: 8),
+  //       margin: const EdgeInsets.only(bottom: 15),
+  //       child: Row(children: [
+  //         Image.asset(
+  //           "assets/roadSign_icon/countyRoad/countyRoad_7.png",
+  //           height: 80,
+  //         ),
+  //         const Expanded(
+  //           child: Text(
+  //             "台7線84K+100上邊坡刷坡工程",
+  //             style: TextStyle(fontSize: 35),
+  //             softWrap: true,
+  //           ),
+  //         ),
+  //       ]),
+  //     ),
+  //   ),
+  // ),
+  // Visibility(
+  //   visible: _operationCondition,
+  //   child: Expanded(
+  //     flex: 2,
+  //     child: Container(
+  //       color: const Color.fromRGBO(221, 235, 247, 1),
+  //       width: MediaQuery.of(context).size.width,
+  //       padding: const EdgeInsets.only(top: 20),
+  //       child: GridView(
+  //         scrollDirection: Axis.horizontal,
+  //         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+  //             maxCrossAxisExtent: 200,
+  //             childAspectRatio: 3 / 2,
+  //             mainAxisSpacing: 20),
+  //         children: List.generate(
+  //           operationalStatus.length,
+  //           (index) {
+  //             final operationNews = operationalStatus[index];
+  //             return Expanded(
+  //                 child: Column(
+  //               children: [
+  //                 Container(
+  //                     width: 40,
+  //                     height: 40,
+  //                     margin: const EdgeInsets.all(3.0),
+  //                     child: SizedBox(
+  //                         height: 40,
+  //                         width: 40,
+  //                         child: Container(
+  //                           decoration: BoxDecoration(
+  //                               color: changeColor(
+  //                                   operationNews["status"]),
+  //                               borderRadius:
+  //                                   BorderRadius.circular(50)),
+  //                         ))),
+  //                 Text(
+  //                   splitTextIntoChunks(
+  //                       operationNews["name"].toString(), 3), // 每行兩個字
+  //                   style: const TextStyle(fontSize: 20),
+  //                 )
+  //               ],
+  //             ));
+  //           },
+  //         ),
+  //       ),
+  //     ),
+  //   ),
+  // ),
+  // Visibility(
+  //   visible: _operationConditionLight,
+  //   child: Container(
+  //       margin: const EdgeInsets.only(bottom: 15),
+  //       padding: const EdgeInsets.all(8),
+  //       width: MediaQuery.of(context).size.width,
+  //       color: const Color.fromRGBO(193, 219, 241, 1),
+  //       child: Row(
+  //         children: [
+  //           Image.asset(
+  //             "assets/home/light_normal.png",
+  //             height: 15,
+  //           ),
+  //           const Text(
+  //             " 正常營運  ",
+  //             style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
+  //           ),
+  //           Image.asset("assets/home/light_partialAdnormal.png",
+  //               height: 15),
+  //           const Text(
+  //             " 部分營運  ",
+  //             style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
+  //           ),
+  //           Image.asset(
+  //             "assets/home/light_abnormal.png",
+  //             height: 15,
+  //           ),
+  //           const Text(
+  //             " 停止營運",
+  //             style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
+  //           ),
+  //         ],
+  //       )),
+  // )
+//         ],
+//       ),
+//     );
 }
+// }

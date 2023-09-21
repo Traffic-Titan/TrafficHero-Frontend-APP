@@ -149,7 +149,6 @@ class _NewsState extends State<News> {
   }
 
   font2(name) {
-    print(name + '2');
     for (var i = 0; i < choices.city_Chiness.length; i++) {
       if (name == 'Taipei_City') {
         return '臺北市';
@@ -231,19 +230,18 @@ class _NewsState extends State<News> {
                                       '目前位置',
                                       style: TextStyle(
                                           fontSize: 15,
-                                          color:
-                                              const Color.fromARGB(255, 0, 0, 0)),
+                                          color: const Color.fromARGB(
+                                              255, 0, 0, 0)),
                                     ),
                                   ),
-                                  SizedBox(width: 10,),
-                                 
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                 ],
                               ),
-                              
                             ),
                           );
                         },
-                        
                         groupHeaderBuilder: (context, state, group) {
                           return Container(
                             color: Colors.blue,

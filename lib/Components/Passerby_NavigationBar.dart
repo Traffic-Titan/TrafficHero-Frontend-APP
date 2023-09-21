@@ -29,13 +29,15 @@ class _PasserbyPage extends State<PasserbyPage> {
 
     carAndScooterBottonTabs = [
       const BottomNavigationBarItem(
-          label: '首頁', icon: Icon(CupertinoIcons.home), tooltip: "首頁",backgroundColor: Colors.blue),
+          label: '首頁',
+          icon: Icon(CupertinoIcons.home),
+          tooltip: "首頁",
+          backgroundColor: Colors.blue),
       const BottomNavigationBarItem(
           label: '最新消息',
           icon: Icon(CupertinoIcons.news_solid),
           tooltip: "最新消息",
           backgroundColor: Colors.blue),
-          
       const BottomNavigationBarItem(
           label: '即時訊息推播',
           icon: Icon(CupertinoIcons.text_bubble),
@@ -53,12 +55,14 @@ class _PasserbyPage extends State<PasserbyPage> {
           backgroundColor: Colors.blue),
     ];
   }
+
   void _navigateToCMS(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => CMS()), // 創建新的空白頁面
     );
   }
+
   final List carAndScooterNavigationBar = [
     const Home(),
     const News(),
@@ -88,7 +92,7 @@ class _PasserbyPage extends State<PasserbyPage> {
 
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
         currentIndex: currentIndex,
         fixedColor: Colors.white,
         backgroundColor: const Color.fromARGB(255, 255, 255, 255),
