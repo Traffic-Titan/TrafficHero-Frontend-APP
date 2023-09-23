@@ -80,4 +80,13 @@ class stateManager with ChangeNotifier {
     _weather = newValue;
     notifyListeners();
   }
+
+  //會員管理頁面
+  var _acctInforState = false;
+  get acctInforState => _acctInforState;
+
+  void changeAcctInforState(newValue) {
+    _acctInforState = newValue;
+    notifyListeners();
+  }
 }
