@@ -266,7 +266,7 @@ class _Login extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color.fromRGBO(62, 111, 179, 1),
+      backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
       body: Center(
         child: SingleChildScrollView(
           child: Container(

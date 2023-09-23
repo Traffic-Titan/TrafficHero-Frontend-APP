@@ -66,7 +66,7 @@ class _AllPageState extends State<AllPage> {
         backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
         elevation: 2,
         toolbarHeight: 65,
-        shadowColor: Color.fromRGBO(62, 111, 179, 1),
+        shadowColor: const Color.fromRGBO(62, 111, 179, 1),
         title: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,

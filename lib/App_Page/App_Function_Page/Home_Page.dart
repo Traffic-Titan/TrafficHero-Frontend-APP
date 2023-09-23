@@ -348,7 +348,7 @@ class _Home extends State<Home> {
             ),
           ),
           Center(
-            child: Container(
+            child: SizedBox(
               width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
               height: 95,
               child: PageView(
