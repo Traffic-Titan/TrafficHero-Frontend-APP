@@ -82,7 +82,7 @@ class _NewsState extends State<News> {
         selectType.join(',').toString();
     var jwt = ',' + state.accountState;
     try {
-      response = await api().Api_Get(url, jwt);
+      response = await api().apiGet(url, jwt);
     } catch (e) {
       EasyLoading.showError(e.toString());
     }
@@ -90,7 +90,6 @@ class _NewsState extends State<News> {
     if (response.statusCode == 200) {
       setState(() {
         listView = jsonDecode(utf8.decode(response.bodyBytes));
-
         EasyLoading.dismiss();
       });
     }
@@ -150,7 +149,6 @@ class _NewsState extends State<News> {
   }
 
   font2(name) {
-    print(name + '2');
     for (var i = 0; i < choices.city_Chiness.length; i++) {
       if (name == 'Taipei_City') {
         return '臺北市';
@@ -203,8 +201,9 @@ class _NewsState extends State<News> {
                           title: (index, item) => item['title'] ?? '',
                           group: (index, item) => item['body'] ?? '',
                         ),
-                        choiceActiveStyle:
-                            const S2ChoiceStyle(color: Colors.redAccent),
+                        choiceActiveStyle: const S2ChoiceStyle(
+                          color: Color.fromRGBO(67, 150, 200, 1),
+                        ),
                         modalType: S2ModalType.bottomSheet,
                         modalConfirm: true,
                         modalFilter: true,
@@ -232,22 +231,21 @@ class _NewsState extends State<News> {
                                       '目前位置',
                                       style: TextStyle(
                                           fontSize: 15,
-                                          color:
-                                              const Color.fromARGB(255, 0, 0, 0)),
+                                          color: const Color.fromARGB(
+                                              255, 0, 0, 0)),
                                     ),
                                   ),
-                                  SizedBox(width: 10,),
-                                 
+                                  SizedBox(
+                                    width: 10,
+                                  ),
                                 ],
                               ),
-                              
                             ),
                           );
                         },
-                        
                         groupHeaderBuilder: (context, state, group) {
                           return Container(
-                            color: Colors.blue,
+                            color: Color.fromRGBO(67, 150, 200, 1),
                             padding: const EdgeInsets.all(10),
                             alignment: Alignment.centerLeft,
                             child: S2Text(
@@ -358,7 +356,9 @@ class _NewsState extends State<News> {
                             })),
                   ),
                 ]),
-                Expanded(child: listview())
+                Expanded(
+                  child: listview(),
+                )
               ],
             )),
       ),
@@ -370,16 +370,13 @@ class _NewsState extends State<News> {
         itemCount: listView.length,
         itemBuilder: (context, index) {
           final news = listView[index];
-          return Card(
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: ListTile(
+          return Column(
+            children: [
+              ListTile(
                 leading: Column(
                   children: [
                     Container(
-                      child: Image.network(news["LogoURL"].toString()),
+                      child: Image.network(news["logo_url"].toString()),
                       width: 50,
                       height: 50,
                       // fit: BoxFit.cover,
@@ -394,7 +391,7 @@ class _NewsState extends State<News> {
                     Row(
                       children: [
                         Text(
-                          news['UpdateTime'].toString(),
+                          news['update_time'].toString(),
                           style: TextStyle(fontSize: 12),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -405,7 +402,7 @@ class _NewsState extends State<News> {
                       children: [
                         Expanded(
                           child: Text(
-                            news['Title'].toString(),
+                            news['title'].toString(),
                             style: TextStyle(fontSize: 15),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
@@ -415,19 +412,19 @@ class _NewsState extends State<News> {
                     ),
                   ],
                 ),
-                subtitle: Text(news['NewsCategory'].toString()),
+                subtitle: Text(news['news_category'].toString()),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
                   size: 30,
                 ),
                 onTap: () {
                   EasyLoading.show(status: 'loading...');
-                  if (news['NewsURL'].toString() != '') {
+                  if (news['news_url'].toString() != '') {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
                             builder: (context) =>
-                                WebView(tt: news['NewsURL'].toString())));
+                                WebView(tt: news['news_url'].toString())));
                   } else {
                     print(news);
                     Navigator.push(
@@ -438,7 +435,11 @@ class _NewsState extends State<News> {
                                 )));
                   }
                 },
-              ));
+              ),
+              Divider(
+                  thickness: 1, color: Colors.grey, indent: 10, endIndent: 10)
+            ],
+          );
         });
   }
 }

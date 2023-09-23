@@ -11,6 +11,7 @@ class PasserbyPage extends StatefulWidget {
 class _PasserbyPage extends State<PasserbyPage> {
   late stateManager? state;
   var navigationBarText = '';
+  var navGationBarIcon;
   late List<BottomNavigationBarItem> carAndScooterBottonTabs;
 
   @override
@@ -19,46 +20,52 @@ class _PasserbyPage extends State<PasserbyPage> {
     state = Provider.of<stateManager>(context, listen: false);
     if (state!.modeName == 'publicTransport') {
       setState(() {
-        navigationBarText = '大眾運輸資訊';
+        navigationBarText = '大眾運輸';
+        navGationBarIcon = Icon(CupertinoIcons.bus);
       });
     } else {
       setState(() {
         navigationBarText = '道路資訊';
+        navGationBarIcon = Icon(CupertinoIcons.map_fill);
       });
     }
 
     carAndScooterBottonTabs = [
       const BottomNavigationBarItem(
-          label: '首頁', icon: Icon(CupertinoIcons.home), tooltip: "首頁",backgroundColor: Colors.blue),
+          label: '首頁',
+          icon: Icon(CupertinoIcons.home),
+          tooltip: "首頁",
+          backgroundColor: Colors.blue),
       const BottomNavigationBarItem(
           label: '最新消息',
           icon: Icon(CupertinoIcons.news_solid),
           tooltip: "最新消息",
           backgroundColor: Colors.blue),
-          
       const BottomNavigationBarItem(
-          label: '即時訊息推播',
+          label: '訊息推播',
           icon: Icon(CupertinoIcons.text_bubble),
-          tooltip: "即時訊息推播",
+          tooltip: "訊息推播",
           backgroundColor: Colors.blue),
       BottomNavigationBarItem(
           label: navigationBarText.toString(),
-          icon: Icon(CupertinoIcons.news_solid),
+          icon: navGationBarIcon,
           tooltip: navigationBarText.toString(),
           backgroundColor: Colors.blue),
       const BottomNavigationBarItem(
           label: '觀光資訊',
-          icon: Icon(CupertinoIcons.news_solid),
+          icon: Icon(CupertinoIcons.placemark_fill),
           tooltip: "觀光資訊",
           backgroundColor: Colors.blue),
     ];
   }
+
   void _navigateToCMS(BuildContext context) {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => CMS()), // 創建新的空白頁面
     );
   }
+
   final List carAndScooterNavigationBar = [
     const Home(),
     const News(),
@@ -88,10 +95,12 @@ class _PasserbyPage extends State<PasserbyPage> {
 
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.shifting,
+        type: BottomNavigationBarType.fixed,
+        elevation: 100,
         currentIndex: currentIndex,
-        fixedColor: Colors.white,
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Color.fromRGBO(67, 150, 200, 1),
+        backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
         items: bottonTabs,
         onTap: (index) {
           setState(() {

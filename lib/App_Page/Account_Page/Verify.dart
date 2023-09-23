@@ -58,7 +58,7 @@ class _verify_pageState extends State<verify_page> {
   void verify_function(BuildContext context) async {
     var Body = {"email": state.verifyEmail, "code": verifyController.text};
     var url = dotenv.env['VerifyCode'].toString();
-    var res = await api().Api_Post(Body, url, '');
+    var res = await api().apiPost(Body, url, '');
     setState(() {
       response = res;
     });
@@ -85,7 +85,7 @@ class _verify_pageState extends State<verify_page> {
         state.forgetTokenSet(jsonDecode(response.body)['Token']);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => const ChangePassword()),
+          MaterialPageRoute(builder: (context) => const changePassword()),
         );
       } else {
         EasyLoading.dismiss();
@@ -109,7 +109,7 @@ class _verify_pageState extends State<verify_page> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      backgroundColor: const Color.fromARGB(168, 1, 99, 148),
+      backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -156,7 +156,7 @@ class _verify_pageState extends State<verify_page> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const register()));
+                                builder: (context) => const registerPage()));
                       } else {
                         Navigator.push(
                             context,

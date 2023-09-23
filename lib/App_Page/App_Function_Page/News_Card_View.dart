@@ -34,7 +34,7 @@ class _NewsCardViewState extends State<NewsCardView> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Text(
-                      widget.listView['NewsCategory'].toString(),
+                      widget.listView['news_category'].toString(),
                       style: const TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                     const Text(
@@ -42,13 +42,13 @@ class _NewsCardViewState extends State<NewsCardView> {
                       style: TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                     Text(
-                      widget.listView['UpdateTime'].toString(),
+                      widget.listView['update_time'].toString(),
                       style: const TextStyle(fontSize: 15, color: Colors.grey),
                     ),
                   ],
                 ),
                 Text(
-                  widget.listView['Title'].toString(),
+                  widget.listView['title'].toString(),
                   style: TextStyle(fontSize: 25),
                 ),
                 const SizedBox(
@@ -56,7 +56,7 @@ class _NewsCardViewState extends State<NewsCardView> {
                 ),
                 Center(
                     child: Text(
-                  widget.listView['Description'].toString(),
+                  widget.listView['description'].toString(),
                   style:const TextStyle(fontSize: 19),
                 ))
               ],

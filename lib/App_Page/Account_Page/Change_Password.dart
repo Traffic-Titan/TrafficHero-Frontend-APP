@@ -1,15 +1,15 @@
-// ignore_for_file: duplicate_import, must_be_immutable, camel_case_types, non_constant_identifier_names, prefer_typing_uninitialized_variables, file_names, avoid_print, annotate_overrides, unrelated_type_equality_checks
+// ignore_for_file: duplicate_import, must_be_immutable, camel_case_types, non_constant_identifier_names, prefer_typing_uninitialized_variables, file_names, avoid_print, annotate_overrides, unrelated_type_equality_checks, unused_local_variable
 import 'package:traffic_hero/Imports.dart';
 
-class ChangePassword extends StatefulWidget {
-  const ChangePassword({
+class changePassword extends StatefulWidget {
+  const changePassword({
     super.key,
   });
   @override
-  State<ChangePassword> createState() => new_password_page();
+  State<changePassword> createState() => _changePassword();
 }
 
-class new_password_page extends State<ChangePassword> {
+class _changePassword extends State<changePassword> {
   //設定狀態管理變數
   late stateManager state;
   //設定輸入框的控制器
@@ -101,7 +101,7 @@ class new_password_page extends State<ChangePassword> {
   void changePasswordApiFunction(context) async {
     var body = {};
     var url = dotenv.env['ChangePassword'].toString();
-    var jwt = ',' + state.accountState;
+    var jwt = ',${state.accountState}';
     //判斷新密碼與確認密碼使否相同
     if (changeNewPasswordController.text !=
         changeCheckPasswordController.text) {
@@ -137,7 +137,8 @@ class new_password_page extends State<ChangePassword> {
       // response = await api().Api_Put(body, url, jwt);
 
       if (response.statusCode == 200) {
-        EasyLoading.showSuccess(jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
+        EasyLoading.showSuccess(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
         state.updateAccountState('');
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Login()));
@@ -146,7 +147,8 @@ class new_password_page extends State<ChangePassword> {
           showOldPasswordErrorText = false;
         });
       } else {
-        EasyLoading.showError(jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
+        EasyLoading.showError(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
       }
     }
   }
@@ -156,7 +158,7 @@ class new_password_page extends State<ChangePassword> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
-        backgroundColor: const Color.fromARGB(168, 1, 99, 148),
+        backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
         body: SafeArea(
           child: Center(
             child: Column(

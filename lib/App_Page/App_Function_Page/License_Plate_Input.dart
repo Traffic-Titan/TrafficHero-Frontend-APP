@@ -1,10 +1,11 @@
-// ignore_for_file: unused_import, file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print, avoid_types_as_parameter_names, use_build_context_synchronously
+// ignore_for_file: unused_import, file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print, avoid_types_as_parameter_names, use_build_context_synchronously, unnecessary_brace_in_string_interps, prefer_is_empty, unused_local_variable, must_be_immutable, sized_box_for_whitespace
 
 import 'package:traffic_hero/Imports.dart';
 // Make sure to import other necessary dependencies here
 
 class LicensePlateInput extends StatefulWidget {
-  const LicensePlateInput({Key? key}) : super(key: key);
+  LicensePlateInput({super.key, required this.vehicle});
+  var vehicle = [];
 
   @override
   State<LicensePlateInput> createState() => _LicensePlateInputState();
@@ -14,84 +15,206 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
   final afterLicensePlateController = TextEditingController();
   final beforeLicensePlateController = TextEditingController();
   late stateManager state;
-  
+  var list2 = [];
+  var vehicle = [];
+
   //綁定車牌測試用
-  var test = [
-    {"LicensePlateNumber": 'NKJ-5657', "Type": "M"},
-    {"LicensePlateNumber": 'AVZ-6300', "Type": "C"}
-  ];
 
   String? type = 'C';
+
+  void showResultDialog(BuildContext context, listUser, listAmount, list2) {
+    showPlatformDialog(
+      context: context,
+      builder: (context) => BasicDialogAlert(
+        title: const Text(
+          "維護中",
+          style: TextStyle(fontSize: 20),
+        ),
+        content: SizedBox(
+          width: 300,
+          height: (list2.length * 100).toDouble(),
+          child: ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: list2.length,
+            itemBuilder: (context, index) {
+              var list = list2[index];
+              return ListTile(
+                title: Text(list['area']),
+              );
+            },
+          ),
+        ),
+        actions: <Widget>[
+          BasicDialogAction(
+            title: const Text("繼續"),
+            onPressed: () {
+              Navigator.pop(context);
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => parkingFeeInquiry(
+                    listUser: listUser,
+                    listAmount: listAmount,
+                    list2: list2,
+                  ),
+                ),
+              );
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void showResultDialog2(BuildContext context) {
+    showPlatformDialog(
+      context: context,
+      builder: (context) => BasicDialogAlert(
+        title: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              "查詢結果",
+              style: TextStyle(fontSize: 20),
+            ),
+          ],
+        ),
+        content: Container(
+          height: 20,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(height: 20, child: const Text("無停車費")),
+            ],
+          ),
+        ),
+        actions: <Widget>[
+          BasicDialogAction(
+            title: const Text("繼續"),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
     EasyLoading.dismiss();
+    setState(() {
+      vehicle = widget.vehicle;
+    });
   }
 
   get_Amount(LicensePlateNumber, type) async {
-    var Body = {"licensePlateNumber": LicensePlateNumber, "type": type};
+    EasyLoading.show(status: '查詢中...');
     var response;
-    var url = dotenv.env['ParkingFee'].toString()+ '?LicensePlateNumber=${LicensePlateNumber}&Type=${type}';
-    var jwt = ','+state.accountState;
+    var url =
+        '${dotenv.env['ParkingFee']}?license_plate_number=${LicensePlateNumber}&type=${type}';
+    var jwt = ',${state.accountState}';
     try {
-      response = await api().Api_Get( url, jwt);
+      response = await api().apiGet(url, jwt);
     } catch (e) {
       print(e);
     }
 
     if (response.statusCode == 200) {
+      EasyLoading.dismiss();
       print(jsonDecode(utf8.decode(response.bodyBytes)));
       var list = [];
-      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-      for(var i =0 ; i<responseBody['Detail'].length;i++){if(responseBody['Detail'] == '服務維護中'){
+      setState(() {
+        list2 = [];
+      });
 
-      }else{
-       print(responseBody['Detail'][i]);
-       list.add(responseBody['Detail'][i]);
-      }}
-      
-      // print(responseBody);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      print(responseBody['detail'].length);
+      for (var i = 0; i < responseBody['detail'].length.toInt(); i++) {
+        if (responseBody['detail'][i]['amount'] == -1) {
+          list2.add(responseBody['detail'][i]);
+          print(list2);
+        } else {
+          list.add(responseBody['detail'][i]);
+          print(list);
+        }
+      }
+
+      if (list.length != 0) {
+        if (list2.length == 0) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => parkingFeeInquiry(
+                listUser: jsonDecode(utf8.decode(response.bodyBytes)),
+                listAmount: list,
+                list2: list2,
+              ),
+            ),
+          );
+        } else {
+          try {
+            showResultDialog(context,
+                jsonDecode(utf8.decode(response.bodyBytes)), list, list2);
+          } catch (e) {
+            print(e);
+          }
+        }
+      } else {
+        showResultDialog2(context);
+      }
+    }
+  }
+
+  goBindingLicensePlate() async {
+    EasyLoading.show(status: '查詢中...');
+    var response;
+    var url = dotenv.env['Vehicle'];
+    var jwt = ',${state.accountState}';
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ParkingFeeInquiry(
-            
-            listUser: jsonDecode(utf8.decode(response.bodyBytes)),
-            listAmount: list,
+          builder: (context) => bindingLicensePlate(
+            list: responseBody,
           ),
-        ),
-      );
-    } else {
-      showPlatformDialog(
-        context: context,
-        builder: (context) => BasicDialogAlert(
-          title: const Text(
-            "查詢結果",
-            style: TextStyle(fontSize: 20),
-          ),
-          content: const Text("未查詢到任何停車費"),
-          actions: <Widget>[
-            BasicDialogAction(
-              title: const Text("Discard"),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ],
         ),
       );
     }
   }
 
-  Binding_License_Plate() {
-    var BindingLicensePlate = [];
-    BindingLicensePlate.add({
-      "licensePlateNumber":
-          '${beforeLicensePlateController.text}-${afterLicensePlateController.text}',
-      "type": type
-    });
+  getBindingLicensePlate() async {
+    EasyLoading.show(status: '查詢中...');
+    var response;
+    var url = dotenv.env['Vehicle'];
+    var jwt = ',${state.accountState}';
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      setState(() {
+        vehicle = responseBody['vehicle'];
+      });
+    }
+  }
+
+  changeType(type) {
+    if (type == 'C') {
+      return '小客車';
+    } else if (type == 'M') {
+      return '機車';
+    }
   }
 
   @override
@@ -102,6 +225,13 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
         title: const Text('停車費查詢'),
         elevation: 0,
         backgroundColor: Colors.blue,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const AllPage()));
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -114,6 +244,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                   sizebox('已綁定車牌', Colors.blue.shade200, Colors.blue.shade900),
                   const SizedBox(height: 20),
                   SizedBox(
+                    width: 400,
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14.0),
@@ -129,47 +260,38 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                               ),
                             ),
                             onTap: () {
-                              showPlatformDialog(
-                                context: context,
-                                builder: (context) => BasicDialogAlert(
-                                  title: const Text(
-                                    "車牌綁定",
-                                    style: TextStyle(fontSize: 20),
-                                  ),
-                                  content: const Text(""),
-                                  actions: <Widget>[
-                                    BasicDialogAction(
-                                      title: const Text("Discard"),
-                                      onPressed: () {
-                                        
-                                        Navigator.pop(context);
-                                      },
-                                    ),
-                                  ],
-                                ),
-                              );
+                              goBindingLicensePlate();
                             },
                           ),
                           const Divider(),
                           ListView.builder(
                             shrinkWrap: true,
-                            itemCount: test
+                            itemCount: vehicle
                                 .length, // Replace with your actual item count
                             itemBuilder: (context, index) {
-                              final list = test[index];
+                              final list = vehicle[index];
                               return ListTile(
-                                title: Text(
-                                  list['LicensePlateNumber'].toString(),
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                                title: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      list['license_plate_number'].toString(),
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                    Text(
+                                      "${changeType(list['type'])}",
+                                      style: const TextStyle(
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                onTap: () {
-                                  EasyLoading.show(status: 'Loading...');
-                                 
-                                  get_Amount(
-                                      list['LicensePlateNumber'].toString(),
-                                      list['Type'].toString());
+                                onTap: () async {
+                                  await get_Amount(
+                                      list['license_plate_number'].toString(),
+                                      list['type'].toString());
                                 },
                               );
                             },
@@ -244,7 +366,6 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                   const SizedBox(height: 20),
                   InkWell(
                     onTap: () {
-                      EasyLoading.show(status: 'Loading...');
                       get_Amount(
                           '${beforeLicensePlateController.text}-${afterLicensePlateController.text}',
                           type);
@@ -313,7 +434,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
             items: const [
               DropdownMenuItem(
                 value: 'C',
-                child: Text('汽車'),
+                child: Text('小客車'),
               ),
               DropdownMenuItem(
                 value: 'M',
