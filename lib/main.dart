@@ -24,31 +24,13 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late SharedPreferences prefs;
   late stateManager state;
+  var createAppPage;
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
-    await getOperationalStatus();
     EasyLoading.dismiss();
-  }
-
-  getOperationalStatus() async {
-    var position = await geolocator().updataPosition();
-    var url =
-        '${dotenv.env['OperationalStatus']}?longitude=${position.longitude}&latitude=${position.latitude}';
-    var jwt = ',${prefs.get('userToken')}';
-
-    var response = await api().apiGet(url, jwt);
-    print(jsonDecode(utf8.decode(response.bodyBytes)));
-    if (response.statusCode == 200) {
-      state
-          .updateOperationalStatus(jsonDecode(utf8.decode(response.bodyBytes)));
-      print(state.OperationalStatus);
-      print('${state.OperationalStatus}test');
-    } else {
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
-    }
   }
 
   @override
@@ -59,7 +41,7 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const Login(),
+      home: appLoadingPage(),
       debugShowCheckedModeBanner: true,
       builder: EasyLoading.init(),
     );

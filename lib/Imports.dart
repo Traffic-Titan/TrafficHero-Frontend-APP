@@ -49,6 +49,7 @@ export 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page
 export 'package:traffic_hero/App_Page/App_Function_Page/Parking_Fee_Inquiry.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/License_Plate_Input.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/Binding_License _Plate.dart';
+export 'package:traffic_hero/App_Loading_Page.dart';
 
 //Function
 export 'package:traffic_hero/Function/JWT.dart';
