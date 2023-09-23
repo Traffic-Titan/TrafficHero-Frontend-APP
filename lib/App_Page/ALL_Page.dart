@@ -42,7 +42,6 @@ class _AllPageState extends State<AllPage> {
     });
   }
 
-
   Widget changeMode() {
     if (mode == 'car') {
       return const CarMode();
@@ -64,8 +63,10 @@ class _AllPageState extends State<AllPage> {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(46, 117, 182, 1),
-        elevation: 0,
+        backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
+        elevation: 2,
+        toolbarHeight: 65,
+        shadowColor: Color.fromRGBO(62, 111, 179, 1),
         title: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -118,7 +119,7 @@ class _AllPageState extends State<AllPage> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Image.asset('assets/topbar/SmartAssistant.png'),
+          icon: Image.asset('assets/topbar/message.png'),
           iconSize: 50,
           onPressed: () => print('object'),
         ),

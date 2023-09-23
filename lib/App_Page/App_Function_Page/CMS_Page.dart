@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, sort_child_properties_last
+// ignore_for_file: file_names, sort_child_properties_last, unused_element, unused_local_variable, override_on_non_overriding_member, prefer_typing_uninitialized_variables, avoid_print, duplicate_ignore, avoid_unnecessary_containers
 import 'package:traffic_hero/imports.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -30,6 +30,7 @@ class _CMSState extends State<CMS> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
+    _startTrackingPosition();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
       SystemUiOverlay.top
     ]);
@@ -56,7 +57,7 @@ class _CMSState extends State<CMS> {
 
       });
     } catch (e) {
-      print(e.toString());
+      EasyLoading.showError(e.toString());
     }
     
   }
@@ -163,7 +164,7 @@ class _CMSState extends State<CMS> {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        leading: Text(''),
+        leading: const Text(''),
       ),
       backgroundColor: Colors.black,
       body: Column(
@@ -173,8 +174,8 @@ class _CMSState extends State<CMS> {
             child:Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(  "${speed}",style: const TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
-                Text('Km/s',style: TextStyle(fontSize: 30,color: Colors.yellow), textAlign: TextAlign.right)
+                Text(  speed,style: const TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
+                const Text('km/h',style: TextStyle(fontSize: 30,color: Colors.yellow), textAlign: TextAlign.right)
               
               ],
             ),

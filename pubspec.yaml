@@ -47,9 +47,9 @@ dependencies:
   time_picker_spinner_pop_up: ^1.2.1
   intl: ^0.18.1
   flutter_datetime_picker_plus: ^2.0.1
-  firebase_auth: ^4.7.1
-  google_sign_in: ^6.1.4
-  firebase_core: ^2.15.0
+  # firebase_auth: ^4.7.1
+  # google_sign_in: ^6.1.4
+  # firebase_core: ^2.15.0
   get: ^4.6.5
   dio: ^5.3.0
   flutter_dotenv: ^5.1.0
@@ -63,6 +63,8 @@ dependencies:
   flutter_tts: ^3.7.0
   flutter_dialogs: ^3.0.0
   google_maps_flutter: ^2.4.0
+  flutter_datetime_picker: ^1.5.1
+  shared_preferences: ^2.2.1
 
 dev_dependencies:
   flutter_test:
@@ -84,7 +86,7 @@ flutter:
     - assets/topbar/Mode_Car.png
     - assets/topbar/Mode_Scooter.png
     - assets/topbar/Mode_Public_Transport.png
-    - assets/topbar/SmartAssistant.png
+    - assets/topbar/message.png
     - assets/topbar/Default_Avatar.png
     - assets/login_icon/google.png
     - assets/login_icon/sign_in.png
@@ -101,9 +103,11 @@ flutter:
     - assets/home/light_normal.png
     - assets/home/light_abnormal.png
     - assets/home/light_partialAdnormal.png
+    - assets/home/light_no_data.png
     - assets/home/Etag_Logo.png
     - assets/home/監理站_Logo.png
     - assets/roadSign_icon/countyRoad/countyRoad_7.png
+    - assets/construction.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
