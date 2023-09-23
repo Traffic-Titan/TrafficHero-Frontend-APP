@@ -137,7 +137,8 @@ class _changePassword extends State<changePassword> {
       // response = await api().Api_Put(body, url, jwt);
 
       if (response.statusCode == 200) {
-        EasyLoading.showSuccess(jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
+        EasyLoading.showSuccess(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
         state.updateAccountState('');
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => const Login()));
@@ -146,7 +147,8 @@ class _changePassword extends State<changePassword> {
           showOldPasswordErrorText = false;
         });
       } else {
-        EasyLoading.showError(jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
+        EasyLoading.showError(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
       }
     }
   }
@@ -156,7 +158,7 @@ class _changePassword extends State<changePassword> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         extendBodyBehindAppBar: true,
-        backgroundColor: const Color.fromARGB(168, 1, 99, 148),
+        backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
         body: SafeArea(
           child: Center(
             child: Column(

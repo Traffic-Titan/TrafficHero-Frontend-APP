@@ -23,8 +23,6 @@ class _registerPage extends State<registerPage> {
   var showPasswordCkeck = true;
   // ignore: prefer_typing_uninitialized_variables
 
-
-
   var response;
   //給性別及生日預設變數
   var gender = '性別';
@@ -172,124 +170,124 @@ class _registerPage extends State<registerPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
+      body: Center(
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Text(
+                '註冊',
+                style: TextStyle(color: Colors.white, fontSize: 40),
+              ),
+              const SizedBox(
+                height: 20,
+              ),
+              MyTextfield(
+                controller: registerNameController,
+                hintText: '姓名',
+                obscurText: false,
+                error_status: errorName,
+                error_text: '沒有輸入姓名',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              MyTextfield(
+                controller: registerEmailController,
+                hintText: '電子郵件',
+                obscurText: false,
+                error_status: errorEmail,
+                error_text: '電子郵件錯誤',
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Textfield_password(
+                controller: registerPasswordController,
+                hintText: '輸入密碼',
+                obscurText: showPassword,
+                error_status: errorPassword,
+                error_text: lengthErrorPasswordText,
+                onTap: () {
+                  Show_Password();
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Textfield_password(
+                controller: registercheckPasswordController,
+                hintText: '確認密碼',
+                obscurText: showPasswordCkeck,
+                error_status: errorCheckPassword,
+                error_text: '密碼不相符',
+                onTap: () {
+                  Show_Password_check();
+                },
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                width: 310,
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 0),
+                    child: decoratedBox()),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              InkWell(
+                child: button(functionName: birthday),
+                onTap: () {
+                  DatePicker.showDatePicker(context,
+                      showTitleActions: true,
+                      minTime: DateTime(1800, 1, 1),
+                      maxTime: DateTime.now(), onChanged: (date) {
+                    setState(() {
+                      final DateFormat formatter = DateFormat('yyyy/MM/dd');
+                      final String formattedDate = formatter.format(date);
+                      birthday = formattedDate.toString();
+                    });
+                  }, onConfirm: (date) {
+                    setState(() {
+                      final DateFormat formatter = DateFormat('yyyy/MM/dd');
+                      final String formattedDate = formatter.format(date);
+                      birthday = formattedDate.toString();
+                    });
+                  }, currentTime: DateTime.now(), locale: LocaleType.zh);
+                },
+              ),
+              const SizedBox(
+                height: 50,
+              ),
+              InkWell(
+                child: const block_button(functionName: "送出"),
+                onTap: () {
+                  if (text_lengh() && check_password_function()) {
+                    EasyLoading.show(status: 'loading...');
+                    register_function(context);
+                  }
+                },
+              ),
+            ],
           ),
         ),
-        backgroundColor: const Color.fromARGB(168, 1, 99, 148),
-        body:Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Text(
-                    '註冊',
-                    style: TextStyle(color: Colors.white, fontSize: 40),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  MyTextfield(
-                    controller: registerNameController,
-                    hintText: '姓名',
-                    obscurText: false,
-                    error_status: errorName,
-                    error_text: '沒有輸入姓名',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  MyTextfield(
-                    controller: registerEmailController,
-                    hintText: '電子郵件',
-                    obscurText: false,
-                    error_status: errorEmail,
-                    error_text: '電子郵件錯誤',
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Textfield_password(
-                    controller: registerPasswordController,
-                    hintText: '輸入密碼',
-                    obscurText: showPassword,
-                    error_status: errorPassword,
-                    error_text: lengthErrorPasswordText,
-                    onTap: () {
-                      Show_Password();
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Textfield_password(
-                    controller: registercheckPasswordController,
-                    hintText: '確認密碼',
-                    obscurText: showPasswordCkeck,
-                    error_status: errorCheckPassword,
-                    error_text: '密碼不相符',
-                    onTap: () {
-                      Show_Password_check();
-                    },
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                    width: 310,
-                    child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0),
-                        child: decoratedBox()),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  InkWell(
-                    child: button(functionName: birthday),
-                    onTap: () {
-                      DatePicker.showDatePicker(context,
-                          showTitleActions: true,
-                          minTime: DateTime(1800, 1, 1),
-                          maxTime: DateTime.now(), onChanged: (date) {
-                        setState(() {
-                          final DateFormat formatter = DateFormat('yyyy/MM/dd');
-                          final String formattedDate = formatter.format(date);
-                          birthday = formattedDate.toString();
-                        });
-                      }, onConfirm: (date) {
-                        setState(() {
-                          final DateFormat formatter = DateFormat('yyyy/MM/dd');
-                          final String formattedDate = formatter.format(date);
-                          birthday = formattedDate.toString();
-                        });
-                      }, currentTime: DateTime.now(), locale: LocaleType.zh);
-                    },
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  InkWell(
-                    child: const block_button(functionName: "送出"),
-                    onTap: () {
-                      if (text_lengh() && check_password_function()) {
-                        EasyLoading.show(status: 'loading...');
-                        register_function(context);
-                      }
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
+      ),
+    );
   }
 
   Widget decoratedBox() {

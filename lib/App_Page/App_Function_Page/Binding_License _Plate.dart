@@ -17,6 +17,7 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
   var checkBinding = true;
   var checkBinding2 = false;
   var listLicensePlateNumber = [];
+  var screenWidth;
 
   String? type = 'C';
 
@@ -24,6 +25,7 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
+    screenWidth = MediaQuery.of(context).size.width;
     EasyLoading.dismiss();
     setState(() {
       listLicensePlateNumber = widget.list['vehicle'];
@@ -80,15 +82,22 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
     }
   }
 
-deleteBindingLicensePlate(license_plate_number,type)async{
-EasyLoading.show(status: '刪除中...');
- var response;
-   var body = {"license_plate_number": license_plate_number.toString(), "type": type.toString()};
-   print(body);
+  deleteBindingLicensePlate(license_plate_number, type) async {
+    EasyLoading.show(status: '刪除中...');
+    var response;
+    var body = {
+      "license_plate_number": license_plate_number.toString(),
+      "type": type.toString()
+    };
+    print(body);
     var url = dotenv.env['Vehicle'];
     var jwt = ',${state.accountState}';
     try {
-      response = await api().apiDelete( url, jwt,body,);
+      response = await api().apiDelete(
+        url,
+        jwt,
+        body,
+      );
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       print(responseBody);
       await getBindingLicensePlate();
@@ -97,8 +106,8 @@ EasyLoading.show(status: '刪除中...');
       print(e);
       EasyLoading.showError('伺服器錯誤');
     }
-}
-  
+  }
+
   goLicensePlateInput() async {
     EasyLoading.show(status: '查詢中...');
     var licensePlate;
@@ -114,8 +123,12 @@ EasyLoading.show(status: '刪除中...');
     if (response.statusCode == 200) {
       licensePlate = responseBody['vehicle'];
       print('eee');
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => LicensePlateInput(vehicle: licensePlate,)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LicensePlateInput(
+                    vehicle: licensePlate,
+                  )));
     }
   }
 
@@ -127,17 +140,17 @@ EasyLoading.show(status: '刪除中...');
         title: const Text('綁定車牌'),
         elevation: 0,
         backgroundColor: Colors.blue,
-         leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {
-          goLicensePlateInput();
-            },
-          ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            goLicensePlateInput();
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Center(
           child: SizedBox(
-            width: MediaQuery.of(context).size.width - 30,
+            width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
             child: Center(
               child: Column(
                 children: [
@@ -183,7 +196,7 @@ EasyLoading.show(status: '刪除中...');
                                         ),
                                       ),
                                       Text(
-                                        "車種：${changeType(list['type'])}",
+                                        "${changeType(list['type'])}",
                                         style: const TextStyle(
                                           fontWeight: FontWeight.w500,
                                         ),
@@ -192,7 +205,9 @@ EasyLoading.show(status: '刪除中...');
                                   ),
                                   trailing: InkWell(
                                     onTap: () {
-                                      deleteBindingLicensePlate(list['license_plate_number'],list['type']);
+                                      deleteBindingLicensePlate(
+                                          list['license_plate_number'],
+                                          list['type']);
                                     },
                                     child: const Text('刪除'),
                                   ),

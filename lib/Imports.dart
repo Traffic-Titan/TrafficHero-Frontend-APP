@@ -26,6 +26,7 @@ export 'package:flutter_tts/flutter_tts.dart';
 export 'package:flutter_dialogs/flutter_dialogs.dart';
 // export 'package:google_maps_flutter/google_maps_flutter.dart';
 export 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
+export 'package:shared_preferences/shared_preferences.dart';
 
 //引入頁面
 export 'package:traffic_hero/App_Page/App_Function_Page/Home_Page.dart';
