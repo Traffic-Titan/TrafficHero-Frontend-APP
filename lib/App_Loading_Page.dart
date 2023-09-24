@@ -23,6 +23,7 @@ class _appLoadingPage extends State<appLoadingPage> {
     EasyLoading.dismiss();
   }
 
+  //執行token驗證並作出相對應的動作
   checkToken() async {
     var response;
     var url = dotenv.env['Profile'];
@@ -30,6 +31,7 @@ class _appLoadingPage extends State<appLoadingPage> {
     print(jwt);
     try {
       response = await api().apiGet(url, jwt);
+      state.updateAccountState('${prefs.get('userToken')}');
     } catch (e) {
       print(e);
     }
@@ -42,12 +44,12 @@ class _appLoadingPage extends State<appLoadingPage> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const AllPage()));
     } else {
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const Login()));
     }
   }
 
+//抓取資料
   getOperationalStatus() async {
     var position = await geolocator().updataPosition();
     var url =
@@ -105,6 +107,7 @@ class _appLoadingPage extends State<appLoadingPage> {
     }
   }
 
+//app執行創建的頁面
   @override
   Widget build(BuildContext context) {
     return const Scaffold(

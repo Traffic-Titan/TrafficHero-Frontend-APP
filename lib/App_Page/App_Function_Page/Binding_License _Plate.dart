@@ -11,6 +11,7 @@ class bindingLicensePlate extends StatefulWidget {
 }
 
 class _bindingLicensePlateState extends State<bindingLicensePlate> {
+  //控制車牌輸入控制器
   final afterLicensePlateController = TextEditingController();
   final beforeLicensePlateController = TextEditingController();
   late stateManager state;
@@ -39,6 +40,7 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
     }
   }
 
+//改變模式英轉中
   changeType(type) {
     if (type == 'C') {
       return '小客車';
@@ -47,6 +49,7 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
     }
   }
 
+//綁定車牌
   binding(license_plate_number, type) async {
     var response;
     var Body = {"license_plate_number": license_plate_number, "type": type};
@@ -64,6 +67,7 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
     }
   }
 
+//抓取綁應車牌資料
   getBindingLicensePlate() async {
     EasyLoading.show(status: '查詢中...');
     var response;
@@ -82,6 +86,7 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
     }
   }
 
+//刪除已綁定車牌
   deleteBindingLicensePlate(license_plate_number, type) async {
     EasyLoading.show(status: '刪除中...');
     var response;
@@ -108,6 +113,7 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
     }
   }
 
+//跳轉頁面到停車費查詢頁面
   goLicensePlateInput() async {
     EasyLoading.show(status: '查詢中...');
     var licensePlate;

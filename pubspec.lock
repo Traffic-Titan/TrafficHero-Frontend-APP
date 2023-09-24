@@ -741,6 +741,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.99"
+  slide_animation:
+    dependency: "direct main"
+    description:
+      name: slide_animation
+      sha256: "133a05f4fd85c2601bb4640a865d731d3b225b6b5bdb8b256a328ecbe24f2ed6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.4"
   source_span:
     dependency: transitive
     description:
