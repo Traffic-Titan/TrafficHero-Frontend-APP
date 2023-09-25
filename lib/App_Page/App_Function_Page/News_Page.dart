@@ -135,8 +135,12 @@ class _NewsState extends State<News> {
   text(name) {
     try {
       for (var i = 0; i <= choices.city_ios.length; i++) {
-        if (choices.city_Chiness[i]['title'] == name) {
-          return choices.city_Chiness[i]['value'];
+        if (choices.city[i]['title'] == name) {
+          if (name == '台北市') {
+            return '臺北市';
+          } else if (choices.city[i]['title'] == name) {
+            return choices.city[i]['value'];
+          }
         } else if (choices.city_English[i]['title'] == name) {
           return choices.city_English[i]['value'];
         } else if (choices.city_ios[i]['title'] == name) {
@@ -150,10 +154,9 @@ class _NewsState extends State<News> {
 
   font2(name) {
     for (var i = 0; i < choices.city_Chiness.length; i++) {
-      if (name == 'Taipei_City') {
+      if (name == '台北市') {
         return '臺北市';
       } else if (choices.city_Chiness[i]['value'] == name) {
-        print('object');
         return choices.city_Chiness[i]['title'];
       }
     }

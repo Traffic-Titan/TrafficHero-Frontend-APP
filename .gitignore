@@ -18,6 +18,8 @@ migrate_working_dir/
 .env
 env
 *.json
+firebase_options.dart
+google-services.json
 
 
 # The .vscode folder contains launch configuration and tasks you configure in
