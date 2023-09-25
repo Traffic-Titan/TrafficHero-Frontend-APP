@@ -34,11 +34,12 @@ class api {
             "Authorization": 'Bearer ' + apiJwtHeader + jwt.toString(),
             "Content-Type": "application/json",
           },
-          body: jsonEncode(Body));
+          body: jsonEncode(Body)
+      );
       if (response.statusCode == 200) {
         DateTime endTime = DateTime.now();
         Duration durationInMilliseconds = endTime.difference(startTime);
-        print('${durationInMilliseconds.inMicroseconds}秒');
+        // print('${durationInMilliseconds.inMicroseconds}秒');
         return response;
       } else {
         print(utf8.decode(response.bodyBytes));

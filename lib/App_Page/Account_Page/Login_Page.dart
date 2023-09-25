@@ -32,8 +32,11 @@ class _Login extends State<Login> {
 
   Future<void> getHome() async {
     await getUser();
+
+
     // getOperationalStatus();
     await getWeather();
+
     EasyLoading.dismiss();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const AllPage()));
@@ -210,7 +213,6 @@ class _Login extends State<Login> {
           {"email": email, "password": Sha256().sha256Function(password)},
           url,
           jwt);
-
       if (response == null) {
         return false;
       } else {
@@ -242,6 +244,7 @@ class _Login extends State<Login> {
                 .toString();
             showLoginError = true;
           });
+          print(errorText);
           return false;
         }
       }
