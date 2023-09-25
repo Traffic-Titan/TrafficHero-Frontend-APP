@@ -20,7 +20,6 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
 
   //綁定車牌測試用
 
-
   String? type = 'C';
 
   void showResultDialog(BuildContext context, listUser, listAmount, list2) {
@@ -80,14 +79,12 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
             ),
           ],
         ),
-        content:  Container(
+        content: Container(
           height: 20,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                 height: 20,
-                child: const Text("無停車費")),
+              Container(height: 20, child: const Text("無停車費")),
             ],
           ),
         ),
@@ -111,7 +108,6 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
     setState(() {
       vehicle = widget.vehicle;
     });
-   
   }
 
   get_Amount(LicensePlateNumber, type) async {
@@ -195,7 +191,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
     }
   }
 
-    getBindingLicensePlate() async {
+  getBindingLicensePlate() async {
     EasyLoading.show(status: '查詢中...');
     var response;
     var url = dotenv.env['Vehicle'];
@@ -207,9 +203,9 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
     }
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
-    setState(() {
-      vehicle = responseBody['vehicle'];
-    });
+      setState(() {
+        vehicle = responseBody['vehicle'];
+      });
     }
   }
 
@@ -229,13 +225,13 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
         title: const Text('停車費查詢'),
         elevation: 0,
         backgroundColor: Colors.blue,
-         leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {
-          Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const AllPage()));
-            },
-          ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const AllPage()));
+          },
+        ),
       ),
       body: SingleChildScrollView(
         child: Center(
@@ -248,6 +244,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                   sizebox('已綁定車牌', Colors.blue.shade200, Colors.blue.shade900),
                   const SizedBox(height: 20),
                   SizedBox(
+                    width: 400,
                     child: Card(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(14.0),
@@ -284,7 +281,7 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
                                       ),
                                     ),
                                     Text(
-                                      "車種：${changeType(list['type'])}",
+                                      "${changeType(list['type'])}",
                                       style: const TextStyle(
                                         fontWeight: FontWeight.w500,
                                       ),

@@ -135,8 +135,12 @@ class _NewsState extends State<News> {
   text(name) {
     try {
       for (var i = 0; i <= choices.city_ios.length; i++) {
-        if (choices.city_Chiness[i]['title'] == name) {
-          return choices.city_Chiness[i]['value'];
+        if (choices.city[i]['title'] == name) {
+          if (name == '台北市') {
+            return '臺北市';
+          } else if (choices.city[i]['title'] == name) {
+            return choices.city[i]['value'];
+          }
         } else if (choices.city_English[i]['title'] == name) {
           return choices.city_English[i]['value'];
         } else if (choices.city_ios[i]['title'] == name) {
@@ -150,10 +154,9 @@ class _NewsState extends State<News> {
 
   font2(name) {
     for (var i = 0; i < choices.city_Chiness.length; i++) {
-      if (name == 'Taipei_City') {
+      if (name == '台北市') {
         return '臺北市';
       } else if (choices.city_Chiness[i]['value'] == name) {
-        print('object');
         return choices.city_Chiness[i]['title'];
       }
     }
@@ -201,8 +204,9 @@ class _NewsState extends State<News> {
                           title: (index, item) => item['title'] ?? '',
                           group: (index, item) => item['body'] ?? '',
                         ),
-                        choiceActiveStyle:
-                            const S2ChoiceStyle(color: Colors.redAccent),
+                        choiceActiveStyle: const S2ChoiceStyle(
+                          color: Color.fromRGBO(67, 150, 200, 1),
+                        ),
                         modalType: S2ModalType.bottomSheet,
                         modalConfirm: true,
                         modalFilter: true,
@@ -244,7 +248,7 @@ class _NewsState extends State<News> {
                         },
                         groupHeaderBuilder: (context, state, group) {
                           return Container(
-                            color: Colors.blue,
+                            color: Color.fromRGBO(67, 150, 200, 1),
                             padding: const EdgeInsets.all(10),
                             alignment: Alignment.centerLeft,
                             child: S2Text(
@@ -355,7 +359,9 @@ class _NewsState extends State<News> {
                             })),
                   ),
                 ]),
-                Expanded(child: listview())
+                Expanded(
+                  child: listview(),
+                )
               ],
             )),
       ),
@@ -367,12 +373,9 @@ class _NewsState extends State<News> {
         itemCount: listView.length,
         itemBuilder: (context, index) {
           final news = listView[index];
-          return Card(
-              elevation: 3,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: ListTile(
+          return Column(
+            children: [
+              ListTile(
                 leading: Column(
                   children: [
                     Container(
@@ -435,7 +438,11 @@ class _NewsState extends State<News> {
                                 )));
                   }
                 },
-              ));
+              ),
+              Divider(
+                  thickness: 1, color: Colors.grey, indent: 10, endIndent: 10)
+            ],
+          );
         });
   }
 }

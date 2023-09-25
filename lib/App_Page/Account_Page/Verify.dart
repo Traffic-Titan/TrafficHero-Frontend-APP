@@ -109,7 +109,7 @@ class _verify_pageState extends State<verify_page> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      backgroundColor: const Color.fromARGB(168, 1, 99, 148),
+      backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -162,7 +162,7 @@ class _verify_pageState extends State<verify_page> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                  const forgetPasswordPage()));
+                                    const forgetPasswordPage()));
                       }
                     }),
               const SizedBox(

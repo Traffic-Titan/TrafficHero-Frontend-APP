@@ -8,14 +8,15 @@ Traffic Hero APP
 
 # 安裝環境
 
-## 1. 上去Flutter官網，按照步驟安裝環境 (https://docs.flutter.dev/get-started/install)
+## 1. 上去Flutter官網，按照步驟安裝環境 (<https://docs.flutter.dev/get-started/install>)
+
 選擇作業系統，開始按照步驟安裝
 
 ![Alt text](/readme_image/image.png)
 
-## 2. Flutter環境變數的設定：
+## 2. Flutter環境變數的設定
 
-### - Windows :
+### - Windows
 
 1. 在開始中找到設定
 
@@ -36,8 +37,8 @@ Traffic Hero APP
 
     ![Alt text](/readme_image/image-23.png)
 
+### - MacOS
 
-### - MacOS : 
 需要用到終端機進行環境變數設定
 
 ![Alt text](/readme_image/image-1.png)
@@ -52,10 +53,12 @@ vim ~/.zshrc
 
 ![Alt text](/readme_image/image-2.png)
 
-使用vim的 Insert，在鍵盤按i，就可以輸入！然後輸入 
+使用vim的 Insert，在鍵盤按i，就可以輸入！然後輸入
+
 ```
 export PATH="$PATH:[存放Flutter SDK 的路徑]/flutter/bin"
 ```
+
 輸入後就可以按ESC退出insert模式，，之後輸入 :wq
 
 最後再重開終端
@@ -74,10 +77,7 @@ sudo gem install cocoapods
 
 之後只要按照官方文件做就好！
 
-
-
 用終端機直接輸入就好
-
 
 ### VScode Flutter 安裝
 
@@ -91,9 +91,6 @@ sudo gem install cocoapods
 
 找到後直接安裝就好！
 
-
-
-
 # 啟用本專案
 
 ## 1. 先上github下載本專案
@@ -101,14 +98,18 @@ sudo gem install cocoapods
 ## 2. 使用VScode打開本專案
 
 ## 3. 安裝套件
+
 打開終端機，輸入
+
 ```
 flutter pub get
 ```
+
 就可以安裝套件
 
 ## 4. 下載ENV、Google SSO驗證文件
-Google SSO 文件需要到Firebase(https://firebase.google.com/)下載
+
+Google SSO 文件需要到Firebase(<https://firebase.google.com/)下載>
 
 進到網站並點進專案中我們可以看的
 
@@ -156,20 +157,24 @@ IOS：
 選擇驗證文件按確定就好了
 
 ### Google SSO 如果要在電腦上做Android 應用程式測試需要使用SHA 憑證指紋來做電腦上的驗證
+
 1. 要先確定電腦有沒有安裝java
 2. 打開CMD OR 終端機，輸入
 
 windows
+
 ```
 keytool -list -v \ -alias androiddebugkey -keystore %USERPROFILE%\.android\debug.keystore
 ```
 
 MacOS
+
 ```
 keytool -list -v \ -alias androiddebugkey -keystore ~/.android/debug.keystore
 ```
 
 就會得到（以下為官方文件提供之範例）
+
 ```
 > Task :app:signingReport
 Variant: debug
@@ -183,7 +188,6 @@ Valid until: Wednesday, August 10, 2044
 ```
 
 再到FireBase 輸入SHA指紋(只需輸入SHA1、SHA-256)
-
 
 ![Alt text](/readme_image/image-24.png)
 
@@ -203,3 +207,100 @@ Valid until: Wednesday, August 10, 2044
 ![Alt text](/readme_image/image-17.png)
 
 按下 F5 就會自動安裝了！
+
+# 頁面色彩挑選規則
+
+先選定主要色彩
+
+{
+  "hex": "#3e6fb3",
+  "websafe": "#3366cc",
+  "rgb": {
+    "r": 62,
+    "g": 111,
+    "b": 179
+  },
+  "hsl": {
+    "h": 215,
+    "s": 49,
+    "l": 47
+  },
+  "hsb": {
+    "h": 215,
+    "s": 65,
+    "b": 70
+  },
+  "cmyk": {
+    "c": 65,
+    "m": 38,
+    "y": 0,
+    "k": 30
+  }
+}
+```Color.fromRGBO(62, 111, 179, 1),```
+
+在選定次要色
+嘗試將S值設在5-10之間；B值設在95-100之間。
+
+{
+  "hex": "#e6f0ff",
+  "websafe": "#ffffff",
+  "rgb": {
+    "r": 230,
+    "g": 240,
+    "b": 255
+  },
+  "hsl": {
+    "h": 216,
+    "s": 100,
+    "l": 95
+  },
+  "hsb": {
+    "h": 216,
+    "s": 10,
+    "b": 100
+  },
+  "cmyk": {
+    "c": 10,
+    "m": 6,
+    "y": 0,
+    "k": 0
+  }
+}
+
+在選定輔色
+增加或減少H值設定在30-40之間；並增加B值在5-10之間。
+
+{
+  "hex": "#4396bf",
+  "websafe": "#3399cc",
+  "rgb": {
+    "r": 67,
+    "g": 150,
+    "b": 191
+  },
+  "hsl": {
+    "h": 200,
+    "s": 49,
+    "l": 51
+  },
+  "hsb": {
+    "h": 200,
+    "s": 65,
+    "b": 75
+  },
+  "cmyk": {
+    "c": 65,
+    "m": 21,
+    "y": 0,
+    "k": 25
+  }
+}
+```Color.fromRGBO(67, 150, 200, 1),```
+
+最後整體版面通過
+主要色 60%
+次要色 30%
+輔助色 10%
+
+以上比例進行排版

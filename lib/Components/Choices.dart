@@ -110,7 +110,7 @@ List<Map<String, String>> city = [
 ];
 
 List<Map<String, String>> city_English = [
-        {'value': 'All', 'title': 'All', 'body': '全選'},
+  {'value': 'All', 'title': 'All', 'body': '全選'},
   {'value': 'KeelungCity', 'title': 'Keelung City'},
   {'value': 'NewTaipeiCity', 'title': 'New Taipei City'},
   {'value': 'TaipeiCity', 'title': 'Taipei City'},
@@ -136,7 +136,7 @@ List<Map<String, String>> city_English = [
 ];
 
 List<Map<String, String>> city_ios = [
-      {'value': 'All', 'title': 'All', 'body': '全選'},
+  {'value': 'All', 'title': 'All', 'body': '全選'},
   {'value': 'KeelungCity', 'title': 'KEE'},
   {'value': 'NewTaipeiCity', 'title': 'NWT'},
   {'value': 'TaipeiCity', 'title': 'TPE'},
@@ -162,7 +162,7 @@ List<Map<String, String>> city_ios = [
 ];
 
 List<Map<String, String>> city_Chiness = [
-      {'value': 'All', 'title': 'All', 'body': '全選'},
+  {'value': 'All', 'title': 'All', 'body': '全選'},
   {'value': 'KeelungCity', 'title': '基隆市', 'body': '1. 北部區域'},
   {'value': 'NewTaipeiCity', 'title': '新北市', 'body': '1. 北部區域'},
   {'value': 'TaipeiCity', 'title': '台北市', 'body': '1. 北部區域'},

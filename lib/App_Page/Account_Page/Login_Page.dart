@@ -10,6 +10,8 @@ class Login extends StatefulWidget {
 
 class _Login extends State<Login> {
   late stateManager state;
+  late SharedPreferences prefs;
+
   final usernameController = TextEditingController(),
       passwordController = TextEditingController(),
       googleController = Get.put(googlesso());
@@ -20,21 +22,27 @@ class _Login extends State<Login> {
 
 //當頁面創造時執行
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
+
+    prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     EasyLoading.dismiss();
   }
 
   Future<void> getHome() async {
     await getUser();
-    // await getOperationalStatus();
-    // await getWeather();
+
+
+    // getOperationalStatus();
+    await getWeather();
+
     EasyLoading.dismiss();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const AllPage()));
   }
 
+//處理營運狀況
   getOperationalStatus() async {
     var position = await geolocator().updataPosition();
     var url = dotenv.env['OperationalStatus'].toString() +
@@ -47,6 +55,7 @@ class _Login extends State<Login> {
       state
           .updateOperationalStatus(jsonDecode(utf8.decode(response.bodyBytes)));
       print(state.OperationalStatus);
+      print(state.OperationalStatus.toString() + 'test');
     } else {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
     }
@@ -218,11 +227,14 @@ class _Login extends State<Login> {
               jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
 
           print(await jsonDecode(response.body)['token']);
+          await prefs.setString(
+              'userToken', jsonDecode(response.body)['token']);
           setState(() {
             response = response;
             showLoginError = false;
           });
-          print(jsonDecode(response.body)['token']);
+
+          print(prefs.get('userToken'));
 
           return true;
         } else {
@@ -257,7 +269,7 @@ class _Login extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: Color.fromARGB(139, 211, 240, 255),
+      backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
       body: Center(
         child: SingleChildScrollView(
           child: Container(
@@ -266,12 +278,11 @@ class _Login extends State<Login> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
-                  '歡迎使用',
-                  style: TextStyle(color: Colors.white, fontSize: 40),
-                ),
-                const Text(
-                  'Traffic Hero',
-                  style: TextStyle(color: Colors.white, fontSize: 28),
+                  '登入',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
+                  ),
                 ),
                 const SizedBox(
                   height: 50,
@@ -393,6 +404,7 @@ class _Login extends State<Login> {
                           imagePath: 'assets/login_icon/google.png',
                         ),
                         onTap: () async {
+                          print(prefs.get('userToken'));
                           // try {
                           //   if (googleController.googleAccount.value == null) {
                           //     EasyLoading.show(status: '登入中...');

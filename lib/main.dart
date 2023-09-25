@@ -1,6 +1,7 @@
-// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, unnecessary_new
 
-import 'imports.dart';
+// ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, unnecessary_new, avoid_print, use_build_context_synchronously
+import 'Imports.dart';
+
 
 void main() async {
   await dotenv.load();
@@ -23,6 +24,17 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  late SharedPreferences prefs;
+  late stateManager state;
+  var createAppPage;
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    prefs = await SharedPreferences.getInstance();
+    state = Provider.of<stateManager>(context, listen: false);
+    EasyLoading.dismiss();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -31,8 +43,8 @@ class _MyAppState extends State<MyApp> {
         primarySwatch: Colors.blue,
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
-      home: const Login(),
-      debugShowCheckedModeBanner: false,
+      home: appLoadingPage(),
+      debugShowCheckedModeBanner: true,
       builder: EasyLoading.init(),
     );
   }

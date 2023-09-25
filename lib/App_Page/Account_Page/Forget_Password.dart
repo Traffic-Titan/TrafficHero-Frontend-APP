@@ -54,76 +54,76 @@ class _forgetPasswordPageState extends State<forgetPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        resizeToAvoidBottomInset: false,
-        extendBodyBehindAppBar: true,
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
+      resizeToAvoidBottomInset: false,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
-        backgroundColor: const Color.fromARGB(168, 1, 99, 148),
-        body:  Center(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 80,
-                ),
-                const Text(
-                  '忘記密碼',
-                  style: TextStyle(color: Colors.white, fontSize: 40),
-                ),
-                const SizedBox(
-                  height: 80,
-                ),
-                MyTextfield(
-                  controller: forget_email,
-                  hintText: '電子郵件',
-                  obscurText: false,
-                  error_status: forget_password_email,
-                  error_text: forget_password_error_text,
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                InkWell(
-                  child: button(functionName: birthday),
-                  onTap: () {
-                    DatePicker.showDatePicker(context,
-                        showTitleActions: true,
-                        minTime: DateTime(1800, 1, 1),
-                        maxTime: DateTime.now(), onChanged: (date) {
-                      setState(() {
-                        final DateFormat formatter = DateFormat('yyyy/MM/dd');
-                        final String formattedDate = formatter.format(date);
-                        birthday = formattedDate.toString();
-                      });
-                    }, onConfirm: (date) {
-                      setState(() {
-                        final DateFormat formatter = DateFormat('yyyy/MM/dd');
-                        final String formattedDate = formatter.format(date);
-                        birthday = formattedDate.toString();
-                      });
-                    }, currentTime: DateTime.now(), locale: LocaleType.zh);
-                  },
-                ),
-                const SizedBox(
-                  height: 80,
-                ),
-                InkWell(
-                  child: const block_button(functionName: "送出"),
-                  onTap: () {
-                    EasyLoading.show(status: 'loading...');
-                    forgetPasswordFunction(context);
-                  },
-                ),
-              ],
+      ),
+      backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
+      body: Center(
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 200,
             ),
-          ),
-        );
+            const Text(
+              '忘記密碼',
+              style: TextStyle(color: Colors.white, fontSize: 40),
+            ),
+            const SizedBox(
+              height: 50,
+            ),
+            MyTextfield(
+              controller: forget_email,
+              hintText: '電子郵件',
+              obscurText: false,
+              error_status: forget_password_email,
+              error_text: forget_password_error_text,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            InkWell(
+              child: button(functionName: birthday),
+              onTap: () {
+                DatePicker.showDatePicker(context,
+                    showTitleActions: true,
+                    minTime: DateTime(1800, 1, 1),
+                    maxTime: DateTime.now(), onChanged: (date) {
+                  setState(() {
+                    final DateFormat formatter = DateFormat('yyyy/MM/dd');
+                    final String formattedDate = formatter.format(date);
+                    birthday = formattedDate.toString();
+                  });
+                }, onConfirm: (date) {
+                  setState(() {
+                    final DateFormat formatter = DateFormat('yyyy/MM/dd');
+                    final String formattedDate = formatter.format(date);
+                    birthday = formattedDate.toString();
+                  });
+                }, currentTime: DateTime.now(), locale: LocaleType.zh);
+              },
+            ),
+            const SizedBox(
+              height: 80,
+            ),
+            InkWell(
+              child: const block_button(functionName: "送出"),
+              onTap: () {
+                EasyLoading.show(status: 'loading...');
+                forgetPasswordFunction(context);
+              },
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
