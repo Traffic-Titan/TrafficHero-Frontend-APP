@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart'; // Make sure to import the correct package
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+// import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Road_Information extends StatefulWidget {
   const Road_Information({Key? key}) : super(key: key);
@@ -14,15 +14,15 @@ class Road_Information extends StatefulWidget {
 }
 
 class _Road_InformationState extends State<Road_Information> {
-  late GoogleMapController mapController;
-  var test;
-  late List<Placemark> placemarks;
+  // late GoogleMapController mapController;
+  // var test;
+  // late List<Placemark> placemarks;
 
-  LatLng _center = const LatLng(25.1755, 121.4407);
+  // LatLng _center = const LatLng(25.1755, 121.4407);
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
+  // void _onMapCreated(GoogleMapController controller) {
+  //   mapController = controller;
+  // }
 
 
   @override
@@ -35,19 +35,19 @@ class _Road_InformationState extends State<Road_Information> {
     return test1(context);
   }
 
-  @override
-  Widget test2(BuildContext context) {
-    return Scaffold(
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: _center,
-          zoom: 11.0,
-        ),
-//        
-      ),
-    );
-  }
+//   @override
+//   Widget test2(BuildContext context) {
+//     return Scaffold(
+//       body: GoogleMap(
+//         onMapCreated: _onMapCreated,
+//         initialCameraPosition: CameraPosition(
+//           target: _center,
+//           zoom: 11.0,
+//         ),
+// //        
+//       ),
+//     );
+//   }
 
   @override
   Widget test1(BuildContext context) {

@@ -20,7 +20,7 @@ class _Home extends State<Home> {
       _nearbyStop,
       _operationCondition,
       _operationConditionLight;
-  var operationalStatus = [];
+  var operationalStatus;
   var weather;
   var homePageModel;
   var screenWidth;
@@ -34,7 +34,7 @@ class _Home extends State<Home> {
     state = Provider.of<stateManager>(context, listen: false);
     setState(() {
       weather = state.weather;
-      // operationalStatus = state.OperationalStatus;
+      operationalStatus = state.OperationalStatus;
     });
     print(state.accountState);
     print(state.OperationalStatus);
@@ -232,11 +232,11 @@ class _Home extends State<Home> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Image.network(
-                      weather['weather_icon_url'].toString(),
-                      width: screenWidth - 30 > 600 ? 170 : screenWidth * 0.25,
-                      fit: BoxFit.contain,
-                    ),
+                    // Image.network(
+                    //   weather['weather_icon_url'].toString(),
+                    //   width: screenWidth - 30 > 600 ? 170 : screenWidth * 0.25,
+                    //   fit: BoxFit.contain,
+                    // ),
                   ],
                 ),
               ],
@@ -353,7 +353,54 @@ class _Home extends State<Home> {
               height: 95,
               child: PageView(
                 controller: _controller,
-                children: const <Widget>[],
+                children: <Widget>[
+                  GridView(
+                    padding: EdgeInsets.zero,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4, //横轴三个子widget
+                        childAspectRatio: 0.01),
+                    children: List.generate(
+                      toolList.length,
+                      (index) {
+                        final tool = toolList[index];
+                        return SizedBox(
+                          height: 70,
+                          child: InkWell(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  margin: const EdgeInsets.all(3.0),
+                                  child: Image.asset(
+                                    tool['img'].toString(),
+                                  ),
+                                ),
+                                Text(
+                                  tool['title'].toString(),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                            onTap: () async {
+                              EasyLoading.show(status: 'loading...');
+                              if (tool['value'] == '路邊停車費') {
+                                await goLicensePlateInput();
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => WebView(
+                                            tt: tool['url'].toString())));
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
           ),
@@ -403,7 +450,7 @@ class _Home extends State<Home> {
     );
   }
 
-  Widget operationalWidget() {
+  Widget intercityoperationalWidget() {
     return Card(
       color: Color.fromARGB(255, 255, 255, 255),
       shape: RoundedRectangleBorder(
@@ -422,10 +469,10 @@ class _Home extends State<Home> {
                 ),
                 child: Container(
                   height: 30,
-                  color: Color.fromRGBO(62, 111, 179, 1),
+                  color: Color.fromRGBO(67, 150, 200, 1),
                   child: Center(
                     child: Text(
-                      '路況速報',
+                      '跨縣市運輸營運狀況',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
@@ -435,8 +482,105 @@ class _Home extends State<Home> {
                   height: 220,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text('等待資料'),
+                    children: <Widget>[
+                      Expanded(
+                          child: ListView.builder(
+                              itemCount: operationalStatus['intercity'].length,
+                              itemBuilder: (context, index) {
+                                final intercity =
+                                    operationalStatus['intercity'][index];
+                                return ListTile(
+                                  title: Text(intercity['name']),
+                                  trailing: Column(
+                                    children: [
+                                      Container(
+                                          width: 40,
+                                          height: 40,
+                                          margin: const EdgeInsets.all(3.0),
+                                          child: SizedBox(
+                                              height: 40,
+                                              width: 40,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: changeColor(
+                                                        intercity["status"]),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50)),
+                                              ))),
+                                    ],
+                                  ),
+                                );
+                              }))
+                    ],
+                  )),
+            ],
+          )),
+    );
+  }
+
+  Widget localoperationalWidget() {
+    return Card(
+      color: Color.fromARGB(255, 255, 255, 255),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14.0),
+      ),
+      elevation: 1,
+      child: SizedBox(
+          height: 250,
+          width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(14.0),
+                  topRight: Radius.circular(14.0),
+                ),
+                child: Container(
+                  height: 30,
+                  color: Color.fromRGBO(67, 150, 200, 1),
+                  child: Center(
+                    child: Text(
+                      '地方運輸營運狀況',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                  height: 220,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                     Expanded(
+                          child: ListView.builder(
+                              itemCount: operationalStatus['local'].length,
+                              itemBuilder: (context, index) {
+                                final local =
+                                    operationalStatus['local'][index];
+                                return ListTile(
+                                  title: Text(local['name']),
+                                  trailing: Column(
+                                    children: [
+                                      Container(
+                                          width: 40,
+                                          height: 40,
+                                          margin: const EdgeInsets.all(3.0),
+                                          child: SizedBox(
+                                              height: 40,
+                                              width: 40,
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    color: changeColor(
+                                                        local["status"]),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            50)),
+                                              ))),
+                                    ],
+                                  ),
+                                );
+                              }))
                     ],
                   )),
             ],
@@ -502,57 +646,11 @@ class _Home extends State<Home> {
               SizedBox(
                 height: 10,
               ),
+             
               weatherWidget(),
-              // Visibility(
-              //   visible: _operationCondition,
-              //   child: Expanded(
-              //     flex: 2,
-              //     child: Container(
-              //       color: const Color.fromRGBO(221, 235, 247, 1),
-              //       width: MediaQuery.of(context).size.width,
-              //       padding: const EdgeInsets.only(top: 20),
-              //       child: GridView(
-              //         scrollDirection: Axis.horizontal,
-              //         gridDelegate:
-              //             const SliverGridDelegateWithMaxCrossAxisExtent(
-              //                 maxCrossAxisExtent: 200,
-              //                 childAspectRatio: 3 / 2,
-              //                 mainAxisSpacing: 20),
-              //         children: List.generate(
-              //           operationalStatus.length,
-              //           (index) {
-              //             final operationNews = state.OperationalStatus[index];
-              //             return Expanded(
-              //                 child: Column(
-              //               children: [
-              //                 Container(
-              //                     width: 40,
-              //                     height: 40,
-              //                     margin: const EdgeInsets.all(3.0),
-              //                     child: SizedBox(
-              //                         height: 40,
-              //                         width: 40,
-              //                         child: Container(
-              //                           decoration: BoxDecoration(
-              //                               color: changeColor(state
-              //                                   .OperationalStatus["status"]),
-              //                               borderRadius:
-              //                                   BorderRadius.circular(50)),
-              //                         ))),
-              //                 Text(
-              //                   splitTextIntoChunks(
-              //                       state.OperationalStatus["name"].toString(),
-              //                       3), // 每行兩個字
-              //                   style: const TextStyle(fontSize: 20),
-              //                 )
-              //               ],
-              //             ));
-              //           },
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              intercityoperationalWidget(),
+               localoperationalWidget(),
+              
             ],
           )),
         ),

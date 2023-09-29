@@ -30,7 +30,7 @@ class _NavbarState extends State<Navbar> {
     prefs = await SharedPreferences.getInstance();
   }
 
-  Log_Out() {
+  logOut() {
     // googleController.google_signOut();
     prefs.setString('userToken', '');
     print(prefs.get('userToken'));
@@ -109,7 +109,7 @@ class _NavbarState extends State<Navbar> {
             title: const Text('登出'),
             onTap: () {
               EasyLoading.dismiss();
-              Log_Out();
+              logOut();
             },
           ),
     ]));

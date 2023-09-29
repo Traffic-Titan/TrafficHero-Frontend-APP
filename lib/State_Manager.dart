@@ -76,7 +76,7 @@ class stateManager with ChangeNotifier {
     notifyListeners();
   }
 
-   void updateWeatherState(newValue) {
+  void updateWeatherState(newValue) {
     _weather = newValue;
     notifyListeners();
   }

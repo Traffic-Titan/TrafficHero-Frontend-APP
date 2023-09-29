@@ -38,7 +38,7 @@ dependencies:
   provider: ^6.0.5
   flutter_login: ^4.1.1
   url_launcher_ios: ^6.1.4
-  url_launcher: ^6.1.12
+  # url_launcher: ^6.1.12
   flutter_easyloading: ^3.0.5
   crypto: ^3.0.3
   geocoding: ^2.1.0
@@ -47,9 +47,9 @@ dependencies:
   time_picker_spinner_pop_up: ^1.2.1
   intl: ^0.18.1
   flutter_datetime_picker_plus: ^2.0.1
-  # firebase_auth: ^4.7.1
-  # google_sign_in: ^6.1.4
-  # firebase_core: ^2.15.0
+  # firebase_auth: ^4.10.0
+  # google_sign_in: ^6.1.5
+  # firebase_core: ^2.16.0
   get: ^4.6.5
   dio: ^5.3.0
   flutter_dotenv: ^5.1.0
@@ -59,13 +59,14 @@ dependencies:
   sticky_headers: ^0.3.0+2
   webview_flutter: ^4.2.2
   path_provider: ^2.0.15
-  geolocator: ^9.0.2
+  geolocator: ^10.1.0
   flutter_tts: ^3.7.0
   flutter_dialogs: ^3.0.0
-  google_maps_flutter: ^2.4.0
+  # google_maps_flutter: ^2.5.0
   flutter_datetime_picker: ^1.5.1
   shared_preferences: ^2.2.1
   slide_animation: ^0.0.4
+  # google_maps_flutter_ios: ^2.3.1
 
 dev_dependencies:
   flutter_test:

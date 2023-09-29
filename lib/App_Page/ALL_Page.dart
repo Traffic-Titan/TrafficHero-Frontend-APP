@@ -133,6 +133,7 @@ class _AllPageState extends State<AllPage> {
               height: 90,
               fit: BoxFit.cover,
             ))),
+            
             // Image.asset("assets/topbar/Default_Avatar.png"),
             iconSize: 50,
             onPressed: () async {
