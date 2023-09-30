@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables, avoid_print
+
 import 'package:traffic_hero/Imports.dart';
 
 class AccountManager extends StatefulWidget {
@@ -13,11 +15,11 @@ class _AccountManager extends State<AccountManager> {
   late String acctInforModify;
   late String name, email, gender, birthday;
   var img;
-  TextEditingController changedName = new TextEditingController();
-  TextEditingController changedEmail = new TextEditingController();
-  TextEditingController changedBirthday = new TextEditingController();
-  TextEditingController changedGender = new TextEditingController();
-  TextEditingController changedPhone = new TextEditingController();
+  TextEditingController changedName = TextEditingController();
+  TextEditingController changedEmail = TextEditingController();
+  TextEditingController changedBirthday = TextEditingController();
+  TextEditingController changedGender = TextEditingController();
+  TextEditingController changedPhone = TextEditingController();
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -71,23 +73,27 @@ class _AccountManager extends State<AccountManager> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+
+      backgroundColor: const Color.fromRGBO(230, 240, 255, 1),
       appBar: AppBar(
         title: const Text("會員管理"),
-        backgroundColor: Color.fromRGBO(113, 170, 221, 1),
+        backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
       ),
       body: Scrollbar(
         child: Column(
           children: [
+            const SizedBox(height: 20,),
             Center(
-              child: CircleAvatar(
-                child: ClipOval(
-                    child: Image.memory(
-              base64Decode(state.profile?["avatar"]),
-              width: 600,
-              height: 600,
-              fit: BoxFit.cover,
-            ))),
-            ),
+              child:  ClipOval(
+                child: Image.memory(
+                  base64Decode(state.profile?["avatar"] ?? ''),
+                  width: 90,
+                  height: 90,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            
+            ),const SizedBox(height: 20,),
             const Align(
               alignment: Alignment.topLeft,
               child: Text("  個人資訊",
@@ -95,12 +101,12 @@ class _AccountManager extends State<AccountManager> {
                       fontSize: 23, color: Color.fromRGBO(46, 117, 182, 1))),
             ),
             Container(
-              margin: EdgeInsets.only(left: 15, right: 15, top: 5),
-              padding: EdgeInsets.all(10),
+              margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
+              padding: const EdgeInsets.all(10),
               height: 200,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color.fromRGBO(187, 214, 239, 1),
+                color: const Color.fromRGBO(187, 214, 239, 1),
               ),
               child: Column(
                 children: [
@@ -108,7 +114,7 @@ class _AccountManager extends State<AccountManager> {
                     flex: 4,
                     child: Row(
                       children: [
-                        Expanded(
+                        const Expanded(
                             flex: 1,
                             child: Align(
                                 alignment: Alignment.center,
@@ -122,7 +128,7 @@ class _AccountManager extends State<AccountManager> {
                           child: TextField(
                             controller: changedName,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               hintText: name,
                             ),
                             onChanged: (text) {
@@ -131,7 +137,7 @@ class _AccountManager extends State<AccountManager> {
                             enabled: _acctInforState,
                           ),
                         ),
-                        Expanded(
+                        const Expanded(
                             flex: 1,
                             child: Align(
                                 alignment: Alignment.center,
@@ -145,7 +151,7 @@ class _AccountManager extends State<AccountManager> {
                           child: TextField(
                             controller: changedBirthday,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               hintText: birthday,
                             ),
                             onChanged: (text) {
@@ -161,7 +167,7 @@ class _AccountManager extends State<AccountManager> {
                     flex: 4,
                     child: Row(
                       children: [
-                        Expanded(
+                        const Expanded(
                             flex: 1,
                             child: Align(
                                 alignment: Alignment.center,
@@ -175,7 +181,7 @@ class _AccountManager extends State<AccountManager> {
                           child: TextField(
                             controller: changedGender,
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               hintText: gender,
                             ),
                             onChanged: (text) {
@@ -184,7 +190,7 @@ class _AccountManager extends State<AccountManager> {
                             enabled: _acctInforState,
                           ),
                         ),
-                        Expanded(
+                        const Expanded(
                             flex: 1,
                             child: Align(
                                 alignment: Alignment.center,
@@ -196,7 +202,7 @@ class _AccountManager extends State<AccountManager> {
                         Expanded(
                           flex: 4,
                           child: TextField(
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               border: OutlineInputBorder(),
                               hintText: '09XXXXXXXX',
                             ),
@@ -211,19 +217,19 @@ class _AccountManager extends State<AccountManager> {
                       child: Row(
                         children: [
                           Visibility(
+                            visible: _acctInforState,
                             child: ElevatedButton(
                               onPressed: () {
                                 resetInfo();
                               },
-                              child: Text('重設'),
                               style: ElevatedButton.styleFrom(
-                                primary: Color.fromRGBO(24, 60, 126, 1),
+                                backgroundColor: const Color.fromRGBO(67, 150, 200, 1),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
                                         20)), // Background color
                               ),
+                              child: const Text('重設'),
                             ),
-                            visible: _acctInforState,
                           ),
                           ElevatedButton(
                             onPressed: () {
@@ -239,13 +245,13 @@ class _AccountManager extends State<AccountManager> {
                                 }
                               });
                             },
-                            child: Text(acctInforModify),
                             style: ElevatedButton.styleFrom(
-                              primary: Color.fromRGBO(24, 60, 126, 1),
+                              backgroundColor: const Color.fromRGBO(67, 150, 200, 1),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20)), // Background color
                             ),
+                            child: Text(acctInforModify),
                           ),
                         ],
                       )),
@@ -259,12 +265,12 @@ class _AccountManager extends State<AccountManager> {
                       fontSize: 23, color: Color.fromRGBO(46, 117, 182, 1))),
             ),
             Container(
-              margin: EdgeInsets.only(left: 15, right: 15, top: 5),
-              padding: EdgeInsets.all(10),
+              margin: const EdgeInsets.only(left: 15, right: 15, top: 5),
+              padding: const EdgeInsets.all(10),
               height: 150,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: Color.fromRGBO(187, 214, 239, 1),
+                color: const Color.fromRGBO(187, 214, 239, 1),
               ),
               child: Column(
                 children: [
@@ -272,7 +278,7 @@ class _AccountManager extends State<AccountManager> {
                     flex: 4,
                     child: Row(
                       children: [
-                        Expanded(
+                        const Expanded(
                             flex: 1,
                             child: Align(
                                 alignment: Alignment.center,
@@ -285,7 +291,7 @@ class _AccountManager extends State<AccountManager> {
                           flex: 4,
                           child: TextField(
                             decoration: InputDecoration(
-                              border: OutlineInputBorder(),
+                              border: const OutlineInputBorder(),
                               hintText: email,
                             ),
                           ),
@@ -294,13 +300,13 @@ class _AccountManager extends State<AccountManager> {
                           flex: 1,
                           child: ElevatedButton(
                             onPressed: null,
-                            child: Text("修改"),
                             style: ElevatedButton.styleFrom(
-                              primary: Color.fromRGBO(24, 60, 126, 1),
+                              backgroundColor: const Color.fromRGBO(67, 150, 200, 1),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20)), // Background color
                             ),
+                            child: const Text("修改"),
                           ),
                         ),
                       ],
@@ -310,12 +316,12 @@ class _AccountManager extends State<AccountManager> {
                     flex: 4,
                     child: Row(
                       children: [
-                        Expanded(
+                        const Expanded(
                             flex: 1,
                             child: Align(
                                 alignment: Alignment.center,
                                 child: Text("密碼",
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 18,
                                         color:
                                             Color.fromRGBO(24, 60, 126, 1))))),
@@ -338,13 +344,13 @@ class _AccountManager extends State<AccountManager> {
                                       builder: (context) =>
                                           const changePassword()));
                             },
-                            child: const Text("修改"),
                             style: ElevatedButton.styleFrom(
-                              primary: const Color.fromRGBO(24, 60, 126, 1),
+                              backgroundColor: const Color.fromRGBO(67, 150, 200, 1),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20)), // Background color
                             ),
+                            child: const Text("修改"),
                           ),
                         ),
                       ],

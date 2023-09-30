@@ -202,32 +202,32 @@ class _CMSState extends State<CMS> {
               ],
             )
           ),
-          Expanded(
-            // flex: 2,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start, // 垂直方向
-                crossAxisAlignment: CrossAxisAlignment.end, // 水平方向
-                children: List.generate(
-                  fastLocation.length,
-                      (index) {
-                    final fastList = fastLocation[index];
-                    return InkWell(
-                      child:
-                      Container(
-                        width: 50,
-                        margin: const EdgeInsets.all(3.0),
-                        child: Image.asset(
-                          fastList['img'].toString(),
-                        ),
-                      ),
-                      onTap: () {
-                        print(fastList['value'].toString());
-                      },
-                    );
-                  },
-                ),
-              ),
-          ),
+          // Expanded(
+          //   // flex: 2,
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.start, // 垂直方向
+          //       crossAxisAlignment: CrossAxisAlignment.end, // 水平方向
+          //       children: List.generate(
+          //         fastLocation.length,
+          //             (index) {
+          //           final fastList = fastLocation[index];
+          //           return InkWell(
+          //             child:
+          //             Container(
+          //               width: 50,
+          //               margin: const EdgeInsets.all(3.0),
+          //               child: Image.asset(
+          //                 fastList['img'].toString(),
+          //               ),
+          //             ),
+          //             onTap: () {
+          //               print(fastList['value'].toString());
+          //             },
+          //           );
+          //         },
+          //       ),
+          //     ),
+          // ),
         ],
       ),
       floatingActionButton: Container(
@@ -295,32 +295,32 @@ class _CMSState extends State<CMS> {
                 ],
               )
           ),
-          Expanded(
-            // flex: 2,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start, // 垂直方向
-              crossAxisAlignment: CrossAxisAlignment.end, // 水平方向
-              children: List.generate(
-                fastLocation.length,
-                    (index) {
-                  final fastList = fastLocation[index];
-                  return InkWell(
-                    child:
-                    Container(
-                      width: 50,
-                      margin: const EdgeInsets.all(3.0),
-                      child: Image.asset(
-                        fastList['img'].toString(),
-                      ),
-                    ),
-                    onTap: () {
-                      print(fastList['value'].toString());
-                    },
-                  );
-                },
-              ),
-            ),
-          ),
+          // Expanded(
+          //   // flex: 2,
+          //   child: Row(
+          //     mainAxisAlignment: MainAxisAlignment.start, // 垂直方向
+          //     crossAxisAlignment: CrossAxisAlignment.end, // 水平方向
+          //     children: List.generate(
+          //       fastLocation.length,
+          //           (index) {
+          //         final fastList = fastLocation[index];
+          //         return InkWell(
+          //           child:
+          //           Container(
+          //             width: 50,
+          //             margin: const EdgeInsets.all(3.0),
+          //             child: Image.asset(
+          //               fastList['img'].toString(),
+          //             ),
+          //           ),
+          //           onTap: () {
+          //             print(fastList['value'].toString());
+          //           },
+          //         );
+          //       },
+          //     ),
+          //   ),
+          // ),
         ],
       ),
       floatingActionButton: Container(

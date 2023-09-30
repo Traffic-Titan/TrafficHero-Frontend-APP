@@ -16,7 +16,6 @@ class _appLoadingPage extends State<appLoadingPage> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-
     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     checkToken();
@@ -39,7 +38,7 @@ class _appLoadingPage extends State<appLoadingPage> {
     if (response.statusCode == 200) {
       state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
       await getOperationalStatus();
-      // await getWeather();
+      await getWeather();
       await getUser();
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const AllPage()));
@@ -81,12 +80,17 @@ class _appLoadingPage extends State<appLoadingPage> {
       print(e);
     }
 
-    if (response.statusCode == 200) {
+try{
+ if (response.statusCode == 200) {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
       state.updateWeatherState(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
     }
+}catch(e){
+  print(e);
+}
+   
   }
 
   getUser() async {

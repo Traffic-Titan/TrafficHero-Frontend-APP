@@ -267,7 +267,7 @@ Valid until: Wednesday, August 10, 2044
     "k": 0
   }
 }
-
+```Color.fromRGBO(230, 240, 255, 1),```
 在選定輔色
 增加或減少H值設定在30-40之間；並增加B值在5-10之間。
 

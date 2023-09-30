@@ -24,6 +24,7 @@ class _Home extends State<Home> {
   var weather;
   var homePageModel;
   var screenWidth;
+  var fastTool;
   Color colorStatus = Colors.green;
   final PageController _controller = PageController();
   @override
@@ -40,34 +41,20 @@ class _Home extends State<Home> {
     print(state.OperationalStatus);
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
-      int index =
-          fastLocation.indexWhere((location) => location['value'] == '換電站');
-      int index2 =
-          fastLocation.indexWhere((location) => location['value'] == '充電站');
       setState(() {
+        fastTool = Tool.fastLocationCar;
+        print(fastTool);
         homePageModel = carHomePage(context);
-        display1 = "工具列";
-        display2 = "路況速報";
         _toolList = true;
         _trafficReport = true;
         _nearbyStop = false;
         _operationCondition = false;
         _operationConditionLight = false;
-        if (index != -1) {
-          fastLocation.removeAt(index);
-          if (index2 == -1) {
-            fastLocation.add(Tool.fastLocation_chargingStation);
-          }
-        }
       });
     } else if (state.modeName == 'scooter') {
-      int index =
-          fastLocation.indexWhere((location) => location['value'] == '充電站');
-      int index2 =
-          fastLocation.indexWhere((location) => location['value'] == '換電站');
-
       setState(() {
         homePageModel = scooterHomePage(context);
+        // fastTool = Tool.fastLocationCar ?? {};
         display1 = "工具列";
         display2 = "路況速報";
         _toolList = true;
@@ -75,19 +62,10 @@ class _Home extends State<Home> {
         _nearbyStop = false;
         _operationCondition = false;
         _operationConditionLight = false;
-        if (index != -1) {
-          fastLocation.removeAt(index);
-          if (index2 == -1) {
-            fastLocation.add(Tool.fastLocation_batterystop);
-          }
-        }
-
-        print(fastLocation);
-        // fastLocation[1] = _batterystop;
       });
     } else {
       setState(() {
-        homePageModel = publicTransportInformationPageHomePage(context);
+        homePageModel = publicTransportPageHomePage(context);
         display1 = "附近站點";
         display2 = "營運狀況";
         _toolList = false;
@@ -134,24 +112,23 @@ class _Home extends State<Home> {
     }
   }
 
-  changeMode(mode){
-    if(mode == 'car'){
+  changeMode(mode) {
+    if (mode == 'car') {
       return 'Car';
-    }else if(mode == 'scooter'){
+    } else if (mode == 'scooter') {
       return 'Scooter';
     }
   }
 
   findPlacesQuickly(url) async {
     var position = await geolocator().updataPosition();
-    var urlPosition =
-        url + '?mode=${changeMode(state.modeName)}&latitude=${position.latitude}&longitude=${position.longitude}';
-       
-        print(urlPosition);
+    var urlPosition = url +
+        '?mode=${changeMode(state.modeName)}&latitude=${position.latitude}&longitude=${position.longitude}';
+
+    print(urlPosition);
     var jwt = ',${state.accountState}';
 
     var response = await api().apiGet(urlPosition, jwt);
-    print(jsonDecode(utf8.decode(response.bodyBytes)));
     var res = jsonDecode(utf8.decode(response.bodyBytes))['url'];
     if (response.statusCode == 200) {
       EasyLoading.dismiss();
@@ -182,86 +159,86 @@ class _Home extends State<Home> {
 
 //頁面組件
 
-  // Widget weatherWidget() {
-  //   return InkWell(
-  //     child: SizedBox(
-  //       width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-  //       child: Row(
-  //         crossAxisAlignment: CrossAxisAlignment.center,
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           Row(
-  //             children: [
-  //               Text(
-  //                 '${weather['temperature']}°',
-  //                 style: TextStyle(
-  //                   fontSize: screenWidth - 30 > 600 ? 80 : screenWidth * 0.18,
-  //                   color: Color.fromRGBO(67, 150, 200, 1),
-  //                 ),
-  //               ),
-  //               SizedBox(
-  //                 width: 10,
-  //               ),
-  //               //今日溫度
-  //               Column(
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: [
-  //                   Text(weather['area'].toString(),
-  //                       style: TextStyle(
-  //                         fontSize:
-  //                             screenWidth - 30 > 600 ? 27 : screenWidth * 0.054,
-  //                         color: Color.fromRGBO(67, 150, 200, 1),
-  //                       )),
-  //                   Row(
-  //                     children: [
-  //                       Text(
-  //                         '最高 ${weather['the_highest_temperature']}°',
-  //                         style: TextStyle(
-  //                           fontSize: screenWidth - 30 > 600
-  //                               ? 20
-  //                               : screenWidth * 0.04,
-  //                           color: Color.fromRGBO(67, 150, 200, 1),
-  //                         ),
-  //                       ),
-  //                       SizedBox(
-  //                         width: 5,
-  //                       ),
-  //                       Text(
-  //                         '最低 ${weather['the_lowest_temperature']}°',
-  //                         style: TextStyle(
-  //                           fontSize: screenWidth - 30 > 600
-  //                               ? 20
-  //                               : screenWidth * 0.04,
-  //                           color: Color.fromRGBO(67, 150, 200, 1),
-  //                         ),
-  //                       )
-  //                     ],
-  //                   ),
-  //                 ],
-  //               ),
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.end,
-  //                 children: [
-  //                   // Image.network(
-  //                   //   weather['weather_icon_url'].toString(),
-  //                   //   width: screenWidth - 30 > 600 ? 170 : screenWidth * 0.25,
-  //                   //   fit: BoxFit.contain,
-  //                   // ),
-  //                 ],
-  //               ),
-  //             ],
-  //           )
-  //         ],
-  //       ),
-  //     ),
-  //     onTap: () {
-  //       Navigator.push(
-  //           context,
-  //           MaterialPageRoute(
-  //               builder: (context) => WebView(tt: weather['url'])));
-  //     },
-  //   );
-  // }
+  Widget weatherWidget() {
+    return InkWell(
+      child: SizedBox(
+        width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                Text(
+                  '${weather['temperature']}°',
+                  style: TextStyle(
+                    fontSize: screenWidth - 30 > 600 ? 80 : screenWidth * 0.18,
+                    color: Color.fromRGBO(67, 150, 200, 1),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                //今日溫度
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(weather['area'].toString(),
+                        style: TextStyle(
+                          fontSize:
+                              screenWidth - 30 > 600 ? 27 : screenWidth * 0.054,
+                          color: Color.fromRGBO(67, 150, 200, 1),
+                        )),
+                    Row(
+                      children: [
+                        Text(
+                          '最高 ${weather['the_highest_temperature']}°',
+                          style: TextStyle(
+                            fontSize: screenWidth - 30 > 600
+                                ? 20
+                                : screenWidth * 0.04,
+                            color: Color.fromRGBO(67, 150, 200, 1),
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          '最低 ${weather['the_lowest_temperature']}°',
+                          style: TextStyle(
+                            fontSize: screenWidth - 30 > 600
+                                ? 20
+                                : screenWidth * 0.04,
+                            color: Color.fromRGBO(67, 150, 200, 1),
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    // Image.network(
+                    //   weather['weather_icon_url'].toString(),
+                    //   width: screenWidth - 30 > 600 ? 170 : screenWidth * 0.25,
+                    //   fit: BoxFit.contain,
+                    // ),
+                  ],
+                ),
+              ],
+            )
+          ],
+        ),
+      ),
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => WebView(tt: weather['url'])));
+      },
+    );
+  }
 
   Widget toolWidget() {
     return Card(
@@ -301,8 +278,7 @@ class _Home extends State<Home> {
                     padding: EdgeInsets.zero,
                     physics: NeverScrollableScrollPhysics(),
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 4, //横轴三个子widget
-                        childAspectRatio: 0.01),
+                        crossAxisCount: 4, childAspectRatio: 0.01),
                     children: List.generate(
                       toolList.length,
                       (index) {
@@ -371,9 +347,9 @@ class _Home extends State<Home> {
                         crossAxisCount: 4, //横轴三个子widget
                         childAspectRatio: 0.01),
                     children: List.generate(
-                      Tool.fastLocation.length,
+                      Tool.fastLocationCar.length,
                       (index) {
-                        final tool = Tool.fastLocation[index];
+                        final tool = Tool.fastLocationCar[index];
                         return SizedBox(
                           height: 70,
                           child: InkWell(
@@ -394,11 +370,156 @@ class _Home extends State<Home> {
                               ],
                             ),
                             onTap: () async {
-                                EasyLoading.show(status: 'loading...');
-            
-                  findPlacesQuickly(tool['url']);
+                              EasyLoading.show(status: 'loading...');
+                              findPlacesQuickly(tool['url']);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
+
+  Widget toolScooterWidget() {
+    return Card(
+      color: Color.fromARGB(255, 255, 255, 255),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14.0),
+      ),
+      elevation: 1,
+      child: SizedBox(
+        height: 250,
+        width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+        child: Column(children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(14.0),
+              topRight: Radius.circular(14.0),
+            ),
+            child: Container(
+              height: 30,
+              color: Color.fromRGBO(67, 150, 200, 1),
+              child: Center(
+                child: Text(
+                  '工具列',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+            ),
+          ),
+          Center(
+            child: SizedBox(
+              width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+              height: 95,
+              child: PageView(
+                controller: _controller,
+                children: <Widget>[
+                  GridView(
+                    padding: EdgeInsets.zero,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4, childAspectRatio: 0.01),
+                    children: List.generate(
+                      toolList.length,
+                      (index) {
+                        final tool = toolList[index];
+                        return SizedBox(
+                          height: 70,
+                          child: InkWell(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  margin: const EdgeInsets.all(3.0),
+                                  child: Image.asset(
+                                    tool['img'].toString(),
+                                  ),
+                                ),
+                                Text(
+                                  tool['title'].toString(),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                            onTap: () async {
+                              EasyLoading.show(status: 'loading...');
+                              if (tool['value'] == '路邊停車費') {
+                                await goLicensePlateInput();
+                              } else {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => WebView(
+                                            tt: tool['url'].toString())));
                               }
-                      ,
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Container(
+            height: 30,
+            color: Color.fromRGBO(67, 150, 200, 1),
+            child: Center(
+              child: Text(
+                '快速尋找地點',
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            ),
+          ),
+          Center(
+            child: SizedBox(
+              width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+              height: 95,
+              child: PageView(
+                controller: _controller,
+                children: <Widget>[
+                  GridView(
+                    padding: EdgeInsets.zero,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4, //横轴三个子widget
+                        childAspectRatio: 0.01),
+                    children: List.generate(
+                      Tool.fastLocationScooter.length,
+                      (index) {
+                        final tool = Tool.fastLocationScooter[index];
+                        return SizedBox(
+                          height: 70,
+                          child: InkWell(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  margin: const EdgeInsets.all(3.0),
+                                  child: Image.asset(
+                                    tool['img'].toString(),
+                                  ),
+                                ),
+                                Text(
+                                  tool['title'].toString(),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                            onTap: () async {
+                              EasyLoading.show(status: 'loading...');
+                              findPlacesQuickly(tool['url']);
+                            },
                           ),
                         );
                       },
@@ -454,7 +575,7 @@ class _Home extends State<Home> {
     );
   }
 
-  Widget intercityoperationalWidget() {
+  Widget operationalWidget() {
     return Card(
       color: Color.fromARGB(255, 255, 255, 255),
       shape: RoundedRectangleBorder(
@@ -462,7 +583,7 @@ class _Home extends State<Home> {
       ),
       elevation: 1,
       child: SizedBox(
-          height: 250,
+          height: (operationalStatus['intercity'].length * 50).toDouble() + (operationalStatus['local'].length * 50).toDouble() + 100,
           width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
           child: Column(
             children: [
@@ -476,48 +597,92 @@ class _Home extends State<Home> {
                   color: Color.fromRGBO(67, 150, 200, 1),
                   child: Center(
                     child: Text(
-                      '跨縣市運輸營運狀況',
+                      '跨縣市大眾運輸營運狀況',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
                 ),
               ),
-              SizedBox(
-                  height: 220,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                          child: ListView.builder(
-                              itemCount: operationalStatus['intercity'].length,
-                              itemBuilder: (context, index) {
-                                final intercity =
-                                    operationalStatus['intercity'][index];
-                                return ListTile(
-                                  title: Text(intercity['name']),
-                                  trailing: Column(
-                                    children: [
-                                      Container(
-                                          width: 40,
+              Center(
+                child: SizedBox(
+                  width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+                  height:
+                      (operationalStatus['intercity'].length * 55).toDouble(),
+                  child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: operationalStatus['intercity'].length,
+                          itemBuilder: (context, index) {
+                            final intercity =
+                                operationalStatus['intercity'][index];
+                            return ListTile(
+                              title: Text(intercity['name']),
+                              trailing: Column(
+                                children: [
+                                  Container(
+                                      width: 40,
+                                      height: 40,
+                                      margin: const EdgeInsets.all(3.0),
+                                      child: SizedBox(
                                           height: 40,
-                                          margin: const EdgeInsets.all(3.0),
-                                          child: SizedBox(
-                                              height: 40,
-                                              width: 40,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    color: changeColor(
-                                                        intercity["status"]),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50)),
-                                              ))),
-                                    ],
-                                  ),
-                                );
-                              }))
-                    ],
-                  )),
+                                          width: 40,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: changeColor(
+                                                    intercity["status"]),
+                                                borderRadius:
+                                                    BorderRadius.circular(50)),
+                                          ))),
+                                ],
+                              ),
+                            );
+                          }),
+                ),
+              ),
+              Container(
+                  height: 30,
+                  color: Color.fromRGBO(67, 150, 200, 1),
+                  child: Center(
+                    child: Text(
+                      '地方大眾運輸營運狀況',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                  ),
+                ),
+                Center(
+                child: SizedBox(
+                  width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+                  height:
+                      (operationalStatus['local'].length * 55).toDouble(),
+                  child: ListView.builder(
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: operationalStatus['local'].length,
+                          itemBuilder: (context, index) {
+                            final intercity =
+                                operationalStatus['local'][index];
+                            return ListTile(
+                              title: Text(intercity['name']),
+                              trailing: Column(
+                                children: [
+                                  Container(
+                                      width: 40,
+                                      height: 40,
+                                      margin: const EdgeInsets.all(3.0),
+                                      child: SizedBox(
+                                          height: 40,
+                                          width: 40,
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: changeColor(
+                                                    intercity["status"]),
+                                                borderRadius:
+                                                    BorderRadius.circular(50)),
+                                          ))),
+                                ],
+                              ),
+                            );
+                          }),
+                ),
+              ),
             ],
           )),
     );
@@ -556,12 +721,11 @@ class _Home extends State<Home> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                     Expanded(
+                      Expanded(
                           child: ListView.builder(
                               itemCount: operationalStatus['local'].length,
                               itemBuilder: (context, index) {
-                                final local =
-                                    operationalStatus['local'][index];
+                                final local = operationalStatus['local'][index];
                                 return ListTile(
                                   title: Text(local['name']),
                                   trailing: Column(
@@ -609,7 +773,7 @@ class _Home extends State<Home> {
             SizedBox(
               height: 10,
             ),
-            // weatherWidget(),
+            weatherWidget(),
             toolWidget(),
             trafficWarningWidget(),
           ]),
@@ -629,8 +793,8 @@ class _Home extends State<Home> {
               SizedBox(
                 height: 10,
               ),
-              // weatherWidget(),
-              toolWidget(),
+              weatherWidget(),
+              toolScooterWidget(),
               trafficWarningWidget()
             ],
           )),
@@ -639,7 +803,7 @@ class _Home extends State<Home> {
     );
   }
 
-  Widget publicTransportInformationPageHomePage(BuildContext context) {
+  Widget publicTransportPageHomePage(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(230, 240, 255, 1),
       body: SingleChildScrollView(
@@ -650,356 +814,12 @@ class _Home extends State<Home> {
               SizedBox(
                 height: 10,
               ),
-             
-              // weatherWidget(),
-              intercityoperationalWidget(),
-               localoperationalWidget(),
-              
+              weatherWidget(),
+              operationalWidget(),
             ],
           )),
         ),
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   double screenWidth = MediaQuery.of(context).size.width;
-  //   return Container(
-  //     margin: const EdgeInsets.only(left: 15, right: 15),
-  //     child: Column(
-  //       children: [
-  // InkWell(
-  //   onTap: () {
-  //     Navigator.push(
-  //         context,
-  //         MaterialPageRoute(
-  //             builder: (context) => WebView(tt: weather['url'])));
-  //   },
-  //   child: SizedBox(
-  //     height: 100,
-  //     width: 600,
-  //     child: Column(
-  //       children: [
-  //         Expanded(
-  //           child: Row(
-  //             mainAxisAlignment: MainAxisAlignment.center,
-  //             children: [
-  //               Text(
-  //                 '${weather['temperature']}°',
-  //                 style: TextStyle(
-  //                   fontSize: screenWidth * 0.2,
-  //                   color: Color.fromRGBO(46, 117, 182, 1),
-  //                 ),
-  //               ),
-  //               //今日溫度
-  //               Column(
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 children: [
-  //                   Text(weather['area'].toString(),
-  //                       style: TextStyle(
-  //                         fontSize: 18,
-  //                         color: Color.fromRGBO(46, 117, 182, 1),
-  //                       )),
-  //                   Row(
-  //                     children: [
-  //                       Text(
-  //                         '最高 ${weather['the_highest_temperature']}°',
-  //                         style: TextStyle(
-  //                           fontSize: 18,
-  //                           color: Color.fromRGBO(46, 117, 182, 1),
-  //                         ),
-  //                       ),
-  //                       SizedBox(
-  //                         width: 5,
-  //                       ),
-  //                       Text(
-  //                         '最低 ${weather['the_lowest_temperature']}°',
-  //                         style: TextStyle(
-  //                           fontSize: 18,
-  //                           color: Color.fromRGBO(46, 117, 182, 1),
-  //                         ),
-  //                       )
-  //                     ],
-  //                   ),
-  //                 ],
-  //               ),
-  //               Row(
-  //                 mainAxisAlignment: MainAxisAlignment.end,
-  //                 children: [
-  //                   Image.network(
-  //                     weather['weather_icon_url'].toString(),
-  //                     height: screenWidth * 0.2,
-  //                     fit: BoxFit.contain,
-  //                   ),
-  //                 ],
-  //               )
-  //             ],
-  //           ),
-  //         ),
-  //       ],
-  //     ),
-  //   ),
-  // ),
-  // Visibility(
-  //   visible: !_toolList,
-  //   child: Container(
-  //     width: MediaQuery.of(context).size.width,
-  //     color: const Color.fromRGBO(47, 125, 195, 1),
-  //     child: Text(
-  //       display1,
-  //       textAlign: TextAlign.center,
-  //       style: const TextStyle(fontSize: 20, color: Colors.white),
-  //     ),
-  //   ),
-  // ),
-  // Visibility(
-  //   visible: _toolList,
-  //   child: Container(
-  //     height: 300,
-  //     color: const Color.fromRGBO(221, 235, 247, 1),
-  //     // padding: const EdgeInsets.all(5),
-  //     margin: const EdgeInsets.only(bottom: 20),
-  //     child: Expanded(
-  //       child: Column(
-  //         children: [
-  //           Container(
-  //             width: MediaQuery.of(context).size.width,
-  //             color: const Color.fromRGBO(47, 125, 195, 1),
-  //             child: Text(
-  //               "工具列",
-  //               textAlign: TextAlign.center,
-  //               style:
-  //                   const TextStyle(fontSize: 18, color: Colors.white),
-  //             ),
-  //           ),
-
-  // Container(
-  //   width: MediaQuery.of(context).size.width,
-  //   color: const Color.fromRGBO(47, 125, 195, 1),
-  //   child: Text(
-  //     "快速尋找地點",
-  //     textAlign: TextAlign.center,
-  //     style:
-  //         const TextStyle(fontSize: 18, color: Colors.white),
-  //   ),
-  // ),
-  // SizedBox(
-  //   height: 10,
-  // ),
-
-  // SizedBox(
-  //   height: 130,
-  //   child: GridView(
-  //     padding: EdgeInsets.zero,
-  //     // scrollDirection: Axis.horizontal,
-  //     physics: NeverScrollableScrollPhysics(),
-  //     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-  //         crossAxisCount: 4, //横轴三个子widget
-  //         childAspectRatio: 0.01),
-  //     children: List.generate(
-  //       fastLocation.length,
-  //       (index) {
-  //         final fastList = fastLocation[index];
-  //         return SizedBox(
-  //           height: 70,
-  //           child: Expanded(
-  //             child: InkWell(
-  //               child: Column(
-  //                 children: [
-  //                   Container(
-  //                     width: 85,
-  //                     height: 85,
-  //                     margin: const EdgeInsets.all(3.0),
-  //                     child: Image.asset(
-  //                       fastList['img'].toString(),
-  //                     ),
-  //                   ),
-  //                   // Text(
-  //                   //   tool['title'].toString(),
-  //                   //   textAlign: TextAlign.center,
-  //                   // )
-  //                 ],
-  //               ),
-  //               onTap: () {
-  //                 EasyLoading.show(status: 'loading...');
-  //                 print(fastList['url']);
-  //                 findPlacesQuickly(fastList['url']);
-  //                 // launch(fastList['value'].toString());
-  //               },
-  //             ),
-  //           ),
-  //         );
-  //       },
-  //     ),
-  //   ),
-  // ),
-
-  // ),
-  //   ],
-  // ),
-  //     ),
-  //   ),
-  // ),
-  // Visibility(
-  //   visible: _nearbyStop,
-  //   child: Expanded(
-  //     //附近站點內容
-  //     flex: 6, //附近站點內容
-  //     child: Container(
-  //         margin: const EdgeInsets.only(bottom: 10),
-  //         color: const Color.fromRGBO(221, 235, 247, 1),
-  //         width: MediaQuery.of(context).size.width,
-  //         child: ListView.builder(
-  //           itemCount: stationList.length,
-  //           itemBuilder: (context, index) {
-  //             final stationNews = stationList[index];
-  //             return ListTile(
-  //               leading: Container(
-  //                 padding: const EdgeInsets.all(5.0),
-  //                 decoration: BoxDecoration(
-  //                   color: Colors.white,
-  //                   border: Border.all(
-  //                       color: const Color.fromRGBO(29, 73, 153, 1)),
-  //                   borderRadius: BorderRadius.circular(5),
-  //                 ),
-  //                 child: Text(
-  //                   '${stationNews["time"].toString()}分',
-  //                   style: const TextStyle(fontSize: 30),
-  //                 ),
-  //               ),
-  //               title: Text(
-  //                 stationNews["id"].toString(),
-  //                 style:
-  //                     const TextStyle(fontSize: 20, color: Colors.red),
-  //               ),
-  //               subtitle: Text(
-  //                 '往${stationNews["station"].toString()}',
-  //                 style: const TextStyle(
-  //                     fontSize: 20,
-  //                     color: Color.fromRGBO(29, 73, 153, 1)),
-  //               ),
-  //             );
-  //           },
-  //         )),
-  //   ),
-  // ),
-  // Container(
-  //   width: MediaQuery.of(context).size.width,
-  //   color: const Color.fromRGBO(47, 125, 195, 1),
-  //   child: Text(
-  //     display2,
-  //     textAlign: TextAlign.center,
-  //     style: const TextStyle(fontSize: 20, color: Colors.white),
-  //   ),
-  // ),
-  // Visibility(
-  //   visible: _trafficReport,
-  //   child: Expanded(
-  //     child: Container(
-  //       color: const Color.fromRGBO(221, 235, 247, 1),
-  //       padding: const EdgeInsets.only(top: 8, left: 8),
-  //       margin: const EdgeInsets.only(bottom: 15),
-  //       child: Row(children: [
-  //         Image.asset(
-  //           "assets/roadSign_icon/countyRoad/countyRoad_7.png",
-  //           height: 80,
-  //         ),
-  //         const Expanded(
-  //           child: Text(
-  //             "台7線84K+100上邊坡刷坡工程",
-  //             style: TextStyle(fontSize: 35),
-  //             softWrap: true,
-  //           ),
-  //         ),
-  //       ]),
-  //     ),
-  //   ),
-  // ),
-  // Visibility(
-  //   visible: _operationCondition,
-  //   child: Expanded(
-  //     flex: 2,
-  //     child: Container(
-  //       color: const Color.fromRGBO(221, 235, 247, 1),
-  //       width: MediaQuery.of(context).size.width,
-  //       padding: const EdgeInsets.only(top: 20),
-  //       child: GridView(
-  //         scrollDirection: Axis.horizontal,
-  //         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-  //             maxCrossAxisExtent: 200,
-  //             childAspectRatio: 3 / 2,
-  //             mainAxisSpacing: 20),
-  //         children: List.generate(
-  //           operationalStatus.length,
-  //           (index) {
-  //             final operationNews = operationalStatus[index];
-  //             return Expanded(
-  //                 child: Column(
-  //               children: [
-  //                 Container(
-  //                     width: 40,
-  //                     height: 40,
-  //                     margin: const EdgeInsets.all(3.0),
-  //                     child: SizedBox(
-  //                         height: 40,
-  //                         width: 40,
-  //                         child: Container(
-  //                           decoration: BoxDecoration(
-  //                               color: changeColor(
-  //                                   operationNews["status"]),
-  //                               borderRadius:
-  //                                   BorderRadius.circular(50)),
-  //                         ))),
-  //                 Text(
-  //                   splitTextIntoChunks(
-  //                       operationNews["name"].toString(), 3), // 每行兩個字
-  //                   style: const TextStyle(fontSize: 20),
-  //                 )
-  //               ],
-  //             ));
-  //           },
-  //         ),
-  //       ),
-  //     ),
-  //   ),
-  // ),
-  // Visibility(
-  //   visible: _operationConditionLight,
-  //   child: Container(
-  //       margin: const EdgeInsets.only(bottom: 15),
-  //       padding: const EdgeInsets.all(8),
-  //       width: MediaQuery.of(context).size.width,
-  //       color: const Color.fromRGBO(193, 219, 241, 1),
-  //       child: Row(
-  //         children: [
-  //           Image.asset(
-  //             "assets/home/light_normal.png",
-  //             height: 15,
-  //           ),
-  //           const Text(
-  //             " 正常營運  ",
-  //             style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
-  //           ),
-  //           Image.asset("assets/home/light_partialAdnormal.png",
-  //               height: 15),
-  //           const Text(
-  //             " 部分營運  ",
-  //             style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
-  //           ),
-  //           Image.asset(
-  //             "assets/home/light_abnormal.png",
-  //             height: 15,
-  //           ),
-  //           const Text(
-  //             " 停止營運",
-  //             style: TextStyle(color: Color.fromRGBO(0, 32, 96, 1)),
-  //           ),
-  //         ],
-  //       )),
-  // )
-//         ],
-//       ),
-//     );
 }
-// }

@@ -67,7 +67,7 @@ export 'package:traffic_hero/Components/Block_Button.dart';
 export 'package:traffic_hero/Components/Universal_Textfield.dart';
 export 'package:custom_searchable_dropdown/custom_searchable_dropdown.dart';
 export 'package:traffic_hero/Components/Passerby_NavigationBar.dart';
-export 'package:traffic_hero/Components/Newbar.dart';
+export 'package:traffic_hero/Components/Nevbar.dart';
 export 'package:traffic_hero/Components/Choices.dart';
 export 'package:traffic_hero/Components/DropDown_Select.dart';
 export 'package:traffic_hero/Components/Tool.dart';
