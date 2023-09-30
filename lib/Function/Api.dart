@@ -1,83 +1,118 @@
-// ignore_for_file: camel_case_types, avoid_print, non_constant_identifier_names, file_names, avoid_types_as_parameter_names, prefer_interpolation_to_compose_strings
+// ignore_for_file: camel_case_types, avoid_print, non_constant_identifier_names, file_names, avoid_types_as_parameter_names, prefer_interpolation_to_compose_strings, use_rethrow_when_possible
 import 'package:traffic_hero/imports.dart';
 
 class api {
-  var api_Url = dotenv.env['TrafficHero-Backend'].toString() + '/APP';
+  var apiUrl = dotenv.env['TrafficHero-Backend'].toString();
+  var apiJwtHeader = dotenv.env['appToken'].toString();
 
-  Future<Response> Api_Post(
+  Future<Response> apiPost(
     Body,
     url,
     jwt,
   ) async {
-    // var api_Url = dotenv.env['TrafficHero-Backend'].toString();
+    DateTime startTime = DateTime.now();
+
+    Response response = await post(Uri.parse(apiUrl + url),
+        headers: {
+          "Authorization": 'Bearer ' + apiJwtHeader + jwt.toString(),
+          "Content-Type": "application/json",
+        },
+        body: jsonEncode(Body));
+    print(apiJwtHeader + jwt.toString());
+    DateTime endTime = DateTime.now();
+    Duration durationInMilliseconds = endTime.difference(startTime);
+    print('${durationInMilliseconds.inSeconds}秒');
+    return response;
+  }
+
+  Future<Response> apiPut(Body, url, jwt) async {
+    DateTime startTime = DateTime.now();
+    print(apiJwtHeader + jwt.toString());
     try {
-      Response response = await post(Uri.parse(api_Url + url),
+      Response response = await put(Uri.parse(apiUrl + url),
           headers: {
-            "Authorization": 'Bearer ' + jwt.toString(),
+            "Authorization": 'Bearer ' + apiJwtHeader + jwt.toString(),
             "Content-Type": "application/json",
           },
-          body: jsonEncode(Body));
+          body: jsonEncode(Body)
+      );
       if (response.statusCode == 200) {
+        DateTime endTime = DateTime.now();
+        Duration durationInMilliseconds = endTime.difference(startTime);
+        // print('${durationInMilliseconds.inMicroseconds}秒');
         return response;
       } else {
         print(utf8.decode(response.bodyBytes));
-
-        print('failed');
+        EasyLoading.showError(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'].toString());
         return response;
       }
     } catch (e) {
+      EasyLoading.showError('伺服器錯誤');
       print(e.toString());
       rethrow;
     }
   }
 
-  Future<Response> Api_Put(Body, url, jwt) async {
-    // var api_Url = dotenv.env['TrafficHero-Backend'].toString();
-    try {
-      Response response = await put(Uri.parse(api_Url + url),
-          headers: {
-            "Authorization": 'Bearer ' + jwt.toString(),
-            "Content-Type": "application/json",
-          },
-          body: jsonEncode(Body));
-      if (response.statusCode == 200) {
-        return response;
-      } else {
-        print(utf8.decode(response.bodyBytes));
-
-        print('failed');
-        return response;
-      }
-    } catch (e) {
-      print(e.toString());
-      rethrow;
-    }
-  }
-
-  Future<Response> api_Get(
+  Future<Response> apiGet(
     url,
     jwt,
   ) async {
-    // var api_Url = dotenv.env['TrafficHero-Backend'].toString();
+    DateTime startTime = DateTime.now();
+    print(apiJwtHeader + jwt.toString());
     try {
-      Response response = await get(
-        Uri.parse(api_Url + url),
-        headers: {
-          "Authorization": 'Bearer ' + jwt.toString(),
-          "Content-Type": "application/json",
-        },
-      );
+      Response response =
+          await get(Uri.parse(apiUrl + url.toString()), headers: {
+        "Authorization": 'Bearer ' + apiJwtHeader + jwt.toString(),
+        "Content-Type": "application/json",
+      });
+
       if (response.statusCode == 200) {
+        DateTime endTime = DateTime.now();
+        Duration durationInMilliseconds = endTime.difference(startTime);
+        print('${durationInMilliseconds.inMilliseconds}秒');
         return response;
       } else {
+        EasyLoading.showError(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'].toString());
         print(utf8.decode(response.bodyBytes));
 
-        print('failed');
         return response;
       }
     } catch (e) {
+      EasyLoading.showError('伺服器錯誤');
       print(e.toString());
-      rethrow;
+      throw e;
+    }
+  }
+
+  Future<Response> apiDelete(url, jwt, body) async {
+    DateTime startTime = DateTime.now();
+
+    try {
+      Response response = await delete(Uri.parse(apiUrl + url),
+          headers: {
+            "Authorization": 'Bearer ' + apiJwtHeader + jwt.toString(),
+            "Content-Type": "application/json",
+          },
+          body: jsonEncode(body));
+
+      if (response.statusCode == 200) {
+        DateTime endTime = DateTime.now();
+        Duration durationInMilliseconds = endTime.difference(startTime);
+        print('${durationInMilliseconds.inSeconds}秒');
+        return response;
+      } else {
+        EasyLoading.showError(
+            jsonDecode(utf8.decode(response.bodyBytes))['detail'].toString());
+        print(utf8.decode(response.bodyBytes));
+
+        return response;
+      }
+    } catch (e) {
+      EasyLoading.showError('伺服器錯誤');
+      print(e.toString());
+      throw e;
     }
   }
 }

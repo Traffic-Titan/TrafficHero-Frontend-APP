@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, file_names, avoid_print
 import 'package:traffic_hero/imports.dart';
 
-class All_Page extends StatefulWidget {
-  const All_Page({super.key});
+class AllPage extends StatefulWidget {
+  const AllPage({super.key});
 
   @override
-  State<All_Page> createState() => _All_PageState();
+  State<AllPage> createState() => _AllPageState();
 }
 
-class _All_PageState extends State<All_Page> {
+class _AllPageState extends State<AllPage> {
   late stateManager state;
   var mode = 'car';
   var car = 'assets/topbar/Mode_Car.png';
@@ -22,50 +22,24 @@ class _All_PageState extends State<All_Page> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
-    var response;
-    var url = '/Account/profile';
-    var jwt = state.accountState;
-    try{
-      response = await api().api_Get( url, jwt);
-    }catch (e){
-      print('object');
-    }
+    //螢幕方向轉正
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+  }
 
-    if(response.statusCode == 200){
-      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)) );
-    }
-    if (state.accountState == '') {
-      setState(() {
-        login_before_state = true;
-      });
-    } else {
-      setState(() {
-        login_after_state = true;
-        login_before_state = false;
-      });
-    }
+  @override
+  void initState() {
+    super.initState();
   }
 
   void selectedMode(value) {
     setState(() {
       mode = value;
     });
-  }
-
-  void get_User()async {
-    var response;
-    var url = '/Account/profile';
-    var jwt = state.accountState;
-    try{
-      response = await api().api_Get( url, jwt);
-    }catch (e){
-      print('object');
-    }
-
-    if(response.statusCode == 200){
-      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)) );
-    }
-
   }
 
   Widget changeMode() {
@@ -89,8 +63,10 @@ class _All_PageState extends State<All_Page> {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: const Color.fromRGBO(46, 117, 182, 1),
-        elevation: 0,
+        backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
+        elevation: 2,
+        toolbarHeight: 65,
+        shadowColor: const Color.fromRGBO(62, 111, 179, 1),
         title: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -103,7 +79,8 @@ class _All_PageState extends State<All_Page> {
                   setState(() {
                     car = 'assets/topbar/Mode_Car.png';
                     scooter = 'assets/topbar/select_scooter.png';
-  public_Transport = 'assets/topbar/select_Public_Transport.png';
+                    public_Transport =
+                        'assets/topbar/select_Public_Transport.png';
                   });
                   //將狀態儲存為car
                   state.updateModeState('car');
@@ -117,8 +94,8 @@ class _All_PageState extends State<All_Page> {
                   setState(() {
                     car = 'assets/topbar/select_car.png';
                     scooter = 'assets/topbar/Mode_Scooter.png';
-                    public_Transport = 'assets/topbar/select_Public_Transport.png';
-                    
+                    public_Transport =
+                        'assets/topbar/select_Public_Transport.png';
                   });
                   state.updateModeState('scooter');
                 },
@@ -130,7 +107,8 @@ class _All_PageState extends State<All_Page> {
                   setState(() {
                     car = 'assets/topbar/select_car.png';
                     scooter = 'assets/topbar/select_scooter.png';
-                    public_Transport = 'assets/topbar/Mode_Public_Transport.png';
+                    public_Transport =
+                        'assets/topbar/Mode_Public_Transport.png';
                   });
                   selectedMode('publicTransport');
                   state.updateModeState('publicTransport');
@@ -141,21 +119,26 @@ class _All_PageState extends State<All_Page> {
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Image.asset('assets/topbar/SmartAssistant.png'),
+          icon: Image.asset('assets/topbar/message.png'),
           iconSize: 50,
-          onPressed: () => scaffoldKey.currentState!.openEndDrawer(),
+          onPressed: () => print('object'),
         ),
         actions: <Widget>[
           IconButton(
-            icon: Image.asset("assets/topbar/Default_Avatar.png"),
+            icon: CircleAvatar(
+                child: ClipOval(
+                    child: Image.memory(
+              base64Decode(state.profile?["avatar"]),
+              width: 90,
+              height: 90,
+              fit: BoxFit.cover,
+            ))),
+            
+            // Image.asset("assets/topbar/Default_Avatar.png"),
             iconSize: 50,
             onPressed: () async {
-                // var url = '/Account/profile';
-                //       var  response =await api().api_Get(url, state.accountState);
-                //       state.updateprofileState(jsonDecode(response.body)  );
-                //         print(response.body);
               scaffoldKey.currentState!.openEndDrawer();
-              get_User();
+              // get_User();
             },
           ),
         ],

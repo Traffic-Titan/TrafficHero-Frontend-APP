@@ -1,5 +1,5 @@
-// ignore_for_file: file_names, camel_case_types, prefer_typing_uninitialized_variables
-import 'package:traffic_hero/imports.dart';
+// ignore_for_file: file_names, camel_case_types, prefer_typing_uninitialized_variables, prefer_const_constructors, non_constant_identifier_names
+import 'package:traffic_hero/Imports.dart';
 
 //主程式
 class PasserbyPage extends StatefulWidget {
@@ -9,43 +9,110 @@ class PasserbyPage extends StatefulWidget {
 }
 
 class _PasserbyPage extends State<PasserbyPage> {
-  
-  final List<BottomNavigationBarItem> bottonTabs = [
-    const BottomNavigationBarItem(
-        label: '首頁', icon: Icon(CupertinoIcons.home), tooltip: "首頁"),
-    const BottomNavigationBarItem(
-        label: '最新消息', icon: Icon(CupertinoIcons.news_solid), tooltip: "最新消息"),
-    
-  ];
+  late stateManager? state;
+  var navigationBarText = '';
+  var navGationBarIcon;
+  late List<BottomNavigationBarItem> carAndScooterBottonTabs;
 
-  final List tabBodies = [
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    state = Provider.of<stateManager>(context, listen: false);
+    if (state!.modeName == 'publicTransport') {
+      setState(() {
+        navigationBarText = '大眾運輸';
+        navGationBarIcon = Icon(CupertinoIcons.bus);
+      });
+    } else {
+      setState(() {
+        navigationBarText = '道路資訊';
+        navGationBarIcon = Icon(CupertinoIcons.map_fill);
+      });
+    }
+
+    carAndScooterBottonTabs = [
+      const BottomNavigationBarItem(
+          label: '首頁',
+          icon: Icon(CupertinoIcons.home),
+          tooltip: "首頁",
+          backgroundColor: Colors.blue),
+      const BottomNavigationBarItem(
+          label: '最新消息',
+          icon: Icon(CupertinoIcons.news_solid),
+          tooltip: "最新消息",
+          backgroundColor: Colors.blue),
+      const BottomNavigationBarItem(
+          label: '訊息推播',
+          icon: Icon(CupertinoIcons.text_bubble),
+          tooltip: "訊息推播",
+          backgroundColor: Colors.blue),
+      BottomNavigationBarItem(
+          label: navigationBarText.toString(),
+          icon: navGationBarIcon,
+          tooltip: navigationBarText.toString(),
+          backgroundColor: Colors.blue),
+      const BottomNavigationBarItem(
+          label: '觀光資訊',
+          icon: Icon(CupertinoIcons.placemark_fill),
+          tooltip: "觀光資訊",
+          backgroundColor: Colors.blue),
+    ];
+  }
+
+  void _navigateToCMS(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CMS()), // 創建新的空白頁面
+    );
+  }
+
+  final List carAndScooterNavigationBar = [
     const Home(),
     const News(),
-    
+    const Text('CMS'),
+    // _navigateToNewPage(context);,
+    const Road_Information(),
+    const Tourist_Information(),
   ];
-
 //將預設標籤設定為0
   int currentIndex = 0;
   var currentPage;
 
   @override
   void initState() {
-    currentPage = tabBodies[currentIndex];
+    currentPage = carAndScooterNavigationBar[currentIndex];
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    state = Provider.of<stateManager>(context, listen: false);
+    List tabBodies;
+    List<BottomNavigationBarItem> bottonTabs;
+
+    tabBodies = carAndScooterNavigationBar;
+    bottonTabs = carAndScooterBottonTabs;
+
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
+        elevation: 100,
         currentIndex: currentIndex,
-        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Color.fromRGBO(67, 150, 200, 1),
+        backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
         items: bottonTabs,
         onTap: (index) {
           setState(() {
-            currentIndex = index;
-            currentPage = tabBodies[currentIndex];
+            if (index == 2) {
+              //跳轉CMS葉面
+              _navigateToCMS(context);
+            } else {
+              setState(() {
+                currentIndex = index;
+                currentPage = tabBodies[currentIndex];
+              });
+            }
           });
         },
       ),

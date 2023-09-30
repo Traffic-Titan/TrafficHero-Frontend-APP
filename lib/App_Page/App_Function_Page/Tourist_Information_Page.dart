@@ -11,6 +11,6 @@ class Tourist_Information extends StatefulWidget {
 class _Tourist_InformationState extends State<Tourist_Information> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return const Text("觀光資訊-未開發");
   }
 }

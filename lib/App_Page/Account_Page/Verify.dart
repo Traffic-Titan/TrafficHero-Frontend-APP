@@ -11,13 +11,13 @@ class verify_page extends StatefulWidget {
 class _verify_pageState extends State<verify_page> {
   final verifyController = TextEditingController();
   var response;
-  var input_error_text = '';
-  var error_state = true;
+  var InputErrorText = '';
+  var errorState = true;
   late Timer _timer;
-  int _countdownTime = 600; // 十分钟的秒数
+  int _countdownTime = 600;
   late stateManager state;
-  var countdown_display_control = true;
-  var get_verification_code_again = false;
+  var countdownDisplayControl = true;
+  var getVerificationCodeAgain = false;
 
   @override
   void didChangeDependencies() {
@@ -38,8 +38,8 @@ class _verify_pageState extends State<verify_page> {
       setState(() {
         if (_countdownTime < 1) {
           setState(() {
-            countdown_display_control = false;
-            get_verification_code_again = true;
+            countdownDisplayControl = false;
+            getVerificationCodeAgain = true;
           });
           timer.cancel();
         } else {
@@ -57,8 +57,8 @@ class _verify_pageState extends State<verify_page> {
 
   void verify_function(BuildContext context) async {
     var Body = {"email": state.verifyEmail, "code": verifyController.text};
-    var url = '/Account/verify_code';
-    var res = await api().Api_Post(Body, url,'');
+    var url = dotenv.env['VerifyCode'].toString();
+    var res = await api().apiPost(Body, url, '');
     setState(() {
       response = res;
     });
@@ -74,8 +74,8 @@ class _verify_pageState extends State<verify_page> {
       } else if (state.veriffyState == '') {
         EasyLoading.dismiss();
         setState(() {
-          error_state = false;
-          input_error_text =
+          errorState = false;
+          InputErrorText =
               jsonDecode(utf8.decode(response.bodyBytes))['detail'];
         });
       }
@@ -85,13 +85,13 @@ class _verify_pageState extends State<verify_page> {
         state.forgetTokenSet(jsonDecode(response.body)['Token']);
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => ChangePassword()),
+          MaterialPageRoute(builder: (context) => const changePassword()),
         );
       } else {
         EasyLoading.dismiss();
         setState(() {
-          error_state = false;
-          input_error_text = '';
+          errorState = false;
+          InputErrorText = '';
           jsonDecode(utf8.decode(response.bodyBytes))['detail'];
         });
       }
@@ -109,17 +109,7 @@ class _verify_pageState extends State<verify_page> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       extendBodyBehindAppBar: true,
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0,
-      //   leading: IconButton(
-      //     icon: const Icon(Icons.arrow_back_ios),
-      //     onPressed: () {
-      //       Navigator.of(context).pop();
-      //     },
-      //   ),
-      // ),
-      backgroundColor: const Color.fromARGB(168, 1, 99, 148),
+      backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
       body: SafeArea(
         child: Center(
           child: Column(
@@ -138,13 +128,13 @@ class _verify_pageState extends State<verify_page> {
                 controller: verifyController,
                 hintText: '請輸入驗證',
                 obscurText: false,
-                error_status: error_state,
-                error_text: input_error_text,
+                error_status: errorState,
+                error_text: InputErrorText,
               ),
               const SizedBox(
                 height: 10,
               ),
-              if (countdown_display_control)
+              if (countdownDisplayControl)
                 Text(
                   '${formatCountdownTime(_countdownTime)}後重新獲取',
                   style: const TextStyle(
@@ -152,31 +142,29 @@ class _verify_pageState extends State<verify_page> {
                     color: Colors.white,
                   ),
                 ),
-              if (get_verification_code_again)
+              if (getVerificationCodeAgain)
                 InkWell(
-                  child:const Text(
-                  '重新獲取驗證碼',
-                  style:  TextStyle(
-                    fontSize: 14,
-                    color: Colors.white,
-                  ),
-                ),
-                  onTap: () {
-
-                    if (state.veriffyState == 'register') {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const register()));
-                    } else {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) =>
-                                  const forget_password_page()));
-                    }
-                  },
-                ),
+                    child: const Text(
+                      '重新獲取驗證碼',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: () {
+                      if (state.veriffyState == 'register') {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const registerPage()));
+                      } else {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const forgetPasswordPage()));
+                      }
+                    }),
               const SizedBox(
                 height: 80,
               ),
