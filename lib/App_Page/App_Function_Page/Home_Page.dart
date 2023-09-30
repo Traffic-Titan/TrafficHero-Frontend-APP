@@ -134,10 +134,20 @@ class _Home extends State<Home> {
     }
   }
 
+  changeMode(mode){
+    if(mode == 'car'){
+      return 'Car';
+    }else if(mode == 'scooter'){
+      return 'Scooter';
+    }
+  }
+
   findPlacesQuickly(url) async {
     var position = await geolocator().updataPosition();
     var urlPosition =
-        url + '?longitude=${position.longitude}&latitude=${position.latitude}';
+        url + '?mode=${changeMode(state.modeName)}&latitude=${position.latitude}&longitude=${position.longitude}';
+       
+        print(urlPosition);
     var jwt = ',${state.accountState}';
 
     var response = await api().apiGet(urlPosition, jwt);
@@ -361,9 +371,9 @@ class _Home extends State<Home> {
                         crossAxisCount: 4, //横轴三个子widget
                         childAspectRatio: 0.01),
                     children: List.generate(
-                      toolList.length,
+                      Tool.fastLocation.length,
                       (index) {
-                        final tool = toolList[index];
+                        final tool = Tool.fastLocation[index];
                         return SizedBox(
                           height: 70,
                           child: InkWell(
@@ -384,17 +394,11 @@ class _Home extends State<Home> {
                               ],
                             ),
                             onTap: () async {
-                              EasyLoading.show(status: 'loading...');
-                              if (tool['value'] == '路邊停車費') {
-                                await goLicensePlateInput();
-                              } else {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => WebView(
-                                            tt: tool['url'].toString())));
+                                EasyLoading.show(status: 'loading...');
+            
+                  findPlacesQuickly(tool['url']);
                               }
-                            },
+                      ,
                           ),
                         );
                       },

@@ -35,12 +35,12 @@ List<Map<String, String>> fastLocation = [
     'img': 'assets/fastLocation/convenientShop.png',
     'url': dotenv.env['ConvenientStore'].toString()
   },
-  {
-    'value': '換電站',
-    'title': '換電站',
-    'img': 'assets/fastLocation/batteryStop.png',
-    'url': '後端API'
-  },
+  // {
+  //   'value': '換電站',
+  //   'title': '換電站',
+  //   'img': 'assets/fastLocation/batteryStop.png',
+  //   'url': '後端API'
+  // },
   {
     'value': '充電站',
     'title': '充電站',
