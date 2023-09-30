@@ -132,7 +132,7 @@ class _Login extends State<Login> {
           reverse: true,
           child: SafeArea(
             child: Center(
-              child: Container(
+              child: SizedBox(
                 width: 310,
                 child: Column(
                   children: [
