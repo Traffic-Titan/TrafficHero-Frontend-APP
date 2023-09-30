@@ -172,86 +172,86 @@ class _Home extends State<Home> {
 
 //頁面組件
 
-  Widget weatherWidget() {
-    return InkWell(
-      child: SizedBox(
-        width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              children: [
-                Text(
-                  '${weather['temperature']}°',
-                  style: TextStyle(
-                    fontSize: screenWidth - 30 > 600 ? 80 : screenWidth * 0.18,
-                    color: Color.fromRGBO(67, 150, 200, 1),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                //今日溫度
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(weather['area'].toString(),
-                        style: TextStyle(
-                          fontSize:
-                              screenWidth - 30 > 600 ? 27 : screenWidth * 0.054,
-                          color: Color.fromRGBO(67, 150, 200, 1),
-                        )),
-                    Row(
-                      children: [
-                        Text(
-                          '最高 ${weather['the_highest_temperature']}°',
-                          style: TextStyle(
-                            fontSize: screenWidth - 30 > 600
-                                ? 20
-                                : screenWidth * 0.04,
-                            color: Color.fromRGBO(67, 150, 200, 1),
-                          ),
-                        ),
-                        SizedBox(
-                          width: 5,
-                        ),
-                        Text(
-                          '最低 ${weather['the_lowest_temperature']}°',
-                          style: TextStyle(
-                            fontSize: screenWidth - 30 > 600
-                                ? 20
-                                : screenWidth * 0.04,
-                            color: Color.fromRGBO(67, 150, 200, 1),
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    // Image.network(
-                    //   weather['weather_icon_url'].toString(),
-                    //   width: screenWidth - 30 > 600 ? 170 : screenWidth * 0.25,
-                    //   fit: BoxFit.contain,
-                    // ),
-                  ],
-                ),
-              ],
-            )
-          ],
-        ),
-      ),
-      onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => WebView(tt: weather['url'])));
-      },
-    );
-  }
+  // Widget weatherWidget() {
+  //   return InkWell(
+  //     child: SizedBox(
+  //       width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+  //       child: Row(
+  //         crossAxisAlignment: CrossAxisAlignment.center,
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Row(
+  //             children: [
+  //               Text(
+  //                 '${weather['temperature']}°',
+  //                 style: TextStyle(
+  //                   fontSize: screenWidth - 30 > 600 ? 80 : screenWidth * 0.18,
+  //                   color: Color.fromRGBO(67, 150, 200, 1),
+  //                 ),
+  //               ),
+  //               SizedBox(
+  //                 width: 10,
+  //               ),
+  //               //今日溫度
+  //               Column(
+  //                 crossAxisAlignment: CrossAxisAlignment.start,
+  //                 children: [
+  //                   Text(weather['area'].toString(),
+  //                       style: TextStyle(
+  //                         fontSize:
+  //                             screenWidth - 30 > 600 ? 27 : screenWidth * 0.054,
+  //                         color: Color.fromRGBO(67, 150, 200, 1),
+  //                       )),
+  //                   Row(
+  //                     children: [
+  //                       Text(
+  //                         '最高 ${weather['the_highest_temperature']}°',
+  //                         style: TextStyle(
+  //                           fontSize: screenWidth - 30 > 600
+  //                               ? 20
+  //                               : screenWidth * 0.04,
+  //                           color: Color.fromRGBO(67, 150, 200, 1),
+  //                         ),
+  //                       ),
+  //                       SizedBox(
+  //                         width: 5,
+  //                       ),
+  //                       Text(
+  //                         '最低 ${weather['the_lowest_temperature']}°',
+  //                         style: TextStyle(
+  //                           fontSize: screenWidth - 30 > 600
+  //                               ? 20
+  //                               : screenWidth * 0.04,
+  //                           color: Color.fromRGBO(67, 150, 200, 1),
+  //                         ),
+  //                       )
+  //                     ],
+  //                   ),
+  //                 ],
+  //               ),
+  //               Row(
+  //                 mainAxisAlignment: MainAxisAlignment.end,
+  //                 children: [
+  //                   // Image.network(
+  //                   //   weather['weather_icon_url'].toString(),
+  //                   //   width: screenWidth - 30 > 600 ? 170 : screenWidth * 0.25,
+  //                   //   fit: BoxFit.contain,
+  //                   // ),
+  //                 ],
+  //               ),
+  //             ],
+  //           )
+  //         ],
+  //       ),
+  //     ),
+  //     onTap: () {
+  //       Navigator.push(
+  //           context,
+  //           MaterialPageRoute(
+  //               builder: (context) => WebView(tt: weather['url'])));
+  //     },
+  //   );
+  // }
 
   Widget toolWidget() {
     return Card(
@@ -605,7 +605,7 @@ class _Home extends State<Home> {
             SizedBox(
               height: 10,
             ),
-            weatherWidget(),
+            // weatherWidget(),
             toolWidget(),
             trafficWarningWidget(),
           ]),
@@ -625,7 +625,7 @@ class _Home extends State<Home> {
               SizedBox(
                 height: 10,
               ),
-              weatherWidget(),
+              // weatherWidget(),
               toolWidget(),
               trafficWarningWidget()
             ],
@@ -647,7 +647,7 @@ class _Home extends State<Home> {
                 height: 10,
               ),
              
-              weatherWidget(),
+              // weatherWidget(),
               intercityoperationalWidget(),
                localoperationalWidget(),
               

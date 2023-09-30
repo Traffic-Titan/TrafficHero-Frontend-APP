@@ -26,7 +26,6 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   late SharedPreferences prefs;
   late stateManager state;
-  var createAppPage;
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();

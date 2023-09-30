@@ -315,11 +315,11 @@ class _AccountManager extends State<AccountManager> {
                             child: Align(
                                 alignment: Alignment.center,
                                 child: Text("密碼",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                         fontSize: 18,
                                         color:
                                             Color.fromRGBO(24, 60, 126, 1))))),
-                        Expanded(
+                        const Expanded(
                           flex: 4,
                           child: TextField(
                             decoration: InputDecoration(
@@ -338,9 +338,9 @@ class _AccountManager extends State<AccountManager> {
                                       builder: (context) =>
                                           const changePassword()));
                             },
-                            child: Text("修改"),
+                            child: const Text("修改"),
                             style: ElevatedButton.styleFrom(
-                              primary: Color.fromRGBO(24, 60, 126, 1),
+                              primary: const Color.fromRGBO(24, 60, 126, 1),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20)), // Background color

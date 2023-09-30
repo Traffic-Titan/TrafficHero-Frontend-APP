@@ -39,7 +39,7 @@ class _appLoadingPage extends State<appLoadingPage> {
     if (response.statusCode == 200) {
       state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
       await getOperationalStatus();
-      await getWeather();
+      // await getWeather();
       await getUser();
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const AllPage()));
