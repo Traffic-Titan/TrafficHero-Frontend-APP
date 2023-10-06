@@ -12,11 +12,11 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - PhoneNumberKit (3.6.6):
-    - PhoneNumberKit/PhoneNumberKitCore (= 3.6.6)
-    - PhoneNumberKit/UIKit (= 3.6.6)
-  - PhoneNumberKit/PhoneNumberKitCore (3.6.6)
-  - PhoneNumberKit/UIKit (3.6.6):
+  - PhoneNumberKit (3.6.8):
+    - PhoneNumberKit/PhoneNumberKitCore (= 3.6.8)
+    - PhoneNumberKit/UIKit (= 3.6.8)
+  - PhoneNumberKit/PhoneNumberKitCore (3.6.8)
+  - PhoneNumberKit/UIKit (3.6.8):
     - PhoneNumberKit/PhoneNumberKitCore
   - shared_preferences_foundation (0.0.1):
     - Flutter
@@ -68,7 +68,7 @@ SPEC CHECKSUMS:
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
   libphonenumber_plugin: e8a7d64a6624a7c25f2c4ab0b7ead2a8e341e35e
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
-  PhoneNumberKit: 5b1be7ee4955dfeeb855f51eecdd829ab24b3484
+  PhoneNumberKit: 962cb725d664c7d4ac5f3e6f93e2de5f543f0d05
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
