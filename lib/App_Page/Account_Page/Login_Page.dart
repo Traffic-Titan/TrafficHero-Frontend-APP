@@ -34,7 +34,7 @@ class _Login extends State<Login> {
     await getUser();
 
 
-    // getOperationalStatus();
+    await getOperationalStatus();
     await getWeather();
 
     EasyLoading.dismiss();
