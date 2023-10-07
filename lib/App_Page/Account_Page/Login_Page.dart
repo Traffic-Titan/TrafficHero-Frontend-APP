@@ -100,81 +100,81 @@ class _Login extends State<Login> {
     }
   }
 
-  // handlesignIn(GoogleSignInAccount? account) async {
-  //   var body = {
-  //     "email": googleController.googleAccount.value?.email ?? '',
-  //     "google_id": googleController.googleAccount.value?.id ?? '',
-  //   };
+  handlesignIn(GoogleSignInAccount? account) async {
+    var body = {
+      "email": googleController.googleAccount.value?.email ?? '',
+      "google_id": googleController.googleAccount.value?.id ?? '',
+    };
 
-  //   var url = dotenv.env['GoogleSSO'].toString();
-  //   var jwt = '';
+    var url = dotenv.env['GoogleSSO'].toString();
+    var jwt = '';
 
-  //   if (account != null) {
-  //     try {
-  //       response = await api().apiPost(body, url, jwt);
-  //     } catch (e) {
-  //       print(e);
-  //     }
+    if (account != null) {
+      try {
+        response = await api().apiPost(body, url, jwt);
+      } catch (e) {
+        print(e);
+      }
 
-  //     try {
-  //       if (response.statusCode == 200) {
-  //         //將狀態寫入
-  //         state.updateAccountState(
-  //             await jsonDecode(response.body)['token'] ?? '');
-  //         //跳轉頁面
-  //         getHome();
-  //         //SSO回傳訊息403，判斷為未註冊，跳轉註冊頁面
-  //       } else if (response.statusCode == 403) {
-  //         //將需要註冊狀態寫入狀態管理
-  //         state.google_sso_status_Set('register');
-  //         //跳轉頁面到註冊
-  //         Navigator.pushAndRemoveUntil(
-  //             context,
-  //             MaterialPageRoute(builder: (context) => const registerPage()),
-  //             (route) => false);
-  //         //將google帳戶資訊寫入全局，方便調用
-  //         state.google_sso_Set(googleController.googleAccount);
-  //         //顯示錯誤訊息
-  //         EasyLoading.showSuccess(
-  //             jsonDecode(utf8.decode(response.bodyBytes))['detail']);
-  //       } else if (response.statusCode == 401) {
-  //         //401為帳戶未綁定SSO因此會先將firebase的帳戶狀態先登出
-  //         googleController.google_signOut();
-  //         //顯示錯誤訊息
-  //         EasyLoading.showError(
-  //             jsonDecode(utf8.decode(response.bodyBytes))['detail']);
-  //       } else {
-  //         //確保google sso 保持登出
-  //         googleController.google_signOut();
-  //       }
-  //     } catch (e) {
-  //       EasyLoading.dismiss();
-  //       googleController.google_signOut();
+      try {
+        if (response.statusCode == 200) {
+          //將狀態寫入
+          state.updateAccountState(
+              await jsonDecode(response.body)['token'] ?? '');
+          //跳轉頁面
+          getHome();
+          //SSO回傳訊息403，判斷為未註冊，跳轉註冊頁面
+        } else if (response.statusCode == 403) {
+          //將需要註冊狀態寫入狀態管理
+          state.google_sso_status_Set('register');
+          //跳轉頁面到註冊
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const registerPage()),
+              (route) => false);
+          //將google帳戶資訊寫入全局，方便調用
+          state.google_sso_Set(googleController.googleAccount);
+          //顯示錯誤訊息
+          EasyLoading.showSuccess(
+              jsonDecode(utf8.decode(response.bodyBytes))['detail']);
+        } else if (response.statusCode == 401) {
+          //401為帳戶未綁定SSO因此會先將firebase的帳戶狀態先登出
+          googleController.google_signOut();
+          //顯示錯誤訊息
+          EasyLoading.showError(
+              jsonDecode(utf8.decode(response.bodyBytes))['detail']);
+        } else {
+          //確保google sso 保持登出
+          googleController.google_signOut();
+        }
+      } catch (e) {
+        EasyLoading.dismiss();
+        googleController.google_signOut();
 
-  //       print(e);
-  //     }
-  //   } else {
-  //     EasyLoading.dismiss();
-  //     //確保google sso 保持登出
-  //     googleController.google_signOut();
-  //   }
-  // }
+        print(e);
+      }
+    } else {
+      EasyLoading.dismiss();
+      //確保google sso 保持登出
+      googleController.google_signOut();
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     EasyLoading.dismiss();
-    // googleController.googleSignIn.onCurrentUserChanged
-    //     .listen((GoogleSignInAccount? account) {
-    //   setState(() {
-    //     count++;
-    //   });
-    //   if (count <= 1) {
-    //     handlesignIn(account);
-    //   }
-    // }).onError((err) {
-    //   print('Error during Signing in: $err');
-    // });
+    googleController.googleSignIn.onCurrentUserChanged
+        .listen((GoogleSignInAccount? account) {
+      setState(() {
+        count++;
+      });
+      if (count <= 1) {
+        handlesignIn(account);
+      }
+    }).onError((err) {
+      print('Error during Signing in: $err');
+    });
   }
 
 //此為顯示密碼function
@@ -405,18 +405,18 @@ class _Login extends State<Login> {
                         ),
                         onTap: () async {
                           print(prefs.get('userToken'));
-                          // try {
-                          //   if (googleController.googleAccount.value == null) {
-                          //     EasyLoading.show(status: '登入中...');
-                          //     googleController.google();
-                          //   } else {
-                          //     //確保在登錄界面保持登出
-                          //     googleController.google_signOut();
-                          //   }
-                          // } catch (e) {
-                          //   EasyLoading.dismiss();
-                          //   EasyLoading.showError(e.toString());
-                          // }
+                          try {
+                            if (googleController.googleAccount.value == null) {
+                              EasyLoading.show(status: '登入中...');
+                              googleController.google();
+                            } else {
+                              //確保在登錄界面保持登出
+                              googleController.google_signOut();
+                            }
+                          } catch (e) {
+                            EasyLoading.dismiss();
+                            EasyLoading.showError(e.toString());
+                          }
 
                           // google_sso_function();
                         }),

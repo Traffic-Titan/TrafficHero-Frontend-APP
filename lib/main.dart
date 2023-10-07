@@ -6,7 +6,7 @@ import 'Imports.dart';
 void main() async {
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   await geolocator().updataPosition();
 
