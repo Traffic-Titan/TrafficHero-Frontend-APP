@@ -31,7 +31,7 @@ class _AccountManager extends State<AccountManager> {
 
   //更改個人資訊
   changeInfor() async {
-    Response response;
+    var response;
     var url = dotenv.env['Profile'];
     var jwt = ',${state.accountState}';
     var body = {

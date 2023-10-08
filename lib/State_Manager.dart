@@ -89,4 +89,13 @@ class stateManager with ChangeNotifier {
     _acctInforState = newValue;
     notifyListeners();
   }
+
+  //使用者目前座標
+  var _positionNow;
+  get positionNow => _positionNow;
+
+  void changePositionNow(newValue) {
+    _positionNow = newValue;
+    notifyListeners();
+  }
 }
