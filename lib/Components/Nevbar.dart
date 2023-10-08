@@ -80,7 +80,7 @@ class _NavbarState extends State<Navbar> {
             leading: const Icon(Icons.settings),
             title: const Text('設定'),
             onTap: () {
-              //setting
+             //設定
             },
           ),
           ListTile(

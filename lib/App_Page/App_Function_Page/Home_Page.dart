@@ -219,11 +219,11 @@ class _Home extends State<Home> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    // Image.network(
-                    //   weather['weather_icon_url'].toString(),
-                    //   width: screenWidth - 30 > 600 ? 170 : screenWidth * 0.25,
-                    //   fit: BoxFit.contain,
-                    // ),
+                    Image.network(
+                      weather['weather_icon_url'].toString(),
+                      width: screenWidth - 30 > 600 ? 170 : screenWidth * 0.25,
+                      fit: BoxFit.contain,
+                    ),
                   ],
                 ),
               ],

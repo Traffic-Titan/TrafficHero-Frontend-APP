@@ -161,39 +161,48 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
                           Visibility(
                             visible: true,
                             child:
-                            
                             Column(
                               children: [
                                 const Divider(),
-                                const Text('未過期'),
+                                // const Text('未過期'),
                                 ListView.builder(
                                    physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
                                   itemCount: list["bills"].length ,
                                   itemBuilder: (context, index) {
                                     var bills = list["bills"][index];
+                                    bool test = false;
                                     return ListTile(
                                       title: Column(
                                         children: [
                                           Row(
                                             children: [
                                               Text(
-                                                bills['ParkingDate'],
-                                                style: const TextStyle(
+                                                    () {
+                                                  if (DateTime.parse('2023-10-12').isAfter(DateTime.parse(bills['PayLimitDate']))) {
+                                                    test = true;
+                                                  } else {
+                                                    test = false;
+                                                  }
+                                                  return bills['BillNo'];
+                                                }(),
+                                                style: TextStyle(
                                                   fontWeight: FontWeight.w500,
+                                                  color: (test ? Colors.red : Colors.black),
                                                 ),
                                               ),
                                             ],
                                           ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                  '累積停車時間： ${bills['ParkingHours']} 小時'),
-                                            ],
-                                          )
+                                          Text(
+                                            '${bills['ParkingDate']}\n到期日: ${bills['PayLimitDate']}',
+                                            style: TextStyle(
+                                              fontWeight: FontWeight.w500,
+                                              color: (test ? Colors.red : Colors.black),
+                                            ),
+                                          ),
                                         ],
                                       ),
-                                      trailing: Text('付款金額： ${bills['PayAmount']}'),
+                                      trailing: Text('應繳金額： ${bills['PayAmount']}元\n累積停車: ${bills['ParkingHours']}h'),
                                     );
                                   },
                                 ),
