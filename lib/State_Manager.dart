@@ -13,6 +13,8 @@ class stateManager with ChangeNotifier {
   var _weather;
   var _nearbyStation;
   var _pageDetail;
+  var _keyWord;
+  var _searchPageDetail;
 
   var _appBarState = true;
   var _navigationBarState = true;
@@ -31,6 +33,8 @@ class stateManager with ChangeNotifier {
   get weather => _weather;
   get nearbyStation => _nearbyStation;
   get pageDetail => _pageDetail;
+  get keyWord => _keyWord;
+  get searchPageDetail => _searchPageDetail;
 
   void updateModeState(String newValue) {
     _modeName = newValue;
@@ -90,6 +94,14 @@ class stateManager with ChangeNotifier {
   }
   void updatePageDetail(newValue){
     _pageDetail = newValue;
+    notifyListeners();
+  }
+  void updateKeyWord(newValue){
+    _keyWord = newValue;
+    notifyListeners();
+  }
+  void updateSearchPageDetail(newValue){
+    _searchPageDetail = newValue;
     notifyListeners();
   }
 
