@@ -34,7 +34,6 @@ class _appLoadingPage extends State<appLoadingPage> {
     } catch (e) {
       print(e);
     }
-
     if (response.statusCode == 200) {
       state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
       await getOperationalStatus();

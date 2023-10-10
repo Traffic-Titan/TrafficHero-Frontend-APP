@@ -11,6 +11,8 @@ class stateManager with ChangeNotifier {
   var _google_sso;
   var _profile;
   var _weather;
+  var _nearbyStation;
+  var _pageDetail;
 
   var _appBarState = true;
   var _navigationBarState = true;
@@ -27,6 +29,8 @@ class stateManager with ChangeNotifier {
   get OperationalStatus => _OperationalStatus;
   get profile => _profile;
   get weather => _weather;
+  get nearbyStation => _nearbyStation;
+  get pageDetail => _pageDetail;
 
   void updateModeState(String newValue) {
     _modeName = newValue;
@@ -78,6 +82,14 @@ class stateManager with ChangeNotifier {
 
   void updateWeatherState(newValue) {
     _weather = newValue;
+    notifyListeners();
+  }
+  void updateNearbyStation(newValue){
+    _nearbyStation = newValue;
+    notifyListeners();
+  }
+  void updatePageDetail(newValue){
+    _pageDetail = newValue;
     notifyListeners();
   }
 
