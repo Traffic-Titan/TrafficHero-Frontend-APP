@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, avoid_unnecessary_containers, prefer_final_fields, sort_child_properties_last, unused_import, library_prefixes, avoid_print, await_only_futures, unused_local_variable, prefer_typing_uninitialized_variables, prefer_const_constructors, deprecated_member_use, use_build_context_synchronously, unused_field
 
 import 'package:geocoding/geocoding.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:traffic_hero/Imports.dart';
 import 'package:traffic_hero/Components/Tool.dart' as Tool;
 
@@ -22,6 +23,8 @@ class _Home extends State<Home> {
       _operationConditionLight;
   var operationalStatus;
   var weather;
+  var nearbyStation;
+  var stationNearby;
   var homePageModel;
   var screenWidth;
   var fastTool;
@@ -31,14 +34,14 @@ class _Home extends State<Home> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     screenWidth = MediaQuery.of(context).size.width;
-
     state = Provider.of<stateManager>(context, listen: false);
     setState(() {
       weather = state.weather;
       operationalStatus = state.OperationalStatus;
+      nearbyStation = state.nearbyStation;
+
     });
-    print(state.accountState);
-    print(state.OperationalStatus);
+
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
       setState(() {
@@ -64,6 +67,7 @@ class _Home extends State<Home> {
         _operationConditionLight = false;
       });
     } else {
+
       setState(() {
         homePageModel = publicTransportPageHomePage(context);
         display1 = "附近站點";
@@ -756,6 +760,74 @@ class _Home extends State<Home> {
     );
   }
 
+  // 大眾運輸-首頁-附近站點
+  Widget stationNearbyWidget() {
+
+    return Card(
+      color: Color.fromARGB(255, 255, 255, 255),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14.0),
+      ),
+      elevation: 1,
+      child: SizedBox(
+          height: 250,
+          width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(14.0),
+                  topRight: Radius.circular(14.0),
+                ),
+                child: Container(
+                  height: 30,
+                  color: Color.fromRGBO(67, 150, 200, 1),
+                  child: Center(
+                    child: Text(
+                      '附近站點',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+
+                  child: ListView.builder(
+
+                    itemCount: nearbyStation.length,
+                    itemBuilder: (context, index) {
+                      var list = nearbyStation[index];
+                      return ListTile(
+                          leading:Container(
+                            width: 75,
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.blue,width: 3.0),
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(14.0),
+                                topRight: Radius.circular(14.0),
+                                bottomLeft: Radius.circular(14.0),
+                                bottomRight: Radius.circular(14.0),
+                              ),
+                            ),
+                              child:Text(list['預估到站時間 (min)']+'分',style: TextStyle(fontSize: 25),textAlign: TextAlign.center,)
+                          ),
+                        title: Column(
+                          children:[
+                            Text(list['路線名稱']+'( 即將抵達：'+list['站點名稱']+' )',textAlign: TextAlign.left),
+                            Text('往 '+list['站點名稱'],textAlign: TextAlign.left),
+                          ]
+                        ),
+
+
+                      );
+
+                      }
+                    )
+              )
+            ],
+          )),
+    );
+  }
 //創建首頁頁面
   @override
   Widget build(BuildContext context) {
@@ -816,6 +888,7 @@ class _Home extends State<Home> {
               ),
               weatherWidget(),
               operationalWidget(),
+              stationNearbyWidget(),
             ],
           )),
         ),

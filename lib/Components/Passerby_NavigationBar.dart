@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, camel_case_types, prefer_typing_uninitialized_variables, prefer_const_constructors, non_constant_identifier_names
 import 'package:traffic_hero/Imports.dart';
 
+
 //主程式
 class PasserbyPage extends StatefulWidget {
   const PasserbyPage({super.key});
@@ -10,9 +11,12 @@ class PasserbyPage extends StatefulWidget {
 
 class _PasserbyPage extends State<PasserbyPage> {
   late stateManager? state;
-  var navigationBarText = '';
-  var navGationBarIcon;
+  var roadInfoPageText = '';
+  var roadInfoPageIcon;
+  var CMSPageText = '';
+  var CMSPageIcon;
   late List<BottomNavigationBarItem> carAndScooterBottonTabs;
+
 
   @override
   void didChangeDependencies() {
@@ -20,13 +24,17 @@ class _PasserbyPage extends State<PasserbyPage> {
     state = Provider.of<stateManager>(context, listen: false);
     if (state!.modeName == 'publicTransport') {
       setState(() {
-        navigationBarText = '大眾運輸';
-        navGationBarIcon = Icon(CupertinoIcons.bus);
+        roadInfoPageText = '大眾運輸';
+        roadInfoPageIcon = Icon(CupertinoIcons.bus);
+        CMSPageText = '路線規劃';
+        CMSPageIcon = Icon(CupertinoIcons.arrow_branch);
       });
     } else {
       setState(() {
-        navigationBarText = '道路資訊';
-        navGationBarIcon = Icon(CupertinoIcons.map_fill);
+        roadInfoPageText = '道路資訊';
+        roadInfoPageIcon = Icon(CupertinoIcons.map_fill);
+        CMSPageText = '訊息推播';
+        CMSPageIcon = Icon(CupertinoIcons.conversation_bubble);
       });
     }
 
@@ -41,15 +49,15 @@ class _PasserbyPage extends State<PasserbyPage> {
           icon: Icon(CupertinoIcons.news_solid),
           tooltip: "最新消息",
           backgroundColor: Colors.blue),
-      const BottomNavigationBarItem(
-          label: '訊息推播',
-          icon: Icon(CupertinoIcons.text_bubble),
-          tooltip: "訊息推播",
+      BottomNavigationBarItem(
+          label: CMSPageText.toString(),
+          icon: CMSPageIcon,
+          tooltip: CMSPageText.toString(),
           backgroundColor: Colors.blue),
       BottomNavigationBarItem(
-          label: navigationBarText.toString(),
-          icon: navGationBarIcon,
-          tooltip: navigationBarText.toString(),
+          label: roadInfoPageText.toString(),
+          icon: roadInfoPageIcon,
+          tooltip: roadInfoPageText.toString(),
           backgroundColor: Colors.blue),
       const BottomNavigationBarItem(
           label: '觀光資訊',
@@ -69,9 +77,16 @@ class _PasserbyPage extends State<PasserbyPage> {
   final List carAndScooterNavigationBar = [
     const Home(),
     const News(),
-    const Text('CMS'),
+    const CMS(),
     // _navigateToNewPage(context);,
     const Road_Information(),
+    const Tourist_Information(),
+  ];
+  final List publicTransportNavigationBar = [
+    const Home(),
+    const News(),
+    const Route_Planning(),
+    const Public_Transport_Information(),
     const Tourist_Information(),
   ];
 //將預設標籤設定為0

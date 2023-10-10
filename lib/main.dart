@@ -7,7 +7,7 @@ void main() async {
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
+  await FlutterConfig.loadEnvVariables();
   await geolocator().updataPosition();
 
   runApp(

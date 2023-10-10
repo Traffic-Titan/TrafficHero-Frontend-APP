@@ -1,5 +1,6 @@
 // ignore_for_file: file_names, camel_case_types
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page_Detail.dart';
 import 'package:traffic_hero/imports.dart';
 
 import 'Tourist_Detail_Info.dart';
@@ -21,6 +22,7 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
   late var tourismList = [];
   late GoogleMapController mapController;
   final Set<Marker> _markers = Set<Marker>();
+  var position;
 
   _onMapCreated(GoogleMapController controller){
     mapController = controller;
@@ -32,6 +34,7 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
     positionNow = state.positionNow;
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
+    position = await geolocator().updataPosition();
     getTourismInfo();
   }
   static const List<Tab> touristTabBar = <Tab>[
@@ -52,9 +55,9 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
   }
   //取得觀光資料(轉到該頁面戳一次)
   getTourismInfo() async {
+
     // EasyLoading.show(status: '查詢中...');
     var response;
-    // var position = await geolocator().updataPosition();
     var url;
     var jwt = ',${state.accountState}';
     switch(_tabController.index){
@@ -74,7 +77,8 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
         print(_tabController.index);
         break;
     }
-    url += '?latitude=23.692502&longitude=120.532229';
+    url += '?latitude=${position.latitude}&longitude=${position.longitude}';
+    // url += '?latitude=23.692502&longitude=120.532229';
     // '?longitude=${position.longitude}&latitude=${position.latitude}';
     try {
       response = await api().apiGet(url, jwt);
@@ -100,7 +104,7 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
     _markers.add(
       Marker(
           markerId: MarkerId('目前位置'),
-        position: LatLng(23.692502,120.532229),
+        position: LatLng(position.latitude,position.longitude),
           // position:LatLng(positionNow.latitude,positionNow.longitude),
         icon: BitmapDescriptor.defaultMarkerWithHue(223),
         infoWindow: InfoWindow(
@@ -296,7 +300,8 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
                   ),
                 onTap: () async {
                   // EasyLoading.show(status: 'loading...');
-                  // Naviga1
+                  state.updatePageDetail(list);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => Tourist_Information_Page_Detail()));
                   print(list['名稱'].toString());
                 },
               );

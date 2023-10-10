@@ -33,9 +33,9 @@ class _Login extends State<Login> {
   Future<void> getHome() async {
     await getUser();
 
-
     await getOperationalStatus();
     await getWeather();
+    await stationNearbySearch();
 
     EasyLoading.dismiss();
     Navigator.push(
@@ -67,7 +67,7 @@ class _Login extends State<Login> {
     var url = dotenv.env['Weather'].toString() +
         '?longitude=${position.longitude}&latitude=${position.latitude}';
     var jwt = ',' + state.accountState.toString();
-    print(jwt);
+    print(url);
     try {
       response = await api().apiGet(url, jwt);
     } catch (e) {
@@ -199,6 +199,23 @@ class _Login extends State<Login> {
       return false;
     } else {
       return true;
+    }
+  }
+  // 取得附近站點資訊
+  stationNearbySearch() async{
+    var jwt = ',${state.accountState}';
+    var position = await geolocator().updataPosition();
+    var url = '${dotenv.env['StationNearby']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      state.updateNearbyStation(responseBody);
     }
   }
 
