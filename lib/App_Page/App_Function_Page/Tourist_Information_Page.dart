@@ -1,6 +1,7 @@
 // ignore_for_file: file_names, camel_case_types
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page_Detail.dart';
+import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page_SearchPage.dart';
 import 'package:traffic_hero/imports.dart';
 
 import 'Tourist_Detail_Info.dart';
@@ -218,6 +219,10 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
 
             border: InputBorder.none,
           ),
+          onTap: (){
+            // 只要點擊搜尋欄就跳轉到另外一個空白頁面
+            Navigator.push(context, MaterialPageRoute(builder: (context) => Tourist_Information_Page_SearchPage()));
+          },
           // onChanged: (value) {
           //   setState(() {
           //     searchText = value;
@@ -302,7 +307,6 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
                   // EasyLoading.show(status: 'loading...');
                   state.updatePageDetail(list);
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Tourist_Information_Page_Detail()));
-                  print(list['名稱'].toString());
                 },
               );
 
