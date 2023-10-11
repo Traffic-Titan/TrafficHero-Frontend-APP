@@ -20,6 +20,7 @@ env
 *.json
 firebase_options.dart
 google-services.json
+GoogleService-Info.plist
 
 
 # The .vscode folder contains launch configuration and tasks you configure in
