@@ -25,7 +25,7 @@ class _NewsState extends State<News> {
   List<String> selectCity = [], selectType = ['All'];
   late List<Placemark> placemarks;
   StreamSubscription<Position>? _positionStreamSubscription;
-  // Color get primaryColor => Theme.of(context).primaryColor;
+
   late var listView = [];
 
   @override
@@ -107,12 +107,13 @@ class _NewsState extends State<News> {
         selectCitySubText = font2(text((placemarks.isNotEmpty
             ? placemarks[0].subAdministrativeArea
             : "")!));
+            print(selectCitySubText);
         url_test = text((placemarks.isNotEmpty
                 ? placemarks[0].subAdministrativeArea
                 : "")!)
             .toString();
+        print(url_test);
       });
-
       print(url_test);
     } else {
       setState(() {
@@ -121,10 +122,12 @@ class _NewsState extends State<News> {
                     : '')
                 .toString()))
             .toString();
+             print(selectCitySubText);
         url_test = text((placemarks.isNotEmpty
                 ? placemarks[0].administrativeArea.toString()
                 : ''))
             .toString();
+             print(url_test);
       });
 
       print(url_test);
@@ -287,6 +290,7 @@ class _NewsState extends State<News> {
                             onChange: (selected) {
                               setState(() => {
                                     selectType = selected.value,
+                                    print(selectType),
                                     EasyLoading.show(status: 'Loading.....'),
                                     get_News(),
                                     // _stopTrackingPosition()

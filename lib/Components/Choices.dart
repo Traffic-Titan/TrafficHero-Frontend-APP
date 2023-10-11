@@ -188,18 +188,18 @@ List<Map<String, String>> city_Chiness = [
 ];
 
 List<Map<String, String>> way = [
-  {'value': 'Freeway', 'title': '國道', 'body': '道路'},
-  {'value': 'ProvincialHighway', 'title': '省道', 'body': '道路'},
-  {'value': 'LocalRoad', 'title': '一般道路', 'body': '道路'},
+  {'value': 'freeway', 'title': '國道', 'body': '道路'},
+  {'value': 'provincial_highway', 'title': '省道', 'body': '道路'},
+  {'value': 'local_road', 'title': '一般道路', 'body': '道路'},
 ];
 
 List<Map<String, String>> scooterway = [
-  {'value': 'ProvincialHighway', 'title': '省道', 'body': '道路'},
-  {'value': 'LocalRoad', 'title': '一般道路', 'body': '道路'},
+  {'value': 'provincial_highway', 'title': '省道', 'body': '道路'},
+  {'value': 'local_road', 'title': '一般道路', 'body': '道路'},
 ];
 
 List<Map<String, String>> publicTransport = [
-  {'value': 'Bus', 'title': '公車', 'body': '公路'},
+  {'value': 'bus', 'title': '公車', 'body': '公路'},
   {'value': 'intercity_bus', 'title': '公路客運', 'body': '公路'},
   {'value': 'taiwan_tourist_shuttle', 'title': '台灣好行公車', 'body': '公路'},
   {'value': 'public_bicycle', 'title': '共享單車', 'body': '公路'},

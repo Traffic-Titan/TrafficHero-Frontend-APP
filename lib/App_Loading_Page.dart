@@ -26,7 +26,7 @@ class _appLoadingPage extends State<appLoadingPage> {
   checkToken() async {
     var response;
     var url = dotenv.env['Profile'];
-    var jwt = ',${prefs.get('app')}';
+    var jwt = ',${prefs.get('userToken')}';
     print(jwt);
     try {
       response = await api().apiGet(url, jwt);
