@@ -814,7 +814,7 @@ class _Home extends State<Home> {
                         title: Column(
                           children:[
                             Text(list['路線名稱']+'( 即將抵達：'+list['站點名稱']+' )',textAlign: TextAlign.left),
-                            Text('往 '+list['站點名稱'],textAlign: TextAlign.left),
+                            Text('往 '+list['終點站'],textAlign: TextAlign.left),
                           ]
                         ),
 

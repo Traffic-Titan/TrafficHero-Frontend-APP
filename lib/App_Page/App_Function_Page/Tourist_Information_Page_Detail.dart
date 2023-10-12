@@ -58,11 +58,9 @@ class _Tourist_Information_Page_DetailState extends State<Tourist_Information_Pa
               flex: 1,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child: Container(child:Text('超連結：'+data['連結']),),
+                child:Text('超連結：'+data['連結'],style: TextStyle(fontSize: 15)),
               ),
             ),
-
-
           ],
         )
     );

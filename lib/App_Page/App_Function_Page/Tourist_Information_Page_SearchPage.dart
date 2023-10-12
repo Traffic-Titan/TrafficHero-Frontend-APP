@@ -32,7 +32,6 @@ class _Tourist_Information_Page_SearchPageState extends State<Tourist_Informatio
       setState(() {
         // resultDetail_list : 儲存某景點的UID、名稱
         resultDetail_list = jsonDecode(utf8.decode(response.bodyBytes));
-        print(resultDetail_list[0]);
         state.updatePageDetail(resultDetail_list[0]);
       });
     } else {
@@ -115,7 +114,11 @@ class _Tourist_Information_Page_SearchPageState extends State<Tourist_Informatio
                   TextButton(
                       onPressed:(){
                         resultDetail(data['UID']);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Tourist_Information_Page_Detail()));
+
+                        //透過延遲進入頁面，使頁面能夠順利讀取UID所獲取的資料
+                        Future.delayed(Duration(seconds: 1),(){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Tourist_Information_Page_Detail()));
+                        });
                       },
                       child: Text(data['名稱'])
                   ),
