@@ -32,6 +32,10 @@ PODS:
   - FirebaseCoreInternal (10.16.0):
     - "GoogleUtilities/NSData+zlib (~> 7.8)"
   - Flutter (1.0.0)
+  - flutter_config (0.0.1):
+    - Flutter
+  - flutter_config_plus (0.0.1):
+    - Flutter
   - flutter_tts (0.0.1):
     - Flutter
   - geocoding_ios (1.0.5):
@@ -44,10 +48,10 @@ PODS:
   - google_sign_in_ios (0.0.1):
     - Flutter
     - GoogleSignIn (~> 6.2)
-  - GoogleMaps (5.2.0):
-    - GoogleMaps/Maps (= 5.2.0)
-  - GoogleMaps/Base (5.2.0)
-  - GoogleMaps/Maps (5.2.0):
+  - GoogleMaps (6.2.1):
+    - GoogleMaps/Maps (= 6.2.1)
+  - GoogleMaps/Base (6.2.1)
+  - GoogleMaps/Maps (6.2.1):
     - GoogleMaps/Base
   - GoogleSignIn (6.2.4):
     - AppAuth (~> 1.5)
@@ -78,11 +82,11 @@ PODS:
   - path_provider_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
-  - PhoneNumberKit (3.6.8):
-    - PhoneNumberKit/PhoneNumberKitCore (= 3.6.8)
-    - PhoneNumberKit/UIKit (= 3.6.8)
-  - PhoneNumberKit/PhoneNumberKitCore (3.6.8)
-  - PhoneNumberKit/UIKit (3.6.8):
+  - PhoneNumberKit (3.7.4):
+    - PhoneNumberKit/PhoneNumberKitCore (= 3.7.4)
+    - PhoneNumberKit/UIKit (= 3.7.4)
+  - PhoneNumberKit/PhoneNumberKitCore (3.7.4)
+  - PhoneNumberKit/UIKit (3.7.4):
     - PhoneNumberKit/PhoneNumberKitCore
   - PromisesObjC (2.3.1)
   - RecaptchaInterop (100.0.0)
@@ -98,6 +102,8 @@ DEPENDENCIES:
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
+  - flutter_config (from `.symlinks/plugins/flutter_config/ios`)
+  - flutter_config_plus (from `.symlinks/plugins/flutter_config_plus/ios`)
   - flutter_tts (from `.symlinks/plugins/flutter_tts/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
@@ -133,6 +139,10 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_core/ios"
   Flutter:
     :path: Flutter
+  flutter_config:
+    :path: ".symlinks/plugins/flutter_config/ios"
+  flutter_config_plus:
+    :path: ".symlinks/plugins/flutter_config_plus/ios"
   flutter_tts:
     :path: ".symlinks/plugins/flutter_tts/ios"
   geocoding_ios:
@@ -164,25 +174,27 @@ SPEC CHECKSUMS:
   FirebaseCore: 2cec518b43635f96afe7ac3a9c513e47558abd2e
   FirebaseCoreInternal: 26233f705cc4531236818a07ac84d20c333e505a
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
+  flutter_config: f48f0d47a284f1791aacce2687eabb3309ba7a41
+  flutter_config_plus: df6643caa4790a393fba3301ddd134e4d078ae25
   flutter_tts: 0f492aab6accf87059b72354fcb4ba934304771d
   geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
   google_maps_flutter_ios: abdac20d6ce8931f6ebc5f46616df241bfaa2cfd
   google_sign_in_ios: 1256ff9d941db546373826966720b0c24804bcdd
-  GoogleMaps: 025272d5876d3b32604e5c080dc25eaf68764693
+  GoogleMaps: 20d7b12be49a14287f797e88e0e31bc4156aaeb4
   GoogleSignIn: 5651ce3a61e56ca864160e79b484cd9ed3f49b7a
   GoogleUtilities: 13e2c67ede716b8741c7989e26893d151b2b2084
   GTMAppAuth: 0ff230db599948a9ad7470ca667337803b3fc4dd
   GTMSessionFetcher: 3a63d75eecd6aa32c2fc79f578064e1214dfdec2
   libphonenumber_plugin: e8a7d64a6624a7c25f2c4ab0b7ead2a8e341e35e
   path_provider_foundation: 29f094ae23ebbca9d3d0cec13889cd9060c0e943
-  PhoneNumberKit: 962cb725d664c7d4ac5f3e6f93e2de5f543f0d05
+  PhoneNumberKit: e3c4dc9f65bc2036639898095c2ab1ef89348f64
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
-PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
+PODFILE CHECKSUM: 819463e6a0290f5a72f145ba7cde16e8b6ef0796
 
 COCOAPODS: 1.13.0

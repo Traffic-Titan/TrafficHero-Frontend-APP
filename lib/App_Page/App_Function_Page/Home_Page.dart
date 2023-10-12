@@ -23,7 +23,7 @@ class _Home extends State<Home> {
       _operationConditionLight;
   var operationalStatus;
   var weather;
-  var nearbyStation;
+  var nearbyStation ;
   var stationNearby;
   var homePageModel;
   var screenWidth;
@@ -95,7 +95,7 @@ class _Home extends State<Home> {
 //跳轉停車費頁面
   goLicensePlateInput() async {
     EasyLoading.show(status: '查詢中...');
-    var licensePlate;
+    var licensePlate = [];
     var response;
     var url = dotenv.env['Vehicle'];
     var jwt = ',${state.accountState}';
@@ -106,7 +106,7 @@ class _Home extends State<Home> {
     }
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
-      licensePlate = responseBody['vehicle'];
+      licensePlate = responseBody['vehicle'] ?? [];
       Navigator.push(
           context,
           MaterialPageRoute(
@@ -794,7 +794,7 @@ class _Home extends State<Home> {
 
                   child: ListView.builder(
 
-                    itemCount: nearbyStation.length,
+                    itemCount: 0,
                     itemBuilder: (context, index) {
                       var list = nearbyStation[index];
                       return ListTile(

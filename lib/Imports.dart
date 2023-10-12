@@ -28,6 +28,7 @@ export 'package:flutter_dialogs/flutter_dialogs.dart';
 export 'package:url_launcher_platform_interface/url_launcher_platform_interface.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:flutter_config/flutter_config.dart';
+export  'package:flutter_config_plus/flutter_config_plus.dart';
 
 //引入頁面
 export 'package:traffic_hero/App_Page/App_Function_Page/Home_Page.dart';
