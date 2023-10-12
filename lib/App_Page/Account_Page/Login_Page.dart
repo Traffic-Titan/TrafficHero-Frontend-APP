@@ -24,9 +24,10 @@ class _Login extends State<Login> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-
     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
+    var position = await geolocator().updataPosition();
+    state.changePositionNow(position);
     EasyLoading.dismiss();
   }
 
@@ -63,6 +64,7 @@ class _Login extends State<Login> {
 
   getWeather() async {
     var position = await geolocator().updataPosition();
+    state.changePositionNow(position);
     var response;
     var url = dotenv.env['Weather'].toString() +
         '?longitude=${position.longitude}&latitude=${position.latitude}';
