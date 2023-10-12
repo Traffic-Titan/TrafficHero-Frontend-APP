@@ -114,7 +114,7 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
       )
     );
     // 添加標記
-    for (int i=0;i <=tourismList.length;i++) {
+    for (int i=0;i <tourismList.length;i++) {
       var list = tourismList[i];
       print('tourismList${list['名稱']}');
       print('經緯度${list['經緯度'][0]}${list['經緯度'][1]}');
