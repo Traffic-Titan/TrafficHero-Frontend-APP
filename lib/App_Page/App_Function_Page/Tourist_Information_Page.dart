@@ -35,7 +35,8 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
     positionNow = state.positionNow;
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
-    position = await geolocator().updataPosition();
+    state.changePositionNow(await geolocator().updataPosition());
+    position = state.positionNow;
     getTourismInfo();
   }
   static const List<Tab> touristTabBar = <Tab>[
@@ -253,8 +254,8 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
     return  GoogleMap(
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
-        target: LatLng(23.692502, 120.532229),
-        // target: LatLng(positionNow.latitude,positionNow.longitude),
+        // target: LatLng(23.692502, 120.532229),
+        target: LatLng(state.positionNow.latitude,state.positionNow.longitude),
         zoom: 11.0,
       ),
       markers: _markers,

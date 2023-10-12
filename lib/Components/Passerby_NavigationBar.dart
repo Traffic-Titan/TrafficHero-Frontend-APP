@@ -15,7 +15,7 @@ class _PasserbyPage extends State<PasserbyPage> {
   var roadInfoPageIcon;
   var CMSPageText = '';
   var CMSPageIcon;
-  late List<BottomNavigationBarItem> carAndScooterBottonTabs;
+  late List<BottomNavigationBarItem> bottomTabslist;
 
 
   @override
@@ -37,8 +37,7 @@ class _PasserbyPage extends State<PasserbyPage> {
         CMSPageIcon = Icon(CupertinoIcons.conversation_bubble);
       });
     }
-
-    carAndScooterBottonTabs = [
+    bottomTabslist = [
       const BottomNavigationBarItem(
           label: '首頁',
           icon: Icon(CupertinoIcons.home),
@@ -78,7 +77,6 @@ class _PasserbyPage extends State<PasserbyPage> {
     const Home(),
     const News(),
     const CMS(),
-    // _navigateToNewPage(context);,
     const Road_Information(),
     const Tourist_Information(),
   ];
@@ -103,10 +101,10 @@ class _PasserbyPage extends State<PasserbyPage> {
   Widget build(BuildContext context) {
     state = Provider.of<stateManager>(context, listen: false);
     List tabBodies;
-    List<BottomNavigationBarItem> bottonTabs;
+    List<BottomNavigationBarItem> bottomTabs;
 
     tabBodies = carAndScooterNavigationBar;
-    bottonTabs = carAndScooterBottonTabs;
+    bottomTabs = bottomTabslist;
 
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
@@ -116,19 +114,35 @@ class _PasserbyPage extends State<PasserbyPage> {
         unselectedItemColor: Colors.white,
         selectedItemColor: Color.fromRGBO(67, 150, 200, 1),
         backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
-        items: bottonTabs,
+        items: bottomTabs,
         onTap: (index) {
-          setState(() {
-            if (index == 2) {
-              //跳轉CMS葉面
-              _navigateToCMS(context);
-            } else {
-              setState(() {
-                currentIndex = index;
-                currentPage = tabBodies[currentIndex];
-              });
-            }
-          });
+          if (state!.modeName == 'publicTransport') {
+            setState(() {
+              tabBodies = publicTransportNavigationBar;
+            });
+          } else {
+            setState(() {
+              tabBodies = carAndScooterNavigationBar;
+              if (index == 2) {
+                //跳轉CMS葉面
+                _navigateToCMS(context);
+              }
+            });
+          }
+          currentIndex = index;
+          currentPage = tabBodies[currentIndex];
+          // setState(() {
+          //   if (index == 2) {
+          //     //跳轉CMS葉面
+          //     _navigateToCMS(context);
+          //   } else {
+          //     setState(() {
+          //       currentIndex = index;
+          //       currentPage = tabBodies[currentIndex];
+          //     });
+          //   }
+          // }
+          // );
         },
       ),
       body: currentPage,

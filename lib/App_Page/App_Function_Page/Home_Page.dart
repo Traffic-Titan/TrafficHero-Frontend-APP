@@ -35,6 +35,7 @@ class _Home extends State<Home> {
     super.didChangeDependencies();
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
+    state.changePositionNow(await geolocator().updataPosition());
     setState(() {
       weather = state.weather;
       operationalStatus = state.OperationalStatus;
@@ -793,8 +794,7 @@ class _Home extends State<Home> {
               Expanded(
 
                   child: ListView.builder(
-
-                    itemCount: nearbyStation.length,
+                    itemCount:(nearbyStation == null) ? 0 :nearbyStation.length,
                     itemBuilder: (context, index) {
                       var list = nearbyStation[index];
                       return ListTile(
