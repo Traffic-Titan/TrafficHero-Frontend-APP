@@ -29,7 +29,7 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
     screenWidth = MediaQuery.of(context).size.width;
     EasyLoading.dismiss();
     setState(() {
-      listLicensePlateNumber = widget.list['vehicle'];
+      listLicensePlateNumber = widget.list['vehicle'] ?? [];
     });
     print(widget.list);
     if (widget.list != 0) {
