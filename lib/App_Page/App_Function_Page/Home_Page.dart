@@ -794,7 +794,7 @@ class _Home extends State<Home> {
 
                   child: ListView.builder(
 
-                    itemCount: 0,
+                    itemCount: nearbyStation.length,
                     itemBuilder: (context, index) {
                       var list = nearbyStation[index];
                       return ListTile(
