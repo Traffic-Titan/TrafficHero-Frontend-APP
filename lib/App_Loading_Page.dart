@@ -31,10 +31,8 @@ class _appLoadingPage extends State<appLoadingPage> {
     try {
       response = await api().apiGet(url, jwt);
       state.updateAccountState('${prefs.get('userToken')}');
-    } catch (e) {
-      print(e);
-    }
-    if (response.statusCode == 200) {
+
+       if (response.statusCode == 200) {
       state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
       await getOperationalStatus();
       await getWeather();
@@ -45,6 +43,10 @@ class _appLoadingPage extends State<appLoadingPage> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const Login()));
     }
+    } catch (e) {
+      print(e);
+    }
+   
   }
 
 //抓取資料

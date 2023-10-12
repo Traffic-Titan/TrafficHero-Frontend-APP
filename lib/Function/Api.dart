@@ -2,7 +2,7 @@
 import 'package:traffic_hero/imports.dart';
 
 class api {
-  var apiUrl = dotenv.env['TrafficHero-Backend'].toString();
+  var apiUrl = dotenv.env['TrafficHeroBackend'].toString();
   var apiJwtHeader = dotenv.env['appToken'].toString();
 
   Future<Response> apiPost(
