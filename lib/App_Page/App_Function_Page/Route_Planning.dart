@@ -72,32 +72,32 @@ class _Route_Planning extends State<Route_Planning> {
   //取得位置經緯度
   void getInputLocation(inputText,inputValue) async{
     //測試用
-    //雲科
-    startData = {
-      'candidates': [
-        {'formatted_address': '64002台灣雲林縣斗六市大學路三段123號',
-          'geometry':
-          {'location': {'lat': 23.6959835, 'lng': 120.5340648},
-            'viewport': {'northeast': {'lat': 23.69730587989272, 'lng': 120.5354718798927},
-              'southwest': {'lat': 23.69460622010728, 'lng': 120.5327722201073}}
-          }
-          , 'name': '國立雲林科技大學'
-        }
-      ], 'status': 'OK'
-    };
-    //斗六車站
-    endData ={
-      'candidates': [
-        {'formatted_address': '640雲林縣斗六市民生路187號',
-          'geometry':
-          {'location': {'lat': 23.7121324135542, 'lng': 120.54105339748857},
-            'viewport': {'northeast': {'lat': 23.69730587989272, 'lng': 120.5354718798927},
-              'southwest': {'lat': 23.69460622010728, 'lng': 120.5327722201073}}
-          }
-          , 'name': '斗六車站'
-        }
-      ], 'status': 'OK'
-    };
+    // //雲科
+    // startData = {
+    //   'candidates': [
+    //     {'formatted_address': '64002台灣雲林縣斗六市大學路三段123號',
+    //       'geometry':
+    //       {'location': {'lat': 23.6959835, 'lng': 120.5340648},
+    //         'viewport': {'northeast': {'lat': 23.69730587989272, 'lng': 120.5354718798927},
+    //           'southwest': {'lat': 23.69460622010728, 'lng': 120.5327722201073}}
+    //       }
+    //       , 'name': '國立雲林科技大學'
+    //     }
+    //   ], 'status': 'OK'
+    // };
+    // //斗六車站
+    // endData ={
+    //   'candidates': [
+    //     {'formatted_address': '640雲林縣斗六市民生路187號',
+    //       'geometry':
+    //       {'location': {'lat': 23.7121324135542, 'lng': 120.54105339748857},
+    //         'viewport': {'northeast': {'lat': 23.69730587989272, 'lng': 120.5354718798927},
+    //           'southwest': {'lat': 23.69460622010728, 'lng': 120.5327722201073}}
+    //       }
+    //       , 'name': '斗六車站'
+    //     }
+    //   ], 'status': 'OK'
+    // };
     var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
     var text = inputText;
     //判斷要搜尋的地點是起始地還是目的地,true是起始地、false是目的地
@@ -107,37 +107,37 @@ class _Route_Planning extends State<Route_Planning> {
         'fields=formatted_address%2Cname%2Cgeometry'+
         '&input=${text}&inputtype=textquery&key=${key}';
 
-    if(value){
-      setState(() {
-        startPlaceText.text = startData['candidates'][0]['name'];
-      });
-    }else{
-      setState(() {
-        endPlaceText.text = endData['candidates'][0]['name'];
-      });
+    // if(value){
+    //   setState(() {
+    //     startPlaceText.text = startData['candidates'][0]['name'];
+    //   });
+    // }else{
+    //   setState(() {
+    //     endPlaceText.text = endData['candidates'][0]['name'];
+    //   });
+    // }
+    // 使用api版
+    try {
+      response = await get(Uri.parse(url.toString()));
+    } catch (e) {
+      print(e);
     }
-    //使用api版
-    // try {
-    //   response = await get(Uri.parse(url.toString()));
-    // } catch (e) {
-    //   print(e);
-    // }
-    // var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-    // if (response.statusCode == 200) {
-    //   if(value){
-    //     setState(() {
-    //       startData = responseBody;
-    //       startPlaceText.text = startData['candidates'][0]['name'];
-    //     });
-    //   }else{
-    //     setState(() {
-    //       endData = responseBody;
-    //       endPlaceText.text = endData['candidates'][0]['name'];
-    //     });
-    //   }
-    // } else {
-    //   print(jsonDecode(utf8.decode(response.bodyBytes)));
-    // }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      if(value){
+        setState(() {
+          startData = responseBody;
+          startPlaceText.text = startData['candidates'][0]['name'];
+        });
+      }else{
+        setState(() {
+          endData = responseBody;
+          endPlaceText.text = endData['candidates'][0]['name'];
+        });
+      }
+    } else {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
   }
   //交換起始地&目的地位置
   void changePlace(){

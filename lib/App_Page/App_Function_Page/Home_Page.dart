@@ -25,7 +25,7 @@ class _Home extends State<Home> {
   var weather;
   var nearbyStation ;
   var stationNearby;
-  var homePageModel ;
+  var homePageModel;
   var screenWidth;
   var fastTool;
   Color colorStatus = Colors.green;
@@ -36,19 +36,17 @@ class _Home extends State<Home> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-   
+
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
-   
+
     setState(() {
       weather = state.weather;
-      print(weather);
       operationalStatus = state.OperationalStatus;
       nearbyStation = state.nearbyStation;
 
     });
-     
-print(state.modeName);
+
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
       setState(() {
@@ -88,6 +86,26 @@ print(state.modeName);
     }
 
      state.changePositionNow(await geolocator().updataPosition());
+     await stationNearbySearch();
+  }
+
+  // 取得附近站點資訊
+  stationNearbySearch() async{
+    var jwt = ',${state.accountState}';
+    var position = await geolocator().updataPosition();
+    var url = '${dotenv.env['StationNearby']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+
+      state.updateNearbyStation(responseBody);
+    }
   }
 
 //修改大眾運輸頁面營運通組顏色
@@ -839,7 +857,7 @@ print(state.modeName);
 //創建首頁頁面
   @override
   Widget build(BuildContext context) {
-    return    homePageModel;
+    return homePageModel;
   }
 
 //編輯首頁不同模式頁面
