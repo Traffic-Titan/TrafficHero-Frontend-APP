@@ -40,11 +40,12 @@ class _appLoadingPage extends State<appLoadingPage> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const AllPage()));
     } else {
-      Navigator.push(
+       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const Login()));
     }
     } catch (e) {
       print(e);
+     
     }
    
   }

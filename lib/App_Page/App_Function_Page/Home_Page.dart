@@ -25,24 +25,30 @@ class _Home extends State<Home> {
   var weather;
   var nearbyStation ;
   var stationNearby;
-  var homePageModel;
+  var homePageModel ;
   var screenWidth;
   var fastTool;
   Color colorStatus = Colors.green;
   final PageController _controller = PageController();
+
+
+
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+   
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
-    state.changePositionNow(await geolocator().updataPosition());
+   
     setState(() {
       weather = state.weather;
+      print(weather);
       operationalStatus = state.OperationalStatus;
       nearbyStation = state.nearbyStation;
 
     });
-
+     
+print(state.modeName);
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
       setState(() {
@@ -80,6 +86,8 @@ class _Home extends State<Home> {
         _operationConditionLight = true;
       });
     }
+
+     state.changePositionNow(await geolocator().updataPosition());
   }
 
 //修改大眾運輸頁面營運通組顏色
@@ -831,7 +839,7 @@ class _Home extends State<Home> {
 //創建首頁頁面
   @override
   Widget build(BuildContext context) {
-    return homePageModel;
+    return    homePageModel;
   }
 
 //編輯首頁不同模式頁面
