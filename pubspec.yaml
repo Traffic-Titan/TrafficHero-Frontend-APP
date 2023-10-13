@@ -111,6 +111,12 @@ flutter:
     - assets/home/監理站_Logo.png
     - assets/roadSign_icon/countyRoad/countyRoad_7.png
     - assets/construction.png
+    - assets/publicTransportIcon/Bus.png
+    - assets/publicTransportIcon/HighwayBus.png
+    - assets/publicTransportIcon/HSR.png
+    - assets/publicTransportIcon/MRT.png
+    - assets/publicTransportIcon/pedestrian.png
+    - assets/publicTransportIcon/waiting.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -42,6 +42,24 @@ class _Login extends State<Login> {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const AllPage()));
   }
+  // 取得附近站點資訊
+  stationNearbySearch() async{
+    var jwt = ',${state.accountState}';
+    var position = await geolocator().updataPosition();
+    var url = '${dotenv.env['StationNearby']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+
+      state.updateNearbyStation(responseBody);
+    }
+  }
 
 //處理營運狀況
   getOperationalStatus() async {
@@ -203,23 +221,7 @@ class _Login extends State<Login> {
       return true;
     }
   }
-  // 取得附近站點資訊
-  stationNearbySearch() async{
-    var jwt = ',${state.accountState}';
-    var position = await geolocator().updataPosition();
-    var url = '${dotenv.env['StationNearby']}?latitude=${position.latitude}&longitude=${position.longitude}';
-    var response;
-    try {
-      response = await api().apiGet(url, jwt);
-    } catch (e) {
-      print(e);
-    }
 
-    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      state.updateNearbyStation(responseBody);
-    }
-  }
 
 //一般登陸function
   userSignIn(email, password) async {
