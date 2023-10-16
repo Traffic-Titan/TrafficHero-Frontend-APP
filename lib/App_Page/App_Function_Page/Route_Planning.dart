@@ -376,7 +376,7 @@ class _Route_Planning extends State<Route_Planning> {
           ),
           SizedBox(height: 10,),
           Column(
-            children:List.generate(routePlanning.length-1, (index) {
+            children:List.generate(routePlanning['data']['routes'].length, (index) {
                 final list = routePlanning['data']['routes'];
                 return InkWell(
                   child:Column(

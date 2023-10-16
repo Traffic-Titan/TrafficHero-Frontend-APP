@@ -1,4 +1,6 @@
 // ignore_for_file: file_names, sort_child_properties_last, unused_element, unused_local_variable, override_on_non_overriding_member, prefer_typing_uninitialized_variables, avoid_print, duplicate_ignore, avoid_unnecessary_containers
+import 'dart:ffi';
+
 import 'package:traffic_hero/imports.dart';
 import 'package:geocoding/geocoding.dart';
 
@@ -14,11 +16,21 @@ class CMS extends StatefulWidget {
 
 
 class _CMSState extends State<CMS> {
+  var cmsList_car;
   late stateManager state;
   late Icon phoneIcon = const Icon(CupertinoIcons.device_phone_landscape,size: 40,);
   bool directionState = true;
-  String displayText='';
-  String displayImg='assets/fastLocation/transparent.png';
+  String displayText1='';
+  String displayText2='';
+  String displayText3='';
+  String displayText4= '';
+  var Text1Color = 'FFFFFFFF';
+  var Text2Color = 'FFFFFFFF';
+  var Text3Color = 'FFFFFFFF';
+  var Text4Color = 'FFFFFFFF';
+  // String displayImg='assets/fastLocation/transparent.png';
+  // 預設圖片：全黑背景圖片
+  String displayImg='https://pic01.scbao.com/160312/240372-16031211454363-lp.jpg';
   Timer? timer;
     StreamSubscription<Position>? _positionStreamSubscription;
   late List<Placemark> placemarks;
@@ -34,6 +46,7 @@ class _CMSState extends State<CMS> {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: [
       SystemUiOverlay.top
     ]);
+    updateCMSList_Car();
   }
   @override
   void initState() {
@@ -99,17 +112,52 @@ class _CMSState extends State<CMS> {
     _positionStreamSubscription?.cancel();
   }
 
+  // 更新CMS_car資訊
+  void updateCMSList_Car() async {
+    // 讀取API上即時訊息推播-汽車模式
+    var url = dotenv.env['CMS_Car'];
+    var jwt = ',${state.accountState}';
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
 
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      state.updateCMSList_Car(responseBody);
+      cmsList_car = responseBody;
+    }
+  }
 
   void setDisplay(){
     int index = 0;
-    timer = Timer.periodic(const Duration(seconds: 5), (timer) {
-      if (index < cmsList.length) {
-        final cmsNews = cmsList[index];
+    // 每5秒向後端要求一次CMS資料
+    timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      if (index < cmsList_car.length) {
+        final cmsNews = cmsList_car[index];
         setState(() {
-          displayText = cmsNews['title'].toString();
-          displayImg = cmsNews['img'].toString();
-        });
+          displayText1 = cmsNews['main_content'][0][0][0].toString();
+          Text1Color = cmsNews['main_color'][0][0][0].toString();
+
+          displayText2 = cmsNews['main_content'][1][0][0].toString();
+          Text2Color = cmsNews['main_color'][1][0][0];
+
+          displayText3 = cmsNews['main_content'][1][1][0].toString();
+          Text3Color = cmsNews['main_color'][1][1][0];
+
+          displayImg = cmsNews['icon'].toString();
+          try{
+            displayText4 = '';
+            Text4Color = 'FFFFFFFF';
+            if(cmsNews['main_content'][2][0][0] != null){
+              displayText4 = cmsNews['main_content'][2][0][0];
+              Text4Color = cmsNews['main_color'][2][0][0];
+            }
+          }
+          catch (e){//print(e);
+             }});
         index++;
       } else {
         index = 0;
@@ -170,6 +218,7 @@ class _CMSState extends State<CMS> {
       body: Column(
         children: [
            Expanded(
+             flex: 2,
             //時速表
             child:Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -181,53 +230,51 @@ class _CMSState extends State<CMS> {
             ),
           ),
           Expanded(
+            flex:8,
             //CMS
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
                 crossAxisAlignment: CrossAxisAlignment.center,// 水平方向置中
                   children: [
-                    Image.asset(
+                    Image.network(
                       displayImg,
                       height: 80,
                     ),
-                    Padding(//與螢幕距離
-                      padding: const EdgeInsets.all(8.0),
-                      child:Text(
-                        displayText,
-                        style: const TextStyle(fontSize: 35,color: Colors.red,),
-                        textAlign: TextAlign.center,
-                        softWrap: true,
+                    Text(
+                      displayText1,
+                      style: TextStyle(fontSize: 35,color:HexColor(Text1Color),),
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
+                    Container(
+                      alignment:Alignment.center,
+                      margin: EdgeInsets.only(left: 100,right: 100),
+                      child:
+                      Row(
+                        children: [
+                          Text(
+                            displayText2,
+                            style:  TextStyle(fontSize: 35,color:HexColor(Text2Color),),
+                            softWrap: true,
+                          ),
+                          Text(
+                            displayText3,
+                            style:  TextStyle(fontSize: 35,color:HexColor(Text3Color),),
+                            softWrap: true,
+                          ),
+                        ],
                       ),
+                    ),
+                    Text(
+                      displayText4,
+                      style: TextStyle(fontSize: 35,color:HexColor(Text4Color),),
+                      textAlign: TextAlign.center,
+                      softWrap: true,
                     ),
               ],
             )
           ),
-          // Expanded(
-          //   // flex: 2,
-          //     child: Row(
-          //       mainAxisAlignment: MainAxisAlignment.start, // 垂直方向
-          //       crossAxisAlignment: CrossAxisAlignment.end, // 水平方向
-          //       children: List.generate(
-          //         fastLocation.length,
-          //             (index) {
-          //           final fastList = fastLocation[index];
-          //           return InkWell(
-          //             child:
-          //             Container(
-          //               width: 50,
-          //               margin: const EdgeInsets.all(3.0),
-          //               child: Image.asset(
-          //                 fastList['img'].toString(),
-          //               ),
-          //             ),
-          //             onTap: () {
-          //               print(fastList['value'].toString());
-          //             },
-          //           );
-          //         },
-          //       ),
-          //     ),
-          // ),
+
         ],
       ),
       floatingActionButton: Container(
@@ -272,55 +319,64 @@ class _CMSState extends State<CMS> {
       backgroundColor: Colors.black,
       body: Column(
         children: [
-           Expanded(
+          Expanded(
+            flex: 3,
             //時速表
-            child:Text("${speed}km/h",style: const TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
+            child:Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(  speed,style: const TextStyle(fontSize: 80,color: Colors.yellow) , textAlign: TextAlign.right, ),
+                const Text('km/h',style: TextStyle(fontSize: 30,color: Colors.yellow), textAlign: TextAlign.right)
+
+              ],
+            ),
           ),
           Expanded(
-            //CMS
-              child: Row(
+              flex:7,
+              //CMS
+              child: Column(
                 mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
-                crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
+                crossAxisAlignment: CrossAxisAlignment.center,// 水平方向置中
                 children: [
-                  Image.asset(
+                  Image.network(
                     displayImg,
-                    height: 100,
+                    height: 80,
                   ),
-                  const SizedBox(width: 20,),
                   Text(
-                    displayText,
-                    style: const TextStyle(fontSize: 50,color: Colors.red),
+                    displayText1,
+                    style: TextStyle(fontSize: 35,color:HexColor(Text1Color),),
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  ),
+                  Container(
+                    alignment:Alignment.center,
+                    margin: EdgeInsets.only(left: 250,right: 50),
+                    child:
+                    Row(
+                      children: [
+                        Text(
+                          displayText2,
+                          style:  TextStyle(fontSize: 35,color:HexColor(Text2Color),),
+                          softWrap: true,
+                        ),
+                        Text(
+                          displayText3,
+                          style:  TextStyle(fontSize: 35,color:HexColor(Text3Color),),
+                          softWrap: true,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Text(
+                    displayText4,
+                    style: TextStyle(fontSize: 35,color:HexColor(Text4Color),),
+                    textAlign: TextAlign.center,
                     softWrap: true,
                   ),
                 ],
               )
           ),
-          // Expanded(
-          //   // flex: 2,
-          //   child: Row(
-          //     mainAxisAlignment: MainAxisAlignment.start, // 垂直方向
-          //     crossAxisAlignment: CrossAxisAlignment.end, // 水平方向
-          //     children: List.generate(
-          //       fastLocation.length,
-          //           (index) {
-          //         final fastList = fastLocation[index];
-          //         return InkWell(
-          //           child:
-          //           Container(
-          //             width: 50,
-          //             margin: const EdgeInsets.all(3.0),
-          //             child: Image.asset(
-          //               fastList['img'].toString(),
-          //             ),
-          //           ),
-          //           onTap: () {
-          //             print(fastList['value'].toString());
-          //           },
-          //         );
-          //       },
-          //     ),
-          //   ),
-          // ),
+
         ],
       ),
       floatingActionButton: Container(
@@ -366,6 +422,18 @@ class _CMSState extends State<CMS> {
       ),
     );
   }
+}
+class HexColor extends Color{
+
+  static int getColorFromHex(String hexColor){
+    // 將讀到的顏色轉成大寫，並刪除所有井字號
+    hexColor = hexColor.toUpperCase().replaceAll("#", "");
+    if(hexColor.length == 6){
+      hexColor = "FF"+hexColor;
+    }
+    return int.parse(hexColor,radix: 16);
+  }
+  HexColor(final String hexColor):super(getColorFromHex(hexColor));
 }
 
 

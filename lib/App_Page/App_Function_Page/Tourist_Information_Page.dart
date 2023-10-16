@@ -283,6 +283,7 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
                         AspectRatio(  //設定圖片的長寬比
                           aspectRatio: 3/2,
                           child: Image.network(list['圖片'],height: screenHeight*0.3,fit: BoxFit.fill,),
+
                         ),
                         Flexible(
                           child: Column(
@@ -310,7 +311,6 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
                   Navigator.push(context, MaterialPageRoute(builder: (context) => Tourist_Information_Page_Detail()));
                 },
               );
-
             },
           ),
         ),

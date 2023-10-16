@@ -12,7 +12,7 @@ class Tourist_Information_Page_Detail extends StatefulWidget {
 
 class _Tourist_Information_Page_DetailState extends State<Tourist_Information_Page_Detail> {
   late stateManager state;
-  var data;
+  var data,mode;
   var screenWidth;
   var screenHeight;
   @override
@@ -20,6 +20,7 @@ class _Tourist_Information_Page_DetailState extends State<Tourist_Information_Pa
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
     data = state.pageDetail;
+    mode = state.modeName;
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
   }
@@ -40,7 +41,23 @@ class _Tourist_Information_Page_DetailState extends State<Tourist_Information_Pa
               flex: 2,
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text('地址：'+data['地址'],style: TextStyle(fontSize: 15)),
+                  child:
+                  TextButton(onPressed: () {
+                    if(mode == "publicTransport"){
+                      var directURL = 'https://www.google.com/maps/dir/?api=1&destination=${data['名稱']}&travelmode=transit';
+                      launch(directURL);
+                    }
+                    else if(mode == "car"){
+                      var directURL = 'https://www.google.com/maps/dir/?api=1&destination=${data['名稱']}&travelmode=driving';
+                      launch(directURL);
+                    }
+                    else if(mode == "scooter"){
+                      var directURL = 'https://www.google.com/maps/dir/?api=1&destination=${data['名稱']}&travelmode=motorcycle';
+                      launch(directURL);
+                    }
+
+                  },
+                    child: Text('地址：'+data['地址'],style: TextStyle(fontSize: 15)),),
                 ),
             ),
             Expanded(
