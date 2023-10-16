@@ -15,6 +15,7 @@ class stateManager with ChangeNotifier {
   var _pageDetail;
   var _keyWord;
   var _searchPageDetail;
+  var _cmsList_Car;
 
   var _appBarState = true;
   var _navigationBarState = true;
@@ -35,6 +36,7 @@ class stateManager with ChangeNotifier {
   get pageDetail => _pageDetail;
   get keyWord => _keyWord;
   get searchPageDetail => _searchPageDetail;
+  get cmsCarList_Car => _cmsList_Car;
 
   void updateModeState(String newValue) {
     _modeName = newValue;
@@ -102,6 +104,10 @@ class stateManager with ChangeNotifier {
   }
   void updateSearchPageDetail(newValue){
     _searchPageDetail = newValue;
+    notifyListeners();
+  }
+  void updateCMSList_Car(newValue){
+    _cmsList_Car = newValue;
     notifyListeners();
   }
 
