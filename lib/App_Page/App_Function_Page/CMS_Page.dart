@@ -11,12 +11,8 @@ class CMS extends StatefulWidget {
   State<CMS> createState() => _CMSState();
 }
 
-
-
-
-
 class _CMSState extends State<CMS> {
-  var cmsList_car;
+  var cmsList_car = [];
   late stateManager state;
   late Icon phoneIcon = const Icon(CupertinoIcons.device_phone_landscape,size: 40,);
   bool directionState = true;
@@ -32,7 +28,7 @@ class _CMSState extends State<CMS> {
   // 預設圖片：全黑背景圖片
   String displayImg='https://pic01.scbao.com/160312/240372-16031211454363-lp.jpg';
   Timer? timer;
-    StreamSubscription<Position>? _positionStreamSubscription;
+  StreamSubscription<Position>? _positionStreamSubscription;
   late List<Placemark> placemarks;
   var positionNow;
   String speed = '0';
@@ -168,7 +164,7 @@ class _CMSState extends State<CMS> {
   changeWidget(context){
     if(directionState){
         //設置垂直
-  
+
         return straightPage(context);
       }else{
         //設置橫向
