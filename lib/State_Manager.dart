@@ -11,7 +11,6 @@ class stateManager with ChangeNotifier {
   var _google_sso;
   var _profile;
   var _weather;
-  var _nearbyStation;
   var _pageDetail;
   var _keyWord;
   var _searchPageDetail;
@@ -32,7 +31,6 @@ class stateManager with ChangeNotifier {
   get OperationalStatus => _OperationalStatus;
   get profile => _profile;
   get weather => _weather;
-  get nearbyStation => _nearbyStation;
   get pageDetail => _pageDetail;
   get keyWord => _keyWord;
   get searchPageDetail => _searchPageDetail;
@@ -90,10 +88,7 @@ class stateManager with ChangeNotifier {
     _weather = newValue;
     notifyListeners();
   }
-  void updateNearbyStation(newValue){
-    _nearbyStation = newValue;
-    notifyListeners();
-  }
+
   void updatePageDetail(newValue){
     _pageDetail = newValue;
     notifyListeners();
@@ -126,6 +121,26 @@ class stateManager with ChangeNotifier {
 
   void changePositionNow(newValue) {
     _positionNow = newValue;
+    notifyListeners();
+  }
+
+  //附近站點資訊
+  var _nearbyStationBus;
+  var _nearbyStationTrain;
+  var _nearbyStationBike;
+  get nearbyStationBus => _nearbyStationBus;
+  get nearbyStationTrain => _nearbyStationTrain;
+  get nearbyStationBike => _nearbyStationBike;
+  void updateNearbyStationBus(newValue){
+    _nearbyStationBus = newValue;
+    notifyListeners();
+  }
+  void updateNearbyStationTrain(newValue){
+    _nearbyStationTrain = newValue;
+    notifyListeners();
+  }
+  void updateNearbyStationBike(newValue){
+    _nearbyStationBike = newValue;
     notifyListeners();
   }
 }
