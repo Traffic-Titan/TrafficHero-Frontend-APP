@@ -1,5 +1,4 @@
 // ignore_for_file: file_names, sort_child_properties_last, unused_element, unused_local_variable, override_on_non_overriding_member, prefer_typing_uninitialized_variables, avoid_print, duplicate_ignore, avoid_unnecessary_containers
-import 'dart:ffi';
 
 import 'package:traffic_hero/imports.dart';
 import 'package:geocoding/geocoding.dart';
@@ -161,22 +160,23 @@ class _CMSState extends State<CMS> {
     });
   }
 
-  changeWidget(context){
-    if(directionState){
-        //設置垂直
-
-        return straightPage(context);
-      }else{
-        //設置橫向
-       
-        return horizontalPage(context);
-      }
-  }
+  // changeWidget(context){
+  //   if(directionState){
+  //       //設置垂直
+  //
+  //       return straightPage(context);
+  //     }else{
+  //       //設置橫向
+  //
+  //       return horizontalPage(context);
+  //     }
+  // }
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
       if(directionState){
+        print('2');
         //設置垂直
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.portraitUp,
@@ -184,10 +184,11 @@ class _CMSState extends State<CMS> {
         ]);
         setState(() {
           phoneIcon = const Icon(CupertinoIcons.device_phone_landscape,size: 40,);
-          directionState = true;
+          // directionState = true;
         });
-       
+
       }else{
+        print('1');
         //設置橫向
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.landscapeLeft,
@@ -195,11 +196,11 @@ class _CMSState extends State<CMS> {
         ]);
         setState(() {
           phoneIcon = const Icon(CupertinoIcons.device_phone_portrait,size: 40,);
-          directionState = false;
+          // directionState = false;
         });
-        
+
       }
-      return changeWidget(context);
+      return (directionState == true)?straightPage(context): horizontalPage(context);
   }
 
   @override
@@ -290,7 +291,10 @@ class _CMSState extends State<CMS> {
                   child: phoneIcon,
                   backgroundColor: Colors.blueAccent,
                   onPressed: () {
-                    directionState=false;
+                    setState(() {
+                      directionState=false;
+                    });
+                    // changeWidget(context);
                   },
                 ),
                 const SizedBox(height: 10,),
@@ -392,7 +396,11 @@ class _CMSState extends State<CMS> {
                   child: phoneIcon,
                   backgroundColor: Colors.blueAccent,
                   onPressed: () {
-                    directionState=true;
+                    setState(() {
+                      directionState=true;
+                    });
+
+                    // changeWidget(context);
                   },
                 ),
                 const SizedBox(height: 10,),

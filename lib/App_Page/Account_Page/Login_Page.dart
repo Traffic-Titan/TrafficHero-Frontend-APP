@@ -36,31 +36,62 @@ class _Login extends State<Login> {
 
     await getOperationalStatus();
     await getWeather();
-    await stationNearbySearch();
+    await stationNearbySearchBus();
+    await stationNearbySearchTrain();
+    await stationNearbySearchBike();
 
     EasyLoading.dismiss();
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const AllPage()));
   }
   // 取得附近站點資訊
-  stationNearbySearch() async{
+  stationNearbySearchBus() async{
     var jwt = ',${state.accountState}';
     var position = await geolocator().updataPosition();
-    var url = '${dotenv.env['StationNearby']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var url= '${dotenv.env['StationNearbyBus']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
     try {
       response = await api().apiGet(url, jwt);
     } catch (e) {
       print(e);
     }
-
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
-
-      state.updateNearbyStation(responseBody);
+      state.updateNearbyStationBus(responseBody);
+      print('getNearbySearchBus');
     }
   }
 
+  stationNearbySearchTrain() async{
+    var jwt = ',${state.accountState}';
+    var position = await geolocator().updataPosition();
+    var url = '${dotenv.env['StationNearbyTrain']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      state.updateNearbyStationTrain(responseBody);
+    }
+  }
+  stationNearbySearchBike() async{
+    var jwt = ',${state.accountState}';
+    var position = await geolocator().updataPosition();
+    var url = '${dotenv.env['StationNearbyBike']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      state.updateNearbyStationBike(responseBody);
+    }
+  }
 //處理營運狀況
   getOperationalStatus() async {
     var position = await geolocator().updataPosition();

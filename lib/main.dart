@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
       home: appLoadingPage(),
-      debugShowCheckedModeBanner: true,
+      debugShowCheckedModeBanner: false,
       builder: EasyLoading.init(),
     );
   }
