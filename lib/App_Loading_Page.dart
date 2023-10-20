@@ -57,20 +57,24 @@ class _appLoadingPage extends State<appLoadingPage> {
       response = await api().apiGet(url, jwt);
       state.updateAccountState('${prefs.get('userToken')}');
 
-      if (response.statusCode == 200) {
-        state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
-        await getOperationalStatus();
-        await getWeather();
-        await getUser();
 
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const AllPage()));
-        EasyLoading.dismiss();
-      } else {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const Login()));
-        EasyLoading.dismiss();
-      }
+       if (response.statusCode == 200) {
+      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
+      await getOperationalStatus();
+      await getWeather();
+      await getUser();
+      await stationNearbySearchBus();
+      await stationNearbySearchBike();
+      await stationNearbySearchTrain();
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const AllPage()));
+          EasyLoading.dismiss();
+    } else {
+       Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const Login()));
+          EasyLoading.dismiss();
+    }
+
     } catch (e) {
       print(e);
       EasyLoading.dismiss();
@@ -109,16 +113,20 @@ class _appLoadingPage extends State<appLoadingPage> {
       print(e);
     }
 
+
     try {
       if (response.statusCode == 200) {
+
         print(jsonDecode(utf8.decode(response.bodyBytes)));
         state.updateWeatherState(jsonDecode(utf8.decode(response.bodyBytes)));
       } else {
         print(jsonDecode(utf8.decode(response.bodyBytes)));
       }
+
     } catch (e) {
       print(e);
     }
+
   }
 
   getUser() async {
@@ -136,6 +144,55 @@ class _appLoadingPage extends State<appLoadingPage> {
       state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+  }
+
+  // 取得附近站點資訊
+  stationNearbySearchBus() async{
+    var jwt = ',${prefs.get('userToken')}';
+    var position = await geolocator().updataPosition();
+    var url= '${dotenv.env['StationNearbyBus']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      state.updateNearbyStationBus(responseBody);
+      print('getNearbySearchBus');
+    }
+  }
+
+  stationNearbySearchTrain() async{
+    var jwt = ',${prefs.get('userToken')}';
+    var position = await geolocator().updataPosition();
+    var url = '${dotenv.env['StationNearbyTrain']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      state.updateNearbyStationTrain(responseBody);
+    }
+  }
+  stationNearbySearchBike() async{
+    var jwt = ',${prefs.get('userToken')}';
+    var position = await geolocator().updataPosition();
+    var url = '${dotenv.env['StationNearbyBike']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      state.updateNearbyStationBike(responseBody);
     }
   }
 

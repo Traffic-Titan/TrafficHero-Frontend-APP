@@ -20,7 +20,6 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
   late stateManager state;
   var screenWidth;
   var screenHeight;
-  var positionNow;
   String searchText = '';
   late var tourismList = [];
   late GoogleMapController mapController;
@@ -34,7 +33,6 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
   void didChangeDependencies() async {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
-    positionNow = state.positionNow;
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
     state.changePositionNow(await geolocator().updataPosition());
@@ -119,8 +117,6 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
     // 添加標記
     for (int i=0;i <tourismList.length;i++) {
       var list = tourismList[i];
-      print('tourismList${list['名稱']}');
-      print('經緯度${list['經緯度'][0]}${list['經緯度'][1]}');
       _markers.add(
         Marker(
           markerId: MarkerId(list['名稱']),
@@ -128,7 +124,11 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
           infoWindow: InfoWindow(
             title: list['名稱'],
             snippet: list['地址'],
+
           ),
+          onTap: (){
+            print('112');
+          }
         ),
       );
     }

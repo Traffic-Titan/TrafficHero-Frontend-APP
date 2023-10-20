@@ -52,7 +52,11 @@ export 'package:traffic_hero/App_Page/App_Function_Page/License_Plate_Input.dart
 export 'package:traffic_hero/App_Page/App_Function_Page/Binding_License _Plate.dart';
 export 'package:traffic_hero/App_Loading_Page.dart';
 export '../App_Page/App_Function_Page/Public_Transport_Information_Page.dart';
-
+export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_Bike.dart';
+export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_Bus.dart';
+export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_MRT.dart';
+export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_Train.dart';
+export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_Highway.dart';
 
 //Function
 export 'package:traffic_hero/Function/JWT.dart';

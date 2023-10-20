@@ -19,10 +19,14 @@ class _CMSState extends State<CMS> {
   String displayText2='';
   String displayText3='';
   String displayText4= '';
+  String displayText5= '';
+  String displayText6= '';
   var Text1Color = 'FFFFFFFF';
   var Text2Color = 'FFFFFFFF';
   var Text3Color = 'FFFFFFFF';
   var Text4Color = 'FFFFFFFF';
+  var Text5Color = 'FFFFFFFF';
+  var Text6Color = 'FFFFFFFF';
   // String displayImg='assets/fastLocation/transparent.png';
   // 預設圖片：全黑背景圖片
   String displayImg='https://pic01.scbao.com/160312/240372-16031211454363-lp.jpg';
@@ -145,10 +149,20 @@ class _CMSState extends State<CMS> {
           displayImg = cmsNews['icon'].toString();
           try{
             displayText4 = '';
+            displayText5 = '';
+            displayText6 = '';
             Text4Color = 'FFFFFFFF';
             if(cmsNews['main_content'][2][0][0] != null){
               displayText4 = cmsNews['main_content'][2][0][0];
               Text4Color = cmsNews['main_color'][2][0][0];
+              if(cmsNews['main_content'][2][1][0]!=null){
+                displayText5 = cmsNews['main_content'][2][1][0];
+                Text5Color = cmsNews['main_color'][2][1][0];
+              }
+              if(cmsNews['main_content'][2][2][0]!=null){
+                displayText6 = cmsNews['main_content'][2][2][0];
+                Text6Color = cmsNews['main_color'][2][2][0];
+              }
             }
           }
           catch (e){//print(e);
@@ -160,46 +174,37 @@ class _CMSState extends State<CMS> {
     });
   }
 
-  // changeWidget(context){
-  //   if(directionState){
-  //       //設置垂直
-  //
-  //       return straightPage(context);
-  //     }else{
-  //       //設置橫向
-  //
-  //       return horizontalPage(context);
-  //     }
-  // }
+  changeWidget(){
+    if(directionState){
+      print('2');
+      //設置垂直
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+      setState(() {
+        phoneIcon = const Icon(CupertinoIcons.device_phone_landscape,size: 40,);
+        directionState = true;
+      });
+
+    }else{
+      print("1");
+      //設置橫向
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.landscapeLeft,
+        DeviceOrientation.landscapeRight,
+      ]);
+      setState(() {
+        phoneIcon = const Icon(CupertinoIcons.device_phone_portrait,size: 40,);
+        directionState = false;
+      });
+
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
-      if(directionState){
-        print('2');
-        //設置垂直
-        SystemChrome.setPreferredOrientations([
-          DeviceOrientation.portraitUp,
-          DeviceOrientation.portraitDown,
-        ]);
-        setState(() {
-          phoneIcon = const Icon(CupertinoIcons.device_phone_landscape,size: 40,);
-          // directionState = true;
-        });
-
-      }else{
-        print('1');
-        //設置橫向
-        SystemChrome.setPreferredOrientations([
-          DeviceOrientation.landscapeLeft,
-          DeviceOrientation.landscapeRight,
-        ]);
-        setState(() {
-          phoneIcon = const Icon(CupertinoIcons.device_phone_portrait,size: 40,);
-          // directionState = false;
-        });
-
-      }
       return (directionState == true)?straightPage(context): horizontalPage(context);
   }
 
@@ -268,6 +273,18 @@ class _CMSState extends State<CMS> {
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
+                    Text(
+                      displayText5,
+                      style: TextStyle(fontSize: 35,color:HexColor(Text5Color),),
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
+                    Text(
+                      displayText6,
+                      style: TextStyle(fontSize: 35,color:HexColor(Text6Color),),
+                      textAlign: TextAlign.center,
+                      softWrap: true,
+                    ),
               ],
             )
           ),
@@ -291,7 +308,13 @@ class _CMSState extends State<CMS> {
                   child: phoneIcon,
                   backgroundColor: Colors.blueAccent,
                   onPressed: () {
+                    SystemChrome.setPreferredOrientations([
+                      DeviceOrientation.landscapeLeft,
+                      DeviceOrientation.landscapeRight,
+                    ]);
                     setState(() {
+                      // changeWidget();
+
                       directionState=false;
                     });
                     // changeWidget(context);
@@ -318,6 +341,8 @@ class _CMSState extends State<CMS> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
+        crossAxisAlignment: CrossAxisAlignment.center,// 水平方向置中
         children: [
           Expanded(
             flex: 3,
@@ -367,11 +392,26 @@ class _CMSState extends State<CMS> {
                       ],
                     ),
                   ),
-                  Text(
-                    displayText4,
-                    style: TextStyle(fontSize: 35,color:HexColor(Text4Color),),
-                    textAlign: TextAlign.center,
-                    softWrap: true,
+                  Row(
+                    children: [
+                      Text(
+                        displayText4,
+                        style: TextStyle(fontSize: 35,color:HexColor(Text4Color),),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                      ),
+                      Text(
+                        displayText5,
+                        style: TextStyle(fontSize: 35,color:HexColor(Text5Color),),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                      ),
+                      Text(
+                        displayText6,
+                        style: TextStyle(fontSize: 35,color:HexColor(Text6Color),),
+                        textAlign: TextAlign.center,
+                        softWrap: true,
+                      ),],
                   ),
                 ],
               )
@@ -396,7 +436,13 @@ class _CMSState extends State<CMS> {
                   child: phoneIcon,
                   backgroundColor: Colors.blueAccent,
                   onPressed: () {
+                    SystemChrome.setPreferredOrientations([
+                      DeviceOrientation.portraitUp,
+                      DeviceOrientation.portraitDown,
+                    ]);
                     setState(() {
+                      // changeWidget();
+                      phoneIcon = const Icon(CupertinoIcons.device_phone_landscape,size: 40,);
                       directionState=true;
                     });
 
@@ -411,6 +457,12 @@ class _CMSState extends State<CMS> {
                   onPressed: () {
                     if(!directionState){
                       //設置垂直
+                      SystemChrome.setPreferredOrientations([
+                        DeviceOrientation.portraitUp,
+                        DeviceOrientation.portraitDown,
+                      ]);
+                    }
+                    else{
                       SystemChrome.setPreferredOrientations([
                         DeviceOrientation.portraitUp,
                         DeviceOrientation.portraitDown,

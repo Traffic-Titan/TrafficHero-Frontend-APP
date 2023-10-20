@@ -50,6 +50,7 @@ class _Home extends State<Home> {
       nearbyStationBus=state.nearbyStationBus;
       nearbyStationBike=state.nearbyStationBike;
       nearbyStationTrain=state.nearbyStationTrain;
+
     });
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
@@ -967,7 +968,7 @@ class _Home extends State<Home> {
   Widget nearbyStationBusView(){
     return
       ListView.builder(
-        itemCount:(nearbyStationBus == null) ? 0 : nearbyStationBus.length-1,
+        itemCount:(nearbyStationBus == null||nearbyStationBus == 0) ? 0 : nearbyStationBus.length-1,
         itemBuilder: (context, index) {
           var list =nearbyStationBus[index];
           return ListTile(
@@ -1002,7 +1003,7 @@ class _Home extends State<Home> {
   Widget nearbyStationTrainView(){
     return
       ListView.builder(
-        itemCount:(nearbyStationTrain == null) ? 0 : nearbyStationTrain.length-1,
+        itemCount:(nearbyStationTrain == null||nearbyStationTrain == 0) ? 0 : nearbyStationTrain.length-1,
         itemBuilder: (context, index) {
           var list = nearbyStationTrain[index];
           return ListTile(
@@ -1037,25 +1038,65 @@ class _Home extends State<Home> {
   }
   //附近站點腳踏車-Bike
   Widget nearbyStationBikeView(){
-    return
-      ListView.builder(
-        itemCount:(nearbyStationBike == null ) ? 0 : nearbyStationBike.length-1,
-        itemBuilder: (context, index) {
-          var list = nearbyStationBike[index];
-          return ListTile(
-            leading:Container(
-                child:Text(list['公共自行車']['StationName'].substring(11),style: TextStyle(fontSize: 18,color: Color.fromRGBO(0, 32, 96, 1)),),
+    return Column(
+        children: [
+          Column(
+              children: [
+                Container(
+                  height: 50,
+                  color: Color.fromRGBO(47, 125, 195, 1),
+                  padding: EdgeInsets.only(left: 23),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: screenWidth * 0.6,
+                        child: Text('附近站點',style:TextStyle(color: Colors.white,fontSize: 20),),
+                      ),
+                      Container(
+                        width: screenWidth * 0.1,
+                        child: Text('可歸還數',style:TextStyle(color: Colors.white,),),
+                      ),
+                      Container(
+                        width: screenWidth * 0.1,
+                        child: Text('可租借數',style:TextStyle(color: Colors.white,),),
+                      ),
+                    ],
+                  ),
                 ),
-            title: Row(
-                children:[
-                  Text('可還',style: TextStyle(fontSize: 12,color: Colors.blue),),
-                  Text(list['剩餘空位'].toString(),style: TextStyle(fontSize: 16,color: Colors.red),),
-                  Text('　可借',style: TextStyle(fontSize: 12,color: Colors.blue),),
-                  Text(list['可借車位'].toString(),style: TextStyle(fontSize: 16,color: Colors.red),),
-                ]
-            ),
-          );
-        }
+              ]
+          ),
+          Expanded(
+              child: ListView.builder(
+                  itemCount:(nearbyStationBike == null||nearbyStationBike == 0) ? 0 : nearbyStationBike.length-1,
+                  itemBuilder: (context, index) {
+                    var list = nearbyStationBike[index];
+                    return InkWell(
+                      child: ListTile(
+                        leading:Container(
+                          width: screenWidth * 0.6,
+                          child:Text(list['公共自行車']['StationName'].substring(11),style: TextStyle(fontSize: 23,color: Color.fromRGBO(0, 32, 96, 1)),overflow: TextOverflow.ellipsis, ),
+                        ),
+                        title:Row(
+                          children: [
+                            Container(
+                              width: screenWidth * 0.1,
+                              child:Text(list['可借車位'].toString(),style: TextStyle(fontSize: 23,color: Colors.red),),
+                            ),
+                            Container(
+                              width: screenWidth * 0.1,
+                              child:Text(list['剩餘空位'].toString(),style: TextStyle(fontSize: 23,color: Colors.blueAccent),),
+                            )
+                          ],
+                        ) ,
+                      ),
+                      onTap: (){
+
+                      },
+                    );
+                  }
+              ),
+          ),
+        ]
     );
   }
 
@@ -1118,8 +1159,8 @@ class _Home extends State<Home> {
                 height: 10,
               ),
               weatherWidget(),
-              operationalWidget(),
               stationNearbyWidget(),
+              operationalWidget(),
             ],
           )),
         ),
