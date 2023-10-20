@@ -69,6 +69,7 @@ dependencies:
   # google_maps_flutter_ios: ^2.3.1
   flutter_config: ^2.0.2
   flutter_config_plus: ^1.1.1
+  device_info_plus: ^9.1.0
 
 dev_dependencies:
   flutter_test:

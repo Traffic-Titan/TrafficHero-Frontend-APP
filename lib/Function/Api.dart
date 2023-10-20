@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, avoid_print, non_constant_identifier_names, file_names, avoid_types_as_parameter_names, prefer_interpolation_to_compose_strings, use_rethrow_when_possible
+// ignore_for_file: camel_case_types, avoid_print, non_constant_identifier_names, file_names, avoid_types_as_parameter_names, prefer_interpolation_to_compose_strings, use_rethrow_when_possible, unused_local_variable
 import 'package:traffic_hero/imports.dart';
 
 class api {

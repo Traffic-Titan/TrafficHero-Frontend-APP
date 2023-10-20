@@ -45,14 +45,17 @@ class _Tourist_Information_Page_DetailState extends State<Tourist_Information_Pa
                   TextButton(onPressed: () {
                     if(mode == "publicTransport"){
                       var directURL = 'https://www.google.com/maps/dir/?api=1&destination=${data['名稱']}&travelmode=transit';
+                      // ignore: deprecated_member_use
                       launch(directURL);
                     }
                     else if(mode == "car"){
                       var directURL = 'https://www.google.com/maps/dir/?api=1&destination=${data['名稱']}&travelmode=driving';
+                      // ignore: deprecated_member_use
                       launch(directURL);
                     }
                     else if(mode == "scooter"){
                       var directURL = 'https://www.google.com/maps/dir/?api=1&destination=${data['名稱']}&travelmode=motorcycle';
+                      // ignore: deprecated_member_use
                       launch(directURL);
                     }
 

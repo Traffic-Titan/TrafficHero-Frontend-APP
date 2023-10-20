@@ -28,7 +28,7 @@ export 'package:shared_preferences/shared_preferences.dart';
 export 'package:flutter_config/flutter_config.dart';
 export 'package:flutter_config_plus/flutter_config_plus.dart';
 export 'package:google_maps_flutter/google_maps_flutter.dart';
-
+export  'package:device_info_plus/device_info_plus.dart';
 //引入頁面
 export 'package:traffic_hero/App_Page/App_Function_Page/Home_Page.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/News_Page.dart';

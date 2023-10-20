@@ -1,9 +1,11 @@
 // ignore_for_file: file_names, camel_case_types
+// ignore: unnecessary_import
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page_Detail.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page_SearchPage.dart';
 import 'package:traffic_hero/imports.dart';
 
+// ignore: unused_import
 import 'Tourist_Detail_Info.dart';
 
 class Tourist_Information extends StatefulWidget {
