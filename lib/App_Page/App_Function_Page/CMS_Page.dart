@@ -14,7 +14,8 @@ class _CMSState extends State<CMS> {
   var cmsList_car = [];
   late stateManager state;
   late Icon phoneIcon = const Icon(CupertinoIcons.device_phone_landscape,size: 40,);
-  bool directionState = true;
+  //設置垂直與橫向，true為直向、false為橫向
+  late bool directionState;
   String displayText1='';
   String displayText2='';
   String displayText3='';
@@ -47,6 +48,7 @@ class _CMSState extends State<CMS> {
   void initState() {
     super.initState();
     setDisplay();
+    directionState = true;
   }
 
 
@@ -175,8 +177,8 @@ class _CMSState extends State<CMS> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
+    print(directionState);
       if(directionState){
-        print('2');
         //設置垂直
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.portraitUp,
@@ -188,7 +190,6 @@ class _CMSState extends State<CMS> {
         });
 
       }else{
-        print('1');
         //設置橫向
         SystemChrome.setPreferredOrientations([
           DeviceOrientation.landscapeLeft,
@@ -245,9 +246,10 @@ class _CMSState extends State<CMS> {
                     ),
                     Container(
                       alignment:Alignment.center,
-                      margin: EdgeInsets.only(left: 100,right: 100),
                       child:
                       Row(
+                        //水平置中
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             displayText2,
