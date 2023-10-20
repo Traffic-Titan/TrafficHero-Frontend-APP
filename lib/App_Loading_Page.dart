@@ -20,10 +20,35 @@ class _appLoadingPage extends State<appLoadingPage> {
     state = Provider.of<stateManager>(context, listen: false);
     checkToken();
     EasyLoading.dismiss();
+
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+
+    try {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      print('Running on ${androidInfo.device}');
+      if (androidInfo.device != null) {
+        prefs.setString('system', 'Android');
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    try {
+      IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
+      print('Running on ${iosInfo.utsname.machine}'); 
+      if (iosInfo.utsname.machine != null) {
+        prefs.setString('system', 'IOS');
+      }
+    } catch (e) {
+      print(e);
+    }
+
+    print(prefs.get('system'));
   }
 
   //執行token驗證並作出相對應的動作
   checkToken() async {
+    EasyLoading.show(status: '登入中');
     var response;
     var url = dotenv.env['Profile'];
     var jwt = ',${prefs.get('userToken')}';
@@ -32,22 +57,24 @@ class _appLoadingPage extends State<appLoadingPage> {
       response = await api().apiGet(url, jwt);
       state.updateAccountState('${prefs.get('userToken')}');
 
-       if (response.statusCode == 200) {
-      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
-      await getOperationalStatus();
-      await getWeather();
-      await getUser();
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const AllPage()));
-    } else {
-       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const Login()));
-    }
+      if (response.statusCode == 200) {
+        state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
+        await getOperationalStatus();
+        await getWeather();
+        await getUser();
+
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const AllPage()));
+        EasyLoading.dismiss();
+      } else {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const Login()));
+        EasyLoading.dismiss();
+      }
     } catch (e) {
       print(e);
-     
+      EasyLoading.dismiss();
     }
-   
   }
 
 //抓取資料
@@ -82,17 +109,16 @@ class _appLoadingPage extends State<appLoadingPage> {
       print(e);
     }
 
-try{
- if (response.statusCode == 200) {
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
-      state.updateWeatherState(jsonDecode(utf8.decode(response.bodyBytes)));
-    } else {
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    try {
+      if (response.statusCode == 200) {
+        print(jsonDecode(utf8.decode(response.bodyBytes)));
+        state.updateWeatherState(jsonDecode(utf8.decode(response.bodyBytes)));
+      } else {
+        print(jsonDecode(utf8.decode(response.bodyBytes)));
+      }
+    } catch (e) {
+      print(e);
     }
-}catch(e){
-  print(e);
-}
-   
   }
 
   getUser() async {

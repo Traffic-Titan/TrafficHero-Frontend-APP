@@ -15,6 +15,7 @@ class Home extends StatefulWidget {
 
 class _Home extends State<Home> {
   late stateManager state;
+    late SharedPreferences prefs;
   late var positionNow;
   late String display1, display2;
   late bool _toolList,
@@ -40,7 +41,7 @@ class _Home extends State<Home> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-
+ prefs = await SharedPreferences.getInstance();
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
     setState(() {
@@ -202,7 +203,7 @@ class _Home extends State<Home> {
   findPlacesQuickly(url) async {
     var position = await geolocator().updataPosition();
     var urlPosition = url +
-        '?mode=${changeMode(state.modeName)}&latitude=${position.latitude}&longitude=${position.longitude}';
+        '?os=${prefs.get('system')}&mode=${changeMode(state.modeName)}&latitude=${position.latitude}&longitude=${position.longitude}';
 
     print(urlPosition);
     var jwt = ',${state.accountState}';

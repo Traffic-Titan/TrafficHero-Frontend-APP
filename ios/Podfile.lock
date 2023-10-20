@@ -5,6 +5,8 @@ PODS:
   - AppAuth/Core (1.6.2)
   - AppAuth/ExternalUserAgent (1.6.2):
     - AppAuth/Core
+  - device_info_plus (0.0.1):
+    - Flutter
   - Firebase/Auth (10.15.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 10.15.0)
@@ -99,6 +101,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - device_info_plus (from `.symlinks/plugins/device_info_plus/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - Flutter (from `Flutter`)
@@ -133,6 +136,8 @@ SPEC REPOS:
     - RecaptchaInterop
 
 EXTERNAL SOURCES:
+  device_info_plus:
+    :path: ".symlinks/plugins/device_info_plus/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -166,6 +171,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
+  device_info_plus: c6fb39579d0f423935b0c9ce7ee2f44b71b9fce6
   Firebase: 66043bd4579e5b73811f96829c694c7af8d67435
   firebase_auth: b62e99e6ece589afe88ebe8919eb9563b52c384c
   firebase_core: 28e84c2a4fcf6a50ef83f47b145ded8c1fa331e4
