@@ -248,11 +248,8 @@ class _CMSState extends State<CMS> {
                       textAlign: TextAlign.center,
                       softWrap: true,
                     ),
-                    Container(
-                      alignment:Alignment.center,
-                      margin: EdgeInsets.only(left: 100,right: 100),
-                      child:
                       Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
                             displayText2,
@@ -266,7 +263,6 @@ class _CMSState extends State<CMS> {
                           ),
                         ],
                       ),
-                    ),
                     Text(
                       displayText4,
                       style: TextStyle(fontSize: 35,color:HexColor(Text4Color),),
@@ -373,11 +369,8 @@ class _CMSState extends State<CMS> {
                     textAlign: TextAlign.center,
                     softWrap: true,
                   ),
-                  Container(
-                    alignment:Alignment.center,
-                    margin: EdgeInsets.only(left: 250,right: 50),
-                    child:
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           displayText2,
@@ -391,8 +384,8 @@ class _CMSState extends State<CMS> {
                         ),
                       ],
                     ),
-                  ),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
                         displayText4,
