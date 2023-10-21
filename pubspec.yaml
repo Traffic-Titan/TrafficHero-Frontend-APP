@@ -117,6 +117,8 @@ flutter:
     - assets/publicTransportIcon/MRT.png
     - assets/publicTransportIcon/pedestrian.png
     - assets/publicTransportIcon/waiting.png
+    - assets/publicTransportIcon/cycle.png
+    - assets/publicTransportIcon/TRA.png
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

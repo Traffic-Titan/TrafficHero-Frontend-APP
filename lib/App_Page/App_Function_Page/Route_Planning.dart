@@ -36,7 +36,6 @@ class _Route_Planning extends State<Route_Planning> {
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
     state.changePositionNow(await geolocator().updataPosition());
-
   }
   _onMapCreated(GoogleMapController controller){
     mapController = controller;
@@ -49,9 +48,11 @@ class _Route_Planning extends State<Route_Planning> {
     url += '?latitude=${startData['candidates'][0]['geometry']['location']['lat']}'
         '&longitude=${startData['candidates'][0]['geometry']['location']['lng']}'
         '&DestinationLatitude=${endData['candidates'][0]['geometry']['location']['lat']}'
-        '&DestinationLongitude=${endData['candidates'][0]['geometry']['location']['lng']}';
+        '&DestinationLongitude=${endData['candidates'][0]['geometry']['location']['lng']}'
+        '&StartTime=${DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now())}';
     // url += '?latitude=23.712098794315647&longitude=120.54102575330592&DestinationLatitude=22.666729273959174&DestinationLongitude=120.3033084049614';
     print(url);
+
 
     try {
       response = await api().apiGet(url, jwt);
@@ -161,8 +162,8 @@ class _Route_Planning extends State<Route_Planning> {
     _markers.add(
         Marker(
           markerId: MarkerId('目前位置'),
-          // position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
-          position:LatLng(23.71078097146887, 120.54107031283465),
+          position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
+          // position:LatLng(23.71078097146887, 120.54107031283465),
           icon: BitmapDescriptor.defaultMarkerWithHue(223),
           infoWindow: InfoWindow(
               title: '目前位置'
@@ -376,8 +377,8 @@ class _Route_Planning extends State<Route_Planning> {
           ),
           SizedBox(height: 10,),
           Column(
-            children:List.generate(routePlanning.length-1, (index) {
-                final list = routePlanning['data']['routes'];
+            children:List.generate(routePlanning['data']['routes'].length-1, (index) {
+                final list = routePlanning['data']['routes'][index];
                 return InkWell(
                   child:Column(
                       children: <Widget>[
@@ -385,12 +386,12 @@ class _Route_Planning extends State<Route_Planning> {
                           children: [
                             Expanded(
                               flex:8,
-                              child:Text('${DateFormat('HH:mm a').format(DateTime.parse(list[index]['start_time']))} - '
-                                  '${DateFormat('HH:mm a').format(DateTime.parse(list[index]['end_time']))}',style: TextStyle(fontSize: 26),),
+                              child:Text('${DateFormat('HH:mm a').format(DateTime.parse(list['start_time']))} - '
+                                  '${DateFormat('HH:mm a').format(DateTime.parse(list['end_time']))}',style: TextStyle(fontSize: 26),),
                             ),
                             Expanded(
                               flex:2,
-                              child:Text('${Duration(seconds:list[index]['travel_time']).toString().substring(0,7)}',style: TextStyle(fontSize: 20)),
+                              child:Text('${Duration(seconds:list['travel_time']).toString().substring(0,7)}',style: TextStyle(fontSize: 20)),
                             ),
                           ],
                         ),
@@ -401,8 +402,8 @@ class _Route_Planning extends State<Route_Planning> {
                             spacing: 2.0, // 主轴(水平)方向间距
                             runSpacing: 2.0, // 纵轴（垂直）方向间距
                             // alignment: TextDirection.LTR, //沿主轴方向居中
-                            children: List.generate(list[index]['sections'].length, (i) {
-                              var sectionList = list[index]['sections'];
+                            children: List.generate(list['sections'].length, (i) {
+                              var sectionList = list['sections'];
                               return Wrap(
                                 children: [
                                   Image.asset('assets/publicTransportIcon/${sectionList[i]['transport']['mode']}.png', height: 40,),
@@ -410,7 +411,7 @@ class _Route_Planning extends State<Route_Planning> {
                                   (sectionList[i]['transport']['shortName'] == null) ? Text('') :
                                   Text(sectionList[i]['transport']['shortName'], style: TextStyle(fontSize: 15)),
                                   // 判斷是不是最後一個，不用加>
-                                  (i < list[index]['sections'].length - 1) ? Text('＞', style: TextStyle(fontSize: 18)) : Text(' '),
+                                  (i < list['sections'].length - 1) ? Text('＞', style: TextStyle(fontSize: 18)) : Text(' '),
                                 ],
                               );
                             }

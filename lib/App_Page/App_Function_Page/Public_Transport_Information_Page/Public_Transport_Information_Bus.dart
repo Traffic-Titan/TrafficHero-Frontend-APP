@@ -1,4 +1,5 @@
 
+import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/BusRouteSearch.dart';
 import 'package:traffic_hero/Imports.dart';
 
 //公車頁面
@@ -74,7 +75,6 @@ Widget publicTransportInfoBus(context){
       ),
     );
   }
-
   return Scaffold(
     backgroundColor: Color.fromRGBO(230, 240, 255, 1),
     body: SingleChildScrollView(
@@ -95,7 +95,7 @@ Widget publicTransportInfoBus(context){
                             minimumSize: MaterialStateProperty.all(Size(screenWidth - 30 > 600 ? 600 : screenWidth - 30, 50)),
                           ),
                           onPressed: (){
-                            //路線搜尋
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => BusRouteSearch()));
                           },
                           child: ListTile(
                               leading: Icon(Icons.directions_bus_sharp,size: 50,color: Color.fromRGBO(29, 73, 153, 1),),
