@@ -10,7 +10,16 @@ class stateManager with ChangeNotifier {
   var _google_sso_status;
   var _google_sso;
   var _profile;
-  var _weather;
+  Map<String, dynamic> _weather = {
+    'area': '---',
+    'url': 'https://www.cwa.gov.tw/V8/C/W/Town/Town.html?TID=1000901',
+    'temperature': '--',
+    'the_lowest_temperature': '--',
+    'the_highest_temperature': '--',
+    'weather': '-',
+    'weather_icon_url':
+        'https://help.apple.com/assets/64067987823C71654C27CD1A/64067990823C71654C27CD47/zh_TW/1200cde3569cf69bd80e1ddabc0f15cd.png'
+  };
   var _pageDetail;
   var _keyWord;
   var _searchPageDetail;
@@ -19,7 +28,26 @@ class stateManager with ChangeNotifier {
   var _appBarState = true;
   var _navigationBarState = true;
   var _floatingBtnState = true;
-  var _OperationalStatus;
+  Map<String, dynamic> _OperationalStatus = {
+    'intercity': [
+      {
+        'name': '',
+        'status': '',
+        'status_text': '',
+        'logo_url':
+            'https://cdn3.iconfinder.com/data/icons/basic-2-black-series/64/a-92-256.png'
+      },
+    ],
+     'local': [
+      {
+        'name': '',
+        'status': '',
+        'status_text': '',
+        'logo_url':
+            'https://cdn3.iconfinder.com/data/icons/basic-2-black-series/64/a-92-256.png'
+      },
+    ]
+  };
 
   String get modeName => _modeName;
   String get accountState => _accountState;
@@ -89,19 +117,22 @@ class stateManager with ChangeNotifier {
     notifyListeners();
   }
 
-  void updatePageDetail(newValue){
+  void updatePageDetail(newValue) {
     _pageDetail = newValue;
     notifyListeners();
   }
-  void updateKeyWord(newValue){
+
+  void updateKeyWord(newValue) {
     _keyWord = newValue;
     notifyListeners();
   }
-  void updateSearchPageDetail(newValue){
+
+  void updateSearchPageDetail(newValue) {
     _searchPageDetail = newValue;
     notifyListeners();
   }
-  void updateCMSList_Car(newValue){
+
+  void updateCMSList_Car(newValue) {
     _cmsList_Car = newValue;
     notifyListeners();
   }
@@ -131,15 +162,17 @@ class stateManager with ChangeNotifier {
   get nearbyStationBus => _nearbyStationBus;
   get nearbyStationTrain => _nearbyStationTrain;
   get nearbyStationBike => _nearbyStationBike;
-  void updateNearbyStationBus(newValue){
+  void updateNearbyStationBus(newValue) {
     _nearbyStationBus = newValue;
     notifyListeners();
   }
-  void updateNearbyStationTrain(newValue){
+
+  void updateNearbyStationTrain(newValue) {
     _nearbyStationTrain = newValue;
     notifyListeners();
   }
-  void updateNearbyStationBike(newValue){
+
+  void updateNearbyStationBike(newValue) {
     _nearbyStationBike = newValue;
     notifyListeners();
   }
