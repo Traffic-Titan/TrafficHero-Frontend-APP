@@ -18,6 +18,7 @@ class _appLoadingPage extends State<appLoadingPage> {
     super.didChangeDependencies();
     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
+    EasyLoading.show(status: '登入中...');
     checkToken();
     EasyLoading.dismiss();
 
@@ -48,24 +49,23 @@ class _appLoadingPage extends State<appLoadingPage> {
 
   //執行token驗證並作出相對應的動作
   checkToken() async {
-    EasyLoading.show(status: '登入中');
+     EasyLoading.show(status: '登入中...');
     var response;
     var url = dotenv.env['Profile'];
     var jwt = ',${prefs.get('userToken')}';
     print(jwt);
     try {
+       EasyLoading.show(status: '登入中...');
+      
       response = await api().apiGet(url, jwt);
       state.updateAccountState('${prefs.get('userToken')}');
 
 
        if (response.statusCode == 200) {
+      
       state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
-      await getOperationalStatus();
-      await getWeather();
-      await getUser();
-      await stationNearbySearchBus();
-      await stationNearbySearchBike();
-      await stationNearbySearchTrain();
+
+      // await getHome().gethome(context);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const AllPage()));
           EasyLoading.dismiss();

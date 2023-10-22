@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, camel_case_types
+// ignore_for_file: file_names, camel_case_types, unnecessary_import
 
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_Highway.dart';
 import 'package:traffic_hero/Imports.dart';
@@ -11,6 +11,7 @@ class Public_Transport_Information extends StatefulWidget {
 }
 
 class _Public_Transport_InformationState extends State<Public_Transport_Information> with TickerProviderStateMixin{
+  // ignore: unused_field
   late TabController _tabController;
   late stateManager state;
   var nearbyStation_list = [];

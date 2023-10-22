@@ -29,6 +29,9 @@ export 'package:flutter_config/flutter_config.dart';
 export 'package:flutter_config_plus/flutter_config_plus.dart';
 export 'package:google_maps_flutter/google_maps_flutter.dart';
 export  'package:device_info_plus/device_info_plus.dart';
+export 'package:card_loading/card_loading.dart';
+
+
 //引入頁面
 export 'package:traffic_hero/App_Page/App_Function_Page/Home_Page.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/News_Page.dart';
@@ -65,6 +68,7 @@ export 'package:traffic_hero/function/SHA256.dart';
 export 'package:traffic_hero/Function/Api.dart';
 export 'package:traffic_hero/Function/Google_SSO.dart';
 export 'package:traffic_hero/Function/Geolocator.dart';
+export 'package:traffic_hero/Function/get_Home.dart';
 
 //Components
 export 'package:traffic_hero/Components/Button.dart';
