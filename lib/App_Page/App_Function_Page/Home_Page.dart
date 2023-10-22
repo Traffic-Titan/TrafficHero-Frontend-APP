@@ -16,21 +16,11 @@ class _Home extends State<Home> {
   late stateManager state;
   late SharedPreferences prefs;
   late var positionNow;
-  var test;
   var carMode = false;
   var scooterMode = false;
   var publicTransportMode = false;
   var operationalStatus;
-  Map<String, dynamic> weather = {
-    'area': '---',
-    'url': 'https://www.cwa.gov.tw/V8/C/W/Town/Town.html?TID=1000901',
-    'temperature': '--',
-    'the_lowest_temperature': '--',
-    'the_highest_temperature': '--',
-    'weather': '-',
-    'weather_icon_url':
-        'https://help.apple.com/assets/64067987823C71654C27CD1A/64067990823C71654C27CD47/zh_TW/1200cde3569cf69bd80e1ddabc0f15cd.png'
-  };
+  var weather;
   var stationNearby;
   var homePageModel;
   var screenWidth;
@@ -45,6 +35,36 @@ class _Home extends State<Home> {
   bool _timer = true;
   int timeCount = 1;
 
+  savePosition() async {
+    print('儲存停車開始存取');
+    EasyLoading.show(status: '儲存中');
+    var position = await geolocator().updataPosition();
+    Map<String, dynamic> body = {
+      "longitude": position.longitude.toString(),
+      "latitude": position.latitude.toString()
+    };
+    print(body);
+    var url = dotenv.env['SaveCarPosition'];
+    print(url);
+    var jwt = ',' + state.accountState;
+    print(jwt);
+    var response;
+    try {
+      response = await api().apiPut(body, url, jwt);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        EasyLoading.showSuccess(responseBody['message'].toString());
+        print('儲存停車成功');
+        EasyLoading.dismiss();
+      }
+    } catch (e) {
+      print(e);
+      EasyLoading.showError('存取失敗');
+      print('儲存停車失敗');
+      EasyLoading.dismiss();
+    }
+  }
+
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
@@ -52,7 +72,7 @@ class _Home extends State<Home> {
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
     setState(() {
-      // weather = state.weather;
+      weather = state.weather;
       operationalStatus = state.OperationalStatus;
       nearbyStationBus = state.nearbyStationBus;
       nearbyStationBike = state.nearbyStationBike;
@@ -65,18 +85,21 @@ class _Home extends State<Home> {
         carMode = true;
         scooterMode = false;
         publicTransportMode = false;
+        timeCount = 1;
       });
     } else if (state.modeName == 'scooter') {
       setState(() {
         carMode = false;
         scooterMode = true;
         publicTransportMode = false;
+        timeCount = 1;
       });
     } else {
       setState(() {
         carMode = false;
         scooterMode = false;
         publicTransportMode = true;
+        timeCount = 1;
       });
     }
 
@@ -156,18 +179,18 @@ class _Home extends State<Home> {
     } catch (e) {
       print(e);
     }
-    try{
- var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      // if (mounted) {
-      //   setState(() {
-      //     Tool.nearbyStationBike = responseBody;
-      //   });
-      // }
-      // Tool.nearbyStationBus = responseBody;
-      state.updateNearbyStationBike(responseBody);
-    }
-    }catch(e){
+    try {
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        // if (mounted) {
+        //   setState(() {
+        //     Tool.nearbyStationBike = responseBody;
+        //   });
+        // }
+        // Tool.nearbyStationBus = responseBody;
+        state.updateNearbyStationBike(responseBody);
+      }
+    } catch (e) {
       print(e);
     }
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -231,6 +254,7 @@ class _Home extends State<Home> {
     if (response.statusCode == 200) {
       EasyLoading.dismiss();
       try {
+        print(res);
         await launch(res);
       } catch (e) {
         print(e.toString());
@@ -262,9 +286,9 @@ class _Home extends State<Home> {
         if (timeCount == 0) {
           timer.cancel();
           await getHome().gethome(context);
-          await stationNearbySearchBike();
-          await stationNearbySearchBus();
-          await stationNearbySearchTrain();
+          // await stationNearbySearchBike();
+          // await stationNearbySearchBus();
+          // await stationNearbySearchTrain();
           update();
           timeCount = 15;
           updateStationNearbySearch();
@@ -291,8 +315,8 @@ class _Home extends State<Home> {
       nearbyStationBus = state.nearbyStationBus;
       nearbyStationBike = state.nearbyStationBike;
       nearbyStationTrain = state.nearbyStationTrain;
-      test = state.weather.toString();
       weather = state.weather;
+      operationalStatus = state.OperationalStatus;
     });
     print('update finish');
     // print(nearbyStationBus);
@@ -376,6 +400,7 @@ class _Home extends State<Home> {
         ),
       ),
       onTap: () {
+       
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -731,8 +756,8 @@ class _Home extends State<Home> {
       ),
       elevation: 1,
       child: SizedBox(
-          height: (operationalStatus['intercity'].length * 50).toDouble() +
-              (operationalStatus['local'].length * 50).toDouble() +
+          height: (operationalStatus['intercity'].length * 70).toDouble() +
+              (operationalStatus['local'].length * 70).toDouble() +
               100,
           width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
           child: Column(
@@ -757,7 +782,7 @@ class _Home extends State<Home> {
                 child: SizedBox(
                   width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
                   height:
-                      (operationalStatus['intercity'].length * 55).toDouble(),
+                      (operationalStatus['intercity'].length * 70).toDouble(),
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: operationalStatus['intercity'].length,
@@ -765,8 +790,11 @@ class _Home extends State<Home> {
                         final intercity = operationalStatus['intercity'][index];
                         return ListTile(
                           title: Text(intercity['name']),
+                          leading: Image.network(intercity['logo_url']),
+                          subtitle: Text(intercity['status_text']),
                           trailing: Column(
                             children: [
+                              // Text(intercity['status_text']),
                               Container(
                                   width: 40,
                                   height: 40,
@@ -800,14 +828,16 @@ class _Home extends State<Home> {
               Center(
                 child: SizedBox(
                   width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-                  height: (operationalStatus['local'].length * 55).toDouble(),
+                  height: (operationalStatus['local'].length * 70).toDouble(),
                   child: ListView.builder(
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: operationalStatus['local'].length,
                       itemBuilder: (context, index) {
-                        final intercity = operationalStatus['local'][index];
+                        final local = operationalStatus['local'][index];
                         return ListTile(
-                          title: Text(intercity['name']),
+                          title: Text(local['name']),
+                          leading: Image.network(local['logo_url']),
+                          subtitle: Text(local['status_text']),
                           trailing: Column(
                             children: [
                               Container(
@@ -819,8 +849,7 @@ class _Home extends State<Home> {
                                       width: 40,
                                       child: Container(
                                         decoration: BoxDecoration(
-                                            color: changeColor(
-                                                intercity["status"]),
+                                            color: changeColor(local["status"]),
                                             borderRadius:
                                                 BorderRadius.circular(50)),
                                       ))),
@@ -1182,7 +1211,7 @@ class _Home extends State<Home> {
                 child: Column(
                   children: [
                     weatherWidget(),
-                    toolScooterWidget(),
+                    toolWidget(),
                     trafficWarningWidget()
                   ],
                 ),
@@ -1197,21 +1226,20 @@ class _Home extends State<Home> {
                   ],
                 ),
               ),
-              // Visibility(
-              //   visible: publicTransportMode,
-              //   child: Column(
-              //     children: [
-              //       weatherWidget(),
-              //       stationNearbyWidget(),
-              //       operationalWidget(),
-              //     ],
-              //   ),
-              // )
+              Visibility(
+                visible: publicTransportMode,
+                child: Column(
+                  children: [
+                    weatherWidget(),
+                    // stationNearbyWidget(),
+                    operationalWidget(),
+                  ],
+                ),
+              )
             ],
           )),
         ),
       ),
     );
   }
-
 }

@@ -11,8 +11,13 @@ class geolocator {
 
    Future<Position> updataPosition() async {
     Position position = await _determinePosition();
-    List pm =
+    try{
+List pm =
         await placemarkFromCoordinates(position.latitude, position.longitude);
+    }catch(e){
+      EasyLoading.showError('無法取得座標');
+    }
+    
     return position;
   }
 

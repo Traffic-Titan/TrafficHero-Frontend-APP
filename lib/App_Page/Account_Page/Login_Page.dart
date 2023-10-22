@@ -32,10 +32,6 @@ class _Login extends State<Login> {
   }
 
   Future<void> getHome() async {
-    await getUser();
-
-    await getOperationalStatus();
-    await getWeather();
     await stationNearbySearchBus();
     await stationNearbySearchTrain();
     await stationNearbySearchBike();
@@ -92,64 +88,12 @@ class _Login extends State<Login> {
       state.updateNearbyStationBike(responseBody);
     }
   }
-//處理營運狀況
-  getOperationalStatus() async {
-    var position = await geolocator().updataPosition();
-    var url = dotenv.env['OperationalStatus'].toString() +
-        '?longitude=${position.longitude}&latitude=${position.latitude}';
-    var jwt = ',' + state.accountState.toString();
 
-    var response = await api().apiGet(url, jwt);
-    print(jsonDecode(utf8.decode(response.bodyBytes)));
-    if (response.statusCode == 200) {
-      state
-          .updateOperationalStatus(jsonDecode(utf8.decode(response.bodyBytes)));
-      print(state.OperationalStatus);
-      print(state.OperationalStatus.toString() + 'test');
-    } else {
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
-    }
-  }
 
-  getWeather() async {
-    var position = await geolocator().updataPosition();
-    state.changePositionNow(position);
-    var response;
-    var url = dotenv.env['Weather'].toString() +
-        '?longitude=${position.longitude}&latitude=${position.latitude}';
-    var jwt = ',' + state.accountState.toString();
-    print(url);
-    try {
-      response = await api().apiGet(url, jwt);
-    } catch (e) {
-      print(e);
-    }
 
-    if (response.statusCode == 200) {
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
-      state.updateWeatherState(jsonDecode(utf8.decode(response.bodyBytes)));
-    } else {
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
-    }
-  }
 
-  getUser() async {
-    var response;
-    var url = dotenv.env['Profile'];
-    var jwt = ',' + state.accountState.toString();
-    print(jwt);
-    try {
-      response = await api().apiGet(url, jwt);
-    } catch (e) {
-      print(e);
-    }
 
-    if (response.statusCode == 200) {
-      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
-    } else {
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
-    }
-  }
+
 
   handlesignIn(GoogleSignInAccount? account) async {
     var body = {

@@ -71,6 +71,7 @@ dependencies:
   flutter_config_plus: ^1.1.1
   device_info_plus: ^9.1.0
   card_loading: ^0.3.0
+  syncfusion_flutter_datepicker: ^23.1.41
 
 dev_dependencies:
   flutter_test:
