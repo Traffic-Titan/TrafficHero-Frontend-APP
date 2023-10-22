@@ -150,10 +150,13 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+       debugShowCheckedModeBanner: false,
         home: DefaultTabController(
           length: 4,
           child: Scaffold(
-            appBar: appBar(),
+            appBar: appBar(
+              
+            ),
             body: Stack(
               children: [
                 // Map
@@ -199,7 +202,7 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
   //AppBar
   PreferredSizeWidget appBar(){
     return AppBar(
-      backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
+      backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
       leading: const Icon(
         Icons.checklist_rtl_sharp,
         color: Colors.white,

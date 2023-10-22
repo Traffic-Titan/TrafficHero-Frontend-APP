@@ -64,7 +64,7 @@ class _AllPageState extends State<AllPage> {
       ),
       appBar: AppBar(
         backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
-        elevation: 2,
+        elevation: 0,
         toolbarHeight: 65,
         shadowColor: const Color.fromRGBO(62, 111, 179, 1),
         title: Center(

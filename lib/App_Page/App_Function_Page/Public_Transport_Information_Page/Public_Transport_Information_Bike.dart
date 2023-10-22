@@ -13,6 +13,7 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
   var position ;
   var screenWidth;
   var screenHeight;
+  // ignore: unused_field
   late GoogleMapController _mapController;
   final Set<Marker> _markers = Set<Marker>();
   var draggleHeight=0.3;

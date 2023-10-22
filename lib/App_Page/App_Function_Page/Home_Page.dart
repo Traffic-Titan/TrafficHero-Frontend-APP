@@ -1,5 +1,4 @@
-// ignore_for_file: file_names, avoid_unnecessary_containers, prefer_final_fields, sort_child_properties_last, unused_import, library_prefixes, avoid_print, await_only_futures, unused_local_variable, prefer_typing_uninitialized_variables, prefer_const_constructors, deprecated_member_use, use_build_context_synchronously, unused_field
-
+// ignore_for_file: file_names, avoid_unnecessary_containers, prefer_final_fields, sort_child_properties_last, unused_import, library_prefixes, avoid_print, await_only_futures, unused_local_variable, prefer_typing_uninitialized_variables, prefer_const_constructors, deprecated_member_use, use_build_context_synchronously, unused_field, unnecessary_null_comparison
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
@@ -15,81 +14,76 @@ class Home extends StatefulWidget {
 
 class _Home extends State<Home> {
   late stateManager state;
-    late SharedPreferences prefs;
+  late SharedPreferences prefs;
   late var positionNow;
-  late String display1, display2;
-  late bool _toolList,
-      _trafficReport,
-      _nearbyStop,
-      _operationCondition,
-      _operationConditionLight;
+  var test;
+  var carMode = false;
+  var scooterMode = false;
+  var publicTransportMode = false;
   var operationalStatus;
-  var weather;
+  Map<String, dynamic> weather = {
+    'area': '---',
+    'url': 'https://www.cwa.gov.tw/V8/C/W/Town/Town.html?TID=1000901',
+    'temperature': '--',
+    'the_lowest_temperature': '--',
+    'the_highest_temperature': '--',
+    'weather': '-',
+    'weather_icon_url':
+        'https://help.apple.com/assets/64067987823C71654C27CD1A/64067990823C71654C27CD47/zh_TW/1200cde3569cf69bd80e1ddabc0f15cd.png'
+  };
   var stationNearby;
   var homePageModel;
   var screenWidth;
   var fastTool;
-  Color colorStatus = Colors.green;
+  var count = 0;
+  var nearbyStationBus, nearbyStationBike, nearbyStationTrain;
+
   final PageController _controller = PageController();
-  Timer? timerBus,timerBike,timerTrain;
+
+  Timer? timerBus, timerBike, timerTrain;
   Timer? counter;
-  var count=0;
-  var nearbyStationBus,nearbyStationBike,nearbyStationTrain;
   bool _timer = true;
-  int timeCount =60;
+  int timeCount = 1;
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
- prefs = await SharedPreferences.getInstance();
+
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
     setState(() {
-      weather = state.weather;
+      // weather = state.weather;
       operationalStatus = state.OperationalStatus;
-      nearbyStationBus=state.nearbyStationBus;
-      nearbyStationBike=state.nearbyStationBike;
-      nearbyStationTrain=state.nearbyStationTrain;
-
+      nearbyStationBus = state.nearbyStationBus;
+      nearbyStationBike = state.nearbyStationBike;
+      nearbyStationTrain = state.nearbyStationTrain;
     });
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
       setState(() {
         fastTool = Tool.fastLocationCar;
-        print(fastTool);
-        homePageModel = carHomePage(context);
-        _toolList = true;
-        _trafficReport = true;
-        _nearbyStop = false;
-        _operationCondition = false;
-        _operationConditionLight = false;
+        carMode = true;
+        scooterMode = false;
+        publicTransportMode = false;
       });
     } else if (state.modeName == 'scooter') {
       setState(() {
-        homePageModel = scooterHomePage(context);
-        // fastTool = Tool.fastLocationCar ?? {};
-        display1 = "工具列";
-        display2 = "路況速報";
-        _toolList = true;
-        _trafficReport = true;
-        _nearbyStop = false;
-        _operationCondition = false;
-        _operationConditionLight = false;
+        carMode = false;
+        scooterMode = true;
+        publicTransportMode = false;
       });
     } else {
       setState(() {
-        homePageModel = publicTransportPageHomePage(context);
-        display1 = "附近站點";
-        display2 = "營運狀況";
-        _toolList = false;
-        _trafficReport = false;
-        _nearbyStop = true;
-        _operationCondition = true;
-        _operationConditionLight = true;
+        carMode = false;
+        scooterMode = false;
+        publicTransportMode = true;
       });
     }
-     state.changePositionNow(await geolocator().updataPosition());
+
+    state.changePositionNow(await geolocator().updataPosition());
+    prefs = await SharedPreferences.getInstance();
   }
+
   changeMode(mode) {
     if (mode == 'car') {
       return 'Car';
@@ -97,15 +91,18 @@ class _Home extends State<Home> {
       return 'Scooter';
     }
   }
+
   void initState() {
     super.initState();
     updateStationNearbySearch();
   }
+
   // 取得附近站點資訊
-  stationNearbySearchBus() async{
+  stationNearbySearchBus() async {
     var jwt = ',${state.accountState}';
     var position = await geolocator().updataPosition();
-    var url= '${dotenv.env['StationNearbyBus']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var url =
+        '${dotenv.env['StationNearbyBus']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
     print('SearchBus');
     try {
@@ -115,16 +112,18 @@ class _Home extends State<Home> {
     }
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
-        state.updateNearbyStationBus(responseBody);
+      state.updateNearbyStationBus(responseBody);
 
-        // Tool.nearbyStationBus = responseBody;
-        // timerBus?.cancel();
+      // Tool.nearbyStationBus = responseBody;
+      // timerBus?.cancel();
     }
   }
-  stationNearbySearchTrain() async{
+
+  stationNearbySearchTrain() async {
     var jwt = ',${state.accountState}';
     var position = await geolocator().updataPosition();
-    var url = '${dotenv.env['StationNearbyTrain']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var url =
+        '${dotenv.env['StationNearbyTrain']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
     print('SearchTrain');
     try {
@@ -141,18 +140,34 @@ class _Home extends State<Home> {
       // }
       // Tool.nearbyStationBus = responseBody;
       // print(Tool.nearbyStationTrain);
-        state.updateNearbyStationTrain(responseBody);
+      state.updateNearbyStationTrain(responseBody);
     }
   }
-  stationNearbySearchBike() async{
+
+  stationNearbySearchBike() async {
     var jwt = ',${state.accountState}';
     var position = await geolocator().updataPosition();
-    var url = '${dotenv.env['StationNearbyBike']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var url =
+        '${dotenv.env['StationNearbyBike']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
     print('SearchBike');
     try {
       response = await api().apiGet(url, jwt);
     } catch (e) {
+      print(e);
+    }
+    try{
+ var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      // if (mounted) {
+      //   setState(() {
+      //     Tool.nearbyStationBike = responseBody;
+      //   });
+      // }
+      // Tool.nearbyStationBus = responseBody;
+      state.updateNearbyStationBike(responseBody);
+    }
+    }catch(e){
       print(e);
     }
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
@@ -163,10 +178,10 @@ class _Home extends State<Home> {
       //   });
       // }
       // Tool.nearbyStationBus = responseBody;
-        state.updateNearbyStationBike(responseBody);
-
+      state.updateNearbyStationBike(responseBody);
     }
   }
+
   //修改大眾運輸頁面營運通組顏色
   changeColor(color) {
     if (color == 'green') {
@@ -177,6 +192,7 @@ class _Home extends State<Home> {
       return Colors.yellow;
     }
   }
+
   //跳轉停車費頁面
   goLicensePlateInput() async {
     EasyLoading.show(status: '查詢中...');
@@ -200,6 +216,7 @@ class _Home extends State<Home> {
                   )));
     }
   }
+
   //快速尋找地點
   findPlacesQuickly(url) async {
     var position = await geolocator().updataPosition();
@@ -224,6 +241,7 @@ class _Home extends State<Home> {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
     }
   }
+
   String splitTextIntoChunks(String text, int chunkSize) {
     List<String> chunks = [];
     for (int i = 0; i < text.length; i += chunkSize) {
@@ -237,28 +255,30 @@ class _Home extends State<Home> {
     return chunks.join('\n'); // 使用換行符串起每組文字
   }
 
-  void updateStationNearbySearch(){
-    timerBus = Timer.periodic(const Duration(seconds:1), (timer)  async{
+  void updateStationNearbySearch() {
+    timerBus = Timer.periodic(const Duration(seconds: 1), (timer) async {
       print(timeCount);
-      if(_timer){
-        if(timeCount == 0){
+      if (_timer) {
+        if (timeCount == 0) {
           timer.cancel();
+          await getHome().gethome(context);
           await stationNearbySearchBike();
           await stationNearbySearchBus();
           await stationNearbySearchTrain();
-          timeCount=60;
+          update();
+          timeCount = 15;
           updateStationNearbySearch();
-        }else{
-          timeCount -=1;
+        } else {
+          timeCount -= 1;
         }
-      }else{
+      } else {
         setState(() {
           timer.cancel();
         });
       }
     });
-
   }
+
   @override
   void dispose() {
     // 在widget銷毀時取消定时器
@@ -266,15 +286,16 @@ class _Home extends State<Home> {
     super.dispose();
   }
 
-
-  void update() async{
-      setState(() {
-        nearbyStationBus=state.nearbyStationBus;
-        nearbyStationBike=state.nearbyStationBike;
-        nearbyStationTrain=state.nearbyStationTrain;
-      });
-      print('update finish');
-      // print(nearbyStationBus);
+  void update() async {
+    setState(() {
+      nearbyStationBus = state.nearbyStationBus;
+      nearbyStationBike = state.nearbyStationBike;
+      nearbyStationTrain = state.nearbyStationTrain;
+      test = state.weather.toString();
+      weather = state.weather;
+    });
+    print('update finish');
+    // print(nearbyStationBus);
     print(state.nearbyStationBus);
     print(state.nearbyStationBike);
     print(state.nearbyStationTrain);
@@ -282,7 +303,7 @@ class _Home extends State<Home> {
 
 //頁面組件
   //天氣widget
-  Widget weatherWidget() {
+  InkWell weatherWidget() {
     return InkWell(
       child: SizedBox(
         width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
@@ -293,7 +314,7 @@ class _Home extends State<Home> {
             Row(
               children: [
                 Text(
-                  '${weather['temperature']}°',
+                  weather['temperature'].toString() + '°',
                   style: TextStyle(
                     fontSize: screenWidth - 30 > 600 ? 80 : screenWidth * 0.18,
                     color: Color.fromRGBO(67, 150, 200, 1),
@@ -358,10 +379,11 @@ class _Home extends State<Home> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => WebView(tt: weather['url'])));
+                builder: (context) => WebView(tt: state.weather['url'])));
       },
     );
   }
+
   //工具列widget
   Widget toolWidget() {
     return Card(
@@ -509,6 +531,7 @@ class _Home extends State<Home> {
       ),
     );
   }
+
   //工具列widget
   Widget toolScooterWidget() {
     return Card(
@@ -656,6 +679,7 @@ class _Home extends State<Home> {
       ),
     );
   }
+
   //路況速報
   Widget trafficWarningWidget() {
     return Card(
@@ -697,6 +721,7 @@ class _Home extends State<Home> {
           )),
     );
   }
+
   //營運情況
   Widget operationalWidget() {
     return Card(
@@ -706,7 +731,9 @@ class _Home extends State<Home> {
       ),
       elevation: 1,
       child: SizedBox(
-          height: (operationalStatus['intercity'].length * 50).toDouble() + (operationalStatus['local'].length * 50).toDouble() + 100,
+          height: (operationalStatus['intercity'].length * 50).toDouble() +
+              (operationalStatus['local'].length * 50).toDouble() +
+              100,
           width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
           child: Column(
             children: [
@@ -732,84 +759,82 @@ class _Home extends State<Home> {
                   height:
                       (operationalStatus['intercity'].length * 55).toDouble(),
                   child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: operationalStatus['intercity'].length,
-                          itemBuilder: (context, index) {
-                            final intercity =
-                                operationalStatus['intercity'][index];
-                            return ListTile(
-                              title: Text(intercity['name']),
-                              trailing: Column(
-                                children: [
-                                  Container(
-                                      width: 40,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: operationalStatus['intercity'].length,
+                      itemBuilder: (context, index) {
+                        final intercity = operationalStatus['intercity'][index];
+                        return ListTile(
+                          title: Text(intercity['name']),
+                          trailing: Column(
+                            children: [
+                              Container(
+                                  width: 40,
+                                  height: 40,
+                                  margin: const EdgeInsets.all(3.0),
+                                  child: SizedBox(
                                       height: 40,
-                                      margin: const EdgeInsets.all(3.0),
-                                      child: SizedBox(
-                                          height: 40,
-                                          width: 40,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: changeColor(
-                                                    intercity["status"]),
-                                                borderRadius:
-                                                    BorderRadius.circular(50)),
-                                          ))),
-                                ],
-                              ),
-                            );
-                          }),
+                                      width: 40,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: changeColor(
+                                                intercity["status"]),
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
+                                      ))),
+                            ],
+                          ),
+                        );
+                      }),
                 ),
               ),
               Container(
-                  height: 30,
-                  color: Color.fromRGBO(67, 150, 200, 1),
-                  child: Center(
-                    child: Text(
-                      '地方大眾運輸營運狀況',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
+                height: 30,
+                color: Color.fromRGBO(67, 150, 200, 1),
+                child: Center(
+                  child: Text(
+                    '地方大眾運輸營運狀況',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
                   ),
                 ),
-                Center(
+              ),
+              Center(
                 child: SizedBox(
                   width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-                  height:
-                      (operationalStatus['local'].length * 55).toDouble(),
+                  height: (operationalStatus['local'].length * 55).toDouble(),
                   child: ListView.builder(
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: operationalStatus['local'].length,
-                          itemBuilder: (context, index) {
-                            final intercity =
-                                operationalStatus['local'][index];
-                            return ListTile(
-                              title: Text(intercity['name']),
-                              trailing: Column(
-                                children: [
-                                  Container(
-                                      width: 40,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: operationalStatus['local'].length,
+                      itemBuilder: (context, index) {
+                        final intercity = operationalStatus['local'][index];
+                        return ListTile(
+                          title: Text(intercity['name']),
+                          trailing: Column(
+                            children: [
+                              Container(
+                                  width: 40,
+                                  height: 40,
+                                  margin: const EdgeInsets.all(3.0),
+                                  child: SizedBox(
                                       height: 40,
-                                      margin: const EdgeInsets.all(3.0),
-                                      child: SizedBox(
-                                          height: 40,
-                                          width: 40,
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                color: changeColor(
-                                                    intercity["status"]),
-                                                borderRadius:
-                                                    BorderRadius.circular(50)),
-                                          ))),
-                                ],
-                              ),
-                            );
-                          }),
+                                      width: 40,
+                                      child: Container(
+                                        decoration: BoxDecoration(
+                                            color: changeColor(
+                                                intercity["status"]),
+                                            borderRadius:
+                                                BorderRadius.circular(50)),
+                                      ))),
+                            ],
+                          ),
+                        );
+                      }),
                 ),
               ),
             ],
           )),
     );
   }
+
   //地方運輸營運狀況
   Widget localOperationalWidget() {
     return Card(
@@ -878,6 +903,7 @@ class _Home extends State<Home> {
           )),
     );
   }
+
   // 大眾運輸-附近站點
   Widget stationNearbyWidget() {
     return Card(
@@ -898,84 +924,89 @@ class _Home extends State<Home> {
                 ),
                 child: Container(
                   height: 30,
+                  width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
                   color: Color.fromRGBO(67, 150, 200, 1),
-                  child: Align(
-                    child:Row(
-                      //水平置中
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          '附近站點',
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        ),
-                        IconButton(
-                            onPressed: (){
-                              update();
-                            },
-                            icon: Icon(Icons.update,color: Colors.white,),
-                        ),
-                        IconButton(
-                          onPressed: (){
-                            setState(() {
-                              _timer = false;
-                            });
-                            print('stop'+_timer.toString());
-
+                  child: Row(
+                    //水平置中
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        '附近站點',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      InkWell(
+                          onTap: () {
+                            update();
                           },
-                          icon: Icon(Icons.cancel,color: Colors.white,),
+                          child: Icon(
+                            Icons.update,
+                            color: Colors.white,
+                          )),
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            _timer = false;
+                          });
+                          print('stop' + _timer.toString());
+                        },
+                        child: Icon(
+                          Icons.cancel,
+                          color: Colors.white,
                         ),
-
-                      ],
-                    )
+                      )
+                    ],
                   ),
                 ),
               ),
               Expanded(
-                  child:MaterialApp(
-                    home: DefaultTabController(length: 3,
-                      child: Scaffold(
-                        appBar: AppBar(
-                          title:null,
-                          backgroundColor: const Color.fromRGBO(109, 173, 213, 1),
-                          //讓最上面的空白消失
-                          toolbarHeight: 0,
-                          bottom: TabBar(
-                            tabs: [
-                              Tab(text: '腳踏車'),
-                              Tab(text: '台鐵'),
-                              Tab(text: '公車'),
-                              // Tab(text: '公車'),
-                            ],
-                          ),
-                        ),
-                        body: TabBarView(
-                          children: [
-                            nearbyStationBikeView(),
-                            nearbyStationTrainView(),
-                            nearbyStationBusView(),
+                  child: MaterialApp(
+                home: DefaultTabController(
+                    length: 3,
+                    child: Scaffold(
+                      appBar: AppBar(
+                        title: null,
+
+                        elevation: 0,
+                        backgroundColor: const Color.fromRGBO(67, 150, 200, 1),
+                        //讓最上面的空白消失
+                        toolbarHeight: 0,
+                        bottom: TabBar(
+                          tabs: [
+                            Tab(text: '腳踏車'),
+                            Tab(text: '台鐵'),
+                            Tab(text: '公車'),
+                            // Tab(text: '公車'),
                           ],
                         ),
-                      )
-                    ),
-                  )
-              )
+                      ),
+                      body: TabBarView(
+                        children: [
+                          nearbyStationBikeView(),
+                          nearbyStationTrainView(),
+                          nearbyStationBusView(),
+                        ],
+                      ),
+                    )),
+                debugShowCheckedModeBanner: false,
+              ))
             ],
           )),
     );
   }
 
   //附近站點公車-Bus
-  Widget nearbyStationBusView(){
-    return
-      ListView.builder(
-        itemCount:(nearbyStationBus == null||nearbyStationBus == 0) ? 0 : nearbyStationBus.length-1,
+  Widget nearbyStationBusView() {
+    return ListView.builder(
+        itemCount: (nearbyStationBus == null || nearbyStationBus == 0)
+            ? 0
+            : nearbyStationBus.length - 1,
         itemBuilder: (context, index) {
-          var list =nearbyStationBus[index];
+          var list = nearbyStationBus[index];
           return ListTile(
-            leading:Container(
+            leading: Container(
               width: 75,
               decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue,width: 3.0),
+                border: Border.all(color: Colors.blue, width: 3.0),
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(14.0),
                   topRight: Radius.circular(14.0),
@@ -983,150 +1014,159 @@ class _Home extends State<Home> {
                   bottomRight: Radius.circular(14.0),
                 ),
               ),
-              child:Text((() {
-                if(list['預估到站時間 (min)']=='0'){
-                  return "進站中";}
-                return list['預估到站時間 (min)']+'分';
-              })(),style: TextStyle(fontSize: 23),textAlign: TextAlign.center,),
+              child: Text(
+                (() {
+                  if (list['預估到站時間 (min)'] == '0') {
+                    return "進站中";
+                  }
+                  return list['預估到站時間 (min)'] + '分';
+                })(),
+                style: TextStyle(fontSize: 23),
+                textAlign: TextAlign.center,
+              ),
             ),
-            title: Column(
-                children:[
-                  Text(list['路線名稱']+'( 即將抵達：'+list['站點名稱']+' )',textAlign: TextAlign.left),
-                  Text('往 '+list['終點站'],textAlign: TextAlign.left),
-                ]
-            ),
+            title: Column(children: [
+              Text(list['路線名稱'] + '( 即將抵達：' + list['站點名稱'] + ' )',
+                  textAlign: TextAlign.left),
+              Text('往 ' + list['終點站'], textAlign: TextAlign.left),
+            ]),
           );
-        }
-    );
+        });
   }
+
   //附近站點台鐵-Train
-  Widget nearbyStationTrainView(){
-    return
-      ListView.builder(
-        itemCount:(nearbyStationTrain == null||nearbyStationTrain == 0) ? 0 : nearbyStationTrain.length-1,
+  Widget nearbyStationTrainView() {
+    return ListView.builder(
+        itemCount:
+            (nearbyStationTrain == null || nearbyStationTrain.length == 0)
+                ? 0
+                : nearbyStationTrain.length - 1,
         itemBuilder: (context, index) {
           var list = nearbyStationTrain[index];
           return ListTile(
-            leading:Container(
-              width: 75,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue,width: 3.0),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(14.0),
-                  topRight: Radius.circular(14.0),
-                  bottomLeft: Radius.circular(14.0),
-                  bottomRight: Radius.circular(14.0),
+            leading: Container(
+                width: 75,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.blue, width: 3.0),
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(14.0),
+                    topRight: Radius.circular(14.0),
+                    bottomLeft: Radius.circular(14.0),
+                    bottomRight: Radius.circular(14.0),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      list['TrainTypeName'],
+                      style: TextStyle(fontSize: 13),
+                    ),
+                    Text(
+                      list['TrainNo'],
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ],
+                )),
+            title: Column(children: [
+              Text(
+                '往' + list['EndingStationName'],
+              ),
+              Text(
+                  '${DateFormat("'於'H':'mm'抵達'").format(DateFormat("hh:mm:ss").parse(list['ScheduleDepartureTime'])).toString()}'),
+              // Text(list['ScheduleDepartureTime']+'到站',textAlign: TextAlign.left),
+            ]),
+          );
+        });
+  }
+
+  //附近站點腳踏車-Bike
+  Widget nearbyStationBikeView() {
+    return Column(children: [
+      Column(children: [
+        Container(
+          height: 50,
+          color: Color.fromRGBO(47, 125, 195, 1),
+          padding: EdgeInsets.only(left: 23),
+          child: Row(
+            children: [
+              Container(
+                width: screenWidth * 0.6,
+                child: Text(
+                  '附近站點',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
                 ),
               ),
-              child:Column(
-                children: [
-                  Text(list['TrainTypeName'],style: TextStyle(fontSize: 13),),
-                  Text(list['TrainNo'],style: TextStyle(fontSize: 20),),
-                ],
-              )
-            ),
-            title: Column(
-                children:[
-                  Text('往'+list['EndingStationName'],),
-                  Text('${DateFormat("'於'H':'mm'抵達'").format(DateFormat("hh:mm:ss").parse(list['ScheduleDepartureTime'])).toString()}'),
-                  // Text(list['ScheduleDepartureTime']+'到站',textAlign: TextAlign.left),
-                ]
-            ),
-          );
-        }
-    );
-  }
-  //附近站點腳踏車-Bike
-  Widget nearbyStationBikeView(){
-    return Column(
-        children: [
-          Column(
-              children: [
-                Container(
-                  height: 50,
-                  color: Color.fromRGBO(47, 125, 195, 1),
-                  padding: EdgeInsets.only(left: 23),
-                  child: Row(
+              Container(
+                width: screenWidth * 0.1,
+                child: Text(
+                  '可歸還數',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Container(
+                width: screenWidth * 0.1,
+                child: Text(
+                  '可租借數',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]),
+      Expanded(
+        child: ListView.builder(
+            itemCount:
+                (nearbyStationBike.toString() == null || nearbyStationBike == 0)
+                    ? 0
+                    : nearbyStationBike.length,
+            itemBuilder: (context, index) {
+              var list = nearbyStationBike[index];
+              return InkWell(
+                child: ListTile(
+                  leading: Container(
+                    width: screenWidth * 0.6,
+                    child: Text(
+                      list['公共自行車']['StationName'].substring(11),
+                      style: TextStyle(
+                          fontSize: 23, color: Color.fromRGBO(0, 32, 96, 1)),
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  title: Row(
                     children: [
                       Container(
-                        width: screenWidth * 0.6,
-                        child: Text('附近站點',style:TextStyle(color: Colors.white,fontSize: 20),),
+                        width: screenWidth * 0.1,
+                        child: Text(
+                          list['可借車位'].toString(),
+                          style: TextStyle(fontSize: 23, color: Colors.red),
+                        ),
                       ),
                       Container(
                         width: screenWidth * 0.1,
-                        child: Text('可歸還數',style:TextStyle(color: Colors.white,),),
-                      ),
-                      Container(
-                        width: screenWidth * 0.1,
-                        child: Text('可租借數',style:TextStyle(color: Colors.white,),),
-                      ),
+                        child: Text(
+                          list['剩餘空位'].toString(),
+                          style:
+                              TextStyle(fontSize: 23, color: Colors.blueAccent),
+                        ),
+                      )
                     ],
                   ),
                 ),
-              ]
-          ),
-          Expanded(
-              child: ListView.builder(
-                  itemCount:(nearbyStationBike == null||nearbyStationBike == 0) ? 0 : nearbyStationBike.length-1,
-                  itemBuilder: (context, index) {
-                    var list = nearbyStationBike[index];
-                    return InkWell(
-                      child: ListTile(
-                        leading:Container(
-                          width: screenWidth * 0.6,
-                          child:Text(list['公共自行車']['StationName'].substring(11),style: TextStyle(fontSize: 23,color: Color.fromRGBO(0, 32, 96, 1)),overflow: TextOverflow.ellipsis, ),
-                        ),
-                        title:Row(
-                          children: [
-                            Container(
-                              width: screenWidth * 0.1,
-                              child:Text(list['可借車位'].toString(),style: TextStyle(fontSize: 23,color: Colors.red),),
-                            ),
-                            Container(
-                              width: screenWidth * 0.1,
-                              child:Text(list['剩餘空位'].toString(),style: TextStyle(fontSize: 23,color: Colors.blueAccent),),
-                            )
-                          ],
-                        ) ,
-                      ),
-                      onTap: (){
-
-                      },
-                    );
-                  }
-              ),
-          ),
-        ]
-    );
+                onTap: () {},
+              );
+            }),
+      ),
+    ]);
   }
 
 //創建首頁頁面
   @override
   Widget build(BuildContext context) {
-    return homePageModel;
-  }
-
-//編輯首頁不同模式頁面
-  Widget carHomePage(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromRGBO(230, 240, 255, 1),
-      body: SingleChildScrollView(
-        child: Center(
-            child: Container(
-          child: Column(children: [
-            SizedBox(
-              height: 10,
-            ),
-            weatherWidget(),
-            toolWidget(),
-            trafficWarningWidget(),
-          ]),
-        )),
-      ),
-    );
-  }
-
-  Widget scooterHomePage(BuildContext context) {
     return Scaffold(
       backgroundColor: Color.fromRGBO(230, 240, 255, 1),
       body: SingleChildScrollView(
@@ -1137,30 +1177,36 @@ class _Home extends State<Home> {
               SizedBox(
                 height: 10,
               ),
-              weatherWidget(),
-              toolScooterWidget(),
-              trafficWarningWidget()
-            ],
-          )),
-        ),
-      ),
-    );
-  }
-
-  Widget publicTransportPageHomePage(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color.fromRGBO(230, 240, 255, 1),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Container(
-              child: Column(
-            children: [
-              SizedBox(
-                height: 10,
+              Visibility(
+                visible: carMode,
+                child: Column(
+                  children: [
+                    weatherWidget(),
+                    toolScooterWidget(),
+                    trafficWarningWidget()
+                  ],
+                ),
               ),
-              weatherWidget(),
-              stationNearbyWidget(),
-              operationalWidget(),
+              Visibility(
+                visible: scooterMode,
+                child: Column(
+                  children: [
+                    weatherWidget(),
+                    toolScooterWidget(),
+                    trafficWarningWidget()
+                  ],
+                ),
+              ),
+              // Visibility(
+              //   visible: publicTransportMode,
+              //   child: Column(
+              //     children: [
+              //       weatherWidget(),
+              //       stationNearbyWidget(),
+              //       operationalWidget(),
+              //     ],
+              //   ),
+              // )
             ],
           )),
         ),
