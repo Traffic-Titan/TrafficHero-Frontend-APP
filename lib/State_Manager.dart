@@ -166,12 +166,10 @@ class stateManager with ChangeNotifier {
     _nearbyStationBus = newValue;
     notifyListeners();
   }
-
   void updateNearbyStationTrain(newValue) {
     _nearbyStationTrain = newValue;
     notifyListeners();
   }
-
   void updateNearbyStationBike(newValue) {
     _nearbyStationBike = newValue;
     notifyListeners();
