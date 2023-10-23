@@ -21,6 +21,7 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
   var screenWidth;
   var screenHeight;
   String searchText = '';
+   late LatLng currentCenter; 
   late var tourismList = [];
   late GoogleMapController mapController;
   final Set<Marker> _markers = Set<Marker>();
@@ -28,6 +29,7 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
 
   _onMapCreated(GoogleMapController controller){
     mapController = controller;
+      
   }
   @override
   void didChangeDependencies() async {
@@ -54,6 +56,52 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
   void dispose() {
     _tabController.dispose();
     super.dispose();
+  }
+
+
+
+    getTourismInfo2(latitude,longitude) async {
+
+    // EasyLoading.show(status: '查詢中...');
+    var response;
+    var url;
+    var jwt = ',${state.accountState}';
+    switch(_tabController.index){
+      case 0:
+        url = dotenv.env['TouristSpot'];
+        break;
+      case 1:
+        url = dotenv.env['TouristHotel'];
+        break;
+      case 2:
+        url = dotenv.env['TouristFood'];
+        break;
+      case 3:
+        url = dotenv.env['TouristActivity'];
+        break;
+      default:
+        print(_tabController.index);
+        break;
+    }
+    url += '?latitude=${latitude}&longitude=${longitude}';
+    // url += '?latitude=23.692502&longitude=120.532229';
+    // '?longitude=${position.longitude}&latitude=${position.latitude}';
+    try {
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      setState(() {
+        tourismList = responseBody;
+      });
+      addMarkers();
+    } else {
+      EasyLoading.dismiss();
+      print(jsonDecode(utf8.decode(response.bodyBytes)).toString());
+    }
+
   }
   //取得觀光資料(轉到該頁面戳一次)
   getTourismInfo() async {
@@ -133,6 +181,8 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
       );
     }
   }
+
+  
   // //改變搜尋欄
   //   void _filterSearchResults(String query) {
   //     _filteredData.clear();
@@ -209,11 +259,22 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
         size: 28,
       ),
       title: ListTile(
-        leading: Icon(
+        leading:InkWell(
+          onTap: () async{
+             LatLngBounds bounds = await mapController.getVisibleRegion();
+
+    // 計算中心座標
+    double centerLatitude = (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
+    double centerLongitude = (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
+
+    // 將中心座標輸出到控制台
+    print("地圖中心座標：$centerLatitude, $centerLongitude");
+          },
+          child:  Icon(
           Icons.search,
           color: Colors.white,
           size: 28,
-        ),
+        )),
         title: TextField(
           decoration: InputDecoration(
             hintText: '以名稱搜尋',
@@ -263,6 +324,12 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
         target: LatLng(state.positionNow.latitude,state.positionNow.longitude),
         zoom: 11.0,
       ),
+       onCameraMove: (CameraPosition position) async{
+          // 監測中心座標的變化並自動輸出
+          currentCenter = position.target;
+          await getTourismInfo2(currentCenter.latitude, currentCenter.longitude);
+          print("地圖中心座標：${currentCenter.latitude}, ${currentCenter.longitude}");
+        },
       markers: _markers,
     );
   }

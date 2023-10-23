@@ -7,16 +7,18 @@ class getHome {
   gethome(context) async {
     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
-    await getWeather();
-    await getUser();
-    await getOperationalStatus();
-    await stationNearbySearchBus();
-    await stationNearbySearchBike();
-    await stationNearbySearchTrain();
+    await getWeather(context);
+    await getUser(context);
+    await getOperationalStatus(context);
+    await stationNearbySearchBus(context);
+    await stationNearbySearchBike(context);
+    await stationNearbySearchTrain(context);
   }
 
 //抓取資料
-  getOperationalStatus() async {
+  getOperationalStatus(context) async {
+     prefs = await SharedPreferences.getInstance();
+    state = Provider.of<stateManager>(context, listen: false);
     print('營運狀況開始抓取');
     var position = await geolocator().updataPosition();
     var url =
@@ -35,7 +37,9 @@ class getHome {
     }
   }
 
-  getWeather() async {
+  getWeather(context) async {
+       prefs = await SharedPreferences.getInstance();
+    state = Provider.of<stateManager>(context, listen: false);
     print('天氣資訊開始抓取');
     var position = await geolocator().updataPosition();
     var response;
@@ -65,7 +69,9 @@ class getHome {
     }
   }
 
-  getUser() async {
+  getUser(context) async {
+       prefs = await SharedPreferences.getInstance();
+    state = Provider.of<stateManager>(context, listen: false);
     print('會員資料開始抓取');
     var response;
     var url = dotenv.env['Profile'];
@@ -88,7 +94,9 @@ class getHome {
   }
 
   // 取得附近站點資訊
-  stationNearbySearchBus() async {
+  stationNearbySearchBus(context) async {
+       prefs = await SharedPreferences.getInstance();
+    state = Provider.of<stateManager>(context, listen: false);
     print('附近站點公車開始抓取');
     var jwt = ',${prefs.get('userToken')}';
     var position = await geolocator().updataPosition();
@@ -110,7 +118,9 @@ class getHome {
     }
   }
 
-  stationNearbySearchTrain() async {
+  stationNearbySearchTrain(context) async {
+       prefs = await SharedPreferences.getInstance();
+    state = Provider.of<stateManager>(context, listen: false);
     print('附近站點台鐵開始抓取');
     var jwt = ',${prefs.get('userToken')}';
     var position = await geolocator().updataPosition();
@@ -132,7 +142,9 @@ class getHome {
     }
   }
 
-  stationNearbySearchBike() async {
+  stationNearbySearchBike(context) async {
+       prefs = await SharedPreferences.getInstance();
+    state = Provider.of<stateManager>(context, listen: false);
     print('附近站點公共自行車開始抓取');
     var jwt = ',${prefs.get('userToken')}';
     var position = await geolocator().updataPosition();
