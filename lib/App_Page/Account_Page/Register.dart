@@ -2,7 +2,6 @@
 import 'package:intl/intl.dart';
 import 'package:traffic_hero/imports.dart';
 
-
 class registerPage extends StatefulWidget {
   const registerPage({super.key});
   @override
@@ -250,41 +249,7 @@ class _registerPage extends State<registerPage> {
               const SizedBox(
                 height: 10,
               ),
-              // InkWell(
-              //   child: button(functionName: birthday),
-              //   onTap: () async{
-                  // DatePicker.showDatePicker(context,
-                  //     showTitleActions: true,
-                  //     minTime: DateTime(1800, 1, 1),
-                  //     maxTime: DateTime.now(), onChanged: (date) {
-                  //   setState(() {
-                  //     final DateFormat formatter = DateFormat('yyyy/MM/dd');
-                  //     final String formattedDate = formatter.format(date);
-                  //     birthday = formattedDate.toString();
-                  //   });
-                  // }, onConfirm: (date) {
-                  //   setState(() {
-                  //     final DateFormat formatter = DateFormat('yyyy/MM/dd');
-                  //     final String formattedDate = formatter.format(date);
-                  //     birthday = formattedDate.toString();
-                  //   });
-                  // }, currentTime: DateTime.now(), locale: LocaleType.zh);
-//                   final ru = await showDatePicker(
-//                   context: context,
-//                   initialDate: DateTime.now(),
-//                   firstDate: DateTime(1900, 01),
-//                   lastDate: DateTime(2100, 12));
-
-// if (ru != null) {
-//   final selectedDate = ru.toLocal();
-//   final formattedDate = "${selectedDate.year}-${selectedDate.month}-${selectedDate.day}";
-//  setState(() {
-//    birthday = formattedDate;
-//  });
-// }
-
-                // },
-              // ),
+            
               const SizedBox(
                 height: 50,
               ),

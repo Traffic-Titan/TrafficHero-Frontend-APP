@@ -68,6 +68,7 @@ class _Home extends State<Home> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
+    
     EasyLoading.dismiss();
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
@@ -102,7 +103,7 @@ class _Home extends State<Home> {
         timeCount = 1;
       });
     }
-
+   
     state.changePositionNow(await geolocator().updataPosition());
     prefs = await SharedPreferences.getInstance();
   }
@@ -117,6 +118,7 @@ class _Home extends State<Home> {
 
   void initState() {
     super.initState();
+    timerBus?.cancel();
     updateStationNearbySearch();
   }
 
@@ -285,10 +287,18 @@ class _Home extends State<Home> {
       if (_timer) {
         if (timeCount == 0) {
           timer.cancel();
-          await getHome().gethome(context);
-          // await stationNearbySearchBike();
-          // await stationNearbySearchBus();
-          // await stationNearbySearchTrain();
+
+          await getHome().getWeather(context);
+          update();
+          await getHome().getUser(context);
+          update();
+          await getHome().getOperationalStatus(context);
+          update();
+          await getHome().stationNearbySearchTrain(context);
+          update();
+          await getHome().stationNearbySearchBus(context);
+          update();
+          await getHome().stationNearbySearchBike(context);
           update();
           timeCount = 15;
           updateStationNearbySearch();
@@ -400,7 +410,6 @@ class _Home extends State<Home> {
         ),
       ),
       onTap: () {
-       
         Navigator.push(
             context,
             MaterialPageRoute(
