@@ -30,6 +30,7 @@ export 'package:flutter_config_plus/flutter_config_plus.dart';
 export 'package:google_maps_flutter/google_maps_flutter.dart';
 export  'package:device_info_plus/device_info_plus.dart';
 export 'package:card_loading/card_loading.dart';
+export 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 
 //引入頁面

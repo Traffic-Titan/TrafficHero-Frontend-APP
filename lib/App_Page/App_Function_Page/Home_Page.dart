@@ -68,7 +68,7 @@ class _Home extends State<Home> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-
+    EasyLoading.dismiss();
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
     setState(() {
