@@ -31,20 +31,14 @@ class _Login extends State<Login> {
     EasyLoading.dismiss();
   }
 
-  Future<void> getHome() async {
-    await stationNearbySearchBus();
-    await stationNearbySearchTrain();
-    await stationNearbySearchBike();
 
-    EasyLoading.dismiss();
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => const AllPage()));
-  }
+
   // 取得附近站點資訊
-  stationNearbySearchBus() async{
+  stationNearbySearchBus() async {
     var jwt = ',${state.accountState}';
     var position = await geolocator().updataPosition();
-    var url= '${dotenv.env['StationNearbyBus']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var url =
+        '${dotenv.env['StationNearbyBus']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
     try {
       response = await api().apiGet(url, jwt);
@@ -58,10 +52,11 @@ class _Login extends State<Login> {
     }
   }
 
-  stationNearbySearchTrain() async{
+  stationNearbySearchTrain() async {
     var jwt = ',${state.accountState}';
     var position = await geolocator().updataPosition();
-    var url = '${dotenv.env['StationNearbyTrain']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var url =
+        '${dotenv.env['StationNearbyTrain']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
     try {
       response = await api().apiGet(url, jwt);
@@ -73,10 +68,12 @@ class _Login extends State<Login> {
       state.updateNearbyStationTrain(responseBody);
     }
   }
-  stationNearbySearchBike() async{
+
+  stationNearbySearchBike() async {
     var jwt = ',${state.accountState}';
     var position = await geolocator().updataPosition();
-    var url = '${dotenv.env['StationNearbyBike']}?latitude=${position.latitude}&longitude=${position.longitude}';
+    var url =
+        '${dotenv.env['StationNearbyBike']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
     try {
       response = await api().apiGet(url, jwt);
@@ -88,12 +85,6 @@ class _Login extends State<Login> {
       state.updateNearbyStationBike(responseBody);
     }
   }
-
-
-
-
-
-
 
   handlesignIn(GoogleSignInAccount? account) async {
     var body = {
@@ -197,7 +188,6 @@ class _Login extends State<Login> {
     }
   }
 
-
 //一般登陸function
   userSignIn(email, password) async {
     var url = dotenv.env['Login'].toString();
@@ -216,11 +206,11 @@ class _Login extends State<Login> {
           DateTime endTime = DateTime.now();
           Duration durationInMilliseconds = endTime.difference(startTime);
           print('${durationInMilliseconds.inSeconds}秒login');
-          EasyLoading.dismiss();
+
           state.updateAccountState(await jsonDecode(response.body)['token']);
-          await getHome();
+
           EasyLoading.showSuccess(
-              jsonDecode(utf8.decode(response.bodyBytes))['detail'] ?? '');
+              jsonDecode(utf8.decode(response.bodyBytes))['message'] ?? '');
 
           print(await jsonDecode(response.body)['token']);
           await prefs.setString(
@@ -229,9 +219,11 @@ class _Login extends State<Login> {
             response = response;
             showLoginError = false;
           });
-
+          EasyLoading.dismiss();
           print(prefs.get('userToken'));
 
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AllPage()));
           return true;
         } else {
           EasyLoading.dismiss();
