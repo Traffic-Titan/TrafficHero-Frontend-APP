@@ -354,52 +354,52 @@ class _CMSState extends State<CMS> {
       ),
       floatingActionButton: Container(
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        FloatingActionButton(
-          heroTag: "btn1",
-          child: const Icon(
-            CupertinoIcons.placemark_fill,
-            size: 40,
-          ),
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {},
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        FloatingActionButton(
-          heroTag: "btn2",
-          child: phoneIcon,
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-            SystemChrome.setPreferredOrientations([
-              DeviceOrientation.landscapeLeft,
-              DeviceOrientation.landscapeRight,
-            ]);
-            setState(() {
-              // changeWidget();
+            FloatingActionButton(
+              heroTag: "btn1",
+              child: const Icon(
+                CupertinoIcons.placemark_fill,
+                size: 40,
+              ),
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {},
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              heroTag: "btn2",
+              child: phoneIcon,
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                SystemChrome.setPreferredOrientations([
+                  DeviceOrientation.landscapeLeft,
+                  DeviceOrientation.landscapeRight,
+                ]);
+                setState(() {
+                  // changeWidget();
 
-              directionState = false;
-            });
-            // changeWidget(context);
-          },
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        FloatingActionButton(
-          heroTag: "btn3",
-          child: const Icon(
-            Icons.output_outlined,
-            size: 40,
-          ),
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-            //顯示導航及最頂端列
-            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-            Navigator.pop(context);
-          },
-        )
-      ])),
+                  directionState = false;
+                });
+                // changeWidget(context);
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              heroTag: "btn3",
+              child: const Icon(
+                Icons.output_outlined,
+                size: 40,
+              ),
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                //顯示導航及最頂端列
+                SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+                Navigator.pop(context);
+              },
+            )
+          ])),
     );
   }
 
@@ -506,72 +506,72 @@ class _CMSState extends State<CMS> {
       ),
       floatingActionButton: Container(
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        FloatingActionButton(
-          heroTag: "btn1",
-          child: const Icon(
-            CupertinoIcons.placemark_fill,
-            size: 40,
-          ),
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-            savePosition();
-          },
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        FloatingActionButton(
-          heroTag: "btn2",
-          child: phoneIcon,
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-              savePosition();
-            // SystemChrome.setPreferredOrientations([
-            //   DeviceOrientation.portraitUp,
-            //   DeviceOrientation.portraitDown,
-            // ]);
-            // setState(() {
-            //   // changeWidget();
-            //   phoneIcon = const Icon(
-            //     CupertinoIcons.device_phone_landscape,
-            //     size: 40,
-            //   );
-            //   directionState = true;
-            // });
+            FloatingActionButton(
+              heroTag: "btn1",
+              child: const Icon(
+                CupertinoIcons.placemark_fill,
+                size: 40,
+              ),
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                savePosition();
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              heroTag: "btn2",
+              child: phoneIcon,
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                savePosition();
+                SystemChrome.setPreferredOrientations([
+                  DeviceOrientation.portraitUp,
+                  DeviceOrientation.portraitDown,
+                ]);
+                setState(() {
+                  // changeWidget();
+                  phoneIcon = const Icon(
+                    CupertinoIcons.device_phone_landscape,
+                    size: 40,
+                  );
+                  directionState = true;
+                });
 
-            // changeWidget(context);
-          },
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        FloatingActionButton(
-          heroTag: "btn3",
-          child: const Icon(
-            Icons.output_outlined,
-            size: 40,
-          ),
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-            if (!directionState) {
-              //設置垂直
-              SystemChrome.setPreferredOrientations([
-                DeviceOrientation.portraitUp,
-                DeviceOrientation.portraitDown,
-              ]);
-            } else {
-              SystemChrome.setPreferredOrientations([
-                DeviceOrientation.portraitUp,
-                DeviceOrientation.portraitDown,
-              ]);
-            }
-            //顯示導航及最頂端列
-            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-            Navigator.pop(context);
-           
-          },
-        )
-      ])),
+                // changeWidget(context);
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              heroTag: "btn3",
+              child: const Icon(
+                Icons.output_outlined,
+                size: 40,
+              ),
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                if (!directionState) {
+                  //設置垂直
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                    DeviceOrientation.portraitDown,
+                  ]);
+                } else {
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                    DeviceOrientation.portraitDown,
+                  ]);
+                }
+                //顯示導航及最頂端列
+                SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+                Navigator.pop(context);
+
+              },
+            )
+          ])),
     );
   }
 }

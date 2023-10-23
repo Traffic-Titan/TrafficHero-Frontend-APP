@@ -1026,7 +1026,7 @@ class _Home extends State<Home> {
   //附近站點公車-Bus
   Widget nearbyStationBusView() {
     return ListView.builder(
-        itemCount: (nearbyStationBus == null || nearbyStationBus == 0)
+        itemCount: (nearbyStationBus == null || nearbyStationBus.length == 0)
             ? 0
             : nearbyStationBus.length - 1,
         itemBuilder: (context, index) {
@@ -1150,7 +1150,7 @@ class _Home extends State<Home> {
       Expanded(
         child: ListView.builder(
             itemCount:
-                (nearbyStationBike.toString() == null || nearbyStationBike == 0)
+                (nearbyStationBike.toString() == null || nearbyStationBike.length == 0)
                     ? 0
                     : nearbyStationBike.length,
             itemBuilder: (context, index) {
