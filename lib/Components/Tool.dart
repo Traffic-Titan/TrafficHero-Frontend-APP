@@ -116,6 +116,9 @@ Map<String, String> fastLocation_convientStore = {
   'url': '後端API'
 };
 
-
+//道路資訊 可篩選之路況list
+List<String> roadInfoFilterList = [
+  '停車場資訊','道路施工','交通事故','道路管制','道路壅塞'
+];
 
 
