@@ -20,6 +20,7 @@ class _Road_InformationState extends State<Road_Information> {
   var screenWidth;
   var screenHeight;
   var positionNow;
+  var parkingInfoList;
   late GoogleMapController _mapController;
   final Set<Marker> _markers = Set<Marker>();
   //欲篩選的路況
@@ -34,33 +35,101 @@ class _Road_InformationState extends State<Road_Information> {
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
     position = await geolocator().updataPosition();
-
+    searchParkingInfo();
   }
   @override
   void initState() {
     super.initState();
+
   }
   @override
   void dispose() {
     super.dispose();
   }
-//新增標記
+  //取得停車位資訊
+  searchParkingInfo() async {
+    print('取得停車位資訊');
+    // EasyLoading.show(status: '儲存中');
+    var url = dotenv.env['ParkingInfo'];
+    var jwt = ',' + state.accountState;
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        print('取得成功');
+          parkingInfoList = responseBody;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+//新增目前位置標記
   void addPositionNowMarkers() {
+    // 目前位置標記
+    _markers.add(Marker(
+      markerId: MarkerId('目前位置'),
+      position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
+      icon: BitmapDescriptor.defaultMarkerWithHue(223),
+      infoWindow: InfoWindow(
+          title: '目前位置'
+      ),
+    )
+    );
+  }
+  //新增路況標記
+  void addRoadInfoMarkers() {
     print(position.toString());
     _markers.clear();
+    Marker marker;
     // 目前位置標記
-    Marker marker =
-        Marker(
-          markerId: MarkerId('目前位置'),
-          position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
-          icon: BitmapDescriptor.defaultMarkerWithHue(223),
-          infoWindow: InfoWindow(
-              title: '目前位置'
-          ),
-        );
-    setState(() {
-    _markers.add(marker);
-    });
+    for(String s in _filterRoadInfoItems){
+      switch(s){
+        case '停車場資訊':
+          print('add停車場資訊');
+          for(int i =0;i< parkingInfoList.length;i++){
+            marker=Marker(
+                  markerId: MarkerId(parkingInfoList[i]['CarParkName']),
+                  position: LatLng(parkingInfoList[i]['Latitude'],parkingInfoList[i]['Longitude']),
+                  // icon: BitmapDescriptor.defaultMarkerWithHue(223),
+                  infoWindow: InfoWindow(
+                      title: parkingInfoList[i]['Address'],
+                      snippet: '總車位:${parkingInfoList[i]['TotalSpace'].toString()}'
+                  ),
+                );
+            setState(() {
+              _markers.add(marker);
+            });
+          }
+        case '道路施工':
+          print('add道路施工');
+        case '交通事故':
+          print('add交通事故');
+        case '道路管制':
+          print('add道路管制');
+        case '道路壅塞':
+          print('add道路壅塞');
+        default:
+          _markers.add(Marker(
+            markerId: MarkerId('目前位置'),
+            position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
+            icon: BitmapDescriptor.defaultMarkerWithHue(223),
+            infoWindow: InfoWindow(
+                title: '目前位置'
+            ),
+          ));
+      }
+    }
+    // _markers.add(Marker(
+    //   markerId: MarkerId('目前位置'),
+    //   position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
+    //   icon: BitmapDescriptor.defaultMarkerWithHue(223),
+    //   infoWindow: InfoWindow(
+    //       title: '目前位置'
+    //   ),
+    //   )
+    // );
   }
   _onMapCreated(GoogleMapController controller){
     _mapController = controller;
@@ -116,7 +185,7 @@ class _Road_InformationState extends State<Road_Information> {
   Future<void> _goToPositionNow() async {
     CameraPosition _positionNow= CameraPosition(
       target: LatLng(state.positionNow.latitude,state.positionNow.longitude),
-      zoom: 20,
+      zoom: 15,
     );
     await _mapController.animateCamera(CameraUpdate.newCameraPosition(_positionNow));
   }
@@ -164,6 +233,7 @@ class _Road_InformationState extends State<Road_Information> {
                 child: Text('確定'),
                 onPressed: () {
                   Navigator.of(context).pop();
+                  addRoadInfoMarkers();
                 },
               ),
             ],

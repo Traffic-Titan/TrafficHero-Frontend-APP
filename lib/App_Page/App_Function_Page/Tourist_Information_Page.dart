@@ -172,7 +172,6 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
           infoWindow: InfoWindow(
             title: list['名稱'],
             snippet: list['地址'],
-
           ),
           onTap: (){
             print('112');
