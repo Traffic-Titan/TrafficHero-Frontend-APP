@@ -38,7 +38,7 @@ class stateManager with ChangeNotifier {
             'https://cdn3.iconfinder.com/data/icons/basic-2-black-series/64/a-92-256.png'
       },
     ],
-     'local': [
+    'local': [
       {
         'name': '',
         'status': '',
@@ -156,20 +156,53 @@ class stateManager with ChangeNotifier {
   }
 
   //附近站點資訊
-  var _nearbyStationBus;
-  var _nearbyStationTrain;
-  var _nearbyStationBike;
+  List<dynamic> _nearbyStationBus = [
+    {
+      'StopLatitude': '',
+      'StopLongitude':'',
+      '路線名稱': '',
+      '站點名稱': '',
+      '預估到站時間 (min)': 0,
+      '終點站': ''
+    },
+  ];
+  List<dynamic> _nearbyStationTrain = [
+    {
+      'StationUID': '',
+      'StationName': '',
+      'EndingStationName': '',
+      'TrainNo': '',
+      'Direction': '',
+      'TrainTypeName': '',
+      'ScheduleDepartureTime': ''
+    },
+  ];
+  List<dynamic> _nearbyStationBike = [
+    {
+      '公共自行車': {
+        'StationUID': '',
+        'StationName': '',
+        'LocationX': '',
+        'LocationY': ''
+      },
+      '剩餘空位': '',
+      '可借車位': ''
+    },
+  ];
   get nearbyStationBus => _nearbyStationBus;
   get nearbyStationTrain => _nearbyStationTrain;
   get nearbyStationBike => _nearbyStationBike;
+
   void updateNearbyStationBus(newValue) {
     _nearbyStationBus = newValue;
     notifyListeners();
   }
+
   void updateNearbyStationTrain(newValue) {
     _nearbyStationTrain = newValue;
     notifyListeners();
   }
+
   void updateNearbyStationBike(newValue) {
     _nearbyStationBike = newValue;
     notifyListeners();
