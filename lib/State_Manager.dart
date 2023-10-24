@@ -18,7 +18,7 @@ class stateManager with ChangeNotifier {
     'the_highest_temperature': '--',
     'weather': '-',
     'weather_icon_url':
-        'https://help.apple.com/assets/64067987823C71654C27CD1A/64067990823C71654C27CD47/zh_TW/1200cde3569cf69bd80e1ddabc0f15cd.png'
+        'https://www.colorhexa.com/e7f1fe.png'
   };
   var _pageDetail;
   var _keyWord;
