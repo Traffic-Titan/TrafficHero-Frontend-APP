@@ -325,6 +325,7 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
       ),
        onCameraMove: (CameraPosition position) async{
           // 監測中心座標的變化並自動輸出
+          
           currentCenter = position.target;
           await getTourismInfo2(currentCenter.latitude, currentCenter.longitude);
           print("地圖中心座標：${currentCenter.latitude}, ${currentCenter.longitude}");

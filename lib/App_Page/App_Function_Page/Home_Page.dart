@@ -68,7 +68,7 @@ class _Home extends State<Home> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    
+
     EasyLoading.dismiss();
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
@@ -81,6 +81,8 @@ class _Home extends State<Home> {
     });
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
+       timerBus?.cancel();
+        updateStationNearbySearch();
       setState(() {
         fastTool = Tool.fastLocationCar;
         carMode = true;
@@ -89,6 +91,8 @@ class _Home extends State<Home> {
         timeCount = 1;
       });
     } else if (state.modeName == 'scooter') {
+       timerBus?.cancel();
+        updateStationNearbySearch();
       setState(() {
         carMode = false;
         scooterMode = true;
@@ -96,6 +100,8 @@ class _Home extends State<Home> {
         timeCount = 1;
       });
     } else {
+       timerBus?.cancel();
+        updateStationNearbySearch();
       setState(() {
         carMode = false;
         scooterMode = false;
@@ -103,7 +109,7 @@ class _Home extends State<Home> {
         timeCount = 1;
       });
     }
-   
+
     state.changePositionNow(await geolocator().updataPosition());
     prefs = await SharedPreferences.getInstance();
   }
@@ -286,20 +292,26 @@ class _Home extends State<Home> {
       print(timeCount);
       if (_timer) {
         if (timeCount == 0) {
+            timerBus?.cancel();
           timer.cancel();
+          try {
+            await getHome().getWeather(context);
+            update();
+            await getHome().getUser(context);
+            update();
+            await getHome().getOperationalStatus(context);
+            update();
+            await getHome().stationNearbySearchTrain(context);
+            update();
+            await getHome().stationNearbySearchBus(context);
+            update();
+            await getHome().stationNearbySearchBike(context);
+            update();
+          } catch (e) {
+            timeCount = 15;
+            updateStationNearbySearch();
+          }
 
-          await getHome().getWeather(context);
-          update();
-          await getHome().getUser(context);
-          update();
-          await getHome().getOperationalStatus(context);
-          update();
-          await getHome().stationNearbySearchTrain(context);
-          update();
-          await getHome().stationNearbySearchBus(context);
-          update();
-          await getHome().stationNearbySearchBike(context);
-          update();
           timeCount = 15;
           updateStationNearbySearch();
         } else {
@@ -321,18 +333,23 @@ class _Home extends State<Home> {
   }
 
   void update() async {
-    setState(() {
-      nearbyStationBus = state.nearbyStationBus;
-      nearbyStationBike = state.nearbyStationBike;
-      nearbyStationTrain = state.nearbyStationTrain;
-      weather = state.weather;
-      operationalStatus = state.OperationalStatus;
-    });
-    print('update finish');
-    // print(nearbyStationBus);
-    print(state.nearbyStationBus);
-    print(state.nearbyStationBike);
-    print(state.nearbyStationTrain);
+    try {
+      setState(() {
+        nearbyStationBus = state.nearbyStationBus;
+        nearbyStationBike = state.nearbyStationBike;
+        nearbyStationTrain = state.nearbyStationTrain;
+        weather = state.weather;
+        operationalStatus = state.OperationalStatus;
+      });
+      print('update finish');
+      // print(nearbyStationBus);
+      print(state.nearbyStationBus);
+      print(state.nearbyStationBike);
+      print(state.nearbyStationTrain);
+    } catch (e) {
+      timeCount = 15;
+      updateStationNearbySearch();
+    }
   }
 
 //頁面組件
@@ -951,7 +968,7 @@ class _Home extends State<Home> {
       ),
       elevation: 1,
       child: SizedBox(
-          height: 250,
+          height: 300,
           width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
           child: Column(
             children: [
@@ -972,61 +989,79 @@ class _Home extends State<Home> {
                         '附近站點',
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
-                      InkWell(
-                          onTap: () {
-                            update();
-                          },
-                          child: Icon(
-                            Icons.update,
-                            color: Colors.white,
-                          )),
-                      InkWell(
-                        onTap: () {
-                          setState(() {
-                            _timer = false;
-                          });
-                          print('stop' + _timer.toString());
-                        },
-                        child: Icon(
-                          Icons.cancel,
-                          color: Colors.white,
-                        ),
-                      )
+                      // InkWell(
+                      //     onTap: () {
+                      //       update();
+                      //     },
+                      //     child: Icon(
+                      //       Icons.update,
+                      //       color: Colors.white,
+                      //     )),
+                      // InkWell(
+                      //   onTap: () {
+                      //     setState(() {
+                      //       _timer = false;
+                      //     });
+                      //     print('stop' + _timer.toString());
+                      //   },
+                      //   child: Icon(
+                      //     Icons.cancel,
+                      //     color: Colors.white,
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
               ),
-              Expanded(
-                  child: MaterialApp(
-                home: DefaultTabController(
-                    length: 3,
-                    child: Scaffold(
-                      appBar: AppBar(
-                        title: null,
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(14.0),
+                  bottomRight: Radius.circular(14.0),
+                ),
+                child: Container(
+                  height: 270,
+                  width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+                  color: Color.fromRGBO(67, 150, 200, 1),
+                  child: Row(
+                    //水平置中
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                          child: MaterialApp(
+                        home: DefaultTabController(
+                            length: 3,
+                            child: Scaffold(
+                              appBar: AppBar(
+                                title: null,
 
-                        elevation: 0,
-                        backgroundColor: const Color.fromRGBO(67, 150, 200, 1),
-                        //讓最上面的空白消失
-                        toolbarHeight: 0,
-                        bottom: TabBar(
-                          tabs: [
-                            Tab(text: '腳踏車'),
-                            Tab(text: '台鐵'),
-                            Tab(text: '公車'),
-                            // Tab(text: '公車'),
-                          ],
-                        ),
-                      ),
-                      body: TabBarView(
-                        children: [
-                          nearbyStationBikeView(),
-                          nearbyStationTrainView(),
-                          nearbyStationBusView(),
-                        ],
-                      ),
-                    )),
-                debugShowCheckedModeBanner: false,
-              ))
+                                elevation: 0,
+                                backgroundColor:
+                                    const Color.fromRGBO(67, 150, 200, 1),
+                                //讓最上面的空白消失
+                                toolbarHeight: 0,
+                                bottom: TabBar(
+                                  tabs: [
+                                    Tab(text: '腳踏車'),
+                                    Tab(text: '台鐵'),
+                                    Tab(text: '公車'),
+                                    // Tab(text: '公車'),
+                                  ],
+                                ),
+                              ),
+                              body: TabBarView(
+                                children: [
+                                  nearbyStationBikeView(),
+                                  nearbyStationTrainView(),
+                                  nearbyStationBusView(),
+                                ],
+                              ),
+                            )),
+                        debugShowCheckedModeBanner: false,
+                      ))
+                    ],
+                  ),
+                ),
+              ),
             ],
           )),
     );
@@ -1035,9 +1070,10 @@ class _Home extends State<Home> {
   //附近站點公車-Bus
   Widget nearbyStationBusView() {
     return ListView.builder(
-        itemCount: (nearbyStationBus == null || nearbyStationBus.length == 0)
-            ? 0
-            : nearbyStationBus.length - 1,
+        itemCount: nearbyStationBus.length,
+        //(nearbyStationBus == null || nearbyStationBus.length == 0)
+        //     ? 0
+        //     : nearbyStationBus.length - 1,
         itemBuilder: (context, index) {
           var list = nearbyStationBus[index];
           return ListTile(
@@ -1075,10 +1111,10 @@ class _Home extends State<Home> {
   //附近站點台鐵-Train
   Widget nearbyStationTrainView() {
     return ListView.builder(
-        itemCount:
-            (nearbyStationTrain == null || nearbyStationTrain.length == 0)
-                ? 0
-                : nearbyStationTrain.length - 1,
+        itemCount: nearbyStationTrain.length,
+        // (nearbyStationTrain == null || nearbyStationTrain.length == 0)
+        //     ? 0
+        //     : nearbyStationTrain.length - 1,
         itemBuilder: (context, index) {
           var list = nearbyStationTrain[index];
           return ListTile(
@@ -1158,10 +1194,10 @@ class _Home extends State<Home> {
       ]),
       Expanded(
         child: ListView.builder(
-            itemCount:
-                (nearbyStationBike.toString() == null || nearbyStationBike.length == 0)
-                    ? 0
-                    : nearbyStationBike.length,
+            itemCount: nearbyStationBike.length,
+            // (nearbyStationBike.toString() == null || nearbyStationBike.length == 0)
+            //     ? 0
+            //     : nearbyStationBike.length,
             itemBuilder: (context, index) {
               var list = nearbyStationBike[index];
               return InkWell(
@@ -1240,7 +1276,7 @@ class _Home extends State<Home> {
                 child: Column(
                   children: [
                     weatherWidget(),
-                    // stationNearbyWidget(),
+                    stationNearbyWidget(),
                     operationalWidget(),
                   ],
                 ),

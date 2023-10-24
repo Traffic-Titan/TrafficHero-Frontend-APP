@@ -111,6 +111,7 @@ class getHome {
     }
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
+    print(responseBody);
       state.updateNearbyStationBus(responseBody);
       print('附近站點公車抓取成功');
     } else {
@@ -135,6 +136,7 @@ class getHome {
     }
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
+       print(responseBody);
       state.updateNearbyStationTrain(responseBody);
       print('附近站點台鐵抓取成功');
     } else {
@@ -160,6 +162,7 @@ class getHome {
     try {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       if (response.statusCode == 200) {
+         print(responseBody);
         state.updateNearbyStationBike(responseBody);
         print('附近站點公共自行車抓取成功');
       } else {
