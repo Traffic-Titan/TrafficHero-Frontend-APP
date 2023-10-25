@@ -3,6 +3,7 @@
 
 
 
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:traffic_hero/Imports.dart';
@@ -72,52 +73,18 @@ class _Route_Planning extends State<Route_Planning> {
   }
   //取得位置經緯度
   void getInputLocation(inputText,inputValue) async{
-    //測試用
-    // //雲科
-    // startData = {
-    //   'candidates': [
-    //     {'formatted_address': '64002台灣雲林縣斗六市大學路三段123號',
-    //       'geometry':
-    //       {'location': {'lat': 23.6959835, 'lng': 120.5340648},
-    //         'viewport': {'northeast': {'lat': 23.69730587989272, 'lng': 120.5354718798927},
-    //           'southwest': {'lat': 23.69460622010728, 'lng': 120.5327722201073}}
-    //       }
-    //       , 'name': '國立雲林科技大學'
-    //     }
-    //   ], 'status': 'OK'
-    // };
-    // //斗六車站
-    // endData ={
-    //   'candidates': [
-    //     {'formatted_address': '640雲林縣斗六市民生路187號',
-    //       'geometry':
-    //       {'location': {'lat': 23.7121324135542, 'lng': 120.54105339748857},
-    //         'viewport': {'northeast': {'lat': 23.69730587989272, 'lng': 120.5354718798927},
-    //           'southwest': {'lat': 23.69460622010728, 'lng': 120.5327722201073}}
-    //       }
-    //       , 'name': '斗六車站'
-    //     }
-    //   ], 'status': 'OK'
-    // };
     var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
     var text = inputText;
     //判斷要搜尋的地點是起始地還是目的地,true是起始地、false是目的地
     var value = inputValue;
     var response;
-    var url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?'+
-        'fields=formatted_address%2Cname%2Cgeometry'+
-        '&input=${text}&inputtype=textquery&key=${key}';
-
-    // if(value){
-    //   setState(() {
-    //     startPlaceText.text = startData['candidates'][0]['name'];
-    //   });
-    // }else{
-    //   setState(() {
-    //     endPlaceText.text = endData['candidates'][0]['name'];
-    //   });
-    // }
-    // 使用api版
+    // var url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?'+
+    //     'fields=formatted_address%2Cname%2Cgeometry'+
+    //     '&input=${text}&inputtype=textquery&key=${key}';
+    var url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'+
+        '?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}'+
+        '&query=${text}'+
+        '&key=${key}';
     try {
       response = await get(Uri.parse(url.toString()));
     } catch (e) {
@@ -204,6 +171,7 @@ class _Route_Planning extends State<Route_Planning> {
       markers: _markers,
     );
   }
+  var input;
   //上拉式抽屜-輸入起始地&目的地
   Widget inputView(ScrollController scrollController){
     return SizedBox(
@@ -238,20 +206,73 @@ class _Route_Planning extends State<Route_Planning> {
             ),
           ),
           //輸入目的地
-          TextField(
-            controller: endPlaceText,
-            decoration: InputDecoration(
-              hintText: '輸入目的地',
-              hintStyle: TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
-                borderRadius: BorderRadius.circular(15),
-              ),
+          TypeAheadField(
+            textFieldConfiguration: TextFieldConfiguration(
+                autofocus: true,
+                style: DefaultTextStyle.of(context).style.copyWith(
+                    fontStyle: FontStyle.italic
+                ),
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                ),
+              onChanged: (value) {
+                // 获取用户输入的内容
+                input = value;
+              },
             ),
-            onEditingComplete: (){
-              getInputLocation(endPlaceText.text,false);
+            suggestionsCallback: (pattern) async {
+              var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
+              var response;
+              var url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'+
+                  '?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}'+
+                  '&query=${input}'+
+                  '&key=${key}';
+              try {
+                response = await get(Uri.parse(url.toString()));
+              } catch (e) {
+                print(e);
+              }
+              var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+              if (response.statusCode == 200) {
+                var data = responseBody['results'];
+                // 将API响应数据转换为建议项列表
+                List<String> suggestions = [];
+                for (var item in data) {
+                  suggestions.add(item['name']);
+                }
+                return suggestions;
+              } else {
+                throw Exception('Failed to load suggestions');
+              }
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(suggestion.toString()),
+              );
+            },
+            onSuggestionSelected: (suggestion) {
+              print('Selected: $suggestion');
             },
           ),
+          //輸入目的地
+          // TextField(
+          //   controller: endPlaceText,
+          //   decoration: InputDecoration(
+          //     hintText: '輸入目的地',
+          //     hintStyle: TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
+          //     enabledBorder: OutlineInputBorder(
+          //       borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
+          //       borderRadius: BorderRadius.circular(15),
+          //     ),
+          //   ),
+          //   onSubmitted: (s){
+          //     getInputLocation(s,false);
+          //     // getInputLocation(endPlaceText.text,false);
+          //   },
+          // ),
           SizedBox(height: 10,),
           Row(
             children: [
