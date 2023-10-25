@@ -1,5 +1,6 @@
 
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/BusRouteSearch.dart';
+import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/StationMap_Bus.dart';
 import 'package:traffic_hero/Imports.dart';
 
 //公車頁面
@@ -103,6 +104,9 @@ Widget publicTransportInfoBus(context){
                           )
                       ),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     Container(
                       padding: EdgeInsets.only(left: 30,right: 30,top: 0),
                       child: ElevatedButton(
@@ -113,6 +117,7 @@ Widget publicTransportInfoBus(context){
                           ),
                           onPressed: (){
                             //站點地圖
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => StationMap_Bus()));
                           },
                           child: ListTile(
                               leading: Icon(Icons.map_rounded,size: 50,color: Color.fromRGBO(29, 73, 153, 1),),
