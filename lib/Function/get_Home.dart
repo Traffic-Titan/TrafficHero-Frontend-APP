@@ -172,4 +172,25 @@ class getHome {
       print(e);
     }
   }
+
+    getNearbyRoadCondition(context) async {
+     prefs = await SharedPreferences.getInstance();
+    state = Provider.of<stateManager>(context, listen: false);
+    print('路況速報開始抓取');
+    var position = await geolocator().updataPosition();
+    var url =
+        '${dotenv.env['NearbyRoadCondition']}?longitude=${position.longitude}&latitude=${position.latitude}';
+    var jwt = ',${prefs.get('userToken')}';
+
+    var response = await api().apiGet(url, jwt);
+    print(jsonDecode(utf8.decode(response.bodyBytes)));
+    if (response.statusCode == 200) {
+      state
+          .updateNearbyRoadCondition(jsonDecode(utf8.decode(response.bodyBytes)));
+      print('營運狀況抓取成功');
+    } else {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+      print('營運狀況抓取失敗');
+    }
+  }
 }

@@ -12,7 +12,7 @@ class Home extends StatefulWidget {
   State<Home> createState() => _Home();
 }
 
-class _Home extends State<Home> {
+class _Home extends State<Home> with SingleTickerProviderStateMixin {
   late stateManager state;
   late SharedPreferences prefs;
   late var positionNow;
@@ -25,55 +25,29 @@ class _Home extends State<Home> {
   var homePageModel;
   var screenWidth;
   var fastTool;
+  var nearbyRoadCondition;
+  late AnimationController controller;
   var count = 0;
   var nearbyStationBus, nearbyStationBike, nearbyStationTrain;
+  var second = 1;
 
   final PageController _controller = PageController();
 
-  Timer? timerBus, timerBike, timerTrain;
+  Timer? timerBus, timerBike, timerTrain, timer;
   Timer? counter;
   bool _timer = true;
   int timeCount = 1;
 
-  savePosition() async {
-    print('儲存停車開始存取');
-    EasyLoading.show(status: '儲存中');
-    var position = await geolocator().updataPosition();
-    Map<String, dynamic> body = {
-      "longitude": position.longitude.toString(),
-      "latitude": position.latitude.toString()
-    };
-    print(body);
-    var url = dotenv.env['SaveCarPosition'];
-    print(url);
-    var jwt = ',' + state.accountState;
-    print(jwt);
-    var response;
-    try {
-      response = await api().apiPut(body, url, jwt);
-      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-      if (response.statusCode == 200) {
-        EasyLoading.showSuccess(responseBody['message'].toString());
-        print('儲存停車成功');
-        EasyLoading.dismiss();
-      }
-    } catch (e) {
-      print(e);
-      EasyLoading.showError('存取失敗');
-      print('儲存停車失敗');
-      EasyLoading.dismiss();
-    }
-  }
-
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-
     EasyLoading.dismiss();
+    startTimer();
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
     setState(() {
       weather = state.weather;
+      nearbyRoadCondition = state.NearbyRoadCondition;
       operationalStatus = state.OperationalStatus;
       nearbyStationBus = state.nearbyStationBus;
       nearbyStationBike = state.nearbyStationBike;
@@ -81,8 +55,9 @@ class _Home extends State<Home> {
     });
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
-       timerBus?.cancel();
-        updateStationNearbySearch();
+      stoptimer();
+      startTimer();
+
       setState(() {
         fastTool = Tool.fastLocationCar;
         carMode = true;
@@ -91,8 +66,9 @@ class _Home extends State<Home> {
         timeCount = 1;
       });
     } else if (state.modeName == 'scooter') {
-       timerBus?.cancel();
-        updateStationNearbySearch();
+      stoptimer();
+      startTimer();
+
       setState(() {
         carMode = false;
         scooterMode = true;
@@ -100,8 +76,8 @@ class _Home extends State<Home> {
         timeCount = 1;
       });
     } else {
-       timerBus?.cancel();
-        updateStationNearbySearch();
+      stoptimer();
+      startTimer();
       setState(() {
         carMode = false;
         scooterMode = false;
@@ -123,94 +99,15 @@ class _Home extends State<Home> {
   }
 
   void initState() {
-    super.initState();
     timerBus?.cancel();
-    updateStationNearbySearch();
-  }
-
-  // 取得附近站點資訊
-  stationNearbySearchBus() async {
-    var jwt = ',${state.accountState}';
-    var position = await geolocator().updataPosition();
-    var url =
-        '${dotenv.env['StationNearbyBus']}?latitude=${position.latitude}&longitude=${position.longitude}';
-    var response;
-    print('SearchBus');
-    try {
-      response = await api().apiGet(url, jwt);
-    } catch (e) {
-      print(e);
-    }
-    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      state.updateNearbyStationBus(responseBody);
-
-      // Tool.nearbyStationBus = responseBody;
-      // timerBus?.cancel();
-    }
-  }
-
-  stationNearbySearchTrain() async {
-    var jwt = ',${state.accountState}';
-    var position = await geolocator().updataPosition();
-    var url =
-        '${dotenv.env['StationNearbyTrain']}?latitude=${position.latitude}&longitude=${position.longitude}';
-    var response;
-    print('SearchTrain');
-    try {
-      response = await api().apiGet(url, jwt);
-    } catch (e) {
-      print(e);
-    }
-    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      // if (mounted) {
-      //   setState(() {
-      //     Tool.nearbyStationTrain = responseBody;
-      //   });
-      // }
-      // Tool.nearbyStationBus = responseBody;
-      // print(Tool.nearbyStationTrain);
-      state.updateNearbyStationTrain(responseBody);
-    }
-  }
-
-  stationNearbySearchBike() async {
-    var jwt = ',${state.accountState}';
-    var position = await geolocator().updataPosition();
-    var url =
-        '${dotenv.env['StationNearbyBike']}?latitude=${position.latitude}&longitude=${position.longitude}';
-    var response;
-    print('SearchBike');
-    try {
-      response = await api().apiGet(url, jwt);
-    } catch (e) {
-      print(e);
-    }
-    try {
-      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-      if (response.statusCode == 200) {
-        // if (mounted) {
-        //   setState(() {
-        //     Tool.nearbyStationBike = responseBody;
-        //   });
-        // }
-        // Tool.nearbyStationBus = responseBody;
-        state.updateNearbyStationBike(responseBody);
-      }
-    } catch (e) {
-      print(e);
-    }
-    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      // if (mounted) {
-      //   setState(() {
-      //     Tool.nearbyStationBike = responseBody;
-      //   });
-      // }
-      // Tool.nearbyStationBus = responseBody;
-      state.updateNearbyStationBike(responseBody);
-    }
+    controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 15),
+    )..addListener(() {
+        setState(() {});
+      });
+    controller.repeat(reverse: true);
+    super.initState();
   }
 
   //修改大眾運輸頁面營運通組顏色
@@ -287,48 +184,56 @@ class _Home extends State<Home> {
     return chunks.join('\n'); // 使用換行符串起每組文字
   }
 
-  void updateStationNearbySearch() {
-    timerBus = Timer.periodic(const Duration(seconds: 1), (timer) async {
-      print(timeCount);
-      if (_timer) {
-        if (timeCount == 0) {
-            timerBus?.cancel();
-          timer.cancel();
-          try {
-            await getHome().getWeather(context);
-            update();
-            await getHome().getUser(context);
-            update();
-            await getHome().getOperationalStatus(context);
-            update();
-            await getHome().stationNearbySearchTrain(context);
-            update();
-            await getHome().stationNearbySearchBus(context);
-            update();
-            await getHome().stationNearbySearchBike(context);
-            update();
-          } catch (e) {
-            timeCount = 15;
-            updateStationNearbySearch();
-          }
-
-          timeCount = 15;
-          updateStationNearbySearch();
-        } else {
-          timeCount -= 1;
-        }
-      } else {
+  startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) async {
+      try {
         setState(() {
-          timer.cancel();
+          print(second);
+          second--;
         });
+      } catch (e) {
+        stoptimer();
+        startTimer();
+      }
+
+      if (second == 0) {
+        stoptimer();
+        try {
+          await getHome().getWeather(context);
+          update();
+          await getHome().getUser(context);
+          update();
+          await getHome().getOperationalStatus(context);
+          update();
+          // await getHome().stationNearbySearchTrain(context);
+          // update();
+          // await getHome().stationNearbySearchBus(context);
+          // update();
+          // await getHome().stationNearbySearchBike(context);
+          // update();
+          await getHome().getNearbyRoadCondition(context);
+          update();
+          setState(() {
+            second = 15;
+          });
+          startTimer();
+        } catch (e) {
+          stoptimer();
+          startTimer();
+        }
       }
     });
+  }
+
+  void stoptimer() {
+    timer?.cancel();
   }
 
   @override
   void dispose() {
     // 在widget銷毀時取消定时器
-    timerBus?.cancel();
+    stoptimer();
+    controller.dispose();
     super.dispose();
   }
 
@@ -336,19 +241,16 @@ class _Home extends State<Home> {
     try {
       setState(() {
         nearbyStationBus = state.nearbyStationBus;
+        nearbyRoadCondition = state.NearbyRoadCondition;
         nearbyStationBike = state.nearbyStationBike;
         nearbyStationTrain = state.nearbyStationTrain;
         weather = state.weather;
         operationalStatus = state.OperationalStatus;
       });
       print('update finish');
-      // print(nearbyStationBus);
-      print(state.nearbyStationBus);
-      print(state.nearbyStationBike);
-      print(state.nearbyStationTrain);
     } catch (e) {
-      timeCount = 15;
-      updateStationNearbySearch();
+      second = 15;
+      startTimer();
     }
   }
 
@@ -427,10 +329,11 @@ class _Home extends State<Home> {
         ),
       ),
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => WebView(tt: state.weather['url'])));
+        stoptimer();
+        // Navigator.push(
+        //     context,
+        //     MaterialPageRoute(
+        //         builder: (context) => WebView(tt: state.weather['url'])));
       },
     );
   }
@@ -740,7 +643,7 @@ class _Home extends State<Home> {
       ),
       elevation: 1,
       child: SizedBox(
-          height: 250,
+          height: (nearbyRoadCondition.length * 100).toDouble()+ 30 ,
           width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
           child: Column(
             children: [
@@ -761,13 +664,26 @@ class _Home extends State<Home> {
                 ),
               ),
               SizedBox(
-                  height: 220,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Text('等待資料'),
-                    ],
-                  )),
+                  height: (nearbyRoadCondition.length * 100).toDouble(),
+                  child: ListView.builder(
+                      itemCount: nearbyRoadCondition.length,
+                      itemBuilder: (context, index) {
+                        var list = nearbyRoadCondition[index];
+                        return Column(
+                          children: [
+                            ListTile(
+                              title: Text(
+                                list['road_name'],
+                                style: TextStyle(fontSize: 20),
+                              ),
+                            ),
+                            ListTile(
+                              title:
+                                  Column(children: [Text(list['content'][0])]),
+                            )
+                          ],
+                        );
+                      })),
             ],
           )),
     );
@@ -775,187 +691,129 @@ class _Home extends State<Home> {
 
   //營運情況
   Widget operationalWidget() {
-    return Card(
-      color: Color.fromARGB(255, 255, 255, 255),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14.0),
-      ),
-      elevation: 1,
-      child: SizedBox(
-          height: (operationalStatus['intercity'].length * 70).toDouble() +
-              (operationalStatus['local'].length * 70).toDouble() +
-              100,
-          width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(14.0),
-                  topRight: Radius.circular(14.0),
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    WebView(tt: operationalStatus['url'].toString())));
+      },
+      child: Card(
+        color: Color.fromARGB(255, 255, 255, 255),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(14.0),
+        ),
+        elevation: 1,
+        child: SizedBox(
+            height: (operationalStatus['intercity'].length * 70).toDouble() +
+                (operationalStatus['local'].length * 70).toDouble() +
+                100,
+            width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+            child: Column(
+              children: [
+                ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(14.0),
+                    topRight: Radius.circular(14.0),
+                  ),
+                  child: Container(
+                    height: 30,
+                    color: Color.fromRGBO(67, 150, 200, 1),
+                    child: Center(
+                      child: Text(
+                        '跨縣市大眾運輸營運狀況',
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                    ),
+                  ),
                 ),
-                child: Container(
+                Center(
+                  child: SizedBox(
+                    width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+                    height:
+                        (operationalStatus['intercity'].length * 70).toDouble(),
+                    child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: operationalStatus['intercity'].length,
+                        itemBuilder: (context, index) {
+                          final intercity =
+                              operationalStatus['intercity'][index];
+                          return ListTile(
+                            title: Text(intercity['name']),
+                            leading: Image.network(intercity['logo_url']),
+                            subtitle: Text(intercity['status_text']),
+                            trailing: Column(
+                              children: [
+                                // Text(intercity['status_text']),
+                                Container(
+                                    width: 40,
+                                    height: 40,
+                                    margin: const EdgeInsets.all(3.0),
+                                    child: SizedBox(
+                                        height: 40,
+                                        width: 40,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: changeColor(
+                                                  intercity["status"]),
+                                              borderRadius:
+                                                  BorderRadius.circular(50)),
+                                        ))),
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
+                ),
+                Container(
                   height: 30,
                   color: Color.fromRGBO(67, 150, 200, 1),
                   child: Center(
                     child: Text(
-                      '跨縣市大眾運輸營運狀況',
+                      '地方大眾運輸營運狀況',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                   ),
                 ),
-              ),
-              Center(
-                child: SizedBox(
-                  width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-                  height:
-                      (operationalStatus['intercity'].length * 70).toDouble(),
-                  child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: operationalStatus['intercity'].length,
-                      itemBuilder: (context, index) {
-                        final intercity = operationalStatus['intercity'][index];
-                        return ListTile(
-                          title: Text(intercity['name']),
-                          leading: Image.network(intercity['logo_url']),
-                          subtitle: Text(intercity['status_text']),
-                          trailing: Column(
-                            children: [
-                              // Text(intercity['status_text']),
-                              Container(
-                                  width: 40,
-                                  height: 40,
-                                  margin: const EdgeInsets.all(3.0),
-                                  child: SizedBox(
-                                      height: 40,
-                                      width: 40,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: changeColor(
-                                                intercity["status"]),
-                                            borderRadius:
-                                                BorderRadius.circular(50)),
-                                      ))),
-                            ],
-                          ),
-                        );
-                      }),
-                ),
-              ),
-              Container(
-                height: 30,
-                color: Color.fromRGBO(67, 150, 200, 1),
-                child: Center(
-                  child: Text(
-                    '地方大眾運輸營運狀況',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
+                Center(
+                  child: SizedBox(
+                    width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+                    height: (operationalStatus['local'].length * 70).toDouble(),
+                    child: ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: operationalStatus['local'].length,
+                        itemBuilder: (context, index) {
+                          final local = operationalStatus['local'][index];
+                          return ListTile(
+                            title: Text(local['name']),
+                            leading: Image.network(local['logo_url']),
+                            subtitle: Text(local['status_text']),
+                            trailing: Column(
+                              children: [
+                                Container(
+                                    width: 40,
+                                    height: 40,
+                                    margin: const EdgeInsets.all(3.0),
+                                    child: SizedBox(
+                                        height: 40,
+                                        width: 40,
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color:
+                                                  changeColor(local["status"]),
+                                              borderRadius:
+                                                  BorderRadius.circular(50)),
+                                        ))),
+                              ],
+                            ),
+                          );
+                        }),
                   ),
                 ),
-              ),
-              Center(
-                child: SizedBox(
-                  width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-                  height: (operationalStatus['local'].length * 70).toDouble(),
-                  child: ListView.builder(
-                      physics: const NeverScrollableScrollPhysics(),
-                      itemCount: operationalStatus['local'].length,
-                      itemBuilder: (context, index) {
-                        final local = operationalStatus['local'][index];
-                        return ListTile(
-                          title: Text(local['name']),
-                          leading: Image.network(local['logo_url']),
-                          subtitle: Text(local['status_text']),
-                          trailing: Column(
-                            children: [
-                              Container(
-                                  width: 40,
-                                  height: 40,
-                                  margin: const EdgeInsets.all(3.0),
-                                  child: SizedBox(
-                                      height: 40,
-                                      width: 40,
-                                      child: Container(
-                                        decoration: BoxDecoration(
-                                            color: changeColor(local["status"]),
-                                            borderRadius:
-                                                BorderRadius.circular(50)),
-                                      ))),
-                            ],
-                          ),
-                        );
-                      }),
-                ),
-              ),
-            ],
-          )),
-    );
-  }
-
-  //地方運輸營運狀況
-  Widget localOperationalWidget() {
-    return Card(
-      color: Color.fromARGB(255, 255, 255, 255),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(14.0),
+              ],
+            )),
       ),
-      elevation: 1,
-      child: SizedBox(
-          height: 250,
-          width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-          child: Column(
-            children: [
-              ClipRRect(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(14.0),
-                  topRight: Radius.circular(14.0),
-                ),
-                child: Container(
-                  height: 30,
-                  color: Color.fromRGBO(67, 150, 200, 1),
-                  child: Center(
-                    child: Text(
-                      '地方運輸營運狀況',
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                  height: 220,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Expanded(
-                          child: ListView.builder(
-                              itemCount: operationalStatus['local'].length,
-                              itemBuilder: (context, index) {
-                                final local = operationalStatus['local'][index];
-                                return ListTile(
-                                  title: Text(local['name']),
-                                  trailing: Column(
-                                    children: [
-                                      Container(
-                                          width: 40,
-                                          height: 40,
-                                          margin: const EdgeInsets.all(3.0),
-                                          child: SizedBox(
-                                              height: 40,
-                                              width: 40,
-                                              child: Container(
-                                                decoration: BoxDecoration(
-                                                    color: changeColor(
-                                                        local["status"]),
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            50)),
-                                              ))),
-                                    ],
-                                  ),
-                                );
-                              }))
-                    ],
-                  )),
-            ],
-          )),
     );
   }
 
@@ -968,7 +826,7 @@ class _Home extends State<Home> {
       ),
       elevation: 1,
       child: SizedBox(
-          height: 300,
+          height: 310,
           width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
           child: Column(
             children: [
@@ -978,10 +836,10 @@ class _Home extends State<Home> {
                   topRight: Radius.circular(14.0),
                 ),
                 child: Container(
-                  height: 30,
+                  height: 40,
                   width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
                   color: Color.fromRGBO(67, 150, 200, 1),
-                  child: Row(
+                  child: Column(
                     //水平置中
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -989,26 +847,6 @@ class _Home extends State<Home> {
                         '附近站點',
                         style: TextStyle(color: Colors.white, fontSize: 20),
                       ),
-                      // InkWell(
-                      //     onTap: () {
-                      //       update();
-                      //     },
-                      //     child: Icon(
-                      //       Icons.update,
-                      //       color: Colors.white,
-                      //     )),
-                      // InkWell(
-                      //   onTap: () {
-                      //     setState(() {
-                      //       _timer = false;
-                      //     });
-                      //     print('stop' + _timer.toString());
-                      //   },
-                      //   child: Icon(
-                      //     Icons.cancel,
-                      //     color: Colors.white,
-                      //   ),
-                      // )
                     ],
                   ),
                 ),
@@ -1071,39 +909,43 @@ class _Home extends State<Home> {
   Widget nearbyStationBusView() {
     return ListView.builder(
         itemCount: nearbyStationBus.length,
-        //(nearbyStationBus == null || nearbyStationBus.length == 0)
-        //     ? 0
-        //     : nearbyStationBus.length - 1,
         itemBuilder: (context, index) {
           var list = nearbyStationBus[index];
-          return ListTile(
-            leading: Container(
-              width: 75,
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.blue, width: 3.0),
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(14.0),
-                  topRight: Radius.circular(14.0),
-                  bottomLeft: Radius.circular(14.0),
-                  bottomRight: Radius.circular(14.0),
+          return Column(
+            children: [
+              ListTile(
+                leading: Container(
+                  width: 75,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.blue, width: 3.0),
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(14.0),
+                      topRight: Radius.circular(14.0),
+                      bottomLeft: Radius.circular(14.0),
+                      bottomRight: Radius.circular(14.0),
+                    ),
+                  ),
+                  child: Text(
+                    (() {
+                      if (list['預估到站時間 (min)'] == '0') {
+                        return "進站中";
+                      }
+                      return list['預估到站時間 (min)'] + '分';
+                    })(),
+                    style: TextStyle(fontSize: 23),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
+                title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(list['路線名稱'] + '( 即將抵達：' + list['站點名稱'] + ' )',
+                          textAlign: TextAlign.left),
+                      Text('往 ' + list['終點站'], textAlign: TextAlign.left),
+                    ]),
               ),
-              child: Text(
-                (() {
-                  if (list['預估到站時間 (min)'] == '0') {
-                    return "進站中";
-                  }
-                  return list['預估到站時間 (min)'] + '分';
-                })(),
-                style: TextStyle(fontSize: 23),
-                textAlign: TextAlign.center,
-              ),
-            ),
-            title: Column(children: [
-              Text(list['路線名稱'] + '( 即將抵達：' + list['站點名稱'] + ' )',
-                  textAlign: TextAlign.left),
-              Text('往 ' + list['終點站'], textAlign: TextAlign.left),
-            ]),
+              SizedBox(height: 10)
+            ],
           );
         });
   }
@@ -1112,43 +954,48 @@ class _Home extends State<Home> {
   Widget nearbyStationTrainView() {
     return ListView.builder(
         itemCount: nearbyStationTrain.length,
-        // (nearbyStationTrain == null || nearbyStationTrain.length == 0)
-        //     ? 0
-        //     : nearbyStationTrain.length - 1,
         itemBuilder: (context, index) {
           var list = nearbyStationTrain[index];
-          return ListTile(
-            leading: Container(
-                width: 75,
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.blue, width: 3.0),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(14.0),
-                    topRight: Radius.circular(14.0),
-                    bottomLeft: Radius.circular(14.0),
-                    bottomRight: Radius.circular(14.0),
-                  ),
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      list['TrainTypeName'],
-                      style: TextStyle(fontSize: 13),
-                    ),
-                    Text(
-                      list['TrainNo'],
-                      style: TextStyle(fontSize: 20),
-                    ),
-                  ],
-                )),
-            title: Column(children: [
-              Text(
-                '往' + list['EndingStationName'],
+          return Column(
+            children: [
+              SizedBox(
+                height: 10,
               ),
-              Text(
-                  '${DateFormat("'於'H':'mm'抵達'").format(DateFormat("hh:mm:ss").parse(list['ScheduleDepartureTime'])).toString()}'),
-              // Text(list['ScheduleDepartureTime']+'到站',textAlign: TextAlign.left),
-            ]),
+              ListTile(
+                leading: Container(
+                    width: 75,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.blue, width: 3.0),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(14.0),
+                        topRight: Radius.circular(14.0),
+                        bottomLeft: Radius.circular(14.0),
+                        bottomRight: Radius.circular(14.0),
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        Text(
+                          list['TrainTypeName'],
+                          style: TextStyle(fontSize: 13),
+                        ),
+                        Text(
+                          list['TrainNo'],
+                          style: TextStyle(fontSize: 20),
+                        ),
+                      ],
+                    )),
+                title: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '往' + list['EndingStationName'],
+                      ),
+                      Text(
+                          '${DateFormat("'於'H':'mm'抵達'").format(DateFormat("hh:mm:ss").parse(list['ScheduleDepartureTime'])).toString()}'),
+                    ]),
+              ),
+            ],
           );
         });
   }
@@ -1173,7 +1020,7 @@ class _Home extends State<Home> {
               Container(
                 width: screenWidth * 0.1,
                 child: Text(
-                  '可歸還數',
+                  '可還',
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -1182,7 +1029,7 @@ class _Home extends State<Home> {
               Container(
                 width: screenWidth * 0.1,
                 child: Text(
-                  '可租借數',
+                  '可借',
                   style: TextStyle(
                     color: Colors.white,
                   ),
@@ -1195,9 +1042,6 @@ class _Home extends State<Home> {
       Expanded(
         child: ListView.builder(
             itemCount: nearbyStationBike.length,
-            // (nearbyStationBike.toString() == null || nearbyStationBike.length == 0)
-            //     ? 0
-            //     : nearbyStationBike.length,
             itemBuilder: (context, index) {
               var list = nearbyStationBike[index];
               return InkWell(
@@ -1205,9 +1049,9 @@ class _Home extends State<Home> {
                   leading: Container(
                     width: screenWidth * 0.6,
                     child: Text(
-                      list['公共自行車']['StationName'].substring(11),
+                      list['公共自行車']['StationName'],
                       style: TextStyle(
-                          fontSize: 23, color: Color.fromRGBO(0, 32, 96, 1)),
+                          fontSize: 15, color: Color.fromRGBO(0, 32, 96, 1)),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
@@ -1217,7 +1061,7 @@ class _Home extends State<Home> {
                         width: screenWidth * 0.1,
                         child: Text(
                           list['可借車位'].toString(),
-                          style: TextStyle(fontSize: 23, color: Colors.red),
+                          style: TextStyle(fontSize: 18, color: Colors.red),
                         ),
                       ),
                       Container(
@@ -1225,7 +1069,7 @@ class _Home extends State<Home> {
                         child: Text(
                           list['剩餘空位'].toString(),
                           style:
-                              TextStyle(fontSize: 23, color: Colors.blueAccent),
+                              TextStyle(fontSize: 18, color: Colors.blueAccent),
                         ),
                       )
                     ],
@@ -1276,7 +1120,7 @@ class _Home extends State<Home> {
                 child: Column(
                   children: [
                     weatherWidget(),
-                    stationNearbyWidget(),
+                    // stationNearbyWidget(),
                     operationalWidget(),
                   ],
                 ),
