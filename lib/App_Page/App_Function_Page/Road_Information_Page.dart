@@ -21,11 +21,15 @@ class _Road_InformationState extends State<Road_Information> {
   var screenHeight;
   var positionNow;
   var parkingInfoList;
+  var trafficControlList;
+  var roadAccidentList;
+  var roadConstructionList;
+  var trafficJamList;
   late GoogleMapController _mapController;
   final Set<Marker> _markers = Set<Marker>();
   //欲篩選的路況
   final List<String> _filterRoadInfoItems =[];
-
+  late BitmapDescriptor ParkingInfoImg,TrafficControlImg,RoadAccidentImg,RoadConstructionImg,TrafficJamImg;
 
   @override
   void didChangeDependencies() async {
@@ -35,16 +39,47 @@ class _Road_InformationState extends State<Road_Information> {
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
     position = await geolocator().updataPosition();
-    searchParkingInfo();
+
+    await searchParkingInfo();
+    await searchRoadAccident();
+    await searchRoadConstruction();
+    await searchTrafficControl();
+    await searchTrafficJam();
   }
   @override
   void initState() {
     super.initState();
-
+    // 初始化 customIcon
+    _initCustomImg();
   }
   @override
   void dispose() {
     super.dispose();
+  }
+// 初始化 customIcon
+  Future<void> _initCustomImg() async {
+    ParkingInfoImg = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(30, 30)),
+      'assets/roadInfo/parkingInfoImg.png',
+    );
+    TrafficControlImg = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(30, 30)),
+      'assets/roadInfo/trafficControlImg.png',
+    );
+    RoadAccidentImg = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(30, 30)),
+      'assets/roadInfo/roadAccidentImg.png',
+    );
+    RoadConstructionImg = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(30, 30)),
+      'assets/roadInfo/roadConstructionImg.png',
+    );
+    TrafficJamImg = await BitmapDescriptor.fromAssetImage(
+      ImageConfiguration(size: Size(30, 30)),
+      'assets/roadInfo/trafficjamImg.png',
+    );
+    // 一旦 customIcon 初始化完成，触发重建以使用它
+    setState(() {});
   }
   //取得停車位資訊
   searchParkingInfo() async {
@@ -64,35 +99,108 @@ class _Road_InformationState extends State<Road_Information> {
       print(e);
     }
   }
-
+  //取得交通管制資訊
+  searchTrafficControl() async {
+    print('取得交通管制資訊');
+    // EasyLoading.show(status: '儲存中');
+    var url = dotenv.env['TrafficControl'];
+    var jwt = ',' + state.accountState;
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        print('取得成功');
+        trafficControlList = responseBody;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+  //取得交通管制資訊
+  searchRoadAccident() async {
+    print('取得交通事故資訊');
+    // EasyLoading.show(status: '儲存中');
+    var url = dotenv.env['RoadAccident'];
+    var jwt = ',' + state.accountState;
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        print('取得成功');
+        roadAccidentList = responseBody;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+  //取得道路施工資訊
+  searchRoadConstruction() async {
+    print('取得道路施工資訊');
+    // EasyLoading.show(status: '儲存中');
+    var url = dotenv.env['RoadConstruction'];
+    var jwt = ',' + state.accountState;
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        print('取得成功');
+        roadConstructionList = responseBody;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+  //取得道路壅塞資訊
+  searchTrafficJam() async {
+    print('取得道路壅塞資訊');
+    // EasyLoading.show(status: '儲存中');
+    var url = dotenv.env['Trafficjam'];
+    var jwt = ',' + state.accountState;
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        print('取得成功');
+        trafficJamList = responseBody;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 //新增目前位置標記
   void addPositionNowMarkers() {
     // 目前位置標記
-    _markers.add(Marker(
+    Marker marker = Marker(
       markerId: MarkerId('目前位置'),
       position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
       icon: BitmapDescriptor.defaultMarkerWithHue(223),
       infoWindow: InfoWindow(
           title: '目前位置'
       ),
-    )
     );
+    setState(() {
+      _markers.add(marker);
+    });
   }
   //新增路況標記
   void addRoadInfoMarkers() {
     print(position.toString());
-    _markers.clear();
     Marker marker;
+    int i;
     // 目前位置標記
     for(String s in _filterRoadInfoItems){
       switch(s){
         case '停車場資訊':
           print('add停車場資訊');
-          for(int i =0;i< parkingInfoList.length;i++){
+          for(i =0;i< parkingInfoList.length;i++){
             marker=Marker(
                   markerId: MarkerId(parkingInfoList[i]['CarParkName']),
                   position: LatLng(parkingInfoList[i]['Latitude'],parkingInfoList[i]['Longitude']),
-                  // icon: BitmapDescriptor.defaultMarkerWithHue(223),
+                  icon: ParkingInfoImg,
                   infoWindow: InfoWindow(
                       title: parkingInfoList[i]['Address'],
                       snippet: '總車位:${parkingInfoList[i]['TotalSpace'].toString()}'
@@ -102,23 +210,73 @@ class _Road_InformationState extends State<Road_Information> {
               _markers.add(marker);
             });
           }
-        case '道路施工':
-          print('add道路施工');
+        case '交通管制':
+          print('add交通管制');
+          print(trafficControlList.length.toString());
+          for(i =0;i< trafficControlList.length;i++){
+            marker=Marker(
+              markerId: MarkerId(trafficControlList[i]['areaNm']),
+              position: LatLng(double.parse(trafficControlList[i]['Latitude']),double.parse(trafficControlList[i]['Longitude'])),
+              icon: TrafficControlImg,
+              infoWindow: InfoWindow(
+                  title: trafficControlList[i]['areaNm'],
+                  snippet: trafficControlList[i]['comment']
+              ),
+            );
+            setState(() {
+              _markers.add(marker);
+            });
+          }
         case '交通事故':
           print('add交通事故');
-        case '道路管制':
-          print('add道路管制');
+          for(i =0;i< roadAccidentList.length;i++){
+            marker=Marker(
+              markerId: MarkerId(roadAccidentList[i]['areaNm']),
+              position: LatLng(double.parse(roadAccidentList[i]['Latitude'].toString()),double.parse(roadAccidentList[i]['Longitude'].toString())),
+              icon: RoadAccidentImg,
+              infoWindow: InfoWindow(
+                  title: roadAccidentList[i]['areaNm'],
+                  snippet: roadAccidentList[i]['comment']
+              ),
+            );
+            setState(() {
+              _markers.add(marker);
+            });
+          }
+        case '道路施工':
+          print('add道路施工');
+          for(i =0;i< roadConstructionList.length;i++){
+            marker=Marker(
+              markerId: MarkerId(roadConstructionList[i]['areaNm']),
+              position: LatLng(double.parse(roadConstructionList[i]['Latitude'].toString()),double.parse(roadConstructionList[i]['Longitude'].toString())),
+              icon: RoadConstructionImg,
+              infoWindow: InfoWindow(
+                  title: roadConstructionList[i]['areaNm'],
+                  snippet: roadConstructionList[i]['comment']
+              ),
+            );
+            setState(() {
+              _markers.add(marker);
+            });
+          }
         case '道路壅塞':
           print('add道路壅塞');
+          for(i =0;i< trafficJamList.length;i++){
+            marker=Marker(
+              markerId: MarkerId(trafficJamList[i]['areaNm']),
+              position: LatLng(double.parse(trafficJamList[i]['Latitude'].toString()),double.parse(trafficJamList[i]['Longitude'].toString())),
+              icon: TrafficJamImg,
+              infoWindow: InfoWindow(
+                  title: trafficJamList[i]['areaNm'],
+                  snippet: trafficJamList[i]['comment']
+              ),
+            );
+            setState(() {
+              _markers.add(marker);
+            });
+          }
         default:
-          _markers.add(Marker(
-            markerId: MarkerId('目前位置'),
-            position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
-            icon: BitmapDescriptor.defaultMarkerWithHue(223),
-            infoWindow: InfoWindow(
-                title: '目前位置'
-            ),
-          ));
+          break;
       }
     }
     // _markers.add(Marker(
@@ -133,7 +291,8 @@ class _Road_InformationState extends State<Road_Information> {
   }
   _onMapCreated(GoogleMapController controller){
     _mapController = controller;
-  }
+
+}
 
   //Google Map View
   Widget mapView(){
@@ -233,6 +392,9 @@ class _Road_InformationState extends State<Road_Information> {
                 child: Text('確定'),
                 onPressed: () {
                   Navigator.of(context).pop();
+                  setState(() {
+                    _markers.clear();
+                  });
                   addRoadInfoMarkers();
                 },
               ),
