@@ -181,6 +181,7 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: DefaultTabController(
       length: 5,
       child: Scaffold(

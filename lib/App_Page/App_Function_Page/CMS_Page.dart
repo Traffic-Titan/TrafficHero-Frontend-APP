@@ -63,11 +63,8 @@ class _CMSState extends State<CMS> {
     EasyLoading.show(status: '儲存中');
     var position = await geolocator().updataPosition();
     var body = {"longitude": position.longitude.toString(), "latitude": position.latitude.toString()};
-    print(body);
     var url = dotenv.env['SaveCarPosition'];
-    print(url);
     var jwt = ','+state.accountState;
-    print(jwt);
     var response;
     try{
       response = await api().apiPut(body, url, jwt);

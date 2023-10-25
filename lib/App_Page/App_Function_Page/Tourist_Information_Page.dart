@@ -26,6 +26,8 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
   late GoogleMapController mapController;
   final Set<Marker> _markers = Set<Marker>();
   var position;
+  Timer? timer;
+  var second = 1;
 
   _onMapCreated(GoogleMapController controller){
     mapController = controller;
@@ -103,6 +105,33 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
     }
 
   }
+
+
+  startTimer(latitude,longitude) {
+    timer = Timer.periodic(Duration(seconds: 1), (_) async {
+      setState(() {
+        print(second);
+        second--;
+      });
+      if (second == 0) {
+        stoptimer();
+       await getTourismInfo2(latitude,longitude);
+        setState(() {
+          second = 1;
+        });
+        
+      }
+    });
+  }
+
+  void stoptimer() {
+    timer?.cancel();
+  }
+
+
+
+
+
   //取得觀光資料(轉到該頁面戳一次)
   getTourismInfo() async {
 
@@ -325,9 +354,9 @@ class _Tourist_InformationState extends State<Tourist_Information> with TickerPr
       ),
        onCameraMove: (CameraPosition position) async{
           // 監測中心座標的變化並自動輸出
-          
+          stoptimer();
           currentCenter = position.target;
-          await getTourismInfo2(currentCenter.latitude, currentCenter.longitude);
+          startTimer(currentCenter.latitude, currentCenter.longitude);
           print("地圖中心座標：${currentCenter.latitude}, ${currentCenter.longitude}");
         },
       markers: _markers,
