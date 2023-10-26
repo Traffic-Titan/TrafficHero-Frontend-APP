@@ -192,8 +192,13 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
           second--;
         });
       } catch (e) {
-        stoptimer();
-        startTimer();
+        try {
+          setState(() {
+            second = 2;
+          });
+          stoptimer();
+          startTimer();
+        } catch (e) {}
       }
 
       if (second == 0) {
@@ -218,8 +223,13 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
           });
           startTimer();
         } catch (e) {
+          try {
+          setState(() {
+            second = 15;
+          });
           stoptimer();
           startTimer();
+        } catch (e) {}
         }
       }
     });
@@ -329,11 +339,10 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
         ),
       ),
       onTap: () {
-        stoptimer();
-        // Navigator.push(
-        //     context,
-        //     MaterialPageRoute(
-        //         builder: (context) => WebView(tt: state.weather['url'])));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => WebView(tt: state.weather['url'])));
       },
     );
   }
@@ -643,7 +652,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       ),
       elevation: 1,
       child: SizedBox(
-          height: (nearbyRoadCondition.length * 100).toDouble()+ 30 ,
+          height: (nearbyRoadCondition.length * 130).toDouble() + 30,
           width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
           child: Column(
             children: [
@@ -664,7 +673,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                 ),
               ),
               SizedBox(
-                  height: (nearbyRoadCondition.length * 100).toDouble(),
+                  height: (nearbyRoadCondition.length * 130).toDouble(),
                   child: ListView.builder(
                       itemCount: nearbyRoadCondition.length,
                       itemBuilder: (context, index) {

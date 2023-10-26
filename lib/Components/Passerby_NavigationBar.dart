@@ -126,23 +126,14 @@ class _PasserbyPage extends State<PasserbyPage> {
               if (index == 2) {
                 //跳轉CMS葉面
                 _navigateToCMS(context);
+                index = 0;
               }
             });
           }
           currentIndex = index;
           currentPage = tabBodies[currentIndex];
-          // setState(() {
-          //   if (index == 2) {
-          //     //跳轉CMS葉面
-          //     _navigateToCMS(context);
-          //   } else {
-          //     setState(() {
-          //       currentIndex = index;
-          //       currentPage = tabBodies[currentIndex];
-          //     });
-          //   }
-          // }
-          // );
+
+
         },
       ),
       body: currentPage,
