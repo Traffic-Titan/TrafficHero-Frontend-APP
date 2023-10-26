@@ -187,10 +187,10 @@ class getHome {
     if (response.statusCode == 200) {
       state
           .updateNearbyRoadCondition(jsonDecode(utf8.decode(response.bodyBytes)));
-      print('營運狀況抓取成功');
+      print('路況速報抓取成功');
     } else {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
-      print('營運狀況抓取失敗');
+      print('路況速報抓取失敗');
     }
   }
 }
