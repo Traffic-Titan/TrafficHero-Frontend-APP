@@ -46,7 +46,7 @@ class _Route_Planning extends State<Route_Planning> {
     var response;
     var url = dotenv.env['RoutePlanning'].toString();
     var jwt = ',' + state.accountState.toString();
-    url += '?latitude=${startData['candidates'][0]['geometry']['location']['lat']}'
+    url += '?latitude=${startData['geometry'][0]['geometry']['location']['lat']}'
         '&longitude=${startData['candidates'][0]['geometry']['location']['lng']}'
         '&DestinationLatitude=${endData['candidates'][0]['geometry']['location']['lat']}'
         '&DestinationLongitude=${endData['candidates'][0]['geometry']['location']['lng']}'
@@ -72,18 +72,14 @@ class _Route_Planning extends State<Route_Planning> {
     }
   }
   //取得位置經緯度
-  void getInputLocation(inputText,inputValue) async{
+  Future<List<String>> getInputLocation(inputText,inputValue) async{
     var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
-    var text = inputText;
-    //判斷要搜尋的地點是起始地還是目的地,true是起始地、false是目的地
-    var value = inputValue;
     var response;
-    // var url = 'https://maps.googleapis.com/maps/api/place/findplacefromtext/json?'+
-    //     'fields=formatted_address%2Cname%2Cgeometry'+
-    //     '&input=${text}&inputtype=textquery&key=${key}';
+    var data;
+    List<String> suggestions=[];
     var url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'+
         '?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}'+
-        '&query=${text}'+
+        '&query=${input}'+
         '&key=${key}';
     try {
       response = await get(Uri.parse(url.toString()));
@@ -92,19 +88,23 @@ class _Route_Planning extends State<Route_Planning> {
     }
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
-      if(value){
+      data = responseBody['results'];
+      // 将API响应数据转换为建议项列表
+      for (var item in data) {
+        suggestions.add(item['name']);
+      }
+      if(inputValue){
         setState(() {
-          startData = responseBody;
-          startPlaceText.text = startData['candidates'][0]['name'];
+          startData = data;
         });
       }else{
         setState(() {
-          endData = responseBody;
-          endPlaceText.text = endData['candidates'][0]['name'];
+          endData = data;
         });
       }
+      return suggestions;
     } else {
-      print(jsonDecode(utf8.decode(response.bodyBytes)));
+      return suggestions;
     }
   }
   //交換起始地&目的地位置
@@ -181,20 +181,50 @@ class _Route_Planning extends State<Route_Planning> {
         padding: EdgeInsets.zero,
         children: [
           //輸入起始地
-          TextField(
-            controller: startPlaceText,
-            decoration: InputDecoration(
-              hintText: '輸入起始地',
-              hintStyle: TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
-              enabledBorder: OutlineInputBorder(
-                borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
-                borderRadius: BorderRadius.circular(15),
+          TypeAheadField(
+            textFieldConfiguration: TextFieldConfiguration(
+              autofocus: true,
+              style: DefaultTextStyle.of(context).style.copyWith(
+                  fontStyle: FontStyle.italic
               ),
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+              controller: startPlaceText,
+              onChanged: (value) {
+                // 获取用户输入的内容
+                input = value;
+              },
             ),
-            onEditingComplete: (){
-              getInputLocation(startPlaceText.text,true);
+            suggestionsCallback: (pattern) async {
+              return getInputLocation(input,true);
+            },
+            itemBuilder: (context, suggestion) {
+              return ListTile(
+                title: Text(suggestion.toString()),
+              );
+            },
+            onSuggestionSelected: (suggestion) {
+              startPlaceText.text = suggestion;
             },
           ),
+          // TextField(
+          //   controller: startPlaceText,
+          //   decoration: InputDecoration(
+          //     hintText: '輸入起始地',
+          //     hintStyle: TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
+          //     enabledBorder: OutlineInputBorder(
+          //       borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
+          //       borderRadius: BorderRadius.circular(15),
+          //     ),
+          //   ),
+          //   onEditingComplete: (){
+          //     getInputLocation(startPlaceText.text,true);
+          //   },
+          // ),
           //交換起始地&目的地
           Align(
             alignment: Alignment.center,
@@ -218,35 +248,14 @@ class _Route_Planning extends State<Route_Planning> {
                       borderRadius: BorderRadius.circular(15),
                     ),
                 ),
+              controller: endPlaceText,
               onChanged: (value) {
                 // 获取用户输入的内容
                 input = value;
               },
             ),
             suggestionsCallback: (pattern) async {
-              var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
-              var response;
-              var url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'+
-                  '?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}'+
-                  '&query=${input}'+
-                  '&key=${key}';
-              try {
-                response = await get(Uri.parse(url.toString()));
-              } catch (e) {
-                print(e);
-              }
-              var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-              if (response.statusCode == 200) {
-                var data = responseBody['results'];
-                // 将API响应数据转换为建议项列表
-                List<String> suggestions = [];
-                for (var item in data) {
-                  suggestions.add(item['name']);
-                }
-                return suggestions;
-              } else {
-                throw Exception('Failed to load suggestions');
-              }
+              return getInputLocation(input,false);
             },
             itemBuilder: (context, suggestion) {
               return ListTile(
@@ -254,25 +263,9 @@ class _Route_Planning extends State<Route_Planning> {
               );
             },
             onSuggestionSelected: (suggestion) {
-              print('Selected: $suggestion');
+              endPlaceText.text = suggestion;
             },
           ),
-          //輸入目的地
-          // TextField(
-          //   controller: endPlaceText,
-          //   decoration: InputDecoration(
-          //     hintText: '輸入目的地',
-          //     hintStyle: TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
-          //     enabledBorder: OutlineInputBorder(
-          //       borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
-          //       borderRadius: BorderRadius.circular(15),
-          //     ),
-          //   ),
-          //   onSubmitted: (s){
-          //     getInputLocation(s,false);
-          //     // getInputLocation(endPlaceText.text,false);
-          //   },
-          // ),
           SizedBox(height: 10,),
           Row(
             children: [

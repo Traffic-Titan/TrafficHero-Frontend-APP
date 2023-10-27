@@ -32,8 +32,8 @@ class _Tourist_InformationState extends State<Tourist_Information>
 
   _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+      
   }
-
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
@@ -44,7 +44,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
     position = state.positionNow;
     getTourismInfo();
   }
-
   static const List<Tab> touristTabBar = <Tab>[
     Tab(text: '景點'),
     Tab(text: '住宿'),
@@ -56,7 +55,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
     super.initState();
     _tabController = TabController(vsync: this, length: touristTabBar.length);
   }
-
   @override
   void dispose() {
     _tabController.dispose();
@@ -103,7 +101,9 @@ class _Tourist_InformationState extends State<Tourist_Information>
       EasyLoading.dismiss();
       print(jsonDecode(utf8.decode(response.bodyBytes)).toString());
     }
+
   }
+
 
   startTimer(latitude, longitude) {
     timer = Timer.periodic(Duration(seconds: 1), (_) async {
@@ -130,7 +130,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
 
         }
       }
-     
     });
   }
 
@@ -138,8 +137,13 @@ class _Tourist_InformationState extends State<Tourist_Information>
     timer?.cancel();
   }
 
+
+
+
+
   //取得觀光資料(轉到該頁面戳一次)
   getTourismInfo() async {
+
     // EasyLoading.show(status: '查詢中...');
     var response;
     var url;
@@ -179,8 +183,8 @@ class _Tourist_InformationState extends State<Tourist_Information>
       EasyLoading.dismiss();
       print(jsonDecode(utf8.decode(response.bodyBytes)).toString());
     }
-  }
 
+  }
   //新增標記
   void addMarkers() {
     _markers.clear();
@@ -195,7 +199,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
     // 添加標記
     for (int i = 0; i < tourismList.length; i++) {
       var list = tourismList[i];
-    
       _markers.add(
         Marker(
             markerId: MarkerId(list['ScenicSpotName']),
@@ -212,6 +215,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
     }
   }
 
+  
   // //改變搜尋欄
   //   void _filterSearchResults(String query) {
   //     _filteredData.clear();
@@ -278,11 +282,11 @@ class _Tourist_InformationState extends State<Tourist_Information>
               ],
             ),
           ),
-        ));
+        )
+    );
   }
-
   //AppBar
-  PreferredSizeWidget appBar() {
+  PreferredSizeWidget appBar(){
     return AppBar(
       backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
       leading: const Icon(
@@ -295,20 +299,18 @@ class _Tourist_InformationState extends State<Tourist_Information>
             onTap: () async {
               LatLngBounds bounds = await mapController.getVisibleRegion();
 
-              // 計算中心座標
-              double centerLatitude =
-                  (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
-              double centerLongitude =
-                  (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
+    // 計算中心座標
+    double centerLatitude = (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
+    double centerLongitude = (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
 
-              // 將中心座標輸出到控制台
-              print("地圖中心座標：$centerLatitude, $centerLongitude");
-            },
-            child: Icon(
-              Icons.search,
-              color: Colors.white,
-              size: 28,
-            )),
+    // 將中心座標輸出到控制台
+    print("地圖中心座標：$centerLatitude, $centerLongitude");
+          },
+          child:  Icon(
+          Icons.search,
+          color: Colors.white,
+          size: 28,
+        )),
         title: TextField(
           decoration: InputDecoration(
             hintText: '以名稱搜尋',
@@ -317,6 +319,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
               fontSize: 18,
               fontStyle: FontStyle.italic,
             ),
+
             border: InputBorder.none,
           ),
           onTap: () {
@@ -352,7 +355,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
       ),
     );
   }
-
   //Google Map View
   Widget mapView() {
     return GoogleMap(
@@ -372,7 +374,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
       markers: _markers,
     );
   }
-
   //附近景點
   Widget nearbyPopularView(ScrollController scrollController) {
     return SizedBox(
@@ -390,7 +391,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
             final list = tourismList[index];
             return Column(
               children: [
-               
+
                 Expanded(child:  InkWell(
                   child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start, //水平對齊方式
@@ -412,7 +413,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
                             ),
                           ),
                         ),
-                        SizedBox(width: 10,),
                         Flexible(
                           child: Column(children: [
                             Padding(
@@ -477,4 +477,5 @@ class _Tourist_InformationState extends State<Tourist_Information>
     //   },
     // );
   }
+
 }
