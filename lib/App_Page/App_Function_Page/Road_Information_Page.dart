@@ -188,6 +188,15 @@ class _Road_InformationState extends State<Road_Information> {
     setState(() {
       _markers.add(marker);
     });
+    // 改變Camera位置
+    _mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(lat,lng),
+          zoom: 12.0,
+        ),
+      ),
+    );
   }
   //新增路況標記
   void addRoadInfoMarkers() {
