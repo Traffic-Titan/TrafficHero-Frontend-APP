@@ -6,6 +6,7 @@ import 'package:traffic_hero/imports.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart'; // Make sure to import the correct package
 import 'package:traffic_hero/Components/Tool.dart' as Tool;
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
 class Road_Information extends StatefulWidget {
   const Road_Information({Key? key}) : super(key: key);
@@ -25,6 +26,10 @@ class _Road_InformationState extends State<Road_Information> {
   var roadAccidentList;
   var roadConstructionList;
   var trafficJamList;
+  List<Map<String, dynamic>> destinationList = [];
+  List<String> suggestions=[];
+  var input;
+  late TextEditingController endPlaceText = new TextEditingController();
   late GoogleMapController _mapController;
   final Set<Marker> _markers = Set<Marker>();
   //欲篩選的路況
@@ -39,7 +44,6 @@ class _Road_InformationState extends State<Road_Information> {
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
     position = await geolocator().updataPosition();
-
     await searchParkingInfo();
     await searchRoadAccident();
     await searchRoadConstruction();
@@ -171,15 +175,14 @@ class _Road_InformationState extends State<Road_Information> {
       print(e);
     }
   }
-//新增目前位置標記
-  void addPositionNowMarkers() {
-    // 目前位置標記
+  //新增位置標記
+  void addPositionMarkers(lat,lng,name) {
     Marker marker = Marker(
-      markerId: MarkerId('目前位置'),
-      position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
+      markerId: MarkerId(name),
+      position: LatLng(lat,lng),
       icon: BitmapDescriptor.defaultMarkerWithHue(223),
       infoWindow: InfoWindow(
-          title: '目前位置'
+          title: name
       ),
     );
     setState(() {
@@ -191,8 +194,10 @@ class _Road_InformationState extends State<Road_Information> {
     print(position.toString());
     Marker marker;
     int i;
+    print('list:${_filterRoadInfoItems.toString()}');
     // 目前位置標記
     for(String s in _filterRoadInfoItems){
+      print(s);
       switch(s){
         case '停車場資訊':
           print('add停車場資訊');
@@ -210,9 +215,10 @@ class _Road_InformationState extends State<Road_Information> {
               _markers.add(marker);
             });
           }
+          print('add停車場資訊finish');
+          break;
         case '交通管制':
           print('add交通管制');
-          print(trafficControlList.length.toString());
           for(i =0;i< trafficControlList.length;i++){
             marker=Marker(
               markerId: MarkerId(trafficControlList[i]['areaNm']),
@@ -227,6 +233,8 @@ class _Road_InformationState extends State<Road_Information> {
               _markers.add(marker);
             });
           }
+          print('add交通管制finish');
+          break;
         case '交通事故':
           print('add交通事故');
           for(i =0;i< roadAccidentList.length;i++){
@@ -243,6 +251,8 @@ class _Road_InformationState extends State<Road_Information> {
               _markers.add(marker);
             });
           }
+          print('add交通事故finish');
+          break;
         case '道路施工':
           print('add道路施工');
           for(i =0;i< roadConstructionList.length;i++){
@@ -259,9 +269,12 @@ class _Road_InformationState extends State<Road_Information> {
               _markers.add(marker);
             });
           }
+          print('add道路施工finish');
+          break;
         case '道路壅塞':
           print('add道路壅塞');
           for(i =0;i< trafficJamList.length;i++){
+            print(double.parse(trafficJamList[i]['Latitude'].toString()));
             marker=Marker(
               markerId: MarkerId(trafficJamList[i]['areaNm']),
               position: LatLng(double.parse(trafficJamList[i]['Latitude'].toString()),double.parse(trafficJamList[i]['Longitude'].toString())),
@@ -275,24 +288,26 @@ class _Road_InformationState extends State<Road_Information> {
               _markers.add(marker);
             });
           }
+          print('add道路壅塞finish');
+          break;
         default:
           break;
       }
     }
-    // _markers.add(Marker(
-    //   markerId: MarkerId('目前位置'),
-    //   position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
-    //   icon: BitmapDescriptor.defaultMarkerWithHue(223),
-    //   infoWindow: InfoWindow(
-    //       title: '目前位置'
-    //   ),
-    //   )
-    // );
+  }
+  //取得經緯度座標
+  void getLocation(destination){
+    _markers.clear();
+      for(int i=0;i<destinationList.length;i++){
+        if(destination == destinationList[i]['name']){
+          addPositionMarkers(destinationList[i]['lat'],destinationList[i]['lng'], destinationList[i]['name']);
+          i=destinationList.length;
+        }
+      }
   }
   _onMapCreated(GoogleMapController controller){
     _mapController = controller;
-
-}
+  }
 
   //Google Map View
   Widget mapView(){
@@ -303,16 +318,77 @@ class _Road_InformationState extends State<Road_Information> {
         zoom: 11,
       ),
       markers: _markers,
-
-      //點擊可抓取對應地點經緯度
-      // onTap: (LatLng latLng) {
-      //   print('Tapped at: $latLng');
-      //   // 在这里您可以处理点击事件，获取latLng变量的坐标信息
-      // },
-      //移動可抓取對應地點經緯度
-      // onCameraMove: (CameraPosition position){
-      //   print('Tapped at: ${position.target.longitude}');
-      // },
+    );
+  }
+  //取得目的地經緯度座標
+  Future<List<String>> getInputLocation(inputText,inputValue) async{
+    var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
+    var response;
+    var data;
+    var url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'+
+        '?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}'+
+        '&query=${input}'+
+        '&key=${key}';
+    try {
+      response = await get(Uri.parse(url.toString()));
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      data = responseBody['results'];
+      suggestions=[];
+      // 将API响应数据转换为建议项列表
+      for (var item in data) {
+          suggestions.add(item['name']);
+          destinationList.add({
+            'name': item['name'],
+            'lat': item['geometry']['location']['lat'],
+            'lng': item['geometry']['location']['lng'],
+          });
+      }
+      return suggestions;
+    } else {
+      return suggestions;
+    }
+  }
+  //搜尋紐
+  PreferredSizeWidget appBar(){
+    return AppBar(
+      backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
+      leading: InkWell(
+          child:  Icon(
+            Icons.search,
+            color: Colors.white,
+            size: 28,
+          )
+      ),
+      title: TypeAheadField(
+        textFieldConfiguration: TextFieldConfiguration(
+          autofocus: false,
+          style: DefaultTextStyle.of(context).style.copyWith(
+            fontStyle: FontStyle.italic,
+            color: Colors.white
+          ),
+          controller: endPlaceText,
+          onChanged: (value) {
+            // 获取用户输入的内容
+            input = value;
+          },
+        ),
+        suggestionsCallback: (pattern) async {
+          return getInputLocation(input,false);
+        },
+        itemBuilder: (context, suggestion) {
+          return ListTile(
+            title: Text(suggestion.toString()),
+          );
+        },
+        onSuggestionSelected: (suggestion) {
+          endPlaceText.text = suggestion;
+          getLocation(suggestion);
+        },
+      ),
     );
   }
   //定位及篩選路況按鈕
@@ -326,7 +402,7 @@ class _Road_InformationState extends State<Road_Information> {
           onPressed: () {
             //回到所在位置並標記
             _goToPositionNow();
-            addPositionNowMarkers();
+            addPositionMarkers(state.positionNow.latitude,state.positionNow.longitude,'目前位置');
           },
         ),
         SizedBox(width: 10,),
@@ -407,6 +483,7 @@ class _Road_InformationState extends State<Road_Information> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: appBar(),
       body: mapView(),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: floatingBtn(),
