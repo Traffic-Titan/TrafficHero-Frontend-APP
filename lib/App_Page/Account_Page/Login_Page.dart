@@ -222,8 +222,8 @@ class _Login extends State<Login> {
           EasyLoading.dismiss();
           print(prefs.get('userToken'));
 
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AllPage()));
+          Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (context) => const AllPage()),(router)=>false);
           return true;
         } else {
           EasyLoading.dismiss();
