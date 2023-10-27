@@ -58,17 +58,17 @@ class _StationMap_BusState extends State<StationMap_Bus> {
     // 添加標記
     for (int i=0;i <state.nearbyStationBus.length;i++) {
       var list = state.nearbyStationBus[i];
-      print(list);
-      // _markers.add(
-      //   Marker(
-      //     markerId: MarkerId(list['公共自行車']['StationUID']),
-      //     position: LatLng(list['公共自行車']['LocationY'],list['公共自行車']['LocationX']),
-      //     infoWindow: InfoWindow(
-      //         title: list['公共自行車']['StationName'].substring(11),
-      //         snippet: '可借:${list['可借車位']}/可還:${list['剩餘空位']}'
-      //     ),
-      //   ),
-      // );
+
+      _markers.add(
+        Marker(
+          markerId: MarkerId(list['路線名稱']),
+          position: LatLng(list['StopLatitude'],list['StopLongitude']),
+          infoWindow: InfoWindow(
+              title: list['站點名稱'],
+
+          ),
+        ),
+      );
     }
   }
   //新增位置標記

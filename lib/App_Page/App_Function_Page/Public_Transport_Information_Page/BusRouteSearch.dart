@@ -2,6 +2,7 @@
 
 import 'dart:ffi';
 
+import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/BusRouteDetail.dart';
 import 'package:traffic_hero/imports.dart';
 
 const List<String> countyName_Cn = <String>['請選擇縣市','新北市','台北市','桃園市','台中市','台南市','高雄市','基隆市','新竹市','新竹縣','苗栗縣','彰化縣','南投縣','雲林縣','嘉義縣','嘉義市','屏東縣','宜蘭縣','花蓮縣','台東縣','金門縣','澎湖縣','連江縣'];
@@ -9,6 +10,7 @@ const List<String> countyName_En = <String>['None','NewTaipei','Taipei','Taoyuan
 String dropdownValue = countyName_Cn.first;
 var dropDownValue_En;
 var searchResult = [];
+var routeNum;
 
 class BusRouteSearch extends StatefulWidget {
   const BusRouteSearch({Key? key}) : super(key: key);
@@ -33,6 +35,22 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
     state = Provider.of<stateManager>(context, listen: false);
   }
 
+  //根據"關鍵字"搜尋該路線站點及預估到站時間
+  resultDetail(String routeID, String area) async{
+    var url = dotenv.env['BusRouteStopby'].toString() + '?area=${area}&route_id=${routeID}';
+    var jwt = ',' + state.accountState.toString();
+    var response = await api().apiGet(url, jwt);
+    if (response.statusCode == 200) {
+      // print(jsonDecode(utf8.decode(response.bodyBytes)));
+      setState(() {
+        state.updateBusRouteDetail(jsonDecode(utf8.decode(response.bodyBytes)));
+      });
+    } else {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+  }
+
+  // 公車路線搜尋
   busRouteSearch(String routeNum) async {
     var url = dotenv.env['BusRoute'].toString() + '?area=${dropDownValue_En}&route_id=${routeNum}';
     var jwt = ',' + state.accountState.toString();
@@ -90,6 +108,9 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
                       });
                     }
                     else {
+                      setState(() {
+                        routeNum = inputText;
+                      });
                       busRouteSearch(inputText);
                     }
                   },
@@ -106,8 +127,22 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
                 return ListTile(
                   title: Column(
                     children: [
-                      Text(data['route']),
-                      Text(data['description'])
+                      TextButton(
+                          onPressed: (){
+
+                            resultDetail(data['route'],dropDownValue_En);
+
+                            //透過延遲進入頁面，使頁面能夠順利讀取
+                            Future.delayed(Duration(seconds: 3),(){
+                              Navigator.push(context, MaterialPageRoute(builder: (context) => BusRouteDetail()));
+                            });
+                          },
+                          child: Column(
+                            children: [
+                              Text(data['route']),
+                              Text(data['description'])],
+                          )
+                      ),
                     ],
                   ),
                 );
