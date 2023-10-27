@@ -24,7 +24,7 @@ class stateManager with ChangeNotifier {
   var _keyWord;
   var _searchPageDetail;
   var _cmsList_Car;
-
+  var _busRouteDetail;
   var _appBarState = true;
   var _navigationBarState = true;
   var _floatingBtnState = true;
@@ -63,6 +63,7 @@ class stateManager with ChangeNotifier {
   get keyWord => _keyWord;
   get searchPageDetail => _searchPageDetail;
   get cmsCarList_Car => _cmsList_Car;
+  get busRouteDetail => _busRouteDetail;
 
   void updateModeState(String newValue) {
     _modeName = newValue;
@@ -207,7 +208,10 @@ class stateManager with ChangeNotifier {
     _nearbyStationBike = newValue;
     notifyListeners();
   }
-
+  void updateBusRouteDetail(newValue){
+    _busRouteDetail = newValue;
+    notifyListeners();
+  }
 
 
 

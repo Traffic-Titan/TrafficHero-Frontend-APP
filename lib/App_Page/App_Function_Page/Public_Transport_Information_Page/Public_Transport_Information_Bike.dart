@@ -49,7 +49,7 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
       _markers.add(
         Marker(
           markerId: MarkerId(list['公共自行車']['StationUID']),
-          position: LatLng(list['公共自行車']['LocationY'],list['公共自行車']['LocationX']),
+          position: LatLng(double.parse(list['公共自行車']['LocationY']),double.parse(list['公共自行車']['LocationX'])),
           infoWindow: InfoWindow(
               title: list['公共自行車']['StationName'].substring(11),
               snippet: '可借:${list['可借車位']}/可還:${list['剩餘空位']}'
