@@ -409,8 +409,6 @@ class _Road_InformationState extends State<Road_Information> {
           child: Icon(Icons.location_searching),
           backgroundColor: Color.fromRGBO(33, 84, 144, 1),
           onPressed: () {
-            //回到所在位置並標記
-            _goToPositionNow();
             addPositionMarkers(state.positionNow.latitude,state.positionNow.longitude,'目前位置');
           },
         ),
@@ -424,14 +422,6 @@ class _Road_InformationState extends State<Road_Information> {
         ),
       ],
     );
-  }
-  //定位按鈕
-  Future<void> _goToPositionNow() async {
-    CameraPosition _positionNow= CameraPosition(
-      target: LatLng(state.positionNow.latitude,state.positionNow.longitude),
-      zoom: 15,
-    );
-    await _mapController.animateCamera(CameraUpdate.newCameraPosition(_positionNow));
   }
   void _filterRoadInfoItemsChange(item,isSelected){
       if(isSelected){

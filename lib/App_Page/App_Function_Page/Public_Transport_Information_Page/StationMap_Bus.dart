@@ -71,12 +71,68 @@ class _StationMap_BusState extends State<StationMap_Bus> {
       // );
     }
   }
+  //新增位置標記
+  void addPositionMarkers(lat,lng,name) {
+    Marker marker = Marker(
+      markerId: MarkerId(name),
+      position: LatLng(lat,lng),
+      icon: BitmapDescriptor.defaultMarkerWithHue(223),
+      infoWindow: InfoWindow(
+          title: name
+      ),
+    );
+    setState(() {
+      _markers.add(marker);
+    });
+    // 改變Camera位置
+    _mapController.animateCamera(
+      CameraUpdate.newCameraPosition(
+        CameraPosition(
+          target: LatLng(lat,lng),
+          zoom: 12.0,
+        ),
+      ),
+    );
+  }
+//定位按鈕
+  Widget floatingBtn(){
+    return FloatingActionButton(
+      child: Icon(Icons.location_searching),
+      backgroundColor: Color.fromRGBO(33, 84, 144, 1),
+      onPressed: () {
+        addPositionMarkers(state.positionNow.latitude,state.positionNow.longitude,'目前位置');
+      },
+    );
+  }
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        mapView(),
-      ],
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: DefaultTabController(
+            length: 4,
+            child: Scaffold(
+                appBar: AppBar(
+                  leading: IconButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_outlined),
+                  ),
+                  title: Text('站點地圖', style: TextStyle(
+                      color: Colors.white),),
+                  backgroundColor: Color.fromRGBO(33, 84, 144, 1),
+                ),
+                body: Stack(
+                    children: [
+                      // Map
+                      mapView(),
+                    ]
+                ),
+              floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+              floatingActionButton: floatingBtn(),
+            )
+        ),
+
     );
   }
 }
