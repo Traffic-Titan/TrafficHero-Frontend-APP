@@ -38,6 +38,8 @@ PODS:
     - Flutter
   - flutter_config_plus (0.0.1):
     - Flutter
+  - flutter_keyboard_visibility (0.0.1):
+    - Flutter
   - flutter_tts (0.0.1):
     - Flutter
   - geocoding_ios (1.0.5):
@@ -107,6 +109,7 @@ DEPENDENCIES:
   - Flutter (from `Flutter`)
   - flutter_config (from `.symlinks/plugins/flutter_config/ios`)
   - flutter_config_plus (from `.symlinks/plugins/flutter_config_plus/ios`)
+  - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_tts (from `.symlinks/plugins/flutter_tts/ios`)
   - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
@@ -148,6 +151,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_config/ios"
   flutter_config_plus:
     :path: ".symlinks/plugins/flutter_config_plus/ios"
+  flutter_keyboard_visibility:
+    :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   flutter_tts:
     :path: ".symlinks/plugins/flutter_tts/ios"
   geocoding_ios:
@@ -182,6 +187,7 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_config: f48f0d47a284f1791aacce2687eabb3309ba7a41
   flutter_config_plus: df6643caa4790a393fba3301ddd134e4d078ae25
+  flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_tts: 0f492aab6accf87059b72354fcb4ba934304771d
   geocoding_ios: a389ea40f6f548de6e63006a2e31bf66ff80769a
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401

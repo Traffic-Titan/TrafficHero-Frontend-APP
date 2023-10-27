@@ -1,3 +1,5 @@
+// ignore_for_file: unused_import
+
 import 'dart:ffi';
 
 import 'package:traffic_hero/imports.dart';

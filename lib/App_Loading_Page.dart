@@ -66,12 +66,13 @@ class _appLoadingPage extends State<appLoadingPage> {
       state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
 
       // await getHome().gethome(context);
-      Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const AllPage()));
+      Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (context) => const AllPage()),(router)=>false);
           EasyLoading.dismiss();
     } else {
-       Navigator.push(
-          context, MaterialPageRoute(builder: (context) => const Login()));
+       Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (context) => const Login()),(router)=>false);
+          EasyLoading.dismiss();
           EasyLoading.dismiss();
     }
 

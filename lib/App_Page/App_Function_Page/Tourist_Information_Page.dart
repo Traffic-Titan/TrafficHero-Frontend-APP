@@ -21,6 +21,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
   late stateManager state;
   var screenWidth;
   var screenHeight;
+  var scrollview = true;
   String searchText = '';
   late LatLng currentCenter;
   late var tourismList = [];
@@ -29,6 +30,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
   var position;
   Timer? timer;
   var second = 1;
+  var id;
 
   _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -65,6 +67,9 @@ class _Tourist_InformationState extends State<Tourist_Information>
 
   getTourismInfo2(latitude, longitude) async {
     // EasyLoading.show(status: '查詢中...');
+    // setState(() {
+    //   scrollview = true;
+    // });
     var response;
     var url;
     var jwt = ',${state.accountState}';
@@ -86,8 +91,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
         break;
     }
     url += '?latitude=${latitude}&longitude=${longitude}';
-    // url += '?latitude=23.692502&longitude=120.532229';
-    // '?longitude=${position.longitude}&latitude=${position.latitude}';
     try {
       response = await api().apiGet(url, jwt);
     } catch (e) {
@@ -107,30 +110,32 @@ class _Tourist_InformationState extends State<Tourist_Information>
 
   startTimer(latitude, longitude) {
     timer = Timer.periodic(Duration(seconds: 1), (_) async {
-      try{
- setState(() {
-        print(second);
-        second--;
-      });
-      if (second == 0) {
-        stoptimer();
-        await getTourismInfo2(latitude, longitude);
+      try {
         setState(() {
-          second = 1;
+          print(second);
+          second--;
         });
-      }
-      }catch(e){
-        try{
+        if (second == 0) {
+          stoptimer();
+          await getTourismInfo2(latitude, longitude);
           setState(() {
             second = 1;
           });
-            stoptimer();
-        await getTourismInfo2(latitude, longitude);
-        }catch(e){
-
+        }
+      } catch (e) {
+        try {
+          setState(() {
+            second = 1;
+          });
+          stoptimer();
+          await getTourismInfo2(latitude, longitude);
+        } catch (e) {
+          stoptimer();
+          setState(() {
+            second = 1;
+          });
         }
       }
-     
     });
   }
 
@@ -162,8 +167,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
         break;
     }
     url += '?latitude=${position.latitude}&longitude=${position.longitude}';
-    // url += '?latitude=23.692502&longitude=120.532229';
-    // '?longitude=${position.longitude}&latitude=${position.latitude}';
     try {
       response = await api().apiGet(url, jwt);
     } catch (e) {
@@ -171,9 +174,14 @@ class _Tourist_InformationState extends State<Tourist_Information>
     }
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
-      setState(() {
-        tourismList = responseBody;
-      });
+      try {
+        setState(() {
+          tourismList = responseBody;
+        });
+      } catch (e) {
+        print(e);
+      }
+
       addMarkers();
     } else {
       EasyLoading.dismiss();
@@ -188,44 +196,50 @@ class _Tourist_InformationState extends State<Tourist_Information>
     _markers.add(Marker(
       markerId: MarkerId('目前位置'),
       position: LatLng(position.latitude, position.longitude),
-      // position:LatLng(positionNow.latitude,positionNow.longitude),
       icon: BitmapDescriptor.defaultMarkerWithHue(223),
       infoWindow: InfoWindow(title: '目前位置'),
     ));
     // 添加標記
     for (int i = 0; i < tourismList.length; i++) {
       var list = tourismList[i];
-    
+
       _markers.add(
         Marker(
-            markerId: MarkerId(list['ScenicSpotName']),
-            position: LatLng(list['Position']['PositionLat'],
-                list['Position']['PositionLon']),
+            markerId: MarkerId(list['name']),
+            position: LatLng(
+                list['position']['latitude'], list['position']['longitude']),
             infoWindow: InfoWindow(
-              title: list['ScenicSpotName'],
-              // snippet: list['地址'],
+              title: list['name'],
+              snippet: list['address'],
             ),
             onTap: () {
-              print(list['ScenicSpotName']);
+              setState(() {
+                scrollview = false;
+                id = list['id'];
+              });
             }),
       );
     }
   }
 
-  // //改變搜尋欄
-  //   void _filterSearchResults(String query) {
-  //     _filteredData.clear();
-  //     if (query.isEmpty) {
-  //       _filteredData.addAll(_data);
-  //     } else {
-  //       _data.forEach((key, value) {
-  //         if (key.toLowerCase().contains(query.toLowerCase())) {
-  //           _filteredData[key] = value;
-  //         }
-  //       });
-  //     }
-  //     setState(() {});
-  //   }
+  findid(id) {
+    for (var i = 0; i < tourismList.length; i++) {
+      if (tourismList[i]['id'] == id) {
+        print(tourismList[i]['id']);
+        print(id);
+        return tourismList[i];
+      }
+    }
+  }
+
+  scrollView(scrollController) {
+    if (scrollview == true) {
+      return nearbyPopularView(scrollController);
+    } else {
+      return onenearbyPopularView(scrollController);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -238,13 +252,16 @@ class _Tourist_InformationState extends State<Tourist_Information>
               children: [
                 // Map
                 mapView(),
+
                 Align(
                   alignment: Alignment.bottomLeft,
                   child: DraggableScrollableSheet(
                     builder: (BuildContext context,
                         ScrollController scrollController) {
                       return Container(
-                        width: screenWidth > 600 ? screenWidth/4+100 : screenWidth,
+                        width: screenWidth > 600
+                            ? screenWidth / 4 + 100
+                            : screenWidth,
                         decoration: const BoxDecoration(
                           color: Color.fromRGBO(222, 235, 247, 1),
                         ),
@@ -262,7 +279,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                             ),
                             SizedBox(height: 14),
                             Expanded(
-                              child: nearbyPopularView(scrollController),
+                              child: scrollView(scrollController),
                             ),
                           ],
                         ),
@@ -327,12 +344,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
                     builder: (context) =>
                         Tourist_Information_Page_SearchPage()));
           },
-          // onChanged: (value) {
-          //   setState(() {
-          //     searchText = value;
-          //     filterData();
-          //   });
-          // },
           style: TextStyle(
             color: Colors.white,
           ),
@@ -345,6 +356,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
         enableFeedback: true,
         onTap: (index) {
           setState(() {
+            scrollview = true;
             getTourismInfo();
           });
         },
@@ -373,6 +385,200 @@ class _Tourist_InformationState extends State<Tourist_Information>
     );
   }
 
+  Widget onenearbyPopularView(ScrollController scrollController) {
+    var list;
+    if (findid(id) != []) {
+      list = findid(id);
+    } else {}
+
+    print(list);
+    return SizedBox(
+      width: screenWidth * 0.9,
+      // height: 200,
+      child: SingleChildScrollView(
+        controller: scrollController,
+        padding: EdgeInsets.zero,
+        child: Column(
+          children: [
+            ListTile(
+              leading: IconButton(
+                  onPressed: () {
+                    setState(() {
+                      scrollview = true;
+                    });
+                  },
+                  icon: Icon(Icons.arrow_back_ios)),
+            ),
+            ListTile(
+              title: Text(
+                list != null ? list['name'] : '',
+                style: TextStyle(fontSize: 20),
+              ),
+              subtitle:
+                  Text(list != null ? list['address'].toString() : '無地址顯示'),
+            ),
+            Container(
+              height: 250,
+              width: screenWidth,
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount: list == null ? 0 : list['picture'].length,
+                itemBuilder: (context, index) {
+                  var list2 = list['picture'][index];
+                  return Container(
+                    width: 280,
+                    height: 60,
+                    margin: EdgeInsets.all(8), // 可以调整间距
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(14.0),
+                      child: Image.network(
+                        list2.toString(),
+                        width: list['picture']?.length == 0 ? screenWidth : 280,
+                        height: 60,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+              height: 30,
+              width: screenWidth,
+              child: ListView(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                children: [
+                  Row(
+                    children: [
+                      Visibility(
+                        visible: list['website_url'] == '' ? false : true,
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WebView(
+                                        tt: list['website_url'].toString())));
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14.0),
+                            ),
+                            child: Text('網站'),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Visibility(
+                        visible: list['map_url'] == '' ? false : true,
+                        child: InkWell(
+                          onTap: () {
+                            launch(list['map_url']);
+                          },
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(14.0),
+                            ),
+                            child: Text('導航'),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      //         Visibility(
+                      //           visible: list['website_url'] == '' ? false : true,
+                      //           child: InkWell(
+                      //             onTap: () {
+                      //               Navigator.push(
+                      //                   context,
+                      //                   MaterialPageRoute(
+                      //                       builder: (context) => WebView(
+                      //                           tt: list['website_url'].toString())));
+                      //             },
+                      //             child: Card(
+                      //               shape: RoundedRectangleBorder(
+                      //   borderRadius: BorderRadius.circular(14.0),
+                      // ),
+                      //               child: Text('網站'),),
+                      //           ),
+                      //         ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      // InkWell(
+                      //   child: Text('data'),
+                      // )
+                    ],
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            ListTile(
+              title: Text(
+                '詳細介紹',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            SizedBox(
+              height: 3,
+            ),
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14.0),
+              ),
+              child: SizedBox(
+                  width:
+                      screenWidth > 600 ? screenWidth / 4 + 100 : screenWidth,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(list['description_detail'].toString() == 'null'
+                        ? list['description']
+                        : list['description_detail']),
+                  )),
+            ),
+            ListTile(
+              title: Text(
+                '天氣資訊',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            ListTile(
+              leading: Text('${list['weather']['weather']}'),
+              title: Text(
+                '目前溫度：${list['weather']['temperature']}',
+                style: TextStyle(fontSize: 20),
+              ),
+              subtitle: Row(
+                children: [
+                  Text('今天最低溫：${list['weather']['the_lowest_temperature']}'),
+                  Text('，今天脧高溫：${list['weather']['the_highest_temperature']}')
+                ],
+              ),
+              trailing: Image.network(list['weather']['weather_icon_url']),
+            ),
+            SizedBox(
+              height: 3,
+            ),
+            SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   //附近景點
   Widget nearbyPopularView(ScrollController scrollController) {
     return SizedBox(
@@ -390,83 +596,86 @@ class _Tourist_InformationState extends State<Tourist_Information>
             final list = tourismList[index];
             return Column(
               children: [
-               
-                Expanded(child:  InkWell(
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start, //水平對齊方式
-                      children: <Widget>[
-                        SizedBox(width: 10,),
-                        AspectRatio(
-                          //設定圖片的長寬比
-                          aspectRatio: 3 / 2,
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(14.0),
-                                topRight: Radius.circular(14.0),
-                                bottomLeft: Radius.circular(14.0),
-                                bottomRight: Radius.circular(14.0)),
-                            child: Image.network(
-                              list['Picture']['PictureUrl1'],
-                              height: screenHeight * 0.01,
-                              fit: BoxFit.fill,
-                            ),
+                Expanded(
+                  child: InkWell(
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start, //水平對齊方式
+                        children: <Widget>[
+                          SizedBox(
+                            width: 10,
                           ),
-                        ),
-                        SizedBox(width: 10,),
-                        Flexible(
-                          child: Column(children: [
-                            Padding(
-                              padding: EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
-                              child: Column(
-                                //用Column讓兩排文字可以垂直排列
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    list['ScenicSpotName'].toString(),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        color: Color.fromRGBO(24, 60, 126, 1)),
-                                  ),
-                                  // Text(
-                                  //   list['地址'].toString(),
-                                  //   overflow: TextOverflow.ellipsis,
-                                  //   style: TextStyle(
-                                  //       fontSize: 13,
-                                  //       color: Color.fromRGBO(24, 60, 126, 1)),
-                                  // ),
-                                  // Text(
-                                  //   list['開放時間'].toString(),
-                                  //   overflow: TextOverflow.ellipsis,
-                                  //   maxLines: 2,
-                                  //   style: TextStyle(
-                                  //       fontSize: 10,
-                                  //       color: Color.fromRGBO(24, 60, 126, 1)),
-                                  // ),
-                                  Text(
-                                    list['Phone'].toString(),
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                        fontSize: 10,
-                                        color: Color.fromRGBO(24, 60, 126, 1)),
-                                  ),
-                                ],
+                          AspectRatio(
+                            //設定圖片的長寬比
+                            aspectRatio: 3 / 2,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(14.0),
+                                  topRight: Radius.circular(14.0),
+                                  bottomLeft: Radius.circular(14.0),
+                                  bottomRight: Radius.circular(14.0)),
+                              child: Image.network(
+                                list['picture'][0],
+                                height: screenHeight * 0.01,
+                                fit: BoxFit.fill,
                               ),
                             ),
-                          ]),
-                        ),
-                      ]),
-                  onTap: () async {
-                    // EasyLoading.show(status: 'loading...');
-                    state.updatePageDetail(list);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                Tourist_Information_Page_Detail()));
-                  },
-                ),),
-                SizedBox(height: 10,),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Flexible(
+                            child: Column(children: [
+                              Padding(
+                                padding:
+                                    EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                                child: Column(
+                                  //用Column讓兩排文字可以垂直排列
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      list['name'].toString(),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          color:
+                                              Color.fromRGBO(24, 60, 126, 1)),
+                                    ),
+                                    Text(
+                                      list['address'] == ''
+                                          ? '無地址顯示'
+                                          : list['address'],
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 13,
+                                          color:
+                                              Color.fromRGBO(24, 60, 126, 1)),
+                                    ),
+                                    Text(
+                                      list['phone'].toString(),
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          color:
+                                              Color.fromRGBO(24, 60, 126, 1)),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ]),
+                          ),
+                        ]),
+                    onTap: () async {
+                      state.updatePageDetail(list);
+                      setState(() {
+                        scrollview = false;
+                        id = list['id'];
+                      });
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
               ],
             );
           },

@@ -30,6 +30,7 @@ class _CMSState extends State<CMS> {
   var Text4Color = 'FFFFFFFF';
   var Text5Color = 'FFFFFFFF';
   var Text6Color = 'FFFFFFFF';
+  var Carpostionstatus = false;
   // String displayImg='assets/fastLocation/transparent.png';
   // 預設圖片：全黑背景圖片
   String displayImg =
@@ -71,6 +72,7 @@ class _CMSState extends State<CMS> {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       if(response.statusCode == 200){
         EasyLoading.showSuccess(responseBody);
+        Carpostionstatus = true;
         print('儲存停車成功');
         EasyLoading.dismiss();
       }
@@ -85,7 +87,30 @@ class _CMSState extends State<CMS> {
   }
 
 
+  getPosition()async {
+    print('儲存停車開始存取');
+    EasyLoading.show(status: '儲存中');
+    var position = await geolocator().updataPosition();
+    var url = dotenv.env['SaveCarPosition'];
+    var jwt = ','+state.accountState;
+    var response;
+    try{
+      response = await api().apiGet( url, jwt);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if(response.statusCode == 200){
+        EasyLoading.showSuccess(responseBody);
+        print('儲存停車成功');
+        EasyLoading.dismiss();
+      }
+    }catch(e){
+      print(e);
+      EasyLoading.showError('存取失敗');
+       print('儲存停車失敗');
+       EasyLoading.dismiss();
+    }
 
+    
+  }
   
 
   location() async {
@@ -358,7 +383,14 @@ class _CMSState extends State<CMS> {
                 size: 40,
               ),
               backgroundColor: Colors.blueAccent,
-              onPressed: () {},
+              onPressed: () {
+                if(Carpostionstatus == false){
+                  savePosition();
+                }else{
+                  getPosition();
+                }
+
+              },
             ),
             const SizedBox(
               height: 10,
@@ -511,7 +543,11 @@ class _CMSState extends State<CMS> {
               ),
               backgroundColor: Colors.blueAccent,
               onPressed: () {
-                savePosition();
+                 if(Carpostionstatus == false){
+                  savePosition();
+                }else{
+                  getPosition();
+                }
               },
             ),
             const SizedBox(
@@ -522,7 +558,7 @@ class _CMSState extends State<CMS> {
               child: phoneIcon,
               backgroundColor: Colors.blueAccent,
               onPressed: () {
-                savePosition();
+            
                 SystemChrome.setPreferredOrientations([
                   DeviceOrientation.portraitUp,
                   DeviceOrientation.portraitDown,
