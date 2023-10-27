@@ -210,12 +210,12 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
           update();
           await getHome().getOperationalStatus(context);
           update();
-          // await getHome().stationNearbySearchTrain(context);
-          // update();
-          // await getHome().stationNearbySearchBus(context);
-          // update();
-          // await getHome().stationNearbySearchBike(context);
-          // update();
+          await getHome().stationNearbySearchTrain(context);
+          update();
+          await getHome().stationNearbySearchBus(context);
+          update();
+          await getHome().stationNearbySearchBike(context);
+          update();
           await getHome().getNearbyRoadCondition(context);
           update();
           setState(() {
@@ -1129,7 +1129,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                 child: Column(
                   children: [
                     weatherWidget(),
-                    // stationNearbyWidget(),
+                    stationNearbyWidget(),
                     operationalWidget(),
                   ],
                 ),
