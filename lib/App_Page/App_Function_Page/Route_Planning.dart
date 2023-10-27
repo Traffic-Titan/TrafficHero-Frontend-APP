@@ -183,7 +183,7 @@ class _Route_Planning extends State<Route_Planning> {
           //輸入起始地
           TypeAheadField(
             textFieldConfiguration: TextFieldConfiguration(
-              autofocus: true,
+              autofocus: false,
               style: DefaultTextStyle.of(context).style.copyWith(
                   fontStyle: FontStyle.italic
               ),
@@ -238,7 +238,7 @@ class _Route_Planning extends State<Route_Planning> {
           //輸入目的地
           TypeAheadField(
             textFieldConfiguration: TextFieldConfiguration(
-                autofocus: true,
+                autofocus: false,
                 style: DefaultTextStyle.of(context).style.copyWith(
                     fontStyle: FontStyle.italic
                 ),
