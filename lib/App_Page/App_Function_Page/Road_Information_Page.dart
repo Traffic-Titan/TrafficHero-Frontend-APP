@@ -26,6 +26,7 @@ class _Road_InformationState extends State<Road_Information> {
   var roadAccidentList;
   var roadConstructionList;
   var trafficJamList;
+  List<Map<String, dynamic>> destinationList = [];
   List<String> suggestions=[];
   var input;
   late TextEditingController endPlaceText = new TextEditingController();
@@ -43,7 +44,6 @@ class _Road_InformationState extends State<Road_Information> {
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
     position = await geolocator().updataPosition();
-
     await searchParkingInfo();
     await searchRoadAccident();
     await searchRoadConstruction();
@@ -175,15 +175,14 @@ class _Road_InformationState extends State<Road_Information> {
       print(e);
     }
   }
-//新增目前位置標記
-  void addPositionNowMarkers() {
-    // 目前位置標記
+  //新增位置標記
+  void addPositionMarkers(lat,lng,name) {
     Marker marker = Marker(
-      markerId: MarkerId('目前位置'),
-      position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
+      markerId: MarkerId(name),
+      position: LatLng(lat,lng),
       icon: BitmapDescriptor.defaultMarkerWithHue(223),
       infoWindow: InfoWindow(
-          title: '目前位置'
+          title: name
       ),
     );
     setState(() {
@@ -202,9 +201,7 @@ class _Road_InformationState extends State<Road_Information> {
       switch(s){
         case '停車場資訊':
           print('add停車場資訊');
-          print(parkingInfoList.length.toString());
           for(i =0;i< parkingInfoList.length;i++){
-            print(i.toString());
             marker=Marker(
                   markerId: MarkerId(parkingInfoList[i]['CarParkName']),
                   position: LatLng(parkingInfoList[i]['Latitude'],parkingInfoList[i]['Longitude']),
@@ -222,9 +219,7 @@ class _Road_InformationState extends State<Road_Information> {
           break;
         case '交通管制':
           print('add交通管制');
-          print(trafficControlList.length.toString());
           for(i =0;i< trafficControlList.length;i++){
-            print(i.toString());
             marker=Marker(
               markerId: MarkerId(trafficControlList[i]['areaNm']),
               position: LatLng(double.parse(trafficControlList[i]['Latitude']),double.parse(trafficControlList[i]['Longitude'])),
@@ -242,9 +237,7 @@ class _Road_InformationState extends State<Road_Information> {
           break;
         case '交通事故':
           print('add交通事故');
-          print(roadAccidentList.length.toString());
           for(i =0;i< roadAccidentList.length;i++){
-            print(i.toString());
             marker=Marker(
               markerId: MarkerId(roadAccidentList[i]['areaNm']),
               position: LatLng(double.parse(roadAccidentList[i]['Latitude'].toString()),double.parse(roadAccidentList[i]['Longitude'].toString())),
@@ -262,9 +255,7 @@ class _Road_InformationState extends State<Road_Information> {
           break;
         case '道路施工':
           print('add道路施工');
-          print(roadConstructionList.length.toString());
           for(i =0;i< roadConstructionList.length;i++){
-            print(double.parse(roadConstructionList[i]['Latitude'].toString()));
             marker=Marker(
               markerId: MarkerId(roadConstructionList[i]['areaNm']),
               position: LatLng(double.parse(roadConstructionList[i]['Latitude'].toString()),double.parse(roadConstructionList[i]['Longitude'].toString())),
@@ -282,7 +273,6 @@ class _Road_InformationState extends State<Road_Information> {
           break;
         case '道路壅塞':
           print('add道路壅塞');
-          print(trafficJamList.length.toString());
           for(i =0;i< trafficJamList.length;i++){
             print(double.parse(trafficJamList[i]['Latitude'].toString()));
             marker=Marker(
@@ -305,10 +295,19 @@ class _Road_InformationState extends State<Road_Information> {
       }
     }
   }
+  //取得經緯度座標
+  void getLocation(destination){
+    _markers.clear();
+      for(int i=0;i<destinationList.length;i++){
+        if(destination == destinationList[i]['name']){
+          addPositionMarkers(destinationList[i]['lat'],destinationList[i]['lng'], destinationList[i]['name']);
+          i=destinationList.length;
+        }
+      }
+  }
   _onMapCreated(GoogleMapController controller){
     _mapController = controller;
-
-}
+  }
 
   //Google Map View
   Widget mapView(){
@@ -321,6 +320,38 @@ class _Road_InformationState extends State<Road_Information> {
       markers: _markers,
     );
   }
+  //取得目的地經緯度座標
+  Future<List<String>> getInputLocation(inputText,inputValue) async{
+    var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
+    var response;
+    var data;
+    var url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'+
+        '?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}'+
+        '&query=${input}'+
+        '&key=${key}';
+    try {
+      response = await get(Uri.parse(url.toString()));
+    } catch (e) {
+      print(e);
+    }
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      data = responseBody['results'];
+      suggestions=[];
+      // 将API响应数据转换为建议项列表
+      for (var item in data) {
+          suggestions.add(item['name']);
+          destinationList.add({
+            'name': item['name'],
+            'lat': item['geometry']['location']['lat'],
+            'lng': item['geometry']['location']['lng'],
+          });
+      }
+      return suggestions;
+    } else {
+      return suggestions;
+    }
+  }
   //搜尋紐
   PreferredSizeWidget appBar(){
     return AppBar(
@@ -330,13 +361,14 @@ class _Road_InformationState extends State<Road_Information> {
             Icons.search,
             color: Colors.white,
             size: 28,
-          )),
+          )
+      ),
       title: TypeAheadField(
         textFieldConfiguration: TextFieldConfiguration(
-          autofocus: true,
+          autofocus: false,
           style: DefaultTextStyle.of(context).style.copyWith(
-              fontStyle: FontStyle.italic,
-              color: Colors.white,
+            fontStyle: FontStyle.italic,
+            color: Colors.white
           ),
           controller: endPlaceText,
           onChanged: (value) {
@@ -345,29 +377,7 @@ class _Road_InformationState extends State<Road_Information> {
           },
         ),
         suggestionsCallback: (pattern) async {
-          var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
-          var response;
-          var data;
-          var url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'+
-              '?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}'+
-              '&query=${input}'+
-              '&key=${key}';
-          try {
-            response = await get(Uri.parse(url.toString()));
-          } catch (e) {
-            print(e);
-          }
-          var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-          if (response.statusCode == 200) {
-            data = responseBody['results'];
-            // 将API响应数据转换为建议项列表
-            for (var item in data) {
-              suggestions.add(item['name']);
-            }
-            return suggestions;
-          } else {
-            throw Exception('Failed to load suggestions');
-          }
+          return getInputLocation(input,false);
         },
         itemBuilder: (context, suggestion) {
           return ListTile(
@@ -376,6 +386,7 @@ class _Road_InformationState extends State<Road_Information> {
         },
         onSuggestionSelected: (suggestion) {
           endPlaceText.text = suggestion;
+          getLocation(suggestion);
         },
       ),
     );
@@ -391,7 +402,7 @@ class _Road_InformationState extends State<Road_Information> {
           onPressed: () {
             //回到所在位置並標記
             _goToPositionNow();
-            addPositionNowMarkers();
+            addPositionMarkers(state.positionNow.latitude,state.positionNow.longitude,'目前位置');
           },
         ),
         SizedBox(width: 10,),
