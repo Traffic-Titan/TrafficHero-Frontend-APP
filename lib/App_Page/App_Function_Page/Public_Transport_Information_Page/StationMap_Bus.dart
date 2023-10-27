@@ -16,14 +16,7 @@ class _StationMap_BusState extends State<StationMap_Bus> {
   final Set<Marker> _markers = Set<Marker>();
   var draggleHeight=0.3;
 
-  @override
-  Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        mapView(),
-      ],
-    );
-  }
+
   void didChangeDependencies() async {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
@@ -77,5 +70,13 @@ class _StationMap_BusState extends State<StationMap_Bus> {
       //   ),
       // );
     }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        mapView(),
+      ],
+    );
   }
 }
