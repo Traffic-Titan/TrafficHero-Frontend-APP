@@ -1,7 +1,6 @@
 // ignore_for_file: file_names, camel_case_types
 // ignore: unnecessary_import
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page_Detail.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page_SearchPage.dart';
 import 'package:traffic_hero/imports.dart';
 
@@ -564,10 +563,10 @@ class _Tourist_InformationState extends State<Tourist_Information>
                 '目前溫度：${list['weather']['temperature']}',
                 style: TextStyle(fontSize: 20),
               ),
-              subtitle: Row(
+              subtitle: Column(
                 children: [
                   Text('今天最低溫：${list['weather']['the_lowest_temperature']}'),
-                  Text('，今天脧高溫：${list['weather']['the_highest_temperature']}')
+                  Text('，今天最高溫：${list['weather']['the_highest_temperature']}')
                 ],
               ),
               trailing: Image.network(list['weather']['weather_icon_url']),

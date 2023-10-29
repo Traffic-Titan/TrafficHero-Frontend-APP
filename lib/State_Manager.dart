@@ -217,23 +217,12 @@ class stateManager with ChangeNotifier {
 
   List<dynamic> _NearbyRoadCondition = [
   {
-    "road_name": "台78線",
+    "road_name": "",
     "content": [
-      "飆速一時快感車禍一生傷感"
+      ""
     ]
   },
-  {
-    "road_name": "國道3號",
-    "content": [
-      "請保持安全車距",
-      "30日22-06時國3北向後龍-竹南施工封閉",
-      "24-25日20-06時龍井出入口施工封閉",
-      "散落物(圖)286.3K外2線散落物請小心",
-      "30日22-06時國3北後龍-竹南封閉",
-      "行經地磅站前留意過磅車流回堵",
-      "286.3K外2線散落物請小心"
-    ]
-  },];
+ ];
 
 
   get NearbyRoadCondition => _NearbyRoadCondition;

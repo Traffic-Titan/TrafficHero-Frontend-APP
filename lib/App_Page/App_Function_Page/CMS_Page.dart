@@ -13,6 +13,8 @@ class CMS extends StatefulWidget {
 class _CMSState extends State<CMS> {
   var cmsList_car = [];
   late stateManager state;
+     late SharedPreferences prefs;
+   
   late Icon phoneIcon = const Icon(
     CupertinoIcons.device_phone_landscape,
     size: 40,
@@ -43,8 +45,9 @@ class _CMSState extends State<CMS> {
 
 //當頁面創造時執行
   @override
-  void didChangeDependencies() {
+  void didChangeDependencies()async {
     super.didChangeDependencies();
+     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     _startTrackingPosition();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -71,7 +74,7 @@ class _CMSState extends State<CMS> {
       response = await api().apiPut(body, url, jwt);
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       if(response.statusCode == 200){
-        EasyLoading.showSuccess(responseBody);
+        EasyLoading.showSuccess(responseBody['message']);
         Carpostionstatus = true;
         print('儲存停車成功');
         EasyLoading.dismiss();
@@ -91,14 +94,15 @@ class _CMSState extends State<CMS> {
     print('儲存停車開始存取');
     EasyLoading.show(status: '儲存中');
     var position = await geolocator().updataPosition();
-    var url = dotenv.env['SaveCarPosition'];
+    var url =  '${dotenv.env['GetCarPosition']}?os=${prefs.get('system')}';
+    print(url);
     var jwt = ','+state.accountState;
     var response;
     try{
       response = await api().apiGet( url, jwt);
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       if(response.statusCode == 200){
-        EasyLoading.showSuccess(responseBody);
+        EasyLoading.showSuccess(responseBody['message']);
         print('儲存停車成功');
         EasyLoading.dismiss();
       }
@@ -405,11 +409,9 @@ class _CMSState extends State<CMS> {
                   DeviceOrientation.landscapeRight,
                 ]);
                 setState(() {
-                  // changeWidget();
-
+                 
                   directionState = false;
                 });
-                // changeWidget(context);
               },
             ),
             const SizedBox(

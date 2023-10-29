@@ -304,3 +304,8 @@ Valid until: Wednesday, August 10, 2044
 輔助色 10%
 
 以上比例進行排版
+
+
+App 預覽
+
+![Alt text](/readme_image/image25.png)
