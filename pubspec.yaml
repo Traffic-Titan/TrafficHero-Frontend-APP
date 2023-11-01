@@ -135,6 +135,8 @@ flutter:
     - assets/roadInfo/roadConstructionImg.png
     - assets/AppIcon.png
     - assets/
+    - assets/publicTransportIcon/BusStop.png
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
