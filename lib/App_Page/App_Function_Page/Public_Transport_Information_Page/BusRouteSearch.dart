@@ -1,7 +1,5 @@
 // ignore_for_file: unused_import
 
-import 'dart:ffi';
-
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/BusRouteDetail.dart';
 import 'package:traffic_hero/imports.dart';
 
@@ -11,6 +9,7 @@ String dropdownValue = countyName_Cn.first;
 var dropDownValue_En;
 var searchResult = [];
 var routeNum;
+
 
 class BusRouteSearch extends StatefulWidget {
   const BusRouteSearch({Key? key}) : super(key: key);
@@ -47,6 +46,16 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
       });
     } else {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+  }
+
+  // 回傳公車圖示
+  IconData? busIcon(String route){
+    if(route.length == 0){
+      return null;
+    }
+    else{
+      return Icons.directions_bus_rounded;
     }
   }
 
@@ -87,11 +96,14 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
             height: 10,
           ),
           // 公車班次輸入框
-          Expanded(
-              flex:1,
-              child: Container(
+          // Expanded(
+          //     flex:1,
+          //     child:
+              Container(
                 width: MediaQuery.of(context).size.width * 0.9,
+                height: 45,
                 child: TextField(
+                  textAlign: TextAlign.start,
                   decoration: InputDecoration(
                     fillColor: Color.fromRGBO(120, 173, 222, 1),
                     hintText: "搜尋公車班次或號碼",
@@ -118,7 +130,7 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
                   },
                 ),
               ),
-          ),
+          // ),
           // 下排搜尋結果
           Expanded(
             flex: 9,
@@ -127,21 +139,28 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
               itemBuilder: (context,index){
                 var data = searchResult[index];
                 return ListTile(
-                  leading: Icon(Icons.directions_bus_rounded,size: 50,color:Color.fromRGBO(29, 73, 153, 1),),
-                  title: TextButton(
-                      onPressed: (){
-                        resultDetail(data['route'],dropDownValue_En);
-                        //透過延遲進入頁面，使頁面能夠順利讀取
-                        Future.delayed(Duration(seconds: 3),(){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => BusRouteDetail()));
-                        });
-                      },
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(data['route'],style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 20),),
-                      )
+                  // leading: Icon(Icons.directions_bus_rounded,size: 50,color:Color.fromRGBO(29, 73, 153, 1),),
+                  title:TextButton(
+                    onPressed: (){
+                      resultDetail(data['route'],dropDownValue_En);
+                      //透過延遲進入頁面，使頁面能夠順利讀取
+                      Future.delayed(Duration(seconds: 3),(){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => BusRouteDetail()));
+                      });
+                    },
+                    child: Row(
+                      children: [
+                        Icon(busIcon(data['route']),size: 50,color:Color.fromRGBO(29, 73, 153, 1),),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(data['route'],style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 20),),
+                            Text(data['description'],style: TextStyle(fontSize: 18)),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                  subtitle: Text(data['description'],style: TextStyle(fontSize: 18)),
                   // trailing: 收藏圖示,
                 );
               },
