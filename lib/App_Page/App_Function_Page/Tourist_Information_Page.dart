@@ -106,7 +106,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
 
   }
 
-
+//延遲向後端取得觀光資訊
   startTimer(latitude, longitude) {
     timer = Timer.periodic(Duration(seconds: 1), (_) async {
       try {

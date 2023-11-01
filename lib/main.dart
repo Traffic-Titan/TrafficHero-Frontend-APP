@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return PiPMaterialApp(
       title: '',
       theme: ThemeData(
         primarySwatch: Colors.blue,

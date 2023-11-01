@@ -30,13 +30,28 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   var count = 0;
   var nearbyStationBus, nearbyStationBike, nearbyStationTrain;
   var second = 1;
+  var trafficWarningWidgetCount;
 
   final PageController _controller = PageController();
 
-  Timer? timerBus, timerBike, timerTrain, timer;
+  Timer? timerBus, timerBike, timerTrain, timer,trafficWarningWidgettimer;
   Timer? counter;
   bool _timer = true;
   int timeCount = 1;
+
+  void listener() {
+    if (FlPiP().status.value == PiPStatus.enabled) {
+      FlPiP().toggle(AppState.background);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    FlPiP().status.removeListener(listener);
+      stoptimer();
+   
+  }
 
   @override
   void didChangeDependencies() async {
@@ -100,13 +115,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
 
   void initState() {
     timerBus?.cancel();
-    controller = AnimationController(
-      vsync: this,
-      duration: Duration(seconds: 15),
-    )..addListener(() {
-        setState(() {});
-      });
-    controller.repeat(reverse: true);
+     FlPiP().status.addListener(listener);
     super.initState();
   }
 
@@ -235,17 +244,23 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     });
   }
 
+
+
+
+  //  trafficWarningWidgetTimer(list) {
+  //   var count  = list.length;
+  //   trafficWarningWidgettimer = Timer.periodic(Duration(seconds: 1), (_) async {
+  //     if(list.length != 0){
+  //       count--;
+  //       return list[count];
+  //     }
+  //   });
+  // }
+
   void stoptimer() {
     timer?.cancel();
   }
 
-  @override
-  void dispose() {
-    // 在widget銷毀時取消定时器
-    stoptimer();
-    controller.dispose();
-    super.dispose();
-  }
 
   void update() async {
     try {
@@ -339,6 +354,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
         ),
       ),
       onTap: () {
+         
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -346,6 +362,17 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       },
     );
   }
+
+
+  /// 开启画中画
+/// Open picture-in-picture
+void enable() {
+  FlPiP().enable(
+      ios: FlPiPiOSConfig(),
+      android: FlPiPAndroidConfig(
+          aspectRatio: const Rational.maxLandscape()));
+          FlPiP().toggle(AppState.background);
+}
 
   //工具列widget
   Widget toolWidget() {
@@ -652,7 +679,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       ),
       elevation: 1,
       child: SizedBox(
-          height: (nearbyRoadCondition.length * 130).toDouble() + 30,
+          height: 240 + 30,
           width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
           child: Column(
             children: [
@@ -673,7 +700,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                 ),
               ),
               SizedBox(
-                  height: (nearbyRoadCondition.length * 130).toDouble(),
+                  height: 220,
                   child: ListView.builder(
                       itemCount: nearbyRoadCondition.length,
                       itemBuilder: (context, index) {
@@ -688,7 +715,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                             ),
                             ListTile(
                               title:
-                                  Column(children: [Text(list['content'][0])]),
+                                  Column(children: [Text('data')]),
                             )
                           ],
                         );

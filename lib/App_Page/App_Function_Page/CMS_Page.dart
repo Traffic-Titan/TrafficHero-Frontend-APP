@@ -13,12 +13,33 @@ class CMS extends StatefulWidget {
 class _CMSState extends State<CMS> {
   var cmsList_car = [];
   late stateManager state;
-     late SharedPreferences prefs;
-   
+  late SharedPreferences prefs;
+
   late Icon phoneIcon = const Icon(
     CupertinoIcons.device_phone_landscape,
     size: 40,
   );
+
+  @override
+  void initState() {
+    super.initState();
+    FlPiP().status.addListener(listener);
+    setDisplay();
+  }
+
+  void listener() {
+    if (FlPiP().status.value == PiPStatus.enabled) {
+      FlPiP().toggle(AppState.background);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    FlPiP().status.removeListener(listener);
+    _stopTrackingPosition(); // 停止追踪位置更新
+  }
+
   bool directionState = true;
   String displayText1 = '';
   String displayText2 = '';
@@ -45,9 +66,9 @@ class _CMSState extends State<CMS> {
 
 //當頁面創造時執行
   @override
-  void didChangeDependencies()async {
+  void didChangeDependencies() async {
     super.didChangeDependencies();
-     prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     _startTrackingPosition();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
@@ -55,67 +76,57 @@ class _CMSState extends State<CMS> {
     updateCMSList_Car();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    
-    setDisplay();
-  }
-
-  savePosition()async {
+  savePosition() async {
     print('儲存停車開始存取');
     EasyLoading.show(status: '儲存中');
     var position = await geolocator().updataPosition();
-    var body = {"longitude": position.longitude.toString(), "latitude": position.latitude.toString()};
+    var body = {
+      "longitude": position.longitude.toString(),
+      "latitude": position.latitude.toString()
+    };
     var url = dotenv.env['SaveCarPosition'];
-    var jwt = ','+state.accountState;
+    var jwt = ',' + state.accountState;
     var response;
-    try{
+    try {
       response = await api().apiPut(body, url, jwt);
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         EasyLoading.showSuccess(responseBody['message']);
         Carpostionstatus = true;
         print('儲存停車成功');
         EasyLoading.dismiss();
       }
-    }catch(e){
+    } catch (e) {
       print(e);
       EasyLoading.showError('存取失敗');
-       print('儲存停車失敗');
-       EasyLoading.dismiss();
+      print('儲存停車失敗');
+      EasyLoading.dismiss();
     }
-
-    
   }
 
-
-  getPosition()async {
+  getPosition() async {
     print('儲存停車開始存取');
     EasyLoading.show(status: '儲存中');
     var position = await geolocator().updataPosition();
-    var url =  '${dotenv.env['GetCarPosition']}?os=${prefs.get('system')}';
+    var url = '${dotenv.env['GetCarPosition']}?os=${prefs.get('system')}';
     print(url);
-    var jwt = ','+state.accountState;
+    var jwt = ',' + state.accountState;
     var response;
-    try{
-      response = await api().apiGet( url, jwt);
+    try {
+      response = await api().apiGet(url, jwt);
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-      if(response.statusCode == 200){
+      if (response.statusCode == 200) {
         EasyLoading.showSuccess(responseBody['message']);
         print('儲存停車成功');
         EasyLoading.dismiss();
       }
-    }catch(e){
+    } catch (e) {
       print(e);
       EasyLoading.showError('存取失敗');
-       print('儲存停車失敗');
-       EasyLoading.dismiss();
+      print('儲存停車失敗');
+      EasyLoading.dismiss();
     }
-
-    
   }
-  
 
   location() async {
     positionNow = await Geolocator.getCurrentPosition(
@@ -135,12 +146,6 @@ class _CMSState extends State<CMS> {
     } catch (e) {
       EasyLoading.showError(e.toString());
     }
-  }
-
-  @override
-  void dispose() {
-    _stopTrackingPosition(); // 停止追踪位置更新
-    super.dispose();
   }
 
   Future<void> _getCurrentLocation() async {
@@ -380,57 +385,74 @@ class _CMSState extends State<CMS> {
       ),
       floatingActionButton: Container(
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            FloatingActionButton(
-              heroTag: "btn1",
-              child: const Icon(
-                CupertinoIcons.placemark_fill,
-                size: 40,
-              ),
-              backgroundColor: Colors.blueAccent,
-              onPressed: () {
-                if(Carpostionstatus == false){
-                  savePosition();
-                }else{
-                  getPosition();
-                }
-
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            FloatingActionButton(
-              heroTag: "btn2",
-              child: phoneIcon,
-              backgroundColor: Colors.blueAccent,
-              onPressed: () {
-                SystemChrome.setPreferredOrientations([
-                  DeviceOrientation.landscapeLeft,
-                  DeviceOrientation.landscapeRight,
-                ]);
-                setState(() {
-                 
-                  directionState = false;
-                });
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            FloatingActionButton(
-              heroTag: "btn3",
-              child: const Icon(
-                Icons.output_outlined,
-                size: 40,
-              ),
-              backgroundColor: Colors.blueAccent,
-              onPressed: () {
-                //顯示導航及最頂端列
-                SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-                Navigator.pop(context);
-              },
-            )
-          ])),
+             FloatingActionButton(
+          heroTag: "btn13",
+          child: const Icon(
+            Icons.picture_in_picture,
+            size: 40,
+          ),
+          backgroundColor: Colors.blueAccent,
+          onPressed: () {
+            FlPiP().enable(
+                ios: const FlPiPiOSConfig(
+                    path: 'assets/landscape.mp4', packageName: null),
+                android: const FlPiPAndroidConfig(
+                    aspectRatio: Rational.maxLandscape()));
+          },
+        ),
+         const SizedBox(
+          height: 10,
+        ),
+        FloatingActionButton(
+          heroTag: "btn1",
+          child: const Icon(
+            CupertinoIcons.placemark_fill,
+            size: 40,
+          ),
+          backgroundColor: Colors.blueAccent,
+          onPressed: () {
+            if(Carpostionstatus == false){
+              savePosition();
+            }else{
+              getPosition();
+            }
+           
+          },
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        FloatingActionButton(
+          heroTag: "btn2",
+          child: phoneIcon,
+          backgroundColor: Colors.blueAccent,
+          onPressed: () {
+            SystemChrome.setPreferredOrientations([
+              DeviceOrientation.landscapeLeft,
+              DeviceOrientation.landscapeRight,
+            ]);
+            setState(() {
+              directionState = false;
+            });
+          },
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        FloatingActionButton(
+          heroTag: "btn3",
+          child: const Icon(
+            Icons.output_outlined,
+            size: 40,
+          ),
+          backgroundColor: Colors.blueAccent,
+          onPressed: () {
+            //顯示導航及最頂端列
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+            Navigator.pop(context);
+          },
+        )
+      ])),
     );
   }
 
@@ -537,76 +559,74 @@ class _CMSState extends State<CMS> {
       ),
       floatingActionButton: Container(
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            FloatingActionButton(
-              heroTag: "btn1",
-              child: const Icon(
-                CupertinoIcons.placemark_fill,
+        FloatingActionButton(
+          heroTag: "btn1",
+          child: const Icon(
+            CupertinoIcons.placemark_fill,
+            size: 40,
+          ),
+          backgroundColor: Colors.blueAccent,
+          onPressed: () {
+            if (Carpostionstatus == false) {
+              savePosition();
+            } else {
+              getPosition();
+            }
+          },
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        FloatingActionButton(
+          heroTag: "btn2",
+          child: phoneIcon,
+          backgroundColor: Colors.blueAccent,
+          onPressed: () {
+            SystemChrome.setPreferredOrientations([
+              DeviceOrientation.portraitUp,
+              DeviceOrientation.portraitDown,
+            ]);
+            setState(() {
+              // changeWidget();
+              phoneIcon = const Icon(
+                CupertinoIcons.device_phone_landscape,
                 size: 40,
-              ),
-              backgroundColor: Colors.blueAccent,
-              onPressed: () {
-                 if(Carpostionstatus == false){
-                  savePosition();
-                }else{
-                  getPosition();
-                }
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            FloatingActionButton(
-              heroTag: "btn2",
-              child: phoneIcon,
-              backgroundColor: Colors.blueAccent,
-              onPressed: () {
-            
-                SystemChrome.setPreferredOrientations([
-                  DeviceOrientation.portraitUp,
-                  DeviceOrientation.portraitDown,
-                ]);
-                setState(() {
-                  // changeWidget();
-                  phoneIcon = const Icon(
-                    CupertinoIcons.device_phone_landscape,
-                    size: 40,
-                  );
-                  directionState = true;
-                });
+              );
+              directionState = true;
+            });
 
-                // changeWidget(context);
-              },
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            FloatingActionButton(
-              heroTag: "btn3",
-              child: const Icon(
-                Icons.output_outlined,
-                size: 40,
-              ),
-              backgroundColor: Colors.blueAccent,
-              onPressed: () {
-                if (!directionState) {
-                  //設置垂直
-                  SystemChrome.setPreferredOrientations([
-                    DeviceOrientation.portraitUp,
-                    DeviceOrientation.portraitDown,
-                  ]);
-                } else {
-                  SystemChrome.setPreferredOrientations([
-                    DeviceOrientation.portraitUp,
-                    DeviceOrientation.portraitDown,
-                  ]);
-                }
-                //顯示導航及最頂端列
-                SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-                Navigator.pop(context);
-
-              },
-            )
-          ])),
+            // changeWidget(context);
+          },
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        FloatingActionButton(
+          heroTag: "btn3",
+          child: const Icon(
+            Icons.output_outlined,
+            size: 40,
+          ),
+          backgroundColor: Colors.blueAccent,
+          onPressed: () {
+            if (!directionState) {
+              //設置垂直
+              SystemChrome.setPreferredOrientations([
+                DeviceOrientation.portraitUp,
+                DeviceOrientation.portraitDown,
+              ]);
+            } else {
+              SystemChrome.setPreferredOrientations([
+                DeviceOrientation.portraitUp,
+                DeviceOrientation.portraitDown,
+              ]);
+            }
+            //顯示導航及最頂端列
+            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+            Navigator.pop(context);
+          },
+        )
+      ])),
     );
   }
 }
