@@ -180,6 +180,30 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
+  //車輛定位
+  vehicleLocate(url) async {
+    var urlPosition = url + '?os=${prefs.get('system')}';
+
+    print(urlPosition);
+    var jwt = ',${state.accountState}';
+
+    var response = await api().apiGet(urlPosition, jwt);
+    var res = jsonDecode(utf8.decode(response.bodyBytes))['url'];
+    if (response.statusCode == 200) {
+      EasyLoading.dismiss();
+      try {
+        print(res);
+        await launch(res);
+      } catch (e) {
+        print(e.toString());
+        EasyLoading.showError(e.toString());
+      }
+    } else {
+      EasyLoading.dismiss();
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+  }
+
   String splitTextIntoChunks(String text, int chunkSize) {
     List<String> chunks = [];
     for (int i = 0; i < text.length; i += chunkSize) {
@@ -506,7 +530,12 @@ void enable() {
                             ),
                             onTap: () async {
                               EasyLoading.show(status: 'loading...');
-                              findPlacesQuickly(tool['url']);
+                              if(tool['value'] == "汽車定位"){
+                                vehicleLocate(tool['url']);
+                              }
+                              else{
+                                findPlacesQuickly(tool['url']);
+                              }
                             },
                           ),
                         );
@@ -654,7 +683,12 @@ void enable() {
                             ),
                             onTap: () async {
                               EasyLoading.show(status: 'loading...');
-                              findPlacesQuickly(tool['url']);
+                              if(tool['value'] == "機車定位"){
+                                vehicleLocate(tool['url']);
+                              }
+                              else{
+                                findPlacesQuickly(tool['url']);
+                              }
                             },
                           ),
                         );
