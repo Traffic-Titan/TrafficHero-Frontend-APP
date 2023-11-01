@@ -25,12 +25,12 @@ class _BusRouteDetailState extends State<BusRouteDetail> {
     });
   }
   // 回傳下一站的箭頭符號，並判斷是否為最終站
-  IconData? arrowReturn(element,List<dynamic> list){
-    if(list.last == element){
-      return null;
-    }
-    return CupertinoIcons.arrow_down_square_fill;
-  }
+  // IconData? arrowReturn(element,List<dynamic> list){
+  //   if(list.last == element){
+  //     return null;
+  //   }
+  //   return CupertinoIcons.arrow_down_square_fill;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -41,40 +41,32 @@ class _BusRouteDetailState extends State<BusRouteDetail> {
         // title: Text(),
         backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
       ),
-      body:
-        ListView.builder(
+      body:ListView.builder(
           itemCount: routeDetail_Array.length,
           itemBuilder: (context,index){
             var data = routeDetail_Array[index];
             return ListTile(
-              title: Column(
-                children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center, //Center Row contents horizontally
-                      crossAxisAlignment: CrossAxisAlignment.center, //Center Row contents vertically
-                      children: [
-                        Expanded(
-                            flex: 3,
-                            child: Text(data['StopName'],)
-                        ),
-                        Expanded(
-                          flex: 4,
-                          child: Image.asset('assets/publicTransportIcon/BusStop.png'),
-                        ),
-                        Expanded(
-                            flex: 3,
-                            child: Text(data['EstimateTime'].toString()+"分 到站"),
-                        ),
-                      ],
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: Text(data['StopName']),
                     ),
-                    Icon(
-                      size:40, arrowReturn(data,routeDetail_Array)
+                    Expanded(
+                      flex: 4,
+                      child: (index == routeDetail_Array.length-1) ? (Image.asset('assets/publicTransportIcon/routeDot.png',height: 35,)):(Image.asset('assets/publicTransportIcon/routeLine.png',height: 60,)),
                     ),
-                ],
-              ),
+                    Expanded(
+                      flex: 3,
+                      child: (data['EstimateTime'] == '未發車') ? (Text(data['EstimateTime'])):(Text(data['EstimateTime'].toString() + "分 到站")),
+                    ),
+                  ],
+                )
             );
           },
-        )
+        ),
     );
   }
 }

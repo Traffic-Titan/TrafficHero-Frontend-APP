@@ -136,6 +136,8 @@ flutter:
     - assets/AppIcon.png
     - assets/
     - assets/publicTransportIcon/BusStop.png
+    - assets/publicTransportIcon/routeDot.png
+    - assets/publicTransportIcon/routeLine.png
 
 
   # The following line ensures that the Material Icons font is

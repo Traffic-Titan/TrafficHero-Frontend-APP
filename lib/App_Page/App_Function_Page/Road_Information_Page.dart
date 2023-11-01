@@ -44,11 +44,6 @@ class _Road_InformationState extends State<Road_Information> {
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
     position = await geolocator().updataPosition();
-    await searchParkingInfo();
-    await searchRoadAccident();
-    await searchRoadConstruction();
-    await searchTrafficControl();
-    await searchTrafficJam();
   }
   @override
   void initState() {
@@ -199,8 +194,8 @@ class _Road_InformationState extends State<Road_Information> {
     );
   }
   //新增路況標記
-  void addRoadInfoMarkers() {
-    print(position.toString());
+  Future<void> addRoadInfoMarkers() async {
+        print(position.toString());
     Marker marker;
     int i;
     print('list:${_filterRoadInfoItems.toString()}');
@@ -210,6 +205,7 @@ class _Road_InformationState extends State<Road_Information> {
       switch(s){
         case '停車場資訊':
           print('add停車場資訊');
+          await searchParkingInfo();
           for(i =0;i< parkingInfoList.length;i++){
             marker=Marker(
                   markerId: MarkerId(parkingInfoList[i]['CarParkName']),
@@ -228,6 +224,7 @@ class _Road_InformationState extends State<Road_Information> {
           break;
         case '交通管制':
           print('add交通管制');
+          await searchTrafficControl();
           for(i =0;i< trafficControlList.length;i++){
             marker=Marker(
               markerId: MarkerId(trafficControlList[i]['areaNm']),
@@ -246,6 +243,7 @@ class _Road_InformationState extends State<Road_Information> {
           break;
         case '交通事故':
           print('add交通事故');
+          await searchRoadAccident();
           for(i =0;i< roadAccidentList.length;i++){
             marker=Marker(
               markerId: MarkerId(roadAccidentList[i]['areaNm']),
@@ -264,6 +262,7 @@ class _Road_InformationState extends State<Road_Information> {
           break;
         case '道路施工':
           print('add道路施工');
+          await searchRoadConstruction();
           for(i =0;i< roadConstructionList.length;i++){
             marker=Marker(
               markerId: MarkerId(roadConstructionList[i]['areaNm']),
@@ -282,6 +281,7 @@ class _Road_InformationState extends State<Road_Information> {
           break;
         case '道路壅塞':
           print('add道路壅塞');
+          await searchTrafficJam();
           for(i =0;i< trafficJamList.length;i++){
             print(double.parse(trafficJamList[i]['Latitude'].toString()));
             marker=Marker(
