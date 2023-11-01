@@ -42,6 +42,12 @@ List<Map<String, String>> fastLocationCar = [
     'img': 'assets/fastLocation/chargingStation.png',
     'url': '後端API'
   },
+  {
+    'value': '汽車定位',
+    'title': '汽車定位',
+    'img': 'assets/fastLocation/car-placeholder.png',
+    'url': dotenv.env['GetParkingLocation'].toString()
+  },
 ];
 
 List<Map<String, String>> fastLocationScooter = [
@@ -62,6 +68,12 @@ List<Map<String, String>> fastLocationScooter = [
     'title': '換電站',
     'img': 'assets/fastLocation/batteryStop.png',
     'url': '後端API'
+  },
+  {
+    'value': '機車定位',
+    'title': '機車定位',
+    'img': 'assets/fastLocation/scooter-locate.png',
+    'url': dotenv.env['GetParkingLocation'].toString()
   },
 
 ];
