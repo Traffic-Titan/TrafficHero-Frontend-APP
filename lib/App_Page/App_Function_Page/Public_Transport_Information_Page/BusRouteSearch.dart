@@ -71,8 +71,9 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
       appBar: new AppBar(
         backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
         title: Container(
+          margin: EdgeInsets.only(top: 20,bottom: 20),
           decoration: BoxDecoration(
-              color: const Color.fromRGBO(57, 136, 207, 1),
+              color: const Color.fromRGBO(187, 214, 239, 1),
               borderRadius: BorderRadius.circular(30)),
           child: Center(
               child:DropdownButtonExample()
@@ -94,10 +95,11 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
                   decoration: InputDecoration(
                     fillColor: Color.fromRGBO(120, 173, 222, 1),
                     hintText: "搜尋公車班次或號碼",
+                    hintStyle: TextStyle(color: Colors.white,fontSize: 20),
                     filled: true,
                     enabledBorder:  OutlineInputBorder(
-                      borderSide: BorderSide(width: 2, color: Color.fromRGBO(24, 60, 126, 1),),
-                      borderRadius: BorderRadius.circular(15),
+                      borderSide: BorderSide(width: 2, color:  Color.fromRGBO(120, 173, 222, 1)),
+                      borderRadius: BorderRadius.circular(80),
                     ),
                   ),
                   onChanged: (inputText)  {
@@ -125,26 +127,22 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
               itemBuilder: (context,index){
                 var data = searchResult[index];
                 return ListTile(
-                  title: Column(
-                    children: [
-                      TextButton(
-                          onPressed: (){
-
-                            resultDetail(data['route'],dropDownValue_En);
-
-                            //透過延遲進入頁面，使頁面能夠順利讀取
-                            Future.delayed(Duration(seconds: 3),(){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => BusRouteDetail()));
-                            });
-                          },
-                          child: Column(
-                            children: [
-                              Text(data['route']),
-                              Text(data['description'])],
-                          )
-                      ),
-                    ],
+                  leading: Icon(Icons.directions_bus_rounded,size: 50,color:Color.fromRGBO(29, 73, 153, 1),),
+                  title: TextButton(
+                      onPressed: (){
+                        resultDetail(data['route'],dropDownValue_En);
+                        //透過延遲進入頁面，使頁面能夠順利讀取
+                        Future.delayed(Duration(seconds: 3),(){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => BusRouteDetail()));
+                        });
+                      },
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(data['route'],style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 20),),
+                      )
                   ),
+                  subtitle: Text(data['description'],style: TextStyle(fontSize: 18)),
+                  // trailing: 收藏圖示,
                 );
               },
             )
@@ -167,11 +165,10 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: dropdownValue,
-      // hint:new Text("請選擇縣市"),// 当没有初始值时显示
       elevation: 10,//设置阴影
       style: new TextStyle(//设置文本框里面文字的样式
           color: Colors.black,
-          fontSize: 25
+          fontSize: 20
       ),
       iconSize: 30,//设置三角标icon的大小
       // underline: Container(height: 1,color: Colors.blue,),// 下划线

@@ -127,6 +127,7 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
           builder: (BuildContext context,ScrollController scrollController) {
             return Container(
               color: Color.fromRGBO(222, 235, 247, 1),
+              padding: EdgeInsets.only(right: 15,left: 15),
               child: Column(
                 children: [
                   SizedBox(height: 10,),
@@ -148,45 +149,52 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
 
                     ),
                   ),
-                  SizedBox(height: 10,),
-                  Container(
-                      width:  screenWidth * 0.9,
-                      child: Column(
+                  Expanded(
+                      child: ListView(
+                        controller: scrollController,
                         children: [
-                          TextField(
-                            decoration: InputDecoration(
-                              hintText: '搜尋站點',
-                              hintStyle: TextStyle(color: Color.fromRGBO(47, 125, 195, 1),),
-                            ),
-                          ),
                           Container(
-                            height: 50,
-                            color: Color.fromRGBO(47, 125, 195, 1),
-                            padding: EdgeInsets.only(left: 18),
-                            child: Row(
-                              children: [
-                                Container(
-                                  width: screenWidth * 0.55,
-                                  child: Text('附近站點',style:TextStyle(color: Colors.white,fontSize: 20),),
-                                ),
-                                Container(
-                                  width: screenWidth * 0.1,
-                                  child: Text('可歸還數',style:TextStyle(color: Colors.white,),),
-                                ),
-                                Container(
-                                  width: screenWidth * 0.1,
-                                  child: Text('可租借數',style:TextStyle(color: Colors.white,),),
-                                ),
-                              ],
-                            ),
-                          ),
+                              width:  screenWidth * 0.9,
+                              child: Column(
+                                children: [
+                                  TextField(
+                                    decoration: InputDecoration(
+                                      hintText: '搜尋站點',
+                                      hintStyle: TextStyle(color: Color.fromRGBO(47, 125, 195, 1),),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 50,
+                                    color: Color.fromRGBO(47, 125, 195, 1),
+                                    padding: EdgeInsets.only(left: 18),
+                                    child: Row(
+                                      children: [
+                                        Container(
+                                          width: screenWidth * 0.55,
+                                          child: Text('附近站點',style:TextStyle(color: Colors.white,fontSize: 20),),
+                                        ),
+                                        Container(
+                                          width: screenWidth * 0.1,
+                                          child: Text('可歸還數',style:TextStyle(color: Colors.white,),),
+                                        ),
+                                        Container(
+                                          width: screenWidth * 0.1,
+                                          child: Text('可租借數',style:TextStyle(color: Colors.white,),),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
 
+                                ],
+                              )
+                          ),
                         ],
                       )
                   ),
                   Expanded(child: nearbyStation(scrollController),),
                 ],
-              ),
+            )
+
             );
           },
           initialChildSize: draggleHeight, // 初始高度比例
