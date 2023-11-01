@@ -18,6 +18,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late stateManager state;
+    late SharedPreferences prefs;
   var screenWidth;
   var screenHeight;
   var scrollview = true;
@@ -38,8 +39,10 @@ class _Tourist_InformationState extends State<Tourist_Information>
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    state = Provider.of<stateManager>(context, listen: false);
     screenWidth = MediaQuery.of(context).size.width;
+    state = Provider.of<stateManager>(context, listen: false);
+    prefs = await SharedPreferences.getInstance();
+   
     screenHeight = MediaQuery.of(context).size.height;
     state.changePositionNow(await geolocator().updataPosition());
     position = state.positionNow;
@@ -87,7 +90,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
         print(_tabController.index);
         break;
     }
-    url += '?latitude=${latitude}&longitude=${longitude}';
+    url += '?latitude=${latitude}&longitude=${longitude}&mode=${changeMode(state.modeName)}&os=${prefs.get('system')}';
     try {
       response = await api().apiGet(url, jwt);
     } catch (e) {
@@ -142,7 +145,15 @@ class _Tourist_InformationState extends State<Tourist_Information>
     timer?.cancel();
   }
 
-
+  changeMode(mode) {
+    if (mode == 'car') {
+      return 'Car';
+    } else if (mode == 'scooter') {
+      return 'Scooter';
+    }else{
+      return 'Transit';
+    }
+  }
 
 
 
@@ -170,7 +181,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
         print(_tabController.index);
         break;
     }
-    url += '?latitude=${position.latitude}&longitude=${position.longitude}';
+    url += '?latitude=${position.latitude}&longitude=${position.longitude}&mode=${ changeMode(state.modeName) }&os=${prefs.get('system')}';
     try {
       response = await api().apiGet(url, jwt);
     } catch (e) {
@@ -481,16 +492,22 @@ class _Tourist_InformationState extends State<Tourist_Information>
                         width: 10,
                       ),
                       Visibility(
-                        visible: list['map_url'] == '' ? false : true,
+                        visible: list['google_maps_url'] == '' ? false : true,
                         child: InkWell(
                           onTap: () {
-                            launch(list['map_url']);
+                            launch(list['google_maps_url']);
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14.0),
                             ),
-                            child: Text('導航'),
+                            child: SizedBox(width: 100,height: 95,child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text('導航'),
+                              ],
+                            ),),
                           ),
                         ),
                       ),
@@ -558,18 +575,20 @@ class _Tourist_InformationState extends State<Tourist_Information>
               ),
             ),
             ListTile(
-              leading: Text('${list['weather']['weather']}'),
+              leading: Image.network(list['weather']['weather_icon_url']),
               title: Text(
                 '目前溫度：${list['weather']['temperature']}',
                 style: TextStyle(fontSize: 20),
               ),
               subtitle: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text('今天最低溫：${list['weather']['the_lowest_temperature']}'),
-                  Text('，今天最高溫：${list['weather']['the_highest_temperature']}')
+                  Text('今天最高溫：${list['weather']['the_highest_temperature']}')
                 ],
               ),
-              trailing: Image.network(list['weather']['weather_icon_url']),
+             
             ),
             SizedBox(
               height: 3,
@@ -665,6 +684,14 @@ class _Tourist_InformationState extends State<Tourist_Information>
                                           color:
                                               Color.fromRGBO(24, 60, 126, 1)),
                                     ),
+                                    // Text(
+                                    //   '與景點距離${list['phone']} 公里',
+                                    //   overflow: TextOverflow.ellipsis,
+                                    //   style: TextStyle(
+                                    //       fontSize: 10,
+                                    //       color:
+                                    //           Color.fromRGBO(24, 60, 126, 1)),
+                                    // ),
                                   ],
                                 ),
                               ),

@@ -25,13 +25,17 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   var homePageModel;
   var screenWidth;
   var fastTool;
+  
   var nearbyRoadCondition;
   late AnimationController controller;
   var count = 0;
   var nearbyStationBus, nearbyStationBike, nearbyStationTrain;
   var second = 1;
   var trafficWarningWidgetCount;
-
+   int currentIndex = 0;
+  Timer? timers;
+  var countss = 0;
+   var secondroad = 2;
   final PageController _controller = PageController();
 
   Timer? timerBus, timerBike, timerTrain, timer,trafficWarningWidgettimer;
@@ -39,17 +43,14 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   bool _timer = true;
   int timeCount = 1;
 
-  void listener() {
-    if (FlPiP().status.value == PiPStatus.enabled) {
-      FlPiP().toggle(AppState.background);
-    }
-  }
+
 
   @override
   void dispose() {
     super.dispose();
-    FlPiP().status.removeListener(listener);
+   
       stoptimer();
+      trafficWarningWidgettimerStop();
    
   }
 
@@ -72,7 +73,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     if (state.modeName == 'car') {
       stoptimer();
       startTimer();
-
+     
       setState(() {
         fastTool = Tool.fastLocationCar;
         carMode = true;
@@ -115,8 +116,10 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
 
   void initState() {
     timerBus?.cancel();
-     FlPiP().status.addListener(listener);
+     
     super.initState();
+
+
   }
 
   //修改大眾運輸頁面營運通組顏色
@@ -271,21 +274,32 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
 
 
 
-  //  trafficWarningWidgetTimer(list) {
-  //   var count  = list.length;
-  //   trafficWarningWidgettimer = Timer.periodic(Duration(seconds: 1), (_) async {
-  //     if(list.length != 0){
-  //       count--;
-  //       return list[count];
-  //     }
-  //   });
-  // }
+  int trafficWarningWidgetTimer(list) {
+  var count = 0;
+  trafficWarningWidgettimer = Timer.periodic(Duration(seconds: 1), (timer) {
+    if (count == list.length) {
+      setState(() {
+        count = 0;
+      });
+     
+    } else {
+      setState(() {
+        countss ++;
+      });
+    
+    }
+  });
+  return count;
+}
+
 
   void stoptimer() {
     timer?.cancel();
   }
 
-
+void trafficWarningWidgettimerStop(){
+  trafficWarningWidgettimer?.cancel();
+}
   void update() async {
     try {
       setState(() {
@@ -305,7 +319,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
 
 //頁面組件
   //天氣widget
-  InkWell weatherWidget() {
+  Widget weatherWidget() {
     return InkWell(
       child: SizedBox(
         width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
@@ -368,7 +382,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                     Image.network(
                       weather['weather_icon_url'].toString(),
                       width: screenWidth - 30 > 600 ? 170 : screenWidth * 0.25,
-                      fit: BoxFit.contain,
+                      height: screenWidth - 30 > 600 ? 170 : screenWidth * 0.25,
                     ),
                   ],
                 ),
@@ -388,15 +402,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   }
 
 
-  /// 开启画中画
-/// Open picture-in-picture
-void enable() {
-  FlPiP().enable(
-      ios: FlPiPiOSConfig(),
-      android: FlPiPAndroidConfig(
-          aspectRatio: const Rational.maxLandscape()));
-          FlPiP().toggle(AppState.background);
-}
+
 
   //工具列widget
   Widget toolWidget() {
@@ -704,6 +710,15 @@ void enable() {
     );
   }
 
+
+  len(list){
+    var count = list.length;
+    var start = 0;
+    for(var i = 0;i<list.length;i++){
+      return i;
+    }
+  }
+
   //路況速報
   Widget trafficWarningWidget() {
     return Card(
@@ -749,7 +764,7 @@ void enable() {
                             ),
                             ListTile(
                               title:
-                                  Column(children: [Text('data')]),
+                                  Column(children: [Text(list['content'][countss])]),
                             )
                           ],
                         );
@@ -811,7 +826,12 @@ void enable() {
                               operationalStatus['intercity'][index];
                           return ListTile(
                             title: Text(intercity['name']),
-                            leading: Image.network(intercity['logo_url']),
+                            leading: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [Image.network(intercity['logo_url'],
+                            width: (screenWidth - 30 > 600 ? 600 : screenWidth - 30) * 0.12,
+                            )],) ,
                             subtitle: Text(intercity['status_text']),
                             trailing: Column(
                               children: [

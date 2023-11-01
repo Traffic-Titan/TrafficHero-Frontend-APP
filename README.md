@@ -309,3 +309,8 @@ Valid until: Wednesday, August 10, 2044
 App 預覽
 
 ![Alt text](/readme_image/image25.png)
+
+
+
+ class MainActivity: FlutterActivity() {
+}

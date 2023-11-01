@@ -1,6 +1,5 @@
 // ignore_for_file: file_names, sort_child_properties_last, unused_element, unused_local_variable, override_on_non_overriding_member, prefer_typing_uninitialized_variables, avoid_print, duplicate_ignore, avoid_unnecessary_containers
-
-import 'package:traffic_hero/imports.dart';
+import 'package:traffic_hero/Imports.dart';
 import 'package:geocoding/geocoding.dart';
 
 class CMS extends StatefulWidget {
@@ -11,6 +10,7 @@ class CMS extends StatefulWidget {
 }
 
 class _CMSState extends State<CMS> {
+    var screenWidth;
   var cmsList_car = [];
   late stateManager state;
   late SharedPreferences prefs;
@@ -57,12 +57,13 @@ class _CMSState extends State<CMS> {
   // String displayImg='assets/fastLocation/transparent.png';
   // 預設圖片：全黑背景圖片
   String displayImg =
-      'https://pic01.scbao.com/160312/240372-16031211454363-lp.jpg';
+      'https://www.colorhexa.com/000000.png';
   Timer? timer;
   StreamSubscription<Position>? _positionStreamSubscription;
   late List<Placemark> placemarks;
   var positionNow;
   String speed = '0';
+  var fontSize ;
 
 //當頁面創造時執行
   @override
@@ -70,6 +71,8 @@ class _CMSState extends State<CMS> {
     super.didChangeDependencies();
     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
+        screenWidth = MediaQuery.of(context).size.width;
+        fontSize = screenWidth * 0.05;
     _startTrackingPosition();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.top]);
@@ -129,11 +132,10 @@ class _CMSState extends State<CMS> {
   }
 
   location() async {
-    positionNow = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.best,
-    );
-
     try {
+      positionNow = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.best,
+      );
       setState(() {
         var speed1 = positionNow!.speed.toInt().ceil() <= 0
             ? 0
@@ -325,7 +327,7 @@ class _CMSState extends State<CMS> {
                   Text(
                     displayText1,
                     style: TextStyle(
-                      fontSize: 35,
+                      fontSize: fontSize,
                       color: HexColor(Text1Color),
                     ),
                     textAlign: TextAlign.center,
@@ -337,7 +339,7 @@ class _CMSState extends State<CMS> {
                       Text(
                         displayText2,
                         style: TextStyle(
-                          fontSize: 35,
+                          fontSize: fontSize,
                           color: HexColor(Text2Color),
                         ),
                         softWrap: true,
@@ -345,7 +347,7 @@ class _CMSState extends State<CMS> {
                       Text(
                         displayText3,
                         style: TextStyle(
-                          fontSize: 35,
+                          fontSize: fontSize,
                           color: HexColor(Text3Color),
                         ),
                         softWrap: true,
@@ -355,7 +357,7 @@ class _CMSState extends State<CMS> {
                   Text(
                     displayText4,
                     style: TextStyle(
-                      fontSize: 35,
+                      fontSize: fontSize,
                       color: HexColor(Text4Color),
                     ),
                     textAlign: TextAlign.center,
@@ -373,7 +375,7 @@ class _CMSState extends State<CMS> {
                   Text(
                     displayText6,
                     style: TextStyle(
-                      fontSize: 35,
+                      fontSize: fontSize,
                       color: HexColor(Text6Color),
                     ),
                     textAlign: TextAlign.center,
@@ -385,7 +387,7 @@ class _CMSState extends State<CMS> {
       ),
       floatingActionButton: Container(
           child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-             FloatingActionButton(
+        FloatingActionButton(
           heroTag: "btn13",
           child: const Icon(
             Icons.picture_in_picture,
@@ -393,14 +395,13 @@ class _CMSState extends State<CMS> {
           ),
           backgroundColor: Colors.blueAccent,
           onPressed: () {
-            FlPiP().enable(
-                ios: const FlPiPiOSConfig(
-                    path: 'assets/landscape.mp4', packageName: null),
-                android: const FlPiPAndroidConfig(
-                    aspectRatio: Rational.maxLandscape()));
+              Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>CMSPIP()));
           },
         ),
-         const SizedBox(
+        const SizedBox(
           height: 10,
         ),
         FloatingActionButton(
@@ -411,12 +412,11 @@ class _CMSState extends State<CMS> {
           ),
           backgroundColor: Colors.blueAccent,
           onPressed: () {
-            if(Carpostionstatus == false){
+            if (Carpostionstatus == false) {
               savePosition();
-            }else{
+            } else {
               getPosition();
             }
-           
           },
         ),
         const SizedBox(
@@ -460,11 +460,11 @@ class _CMSState extends State<CMS> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
+        mainAxisAlignment: MainAxisAlignment.start, // 垂直方向置中
         crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
         children: [
           Expanded(
-            flex: 3,
+            
             //時速表
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -481,17 +481,20 @@ class _CMSState extends State<CMS> {
             ),
           ),
           Expanded(
-              flex: 7,
               //CMS
-              child: Column(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
-                crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
+                crossAxisAlignment: CrossAxisAlignment.start, // 水平方向置中
                 children: [
                   Image.network(
                     displayImg,
                     height: 80,
                   ),
-                  Text(
+                  SizedBox(width: 10,),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                     Text(
                     displayText1,
                     style: TextStyle(
                       fontSize: 35,
@@ -501,7 +504,8 @@ class _CMSState extends State<CMS> {
                     softWrap: true,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         displayText2,
@@ -521,8 +525,8 @@ class _CMSState extends State<CMS> {
                       ),
                     ],
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                         Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
                         displayText4,
@@ -553,12 +557,17 @@ class _CMSState extends State<CMS> {
                       ),
                     ],
                   ),
+                  ],),
+
+                 
+                  
+           
                 ],
               )),
         ],
       ),
       floatingActionButton: Container(
-          child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+          child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
         FloatingActionButton(
           heroTag: "btn1",
           child: const Icon(
@@ -575,7 +584,7 @@ class _CMSState extends State<CMS> {
           },
         ),
         const SizedBox(
-          height: 10,
+          width: 10,
         ),
         FloatingActionButton(
           heroTag: "btn2",
@@ -599,7 +608,7 @@ class _CMSState extends State<CMS> {
           },
         ),
         const SizedBox(
-          height: 10,
+        width: 10,
         ),
         FloatingActionButton(
           heroTag: "btn3",
