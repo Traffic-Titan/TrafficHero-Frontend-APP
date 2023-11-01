@@ -1026,6 +1026,7 @@ void enable() {
         itemCount: nearbyStationTrain.length,
         itemBuilder: (context, index) {
           var list = nearbyStationTrain[index];
+          // print(list);
           return Column(
             children: [
               SizedBox(
@@ -1046,11 +1047,11 @@ void enable() {
                     child: Column(
                       children: [
                         Text(
-                          list['TrainTypeName'],
+                          (list['TrainTypeName'] == null) ? "無列車" : list['TrainTypeName'],
                           style: TextStyle(fontSize: 13),
                         ),
                         Text(
-                          list['TrainNo'],
+                          (list['TrainNo'] == null) ? "無車號" : list['TrainNo'],
                           style: TextStyle(fontSize: 20),
                         ),
                       ],
@@ -1059,10 +1060,10 @@ void enable() {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        '往' + list['EndingStationName'],
+                        (list['TrainNo'] == null) ? "無終點站" : '往' + list['EndingStationName'],
                       ),
                       Text(
-                          '${DateFormat("'於'H':'mm'抵達'").format(DateFormat("hh:mm:ss").parse(list['ScheduleDepartureTime'])).toString()}'),
+                        (list['TrainNo'] == null) ? "無抵達時間" :'${DateFormat("'於'H':'mm'抵達'").format(DateFormat("hh:mm:ss").parse(list['ScheduleDepartureTime'])).toString()}'),
                     ]),
               ),
             ],

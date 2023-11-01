@@ -39,7 +39,7 @@ Widget publicTransportInfoBus(context){
             ),
             Expanded(
               child: ListView.builder(
-                  itemCount:(state.nearbyStationBus == null) ? 0 : state.nearbyStationBus.length-1,
+                  itemCount:(state.nearbyStationBus.length == 0) ? 0 : state.nearbyStationBus.length-1,
                   itemBuilder: (context, index) {
                     var list =state.nearbyStationBus[index];
                     return ListTile(
