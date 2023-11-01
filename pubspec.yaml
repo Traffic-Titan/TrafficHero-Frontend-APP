@@ -30,7 +30,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-
+    
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
@@ -73,6 +73,12 @@ dependencies:
   card_loading: ^0.3.0
   syncfusion_flutter_datepicker: ^23.1.41
   flutter_typeahead: ^4.8.0
+  flutter_in_app_pip: ^1.7.3
+  fl_pip: ^0.1.1
+  flutter_waya: ^8.5.0
+
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -127,6 +133,8 @@ flutter:
     - assets/roadInfo/trafficControlImg.png
     - assets/roadInfo/trafficjamImg.png
     - assets/roadInfo/roadConstructionImg.png
+    - assets/AppIcon.png
+    - assets/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

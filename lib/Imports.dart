@@ -28,9 +28,12 @@ export 'package:shared_preferences/shared_preferences.dart';
 export 'package:flutter_config/flutter_config.dart';
 export 'package:flutter_config_plus/flutter_config_plus.dart';
 export 'package:google_maps_flutter/google_maps_flutter.dart';
-export  'package:device_info_plus/device_info_plus.dart';
+export 'package:device_info_plus/device_info_plus.dart';
 export 'package:card_loading/card_loading.dart';
 export 'package:syncfusion_flutter_datepicker/datepicker.dart';
+export 'package:flutter/services.dart';
+export 'package:flutter_in_app_pip/flutter_in_app_pip.dart';
+export 'package:fl_pip/fl_pip.dart';
 
 
 //引入頁面
@@ -84,4 +87,3 @@ export 'package:traffic_hero/Components/Choices.dart';
 export 'package:traffic_hero/Components/DropDown_Select.dart';
 export 'package:traffic_hero/Components/Tool.dart';
 export 'package:flutter/services.dart' hide Hero;
-
