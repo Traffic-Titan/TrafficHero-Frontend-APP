@@ -838,6 +838,10 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                                           ? 600
                                           : screenWidth - 30) *
                                       0.12,
+                                      height: (screenWidth - 30 > 600
+                                          ? 600
+                                          : screenWidth - 30) *
+                                      0.12,
                                 )
                               ],
                             ),
@@ -886,7 +890,14 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                           final local = operationalStatus['local'][index];
                           return ListTile(
                             title: Text(local['name']),
-                            leading: Image.network(local['logo_url']),
+                            leading: Image.network(local['logo_url'], width: (screenWidth - 30 > 600
+                                          ? 600
+                                          : screenWidth - 30) *
+                                      0.12,
+                                      height: (screenWidth - 30 > 600
+                                          ? 600
+                                          : screenWidth - 30) *
+                                      0.12,),
                             subtitle: Text(local['status_text']),
                             trailing: Column(
                               children: [
