@@ -32,6 +32,8 @@ class _CMSState extends State<CMS> {
   void listener() {
     if (FlPiP().status.value == PiPStatus.enabled) {
       FlPiP().toggle(AppState.background);
+    }else{
+      FlPiP().toggle(AppState.foreground);
     }
   }
 
@@ -182,7 +184,7 @@ class _CMSState extends State<CMS> {
         speed = speed1.toString();
       });
     } catch (e) {
-      EasyLoading.showError(e.toString());
+      print(e);
     }
   }
 

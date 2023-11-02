@@ -175,8 +175,9 @@ class _Tourist_InformationState extends State<Tourist_Information>
         print(_tabController.index);
         break;
     }
-    url += '?latitude=${position.latitude}&longitude=${position.longitude}&mode=${ changeMode(state.modeName) }&os=${prefs.get('system')}';
+    
     try {
+      url += '?latitude=${position.latitude}&longitude=${position.longitude}&mode=${ changeMode(state.modeName) }&os=${prefs.get('system')}';
       response = await api().apiGet(url, jwt);
     } catch (e) {
       print(e);
@@ -478,7 +479,13 @@ class _Tourist_InformationState extends State<Tourist_Information>
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14.0),
                             ),
-                            child: Text('網站'),
+                            child: SizedBox(width: 100,height: 95,child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text('網站'),
+                              ],
+                            ),),
                           ),
                         ),
                       ),
