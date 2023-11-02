@@ -58,23 +58,23 @@ class _Road_InformationState extends State<Road_Information> {
 // 初始化 customIcon
   Future<void> _initCustomImg() async {
     ParkingInfoImg = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(30, 30)),
+      ImageConfiguration(size: Size(10, 10)),
       'assets/roadInfo/parkingInfoImg.png',
     );
     TrafficControlImg = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(30, 30)),
+      ImageConfiguration(size: Size(10, 10)),
       'assets/roadInfo/trafficControlImg.png',
     );
     RoadAccidentImg = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(30, 30)),
+      ImageConfiguration(size:Size(10, 10)),
       'assets/roadInfo/roadAccidentImg.png',
     );
     RoadConstructionImg = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(30, 30)),
+      ImageConfiguration(size: Size(10, 10)),
       'assets/roadInfo/roadConstructionImg.png',
     );
     TrafficJamImg = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(30, 30)),
+      ImageConfiguration(size: Size(10, 10)),
       'assets/roadInfo/trafficjamImg.png',
     );
     // 一旦 customIcon 初始化完成，触发重建以使用它
