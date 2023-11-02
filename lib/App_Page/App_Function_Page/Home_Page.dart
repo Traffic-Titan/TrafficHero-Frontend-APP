@@ -25,33 +25,31 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   var homePageModel;
   var screenWidth;
   var fastTool;
-  
+  CarouselController buttonCarouselController = CarouselController();
+
   var nearbyRoadCondition;
   late AnimationController controller;
   var count = 0;
   var nearbyStationBus, nearbyStationBike, nearbyStationTrain;
   var second = 1;
   var trafficWarningWidgetCount;
-   int currentIndex = 0;
+  int currentIndex = 0;
   Timer? timers;
   var countss = 0;
-   var secondroad = 2;
+  var secondroad = 2;
   final PageController _controller = PageController();
 
-  Timer? timerBus, timerBike, timerTrain, timer,trafficWarningWidgettimer;
+  Timer? timerBus, timerBike, timerTrain, timer, trafficWarningWidgettimer;
   Timer? counter;
   bool _timer = true;
   int timeCount = 1;
 
-
-
   @override
   void dispose() {
     super.dispose();
-   
-      stoptimer();
-      trafficWarningWidgettimerStop();
-   
+
+    stoptimer();
+    trafficWarningWidgettimerStop();
   }
 
   @override
@@ -73,7 +71,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     if (state.modeName == 'car') {
       stoptimer();
       startTimer();
-     
+
       setState(() {
         fastTool = Tool.fastLocationCar;
         carMode = true;
@@ -116,10 +114,8 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
 
   void initState() {
     timerBus?.cancel();
-     
+
     super.initState();
-
-
   }
 
   //修改大眾運輸頁面營運通組顏色
@@ -260,46 +256,41 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
           startTimer();
         } catch (e) {
           try {
-          setState(() {
-            second = 15;
-          });
-          stoptimer();
-          startTimer();
-        } catch (e) {}
+            setState(() {
+              second = 15;
+            });
+            stoptimer();
+            startTimer();
+          } catch (e) {}
         }
       }
     });
   }
 
-
-
-
   int trafficWarningWidgetTimer(list) {
-  var count = 0;
-  trafficWarningWidgettimer = Timer.periodic(Duration(seconds: 1), (timer) {
-    if (count == list.length) {
-      setState(() {
-        count = 0;
-      });
-     
-    } else {
-      setState(() {
-        countss ++;
-      });
-    
-    }
-  });
-  return count;
-}
-
+    var count = 0;
+    trafficWarningWidgettimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (count == list.length) {
+        setState(() {
+          count = 0;
+        });
+      } else {
+        setState(() {
+          countss++;
+        });
+      }
+    });
+    return count;
+  }
 
   void stoptimer() {
     timer?.cancel();
   }
 
-void trafficWarningWidgettimerStop(){
-  trafficWarningWidgettimer?.cancel();
-}
+  void trafficWarningWidgettimerStop() {
+    trafficWarningWidgettimer?.cancel();
+  }
+
   void update() async {
     try {
       setState(() {
@@ -392,7 +383,6 @@ void trafficWarningWidgettimerStop(){
         ),
       ),
       onTap: () {
-         
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -400,9 +390,6 @@ void trafficWarningWidgettimerStop(){
       },
     );
   }
-
-
-
 
   //工具列widget
   Widget toolWidget() {
@@ -536,10 +523,9 @@ void trafficWarningWidgettimerStop(){
                             ),
                             onTap: () async {
                               EasyLoading.show(status: 'loading...');
-                              if(tool['value'] == "汽車定位"){
+                              if (tool['value'] == "汽車定位") {
                                 vehicleLocate(tool['url']);
-                              }
-                              else{
+                              } else {
                                 findPlacesQuickly(tool['url']);
                               }
                             },
@@ -689,10 +675,9 @@ void trafficWarningWidgettimerStop(){
                             ),
                             onTap: () async {
                               EasyLoading.show(status: 'loading...');
-                              if(tool['value'] == "機車定位"){
+                              if (tool['value'] == "機車定位") {
                                 vehicleLocate(tool['url']);
-                              }
-                              else{
+                              } else {
                                 findPlacesQuickly(tool['url']);
                               }
                             },
@@ -710,11 +695,10 @@ void trafficWarningWidgettimerStop(){
     );
   }
 
-
-  len(list){
+  len(list) {
     var count = list.length;
     var start = 0;
-    for(var i = 0;i<list.length;i++){
+    for (var i = 0; i < list.length; i++) {
       return i;
     }
   }
@@ -763,8 +747,26 @@ void trafficWarningWidgettimerStop(){
                               ),
                             ),
                             ListTile(
-                              title:
-                                  Column(children: [Text(list['content'][countss])]),
+                              title: Column(children: [
+                                Container(
+                                    height: 30,
+                                    width: screenWidth - 30 > 600
+                                        ? 600
+                                        : screenWidth - 30,
+                                    child: CarouselSlider.builder(
+                                      itemCount: list['content'].length,
+                                      options: CarouselOptions(
+                                        aspectRatio: 2.0,
+                                        enlargeCenterPage: true,
+                                        autoPlay: true,
+                                      ),
+                                      itemBuilder: (ctx, index, realIdx) {
+                                        return Container(
+                                          child: Text(list['content'][index],style: TextStyle(fontSize: 20),),
+                                        );
+                                      },
+                                    )),
+                              ]),
                             )
                           ],
                         );
@@ -829,9 +831,16 @@ void trafficWarningWidgettimerStop(){
                             leading: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [Image.network(intercity['logo_url'],
-                            width: (screenWidth - 30 > 600 ? 600 : screenWidth - 30) * 0.12,
-                            )],) ,
+                              children: [
+                                Image.network(
+                                  intercity['logo_url'],
+                                  width: (screenWidth - 30 > 600
+                                          ? 600
+                                          : screenWidth - 30) *
+                                      0.12,
+                                )
+                              ],
+                            ),
                             subtitle: Text(intercity['status_text']),
                             trailing: Column(
                               children: [
@@ -1067,7 +1076,9 @@ void trafficWarningWidgettimerStop(){
                     child: Column(
                       children: [
                         Text(
-                          (list['TrainTypeName'] == null) ? "無列車" : list['TrainTypeName'],
+                          (list['TrainTypeName'] == null)
+                              ? "無列車"
+                              : list['TrainTypeName'],
                           style: TextStyle(fontSize: 13),
                         ),
                         Text(
@@ -1080,10 +1091,13 @@ void trafficWarningWidgettimerStop(){
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        (list['TrainNo'] == null) ? "無終點站" : '往' + list['EndingStationName'],
+                        (list['TrainNo'] == null)
+                            ? "無終點站"
+                            : '往' + list['EndingStationName'],
                       ),
-                      Text(
-                        (list['TrainNo'] == null) ? "無抵達時間" :'${DateFormat("'於'H':'mm'抵達'").format(DateFormat("hh:mm:ss").parse(list['ScheduleDepartureTime'])).toString()}'),
+                      Text((list['TrainNo'] == null)
+                          ? "無抵達時間"
+                          : '${DateFormat("'於'H':'mm'抵達'").format(DateFormat("hh:mm:ss").parse(list['ScheduleDepartureTime'])).toString()}'),
                     ]),
               ),
             ],
