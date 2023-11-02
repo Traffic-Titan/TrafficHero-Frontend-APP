@@ -66,10 +66,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
   }
 
   getTourismInfo2(latitude, longitude) async {
-    // EasyLoading.show(status: '查詢中...');
-    // setState(() {
-    //   scrollview = true;
-    // });
     var response;
     var url;
     var jwt = ',${state.accountState}';
@@ -159,8 +155,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
 
   //取得觀光資料(轉到該頁面戳一次)
   getTourismInfo() async {
-
-    // EasyLoading.show(status: '查詢中...');
     var response;
     var url;
     var jwt = ',${state.accountState}';

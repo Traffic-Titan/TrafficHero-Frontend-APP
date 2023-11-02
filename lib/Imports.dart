@@ -34,6 +34,7 @@ export 'package:syncfusion_flutter_datepicker/datepicker.dart';
 export 'package:flutter/services.dart';
 export 'package:flutter_in_app_pip/flutter_in_app_pip.dart';
 export 'package:fl_pip/fl_pip.dart';
+export 'package:carousel_slider/carousel_slider.dart';
 
 
 //引入頁面

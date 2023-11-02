@@ -76,6 +76,7 @@ dependencies:
   flutter_in_app_pip: ^1.7.3
   fl_pip: ^0.1.1
   flutter_waya: ^8.5.0
+  carousel_slider: ^4.2.1
 
 
 
