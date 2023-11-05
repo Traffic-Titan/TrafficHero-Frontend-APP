@@ -32,6 +32,8 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   var count = 0;
   var nearbyStationBus, nearbyStationBike, nearbyStationTrain;
   var second = 1;
+  var scooterSecond = 1;
+  var publicSecond = 1;
   var trafficWarningWidgetCount;
   int currentIndex = 0;
   Timer? timers;
@@ -47,16 +49,13 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void dispose() {
     super.dispose();
-
     stoptimer();
-    trafficWarningWidgettimerStop();
   }
 
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     EasyLoading.dismiss();
-    startTimer();
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
     setState(() {
@@ -70,8 +69,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
       stoptimer();
-      startTimer();
-
+      roadStartTimer();
       setState(() {
         fastTool = Tool.fastLocationCar;
         carMode = true;
@@ -81,7 +79,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       });
     } else if (state.modeName == 'scooter') {
       stoptimer();
-      startTimer();
+      roadStartTimer();
 
       setState(() {
         carMode = false;
@@ -91,7 +89,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       });
     } else {
       stoptimer();
-      startTimer();
+      PublicstartTimer();
       setState(() {
         carMode = false;
         scooterMode = false;
@@ -216,7 +214,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     return chunks.join('\n'); // 使用換行符串起每組文字
   }
 
-  startTimer() {
+  roadStartTimer() {
     timer = Timer.periodic(Duration(seconds: 1), (_) async {
       try {
         setState(() {
@@ -229,7 +227,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
             second = 2;
           });
           stoptimer();
-          startTimer();
+          roadStartTimer();
         } catch (e) {}
       }
 
@@ -240,55 +238,78 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
           update();
           await getHome().getUser(context);
           update();
-          await getHome().getOperationalStatus(context);
-          update();
-          await getHome().stationNearbySearchTrain(context);
-          update();
-          await getHome().stationNearbySearchBus(context);
-          update();
-          await getHome().stationNearbySearchBike(context);
-          update();
           await getHome().getNearbyRoadCondition(context);
           update();
           setState(() {
             second = 15;
           });
-          startTimer();
+          roadStartTimer();
         } catch (e) {
           try {
             setState(() {
               second = 15;
             });
             stoptimer();
-            startTimer();
+            roadStartTimer();
           } catch (e) {}
         }
       }
     });
   }
 
-  int trafficWarningWidgetTimer(list) {
-    var count = 0;
-    trafficWarningWidgettimer = Timer.periodic(Duration(seconds: 1), (timer) {
-      if (count == list.length) {
+  PublicstartTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) async {
+      try {
         setState(() {
-          count = 0;
+          print(second);
+          second--;
         });
-      } else {
-        setState(() {
-          countss++;
-        });
+      } catch (e) {
+        try {
+          setState(() {
+            second = 2;
+          });
+          stoptimer();
+          PublicstartTimer();
+        } catch (e) {}
+      }
+
+      if (second == 0) {
+        stoptimer();
+        try {
+          await getHome().stationNearbySearchBike(context);
+          update();
+          await getHome().getOperationalStatus(context);
+          update();
+          await getHome().stationNearbySearchTrain(context);
+          update();
+          await getHome().stationNearbySearchBus(context);
+          update();
+
+          await getHome().getWeather(context);
+          update();
+          await getHome().getUser(context);
+          update();
+
+          setState(() {
+            second = 15;
+          });
+          PublicstartTimer();
+        } catch (e) {
+          try {
+            setState(() {
+              second = 15;
+            });
+            stoptimer();
+            PublicstartTimer();
+          } catch (e) {}
+        }
       }
     });
-    return count;
   }
 
   void stoptimer() {
     timer?.cancel();
-  }
-
-  void trafficWarningWidgettimerStop() {
-    trafficWarningWidgettimer?.cancel();
   }
 
   void update() async {
@@ -304,7 +325,11 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       print('update finish');
     } catch (e) {
       second = 15;
-      startTimer();
+      if (state.modeName == 'car' || state.modeName == 'scooter') {
+        roadStartTimer();
+      } else {
+        PublicstartTimer();
+      }
     }
   }
 
@@ -695,14 +720,6 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     );
   }
 
-  len(list) {
-    var count = list.length;
-    var start = 0;
-    for (var i = 0; i < list.length; i++) {
-      return i;
-    }
-  }
-
   //路況速報
   Widget trafficWarningWidget() {
     return Card(
@@ -762,7 +779,10 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                                       ),
                                       itemBuilder: (ctx, index, realIdx) {
                                         return Container(
-                                          child: Text(list['content'][index],style: TextStyle(fontSize: 20),),
+                                          child: Text(
+                                            list['content'][index],
+                                            style: TextStyle(fontSize: 20),
+                                          ),
                                         );
                                       },
                                     )),
@@ -838,7 +858,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                                           ? 600
                                           : screenWidth - 30) *
                                       0.12,
-                                      height: (screenWidth - 30 > 600
+                                  height: (screenWidth - 30 > 600
                                           ? 600
                                           : screenWidth - 30) *
                                       0.12,
@@ -890,14 +910,17 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                           final local = operationalStatus['local'][index];
                           return ListTile(
                             title: Text(local['name']),
-                            leading: Image.network(local['logo_url'], width: (screenWidth - 30 > 600
-                                          ? 600
-                                          : screenWidth - 30) *
-                                      0.12,
-                                      height: (screenWidth - 30 > 600
-                                          ? 600
-                                          : screenWidth - 30) *
-                                      0.12,),
+                            leading: Image.network(
+                              local['logo_url'],
+                              width: (screenWidth - 30 > 600
+                                      ? 600
+                                      : screenWidth - 30) *
+                                  0.12,
+                              height: (screenWidth - 30 > 600
+                                      ? 600
+                                      : screenWidth - 30) *
+                                  0.12,
+                            ),
                             subtitle: Text(local['status_text']),
                             trailing: Column(
                               children: [
