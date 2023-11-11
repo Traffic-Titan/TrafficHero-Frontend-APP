@@ -156,7 +156,7 @@ Page resource error:
       backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
-        title: const Text('網路瀏覽器'),
+        // title: const Text('網路瀏覽器'),
         // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
         actions: <Widget>[
           NavigationControls(webViewController: _controller),
@@ -164,23 +164,23 @@ Page resource error:
         ],
       ),
       body: WebViewWidget(controller: _controller),
-      floatingActionButton: favoriteButton(),
+      // floatingActionButton: favoriteButton(),
     );
   }
 
-  Widget favoriteButton() {
-    return FloatingActionButton(
-      onPressed: () async {
-        final String? url = await _controller.currentUrl();
-        if (context.mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Favorited $url')),
-          );
-        }
-      },
-      child: const Icon(Icons.favorite),
-    );
-  }
+  // Widget favoriteButton() {
+  //   return FloatingActionButton(
+  //     onPressed: () async {
+  //       final String? url = await _controller.currentUrl();
+  //       if (context.mounted) {
+  //         ScaffoldMessenger.of(context).showSnackBar(
+  //           SnackBar(content: Text('Favorited $url')),
+  //         );
+  //       }
+  //     },
+  //     child: const Icon(Icons.favorite),
+  //   );
+  // }
 }
 
 enum MenuOptions {
