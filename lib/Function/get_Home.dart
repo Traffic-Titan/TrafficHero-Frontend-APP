@@ -86,6 +86,7 @@ class getHome {
 
     if (response.statusCode == 200) {
       state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
+      print(state.profile);
       print('會員資料抓取成功');
     } else {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
