@@ -720,6 +720,93 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     );
   }
 
+
+
+//工具列widget
+  Widget toolpublicWidget() {
+    return Card(
+      color: Color.fromARGB(255, 255, 255, 255),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14.0),
+      ),
+      elevation: 1,
+      child: SizedBox(
+        height: 125,
+        width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+        child: Column(children: [
+          ClipRRect(
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(14.0),
+              topRight: Radius.circular(14.0),
+            ),
+            child: Container(
+              height: 30,
+              color: Color.fromRGBO(67, 150, 200, 1),
+              child: Center(
+                child: Text(
+                  '快速尋找地點',
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+            ),
+          ),
+          Center(
+            child: SizedBox(
+              width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+              height: 95,
+              child: PageView(
+                controller: _controller,
+                children: <Widget>[
+                  GridView(
+                    padding: EdgeInsets.zero,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4, //横轴三个子widget
+                        childAspectRatio: 0.01),
+                    children: List.generate(
+                      Tool.fastLocationPublic.length,
+                      (index) {
+                        final tool = Tool.fastLocationPublic[index];
+                        return SizedBox(
+                          height: 70,
+                          child: InkWell(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  margin: const EdgeInsets.all(3.0),
+                                  child: Image.asset(
+                                    tool['img'].toString(),
+                                  ),
+                                ),
+                                Text(
+                                  tool['title'].toString(),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                            onTap: () async {
+                              EasyLoading.show(status: 'loading...');
+                              if (tool['value'] == "機車定位") {
+                                vehicleLocate(tool['url']);
+                              } else {
+                                findPlacesQuickly(tool['url']);
+                              }
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ]),
+      ),
+    );
+  }
   //路況速報
   Widget trafficWarningWidget() {
     return Card(
@@ -1259,6 +1346,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                 child: Column(
                   children: [
                     weatherWidget(),
+                    toolpublicWidget(),
                     stationNearbyWidget(),
                     operationalWidget(),
                   ],
