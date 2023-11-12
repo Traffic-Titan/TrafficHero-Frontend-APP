@@ -2,14 +2,7 @@
 import 'imports.dart';
 
 class stateManager with ChangeNotifier {
-  String _modeName = 'car';
-  var _accountState = '';
-  String _verifyEmail = '';
-  String _forgetToken = '';
-  String _veriffyState = '';
-  var _google_sso_status;
-  var _google_sso;
-  Map<String, dynamic> _profile = {
+ Map<String, dynamic> _profile = {
     "name": "",
     "email": "",
     "gender": "",
@@ -28,14 +21,6 @@ class stateManager with ChangeNotifier {
     'weather': '-',
     'weather_icon_url': 'https://www.colorhexa.com/e7f1fe.png'
   };
-  var _pageDetail;
-  var _keyWord;
-  var _searchPageDetail;
-  var _cmsList_Car;
-  var _busRouteDetail;
-  var _appBarState = true;
-  var _navigationBarState = true;
-  var _floatingBtnState = true;
   Map<String, dynamic> _OperationalStatus = {
     'intercity': [
       {
@@ -56,6 +41,65 @@ class stateManager with ChangeNotifier {
       },
     ]
   };
+
+    //附近站點資訊
+  List<dynamic> _nearbyStationBus = [
+    {
+      'StopLatitude': '',
+      'StopLongitude': '',
+      '路線名稱': '',
+      '站點名稱': '',
+      '預估到站時間 (min)': 0,
+      '終點站': ''
+    },
+  ];
+  List<dynamic> _nearbyStationTrain = [
+    {
+      'StationUID': '',
+      'StationName': '',
+      'EndingStationName': '',
+      'TrainNo': '',
+      'Direction': '',
+      'TrainTypeName': '',
+      'ScheduleDepartureTime': ''
+    },
+  ];
+  List<dynamic> _nearbyStationBike = [
+    {
+      '公共自行車': {
+        'StationUID': '',
+        'StationName': '',
+        'LocationX': '',
+        'LocationY': ''
+      },
+      '剩餘空位': '',
+      '可借車位': ''
+    },
+  ];
+
+  List<dynamic> _NearbyRoadCondition = [
+    {
+      "road_name": "",
+      "content": [""]
+    },
+  ];
+  String _modeName = 'car';
+  var _accountState = '';
+  String _verifyEmail = '';
+  String _forgetToken = '';
+  String _veriffyState = '';
+  var _google_sso_status;
+  var _google_sso;
+ 
+  var _pageDetail;
+  var _keyWord;
+  var _searchPageDetail;
+  var _cmsList_Car;
+  var _busRouteDetail;
+  var _appBarState = true;
+  var _navigationBarState = true;
+  var _floatingBtnState = true;
+  
 
   String get modeName => _modeName;
   String get accountState => _accountState;
@@ -164,40 +208,7 @@ class stateManager with ChangeNotifier {
     notifyListeners();
   }
 
-  //附近站點資訊
-  List<dynamic> _nearbyStationBus = [
-    {
-      'StopLatitude': '',
-      'StopLongitude': '',
-      '路線名稱': '',
-      '站點名稱': '',
-      '預估到站時間 (min)': 0,
-      '終點站': ''
-    },
-  ];
-  List<dynamic> _nearbyStationTrain = [
-    {
-      'StationUID': '',
-      'StationName': '',
-      'EndingStationName': '',
-      'TrainNo': '',
-      'Direction': '',
-      'TrainTypeName': '',
-      'ScheduleDepartureTime': ''
-    },
-  ];
-  List<dynamic> _nearbyStationBike = [
-    {
-      '公共自行車': {
-        'StationUID': '',
-        'StationName': '',
-        'LocationX': '',
-        'LocationY': ''
-      },
-      '剩餘空位': '',
-      '可借車位': ''
-    },
-  ];
+
   get nearbyStationBus => _nearbyStationBus;
   get nearbyStationTrain => _nearbyStationTrain;
   get nearbyStationBike => _nearbyStationBike;
@@ -222,12 +233,7 @@ class stateManager with ChangeNotifier {
     notifyListeners();
   }
 
-  List<dynamic> _NearbyRoadCondition = [
-    {
-      "road_name": "",
-      "content": [""]
-    },
-  ];
+
 
   get NearbyRoadCondition => _NearbyRoadCondition;
 

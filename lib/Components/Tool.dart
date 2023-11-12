@@ -50,6 +50,27 @@ List<Map<String, String>> fastLocationCar = [
   },
 ];
 
+List<Map<String, String>> fastLocationPublic = [
+  {
+    'value': '加油站',
+    'title': '加油站',
+    'img': 'assets/fastLocation/gaspumpStop.png',
+    'url': dotenv.env['GasStation'].toString()
+  },
+  {
+    'value': 'https://www.google.com/maps/dir/25.1737288,121.4341894/414%E5%8F%B0%E4%B8%AD%E5%B8%82%E7%83%8F%E6%97%A5%E5%8D%80%E4%B8%AD%E5%B1%B1%E8%B7%AF%E4%B8%89%E6%AE%B51165%E8%99%9F/@24.6413693,120.3359623,9z/data=!3m1!4b1!4m9!4m8!1m1!4e1!1m5!1m1!1s0x34693ec40c7103e3:0xcd8e2812aa561111!2m2!1d120.590033!2d24.1133503!11m1!6b1?entry=ttu',
+    'title': '便利商店',
+    'img': 'assets/fastLocation/convenientShop.png',
+    'url': dotenv.env['ConvenientStore'].toString()
+  },
+
+  {
+    'value': '停車定位',
+    'title': '停車定位',
+    'img': 'assets/fastLocation/car-placeholder.png',
+    'url': dotenv.env['GetParkingLocation'].toString()
+  },
+];
 
 List<Map<String, String>> fastLocationCarCms = [
   {

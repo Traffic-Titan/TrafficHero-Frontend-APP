@@ -18,7 +18,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
     with TickerProviderStateMixin {
   late TabController _tabController;
   late stateManager state;
-    late SharedPreferences prefs;
+  late SharedPreferences prefs;
   var screenWidth;
   var screenHeight;
   var scrollview = true;
@@ -34,20 +34,21 @@ class _Tourist_InformationState extends State<Tourist_Information>
 
   _onMapCreated(GoogleMapController controller) {
     mapController = controller;
-      
   }
+
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
     prefs = await SharedPreferences.getInstance();
-   
+
     screenHeight = MediaQuery.of(context).size.height;
     state.changePositionNow(await geolocator().updataPosition());
     position = state.positionNow;
     getTourismInfo();
   }
+
   static const List<Tab> touristTabBar = <Tab>[
     Tab(text: '景點'),
     Tab(text: '住宿'),
@@ -59,6 +60,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
     super.initState();
     _tabController = TabController(vsync: this, length: touristTabBar.length);
   }
+
   @override
   void dispose() {
     _tabController.dispose();
@@ -86,7 +88,8 @@ class _Tourist_InformationState extends State<Tourist_Information>
         print(_tabController.index);
         break;
     }
-    url += '?latitude=${latitude}&longitude=${longitude}&mode=${changeMode(state.modeName)}&os=${prefs.get('system')}';
+    url +=
+        '?latitude=${latitude}&longitude=${longitude}&mode=${changeMode(state.modeName)}&os=${prefs.get('system')}';
     try {
       response = await api().apiGet(url, jwt);
     } catch (e) {
@@ -102,7 +105,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
       EasyLoading.dismiss();
       print(jsonDecode(utf8.decode(response.bodyBytes)).toString());
     }
-
   }
 
 //延遲向後端取得觀光資訊
@@ -146,12 +148,10 @@ class _Tourist_InformationState extends State<Tourist_Information>
       return 'Car';
     } else if (mode == 'scooter') {
       return 'Scooter';
-    }else{
+    } else {
       return 'Transit';
     }
   }
-
-
 
   //取得觀光資料(轉到該頁面戳一次)
   getTourismInfo() async {
@@ -175,9 +175,10 @@ class _Tourist_InformationState extends State<Tourist_Information>
         print(_tabController.index);
         break;
     }
-    
+
     try {
-      url += '?latitude=${position.latitude}&longitude=${position.longitude}&mode=${ changeMode(state.modeName) }&os=${prefs.get('system')}';
+      url +=
+          '?latitude=${position.latitude}&longitude=${position.longitude}&mode=${changeMode(state.modeName)}&os=${prefs.get('system')}';
       response = await api().apiGet(url, jwt);
     } catch (e) {
       print(e);
@@ -197,8 +198,8 @@ class _Tourist_InformationState extends State<Tourist_Information>
       EasyLoading.dismiss();
       print(jsonDecode(utf8.decode(response.bodyBytes)).toString());
     }
-
   }
+
   //新增標記
   void addMarkers() {
     _markers.clear();
@@ -249,7 +250,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
       return onenearbyPopularView(scrollController);
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -306,11 +306,11 @@ class _Tourist_InformationState extends State<Tourist_Information>
               ],
             ),
           ),
-        )
-    );
+        ));
   }
+
   //AppBar
-  PreferredSizeWidget appBar(){
+  PreferredSizeWidget appBar() {
     return AppBar(
       backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
       leading: const Icon(
@@ -323,18 +323,20 @@ class _Tourist_InformationState extends State<Tourist_Information>
             onTap: () async {
               LatLngBounds bounds = await mapController.getVisibleRegion();
 
-    // 計算中心座標
-    double centerLatitude = (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
-    double centerLongitude = (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
+              // 計算中心座標
+              double centerLatitude =
+                  (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
+              double centerLongitude =
+                  (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
 
-    // 將中心座標輸出到控制台
-    print("地圖中心座標：$centerLatitude, $centerLongitude");
-          },
-          child:  Icon(
-          Icons.search,
-          color: Colors.white,
-          size: 28,
-        )),
+              // 將中心座標輸出到控制台
+              print("地圖中心座標：$centerLatitude, $centerLongitude");
+            },
+            child: Icon(
+              Icons.search,
+              color: Colors.white,
+              size: 28,
+            )),
         title: TextField(
           decoration: InputDecoration(
             hintText: '以名稱搜尋',
@@ -343,7 +345,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
               fontSize: 18,
               fontStyle: FontStyle.italic,
             ),
-
             border: InputBorder.none,
           ),
           onTap: () {
@@ -374,6 +375,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
       ),
     );
   }
+
   //Google Map View
   Widget mapView() {
     return GoogleMap(
@@ -393,7 +395,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
       markers: _markers,
     );
   }
-
 
   Widget onenearbyPopularView(ScrollController scrollController) {
     var list;
@@ -417,9 +418,8 @@ class _Tourist_InformationState extends State<Tourist_Information>
                       scrollview = true;
                     });
                   },
-                  icon: Icon(Icons.arrow_back_ios)),
-            ),
-            ListTile(
+                  icon: Icon(Icons.arrow_back_ios,),
+                  ),
               title: Text(
                 list != null ? list['name'] : '',
                 style: TextStyle(fontSize: 20),
@@ -427,6 +427,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
               subtitle:
                   Text(list != null ? list['address'].toString() : '無地址顯示'),
             ),
+
             Container(
               height: 250,
               width: screenWidth,
@@ -479,13 +480,17 @@ class _Tourist_InformationState extends State<Tourist_Information>
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14.0),
                             ),
-                            child: SizedBox(width: 100,height: 95,child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text('網站'),
-                              ],
-                            ),),
+                            child: SizedBox(
+                              width: 100,
+                              height: 95,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text('網站'),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -502,13 +507,17 @@ class _Tourist_InformationState extends State<Tourist_Information>
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14.0),
                             ),
-                            child: SizedBox(width: 100,height: 95,child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text('導航'),
-                              ],
-                            ),),
+                            child: SizedBox(
+                              width: 100,
+                              height: 95,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text('導航'),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ),
@@ -589,7 +598,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
                   Text('今天最高溫：${list['weather']['the_highest_temperature']}')
                 ],
               ),
-             
             ),
             SizedBox(
               height: 3,
@@ -602,7 +610,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
       ),
     );
   }
-
 
   //附近景點
   Widget nearbyPopularView(ScrollController scrollController) {
@@ -621,7 +628,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
             final list = tourismList[index];
             return Column(
               children: [
-
                 Expanded(
                   child: InkWell(
                     child: Row(
@@ -643,7 +649,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
                                 list['picture'][0],
                                 height: screenHeight * 0.01,
                                 fit: BoxFit.fill,
-
                               ),
                             ),
                           ),
@@ -721,5 +726,4 @@ class _Tourist_InformationState extends State<Tourist_Information>
     //   },
     // );
   }
-
 }

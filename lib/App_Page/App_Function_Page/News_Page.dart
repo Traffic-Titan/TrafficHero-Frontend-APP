@@ -214,7 +214,7 @@ class _NewsState extends State<News> {
                         modalConfirm: true,
                         modalFilter: true,
                         groupEnabled: true,
-                        groupSortBy: S2GroupSort.byCountInDesc(),
+                        groupSortBy: S2GroupSort.byNameInAsc(),
                         groupBuilder: (context, state, group) {
                           return StickyHeader(
                             header: state.groupHeader(group),

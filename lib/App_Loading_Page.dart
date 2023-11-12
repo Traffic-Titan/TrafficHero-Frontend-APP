@@ -13,7 +13,6 @@ class appLoadingPage extends StatefulWidget {
 class _appLoadingPage extends State<appLoadingPage> {
   late stateManager state;
   late SharedPreferences prefs;
-
 //當頁面創造時執行
   @override
   void didChangeDependencies() async {
@@ -35,7 +34,6 @@ class _appLoadingPage extends State<appLoadingPage> {
     } catch (e) {
       print(e);
     }
-
     try {
       IosDeviceInfo iosInfo = await deviceInfo.iosInfo;
       print('Running on ${iosInfo.utsname.machine}'); 
@@ -45,7 +43,6 @@ class _appLoadingPage extends State<appLoadingPage> {
     } catch (e) {
       print(e);
     }
-
     print(prefs.get('system'));
   }
 
@@ -66,7 +63,7 @@ class _appLoadingPage extends State<appLoadingPage> {
        if (response.statusCode == 200) {
       
       state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
-
+      state.updateModeState(prefs.get('mode').toString());
       Navigator.pushAndRemoveUntil(
           context, MaterialPageRoute(builder: (context) => const AllPage()),(router)=>false);
           EasyLoading.dismiss();
@@ -90,13 +87,30 @@ class _appLoadingPage extends State<appLoadingPage> {
     return  Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Color.fromRGBO(62, 111, 179, 1),
-        body: AspectRatio(
-        aspectRatio: 16 / 9,
-        child: Text('')));
+        body: Center(child: 
+        Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ClipRRect(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  topRight: Radius.circular(30.0),
+                  bottomLeft: Radius.circular(30.0),
+                  bottomRight: Radius.circular(30.0),
+                  
+                ),
+                child:   Image.asset('assets/AppIcon.png',
+                width: 200,
+                height: 200,),
+                  
+                
+              ),
+          ],
+        ),
+        
+        
+      
+        )
+        );
   }
-
-
-   
-
-
 }

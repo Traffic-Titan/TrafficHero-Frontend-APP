@@ -10,6 +10,7 @@ class AllPage extends StatefulWidget {
 
 class _AllPageState extends State<AllPage> {
   late stateManager state;
+  late SharedPreferences prefs;
   var mode = 'car';
   var car = 'assets/topbar/Mode_Car.png';
   var scooter = 'assets/topbar/select_scooter.png';
@@ -29,6 +30,30 @@ class _AllPageState extends State<AllPage> {
       DeviceOrientation.landscapeLeft,
       DeviceOrientation.landscapeRight,
     ]);
+
+    if(state.modeName == 'car'){
+      setState(() {
+         car = 'assets/topbar/Mode_Car.png';
+                    scooter = 'assets/topbar/select_scooter.png';
+                    public_Transport =
+                        'assets/topbar/select_Public_Transport.png';
+      });
+    }else if(state.modeName == 'scooter'){
+      setState(() {
+                    car = 'assets/topbar/select_car.png';
+                    scooter = 'assets/topbar/Mode_Scooter.png';
+                    public_Transport =
+                        'assets/topbar/select_Public_Transport.png';
+                  });
+    }else{
+       setState(() {
+                    car = 'assets/topbar/select_car.png';
+                    scooter = 'assets/topbar/select_scooter.png';
+                    public_Transport =
+                        'assets/topbar/Mode_Public_Transport.png';
+                  });
+    }
+    prefs = await SharedPreferences.getInstance();
   }
 
   @override
@@ -84,6 +109,7 @@ class _AllPageState extends State<AllPage> {
                   });
                   //將狀態儲存為car
                   state.updateModeState('car');
+                  prefs.setString('mode', 'car');
                 },
               ),
               IconButton(
@@ -98,6 +124,7 @@ class _AllPageState extends State<AllPage> {
                         'assets/topbar/select_Public_Transport.png';
                   });
                   state.updateModeState('scooter');
+                  prefs.setString('mode','scooter');
                 },
               ),
               IconButton(
@@ -112,6 +139,7 @@ class _AllPageState extends State<AllPage> {
                   });
                   selectedMode('publicTransport');
                   state.updateModeState('publicTransport');
+                  prefs.setString('mode','publicTransport');
                 },
               ),
             ],
