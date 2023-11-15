@@ -2,6 +2,7 @@
 import 'package:traffic_hero/Imports.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:traffic_hero/Components/Tool.dart' as Tool;
+import 'dart:async';
 
 class CMS extends StatefulWidget {
   const CMS({super.key});
@@ -16,6 +17,9 @@ class _CMSState extends State<CMS> {
   var cmsList_car = [];
   late stateManager state;
   late SharedPreferences prefs;
+   int _speed = 0;
+   StreamController<double> _speedStreamController = StreamController<double>();
+
 
   late Icon phoneIcon = const Icon(
     CupertinoIcons.device_phone_landscape,
@@ -27,6 +31,7 @@ class _CMSState extends State<CMS> {
     super.initState();
     FlPiP().status.addListener(listener);
     setDisplay();
+    
   }
 
   void listener() {
@@ -37,11 +42,31 @@ class _CMSState extends State<CMS> {
     }
   }
 
+  Future<void> _getSpeed() async {
+    final LocationSettings locationSettings = LocationSettings(
+  accuracy: LocationAccuracy.high,
+  distanceFilter: 0,
+);
+    Geolocator.getPositionStream(
+      locationSettings: locationSettings
+    ).listen((Position position) {
+      double speedInMps = position.speed ?? 0.0;
+      int speedInKmh = (speedInMps * 3.6).toInt();
+      setState(() {
+        _speed = speedInKmh ;
+          print(_speed);
+      });
+    
+      _speedStreamController.add(speedInKmh.toDouble());
+    });
+  }
+
   @override
   void dispose() {
     super.dispose();
     FlPiP().status.removeListener(listener);
     _stopTrackingPosition(); // 停止追踪位置更新
+    _speedStreamController.close();
   }
 
   bool directionState = true;
@@ -78,8 +103,9 @@ class _CMSState extends State<CMS> {
     screenHeight = MediaQuery.of(context).size.height;
     fontSize = screenWidth * 0.05;
     _startTrackingPosition();
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top]);
+     _getSpeed();
+    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+    //     overlays: [SystemUiOverlay.top]);
     updateCMSList_Car();
   }
 
@@ -348,7 +374,7 @@ class _CMSState extends State<CMS> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      speed,
+                      _speed.toString(),
                       style:
                           const TextStyle(fontSize: 80, color: Colors.yellow),
                       textAlign: TextAlign.right,
