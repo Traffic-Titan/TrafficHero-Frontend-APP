@@ -63,7 +63,7 @@ dependencies:
   flutter_tts: ^3.7.0
   flutter_dialogs: ^3.0.0
   google_maps_flutter: ^2.5.0
-  flutter_datetime_picker: ^1.5.1
+#  flutter_datetime_picker: ^1.5.1
   shared_preferences: ^2.2.1
   slide_animation: ^0.0.4
   # google_maps_flutter_ios: ^2.3.1

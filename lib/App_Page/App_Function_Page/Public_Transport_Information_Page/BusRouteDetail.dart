@@ -46,33 +46,33 @@ class _BusRouteDetailState extends State<BusRouteDetail> {
           var data = routeDetail_Array[index];
           return ListTile(
               title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                flex: 3,
-                child: Text(data['StopName']),
-              ),
-              Expanded(
-                flex: 4,
-                child: (index == routeDetail_Array.length - 1)
-                    ? (Image.asset(
-                        'assets/publicTransportIcon/routeDot.png',
-                        height: 35,
-                      ))
-                    : (Image.asset(
-                        'assets/publicTransportIcon/routeLine.png',
-                        height: 60,
-                      )),
-              ),
-              Expanded(
-                flex: 3,
-                child: (data['EstimateTime'] == '未發車')
-                    ? (Text(data['EstimateTime']))
-                    : (Text(data['EstimateTime'].toString() + "分 到站")),
-              ),
-            ],
-          ));
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Text(data['StopName']),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: (index == routeDetail_Array.length - 1)
+                        ? (Image.asset(
+                      'assets/publicTransportIcon/routeDot.png',
+                      height: 35,
+                    ))
+                        : (Image.asset(
+                      'assets/publicTransportIcon/routeLine.png',
+                      height: 60,
+                    )),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: (data['EstimateTime'] == '未發車')
+                        ? (Text(data['EstimateTime']))
+                        : (Text(data['EstimateTime'].toString() + "分 到站")),
+                  ),
+                ],
+              ));
         },
       ),
     );

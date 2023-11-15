@@ -210,7 +210,7 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
             publicTransportInfoBus(context),
             publicTransportInfoMRT(context),
             publicTransportInfoTrain(context),
-            publicTransportInfoHighway(context),
+            Public_Transport_Information_Highway(),
           ],
         )
       ),

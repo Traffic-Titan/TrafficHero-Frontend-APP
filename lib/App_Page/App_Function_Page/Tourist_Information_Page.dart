@@ -352,8 +352,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) =>
-                        Tourist_Information_Page_SearchPage()));
+                    builder: (context) => Tourist_Information_Page_SearchPage()));
           },
           style: TextStyle(
             color: Colors.white,
