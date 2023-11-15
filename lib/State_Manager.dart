@@ -68,7 +68,7 @@ class stateManager with ChangeNotifier {
     {
       '公共自行車': {
         'StationUID': '',
-        'StationName': '',
+        'StationName': '附近無站點',
         'LocationX': '',
         'LocationY': ''
       },
