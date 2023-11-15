@@ -99,7 +99,11 @@ class stateManager with ChangeNotifier {
   var _appBarState = true;
   var _navigationBarState = true;
   var _floatingBtnState = true;
-  
+  var _THSR_StartEndSearchResult;
+  var _THSR_StartEndSearch_StartName;
+  var _THSR_StartEndSearch_EndName;
+  var _THSR_CarNumSearch_CarNum;
+  var _THSR_CarNumSearchResult;
 
   String get modeName => _modeName;
   String get accountState => _accountState;
@@ -116,6 +120,34 @@ class stateManager with ChangeNotifier {
   get searchPageDetail => _searchPageDetail;
   get cmsCarList_Car => _cmsList_Car;
   get busRouteDetail => _busRouteDetail;
+  get THSR_StartEndSearchResult => _THSR_StartEndSearchResult;
+  get THSR_StartEndSearch_StartName => _THSR_StartEndSearch_StartName;
+  get THSR_StartEndSearch_EndName => _THSR_StartEndSearch_EndName;
+  get THSR_CarNumSearch_CarNum => _THSR_CarNumSearch_CarNum;
+  get THSR_CarNumSearchResult => _THSR_CarNumSearchResult;
+
+ void updateTHSR_CarNumSearch_CarNum (String newValue){
+   _THSR_CarNumSearch_CarNum = newValue;
+   notifyListeners();
+ }
+ void updateTHSR_CarNumSearchResult (List<dynamic> newValue){
+   _THSR_CarNumSearchResult = newValue;
+   notifyListeners();
+ }
+
+ void updateTHSR_StartEndSearch_StartName (String newValue){
+   _THSR_StartEndSearch_StartName = newValue;
+   notifyListeners();
+ }
+ void updateTHSR_StartEndSearch_EndName (String newValue){
+   _THSR_StartEndSearch_EndName = newValue;
+   notifyListeners();
+ }
+
+  void updateTHSR_StartEndSearchResult (List<dynamic> newValue){
+    _THSR_StartEndSearchResult = newValue;
+    notifyListeners();
+  }
 
   void updateModeState(String newValue) {
     _modeName = newValue;

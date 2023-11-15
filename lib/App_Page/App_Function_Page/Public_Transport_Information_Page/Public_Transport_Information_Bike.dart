@@ -45,17 +45,19 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
     // 添加標記
     for (int i=0;i <state.nearbyStationBike.length;i++) {
       var list = state.nearbyStationBike[i];
-      print('${list['公共自行車']['LocationY'].toString()},${list['公共自行車']['LocationX'].toString()}');
-      _markers.add(
-        Marker(
-          markerId: MarkerId(list['公共自行車']['StationUID']),
-          position: LatLng(list['公共自行車']['LocationY'],list['公共自行車']['LocationX']),
-          infoWindow: InfoWindow(
-              title: list['公共自行車']['StationName'].substring(11),
-              snippet: '可借:${list['可借車位']}/可還:${list['剩餘空位']}'
+      print('${list['公共自行車']['LocationY'].toString()},${list['公共自行車']['LocationX'].toString()}+LATLNG');
+      if(list['公共自行車']['LocationY'] != null || list['公共自行車']['LocationX'] != null){
+        _markers.add(
+          Marker(
+            markerId: MarkerId(list['公共自行車']['StationUID']),
+            position: LatLng(list['公共自行車']['LocationY'],list['公共自行車']['LocationX']),
+            infoWindow: InfoWindow(
+                title: list['公共自行車']['StationName'].substring(11),
+                snippet: '可借:${list['可借車位']}/可還:${list['剩餘空位']}'
+            ),
           ),
-        ),
-      );
+        );
+      }
     }
   }
   _onMapCreated(GoogleMapController controller){

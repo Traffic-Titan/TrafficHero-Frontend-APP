@@ -1,6 +1,11 @@
 // ignore_for_file: camel_case_types, library_private_types_in_public_api, file_names, unused_import, override_on_non_overriding_member, prefer_typing_uninitialized_variables, prefer_final_fields
 
+
+
+
 import 'package:flutter/material.dart';
+import 'package:flutter_waya/components/check_box.dart';
+import 'package:flutter_waya/extension/object_extension.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Road_Information/Road_Information_ParkingLot.dart';
 import 'package:traffic_hero/imports.dart';
 import 'package:geocoding/geocoding.dart';
@@ -35,6 +40,7 @@ class _Road_InformationState extends State<Road_Information> {
   //欲篩選的路況
   final List<String> _filterRoadInfoItems =[];
   late BitmapDescriptor ParkingInfoImg,TrafficControlImg,RoadAccidentImg,RoadConstructionImg,TrafficJamImg;
+  bool checkedBox = false;
 
   @override
   void didChangeDependencies() async {
@@ -423,7 +429,7 @@ class _Road_InformationState extends State<Road_Information> {
       ],
     );
   }
-  void _filterRoadInfoItemsChange(item,isSelected){
+     void _filterRoadInfoItemsChange(item,isSelected){
       if(isSelected){
         setState(() {
           _filterRoadInfoItems.add(item);

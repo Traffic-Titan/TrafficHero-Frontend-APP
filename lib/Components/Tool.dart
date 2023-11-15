@@ -1,4 +1,6 @@
 // ignore_for_file: file_names, non_constant_identifier_names, unused_element
+import 'dart:ffi';
+
 import 'package:traffic_hero/Imports.dart';
 
 List<Map<String, String>> toolList = [
@@ -175,7 +177,33 @@ Map<String, String> fastLocation_convientStore = {
 
 //道路資訊 可篩選之路況list
 List<String> roadInfoFilterList = [
-  '停車場資訊','交通管制','交通事故','道路施工','道路壅塞'
+  '停車場資訊',
+  '交通管制',
+  '交通事故',
+  '道路施工',
+  '道路壅塞'
 ];
+// var roadInfoFilterList = [
+//   {
+//     'Text':'停車場資訊',
+//     'Value':false,
+//   },
+//   {
+//     'Text':'交通管制',
+//     'Value':false,
+//   },
+//   {
+//     'Text':'交通事故',
+//     'Value':false,
+//   },
+//   {
+//     'Text':'道路施工',
+//     'Value':false,
+//   },
+//   {
+//     'Text':'道路壅塞',
+//     'Value':false,
+//   },
+// ];
 
 

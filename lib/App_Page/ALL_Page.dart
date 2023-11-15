@@ -97,6 +97,20 @@ class _AllPageState extends State<AllPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
+                icon: Image.asset(public_Transport),
+                iconSize: 50,
+                onPressed: () {
+                  setState(() {
+                    car = 'assets/topbar/select_car.png';
+                    scooter = 'assets/topbar/select_scooter.png';
+                    public_Transport =
+                    'assets/topbar/Mode_Public_Transport.png';
+                  });
+                  selectedMode('publicTransport');
+                  state.updateModeState('publicTransport');
+                },
+              ),
+              IconButton(
                 icon: Image.asset(car),
                 iconSize: 50,
                 onPressed: () {
@@ -127,21 +141,21 @@ class _AllPageState extends State<AllPage> {
                   prefs.setString('mode','scooter');
                 },
               ),
-              IconButton(
-                icon: Image.asset(public_Transport),
-                iconSize: 50,
-                onPressed: () {
-                  setState(() {
-                    car = 'assets/topbar/select_car.png';
-                    scooter = 'assets/topbar/select_scooter.png';
-                    public_Transport =
-                        'assets/topbar/Mode_Public_Transport.png';
-                  });
-                  selectedMode('publicTransport');
-                  state.updateModeState('publicTransport');
-                  prefs.setString('mode','publicTransport');
-                },
-              ),
+              // IconButton(
+              //   icon: Image.asset(public_Transport),
+              //   iconSize: 50,
+              //   onPressed: () {
+              //     setState(() {
+              //       car = 'assets/topbar/select_car.png';
+              //       scooter = 'assets/topbar/select_scooter.png';
+              //       public_Transport =
+              //           'assets/topbar/Mode_Public_Transport.png';
+              //     });
+              //     selectedMode('publicTransport');
+              //     state.updateModeState('publicTransport');
+              //     prefs.setString('mode','publicTransport');
+              //   },
+              // ),
             ],
           ),
         ),
