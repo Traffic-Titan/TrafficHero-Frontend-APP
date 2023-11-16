@@ -432,11 +432,15 @@ class _Road_InformationState extends State<Road_Information> {
      void _filterRoadInfoItemsChange(item,isSelected){
       if(isSelected){
         setState(() {
-          _filterRoadInfoItems.add(item);
+          Future.delayed(Duration(seconds: 1),(){
+            _filterRoadInfoItems.add(item);
+          });
         });
       }else{
         setState(() {
-          _filterRoadInfoItems.remove(item);
+          Future.delayed(Duration(seconds: 1),(){
+            _filterRoadInfoItems.remove(item);
+          });
         });
       }
   }

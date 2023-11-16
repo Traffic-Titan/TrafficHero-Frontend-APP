@@ -46,10 +46,26 @@ class _Route_Planning extends State<Route_Planning> {
     var response;
     var url = dotenv.env['RoutePlanning'].toString();
     var jwt = ',' + state.accountState.toString();
-    url += '?latitude=${startData['geometry'][0]['geometry']['location']['lat']}'
-        '&longitude=${startData['candidates'][0]['geometry']['location']['lng']}'
-        '&DestinationLatitude=${endData['candidates'][0]['geometry']['location']['lat']}'
-        '&DestinationLongitude=${endData['candidates'][0]['geometry']['location']['lng']}'
+    print(startData);
+    print(endData);
+    for(int i =0;i<startData.length;i++){
+      if(startData[i]['name'] == startPlaceText.text){
+        startData = startData[i];
+        i=startData.length;
+      }
+    }
+    for(int i =0;i<endData.length;i++){
+      if(endData[i]['name'] == endPlaceText.text){
+        endData = endData[i];
+        i=endData.length;
+      }
+    }
+    print(startData);
+    print(endData);
+    url += '?latitude=${startData['geometry']['location']['lat']}'
+        '&longitude=${startData['geometry']['location']['lng']}'
+        '&DestinationLatitude=${endData['geometry']['location']['lat']}'
+        '&DestinationLongitude=${endData['geometry']['location']['lng']}'
         '&StartTime=${DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now())}';
     // url += '?latitude=23.712098794315647&longitude=120.54102575330592&DestinationLatitude=22.666729273959174&DestinationLongitude=120.3033084049614';
     print(url);
@@ -141,10 +157,10 @@ class _Route_Planning extends State<Route_Planning> {
     _markers.add(
         Marker(
           markerId: MarkerId('起始地'),
-          position: LatLng(startData['candidates'][0]['geometry']['location']['lat'],
-              startData['candidates'][0]['geometry']['location']['lng']),
+          position: LatLng(startData['geometry']['location']['lat'],
+              startData['geometry']['location']['lng']),
           infoWindow: InfoWindow(
-              title: startData['candidates'][0]['name']
+              title: startData['name']
           ),
         ),
     );
@@ -152,10 +168,10 @@ class _Route_Planning extends State<Route_Planning> {
     _markers.add(
       Marker(
         markerId: MarkerId('目的地'),
-        position: LatLng(endData['candidates'][0]['geometry']['location']['lat'],
-            endData['candidates'][0]['geometry']['location']['lng']),
+        position: LatLng(endData['geometry']['location']['lat'],
+            endData['geometry']['location']['lng']),
         infoWindow: InfoWindow(
-            title: endData['candidates'][0]['name']
+            title: endData['name']
         ),
       ),
     );
@@ -349,7 +365,7 @@ class _Route_Planning extends State<Route_Planning> {
                   child: TextField(
                     controller: startPlaceText,
                     decoration: InputDecoration(
-                      hintText: startData['candidates'][0]['name'],
+                      hintText: startData['name'],
                       hintStyle: TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
@@ -375,7 +391,7 @@ class _Route_Planning extends State<Route_Planning> {
                   child: TextField(
                     controller: endPlaceText,
                     decoration: InputDecoration(
-                      hintText: endData['candidates'][0]['name'],
+                      hintText: endData['name'],
                       hintStyle: TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
                       enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
@@ -391,7 +407,7 @@ class _Route_Planning extends State<Route_Planning> {
           ),
           SizedBox(height: 10,),
           Column(
-            children:List.generate(routePlanning['data']['routes'].length-1, (index) {
+            children:List.generate(routePlanning['data']['routes'].length, (index) {
                 final list = routePlanning['data']['routes'][index];
                 return InkWell(
                   child:Column(
