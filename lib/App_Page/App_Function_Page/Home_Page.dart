@@ -107,6 +107,8 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       return 'Car';
     } else if (mode == 'scooter') {
       return 'Scooter';
+    }else{
+      return 'Transit';
     }
   }
 
