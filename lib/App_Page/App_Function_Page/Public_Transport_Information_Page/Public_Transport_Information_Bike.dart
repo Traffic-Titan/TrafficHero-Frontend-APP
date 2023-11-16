@@ -24,6 +24,7 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
     position = state.positionNow;
+    await getHome().stationNearbySearchBike(context);
     addMarkers();
   }
 
@@ -43,7 +44,8 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
         )
     );
     // 添加標記
-    for (int i=0;i <state.nearbyStationBike.length;i++) {
+    // try{
+      for (int i=0;i <state.nearbyStationBike.length;i++) {
       var list = state.nearbyStationBike[i];
       print('${list['公共自行車']['LocationY'].toString()},${list['公共自行車']['LocationX'].toString()}+LATLNG');
       if(list['公共自行車']['LocationY'] != null || list['公共自行車']['LocationX'] != null){
@@ -59,6 +61,12 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
         );
       }
     }
+    // }catch(e){
+    //   print(e);
+    //   // getHome().stationNearbySearchBike(context);
+    //   // addMarkers();
+    // }
+    
   }
   _onMapCreated(GoogleMapController controller){
     _mapController = controller;
@@ -156,7 +164,7 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
                         controller: scrollController,
                         children: [
                           Container(
-                              width:  screenWidth * 0.9,
+                              width:  screenWidth ,
                               child: Column(
                                 children: [
                                   TextField(
@@ -167,6 +175,7 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
                                   ),
                                   Container(
                                     height: 50,
+                                    width: screenWidth,
                                     color: Color.fromRGBO(47, 125, 195, 1),
                                     padding: EdgeInsets.only(left: 18),
                                     child: Row(
@@ -177,11 +186,11 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
                                         ),
                                         Container(
                                           width: screenWidth * 0.1,
-                                          child: Text('可歸還數',style:TextStyle(color: Colors.white,),),
+                                          child: Text('可還',style:TextStyle(color: Colors.white,),),
                                         ),
                                         Container(
                                           width: screenWidth * 0.1,
-                                          child: Text('可租借數',style:TextStyle(color: Colors.white,),),
+                                          child: Text('可借',style:TextStyle(color: Colors.white,),),
                                         ),
                                       ],
                                     ),

@@ -17,7 +17,7 @@ class getHome {
 
 //抓取資料
   getOperationalStatus(context) async {
-     prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     print('營運狀況開始抓取');
     var position = await geolocator().updataPosition();
@@ -38,7 +38,7 @@ class getHome {
   }
 
   getWeather(context) async {
-       prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     print('天氣資訊開始抓取');
     var position = await geolocator().updataPosition();
@@ -70,7 +70,7 @@ class getHome {
   }
 
   getUser(context) async {
-       prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     print('會員資料開始抓取');
     var response;
@@ -96,7 +96,7 @@ class getHome {
 
   // 取得附近站點資訊
   stationNearbySearchBus(context) async {
-       prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     print('附近站點公車開始抓取');
     var jwt = ',${prefs.get('userToken')}';
@@ -112,16 +112,18 @@ class getHome {
     }
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
-    print(responseBody);
-      state.updateNearbyStationBus(responseBody);
-      print('附近站點公車抓取成功');
+      print(responseBody);
+      if (responseBody != []) {
+        state.updateNearbyStationBus(responseBody);
+        print('附近站點公車抓取成功');
+      }
     } else {
       print('附近站點公車抓取失敗');
     }
   }
 
   stationNearbySearchTrain(context) async {
-       prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     print('附近站點台鐵開始抓取');
     var jwt = ',${prefs.get('userToken')}';
@@ -137,7 +139,7 @@ class getHome {
     }
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
-       print(responseBody);
+      print(responseBody);
       state.updateNearbyStationTrain(responseBody);
       print('附近站點台鐵抓取成功');
     } else {
@@ -146,7 +148,7 @@ class getHome {
   }
 
   stationNearbySearchBike(context) async {
-       prefs = await SharedPreferences.getInstance();
+    prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     print('附近站點公共自行車開始抓取');
     var jwt = ',${prefs.get('userToken')}';
@@ -163,7 +165,7 @@ class getHome {
     try {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       if (response.statusCode == 200) {
-         print(responseBody);
+        print(responseBody);
         state.updateNearbyStationBike(responseBody);
         print('附近站點公共自行車抓取成功');
       } else {
@@ -174,8 +176,8 @@ class getHome {
     }
   }
 
-    getNearbyRoadCondition(context) async {
-     prefs = await SharedPreferences.getInstance();
+  getNearbyRoadCondition(context) async {
+    prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     print('路況速報開始抓取');
     var position = await geolocator().updataPosition();
@@ -186,8 +188,8 @@ class getHome {
     var response = await api().apiGet(url, jwt);
     print(jsonDecode(utf8.decode(response.bodyBytes)));
     if (response.statusCode == 200) {
-      state
-          .updateNearbyRoadCondition(jsonDecode(utf8.decode(response.bodyBytes)));
+      state.updateNearbyRoadCondition(
+          jsonDecode(utf8.decode(response.bodyBytes)));
       print('路況速報抓取成功');
     } else {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
