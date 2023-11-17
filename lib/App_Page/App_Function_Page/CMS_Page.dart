@@ -2,7 +2,6 @@
 import 'package:traffic_hero/Imports.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:traffic_hero/Components/Tool.dart' as Tool;
-import 'dart:async';
 
 class CMS extends StatefulWidget {
   const CMS({super.key});
@@ -14,12 +13,43 @@ class CMS extends StatefulWidget {
 class _CMSState extends State<CMS> {
   var screenWidth;
   var screenHeight;
-  var cmsList_car = [];
+
+  PageController controller = PageController();
+  List<dynamic> cmsList_car = [
+    {
+      "type": "高速公路服務區停車位狀態",
+      "icon":
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/ROC_Taiwan_Area_National_Freeway_Bureau_Logo.svg/200px-ROC_Taiwan_Area_National_Freeway_Bureau_Logo.svg.png",
+      "content": [
+        {
+          "text": ["清水服務區"],
+          "color": ["#FFFFFF"]
+        },
+        {
+          "text": ["狀態:", "未滿"],
+          "color": ["#FFFFFF", "#FFFFFF"]
+        },
+        {
+          "text": ["尚有479格停車位"],
+          "color": ["#FFFFFF"]
+        }
+      ],
+      "voice": "前方清水服務區，目前還有479格停車位，停車位未滿",
+      "longitude": "121.000000",
+      "latitude": "25.000000",
+      "direction": "string",
+      "distance": 2.5,
+      "priority": "1",
+      "start": "2023-11-15T12:27:16.874000",
+      "end": "2025-01-05T04:27:16.874000",
+      "active": true,
+      "id": "655448a4c9dca141521c3630"
+    },
+  ];
   late stateManager state;
   late SharedPreferences prefs;
-   int _speed = 0;
-   StreamController<double> _speedStreamController = StreamController<double>();
-
+  int _speed = 0;
+  StreamController<double> _speedStreamController = StreamController<double>();
 
   late Icon phoneIcon = const Icon(
     CupertinoIcons.device_phone_landscape,
@@ -30,33 +60,31 @@ class _CMSState extends State<CMS> {
   void initState() {
     super.initState();
     FlPiP().status.addListener(listener);
-    setDisplay();
-    
+    // setDisplay();
   }
 
   void listener() {
     if (FlPiP().status.value == PiPStatus.enabled) {
       FlPiP().toggle(AppState.background);
-    }else{
+    } else {
       FlPiP().toggle(AppState.foreground);
     }
   }
 
   Future<void> _getSpeed() async {
     final LocationSettings locationSettings = LocationSettings(
-  accuracy: LocationAccuracy.high,
-  distanceFilter: 0,
-);
-    Geolocator.getPositionStream(
-      locationSettings: locationSettings
-    ).listen((Position position) {
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 0,
+    );
+    Geolocator.getPositionStream(locationSettings: locationSettings)
+        .listen((Position position) {
       double speedInMps = position.speed ?? 0.0;
       int speedInKmh = (speedInMps * 3.6).toInt();
       setState(() {
-        _speed = speedInKmh ;
-          print(_speed);
+        _speed = speedInKmh;
+        print(_speed);
       });
-    
+
       _speedStreamController.add(speedInKmh.toDouble());
     });
   }
@@ -97,16 +125,17 @@ class _CMSState extends State<CMS> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    prefs = await SharedPreferences.getInstance();
+
     state = Provider.of<stateManager>(context, listen: false);
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
     fontSize = screenWidth * 0.05;
     _startTrackingPosition();
-     _getSpeed();
+    _getSpeed();
     // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
     //     overlays: [SystemUiOverlay.top]);
     updateCMSList_Car();
+    prefs = await SharedPreferences.getInstance();
   }
 
   changeMode(mode) {
@@ -249,10 +278,12 @@ class _CMSState extends State<CMS> {
   void updateCMSList_Car() async {
     // 讀取API上即時訊息推播-汽車模式
     print('開始抓取ＣＭＳ');
-    var url = dotenv.env['CMS_Car'];
+    var url =
+        dotenv.env['CMS_Main_Car'].toString() + '?longitude=all&latitude=all';
     var jwt = ',${state.accountState}';
     var response;
     try {
+      print(url);
       response = await api().apiGet(url, jwt);
     } catch (e) {
       print(e);
@@ -260,10 +291,17 @@ class _CMSState extends State<CMS> {
 
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
-       print('抓取ＣＭＳ成功');
+      print('抓取ＣＭＳ成功');
       state.updateCMSList_Car(responseBody);
-      cmsList_car = responseBody;
+      setState(() {
+        cmsList_car = responseBody;
+      });
+
+      setDisplay();
       print(cmsList_car);
+      print(cmsList_car[0]['content'][0]['text'][0]);
+      print(cmsList_car[0]['content'][0]['color'][0]);
+      print(changeColorCode(cmsList_car[0]['content'][0]['color'][0]));
     }
   }
 
@@ -272,39 +310,11 @@ class _CMSState extends State<CMS> {
     // 每5秒向後端要求一次CMS資料
     timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       if (index < cmsList_car.length) {
-        final cmsNews = cmsList_car[index];
-        setState(() {
-          displayText1 = cmsNews['main_content'][0][0][0].toString();
-          Text1Color = cmsNews['main_color'][0][0][0].toString();
-
-          displayText2 = cmsNews['main_content'][1][0][0].toString();
-          Text2Color = cmsNews['main_color'][1][0][0];
-
-          displayText3 = cmsNews['main_content'][1][1][0].toString();
-          Text3Color = cmsNews['main_color'][1][1][0];
-
-          displayImg = cmsNews['icon'].toString();
-          try {
-            displayText4 = '';
-            displayText5 = '';
-            displayText6 = '';
-            Text4Color = 'FFFFFFFF';
-            if (cmsNews['main_content'][2][0][0] != null) {
-              displayText4 = cmsNews['main_content'][2][0][0];
-              Text4Color = cmsNews['main_color'][2][0][0];
-              if (cmsNews['main_content'][2][1][0] != null) {
-                displayText5 = cmsNews['main_content'][2][1][0];
-                Text5Color = cmsNews['main_color'][2][1][0];
-              }
-              if (cmsNews['main_content'][2][2][0] != null) {
-                displayText6 = cmsNews['main_content'][2][2][0];
-                Text6Color = cmsNews['main_color'][2][2][0];
-              }
-            }
-          } catch (e) {
-            //print(e);
-          }
-        });
+        controller.animateToPage(
+          index,
+          duration: Duration(milliseconds: 500),
+          curve: Curves.easeInOut,
+        );
         index++;
       } else {
         index = 0;
@@ -344,6 +354,59 @@ class _CMSState extends State<CMS> {
     }
   }
 
+  Color changeColorCode(color) {
+    return Color(int.parse(('FF' + color.replaceAll("#", "")), radix: 16));
+  }
+
+  //Widget
+  Widget CMS_Content() {
+    return Container(
+      width: screenWidth - 200,
+      child: Column(
+        // 將Expanded包裹在Column中
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Expanded(
+            child: PageView.builder(
+              controller: controller,
+              itemCount: cmsList_car.length, // 更新itemCount，確保與數據源的長度一致
+              itemBuilder: (context, index) {
+                final pageList = cmsList_car[index];
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.network(
+                      pageList['icon'],
+                      width: 100,
+                      height: 100,
+                    ),
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount: pageList['content'].length,
+                            itemBuilder: (context, index) {
+                              var list1 = pageList['content'][index];
+                              return Center(
+                                child: Text(
+                                  list1['text'][0],
+                                  style: TextStyle(
+                                      color: changeColorCode(
+                                        list1['color'][0],
+                                      ),
+                                      fontSize: 20),
+                                ),
+                              );
+                            }))
+                  ],
+                );
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+//App Widget
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
@@ -368,109 +431,45 @@ class _CMSState extends State<CMS> {
         children: [
           Align(
             alignment: Alignment.topCenter,
-            child:  
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      _speed.toString(),
-                      style:
-                          const TextStyle(fontSize: 80, color: Colors.yellow),
-                      textAlign: TextAlign.right,
-                    ),
-                    const Text('km/h',
-                        style: TextStyle(fontSize: 30, color: Colors.yellow),
-                        textAlign: TextAlign.right)
-                  ],
-                ),),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  _speed.toString(),
+                  style: const TextStyle(fontSize: 80, color: Colors.yellow),
+                  textAlign: TextAlign.right,
+                ),
+                const Text('km/h',
+                    style: TextStyle(fontSize: 30, color: Colors.yellow),
+                    textAlign: TextAlign.right)
+              ],
+            ),
+          ),
           Align(
             alignment: Alignment.topCenter,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
-              crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
+              // crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
               children: [
-               
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
-                  crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
-                  children: [
-                    Image.network(
-                      displayImg,
-                      height: 80,
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text(
-                          displayText1,
-                          style: TextStyle(
-                            fontSize: 35,
-                            color: HexColor(Text1Color),
-                          ),
-                          textAlign: TextAlign.center,
-                          softWrap: true,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              displayText2,
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: HexColor(Text2Color),
-                              ),
-                              softWrap: true,
-                            ),
-                            Text(
-                              displayText3,
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: HexColor(Text3Color),
-                              ),
-                              softWrap: true,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              displayText4,
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: HexColor(Text4Color),
-                              ),
-                              textAlign: TextAlign.center,
-                              softWrap: true,
-                            ),
-                            Text(
-                              displayText5,
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: HexColor(Text5Color),
-                              ),
-                              textAlign: TextAlign.center,
-                              softWrap: true,
-                            ),
-                            Text(
-                              displayText6,
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: HexColor(Text6Color),
-                              ),
-                              textAlign: TextAlign.center,
-                              softWrap: true,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
+                // for (var k = 0; k < cmsList_car.length; k++)
+                //   for (var j = 0; j < cmsList_car[k]['content'].length; j++)
+                //     for (var i = 0;
+                //         i < cmsList_car[k]['content'][j]['text'].length;
+                //         i++)
+                //       Text(cmsList_car[k]['content'][j]['text'][i].toString(),
+                //           style: TextStyle(
+                //             color: changeColorCode(
+                //                 cmsList_car[k]['content'][j]['color'][i]),
+                //           )),
+                Container(
+                  width: screenWidth - 200,
+                  height: 300,
+                  child: Column(
+                    children: [
+                      Expanded(child: CMS_Content()),
+                    ],
+                  ),
                 )
               ],
             ),

@@ -42,7 +42,7 @@ List<Map<String, String>> fastLocationCar = [
     'value': '充電站',
     'title': '充電站',
     'img': 'assets/fastLocation/chargingStation.png',
-    'url': '後端API'
+    'url': dotenv.env['QuickSearch_ChargingStation'].toString()
   },
   {
     'value': '汽車定位',
@@ -111,16 +111,33 @@ List<Map<String, String>> fastLocationScooter = [
     'url': dotenv.env['ConvenientStore'].toString()
   },
   {
-    'value': '換電站',
-    'title': '換電站',
-    'img': 'assets/fastLocation/batteryStop.png',
-    'url': '後端API'
-  },
-  {
     'value': '機車定位',
     'title': '機車定位',
     'img': 'assets/fastLocation/scooter-locate.png',
     'url': dotenv.env['GetParkingLocation'].toString()
+  },
+
+];
+
+
+List<Map<String, String>> fastLocationScooter2 = [
+  {
+    'value': 'Gogoro',
+    'title': 'Gogoro',
+    'img': 'assets/fastLocation/batteryStop.png',
+    'url': dotenv.env['QuickSearch_BatterySwapStation_Gogoro'].toString()
+  },
+  {
+    'value': 'Ionex',
+    'title': 'Ionex',
+    'img': 'assets/fastLocation/batteryStop.png',
+    'url': dotenv.env['QuickSearch_BatterySwapStation_Ionex'].toString()
+  },
+  {
+    'value': 'eMOVING',
+    'title': 'eMOVING',
+    'img': 'assets/fastLocation/batteryStop.png',
+    'url': dotenv.env['QuickSearch_BatterySwapStation_eMOVING'].toString()
   },
 
 ];
