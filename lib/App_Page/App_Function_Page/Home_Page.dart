@@ -107,7 +107,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       return 'Car';
     } else if (mode == 'scooter') {
       return 'Scooter';
-    }else{
+    } else {
       return 'Transit';
     }
   }
@@ -169,6 +169,31 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       try {
         print(res);
         await launch(res);
+      } catch (e) {
+        print(e.toString());
+        EasyLoading.showError(e.toString());
+      }
+    } else {
+      EasyLoading.dismiss();
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+  }
+
+  WebfindPlacesQuickly(url) async {
+    print('開始抓取');
+    var position = await geolocator().updataPosition();
+    var urlPosition = url;
+    print(urlPosition);
+    var jwt = ',${state.accountState}';
+
+    var response = await api().apiGet(urlPosition, jwt);
+    var res = jsonDecode(utf8.decode(response.bodyBytes))['url'];
+    if (response.statusCode == 200) {
+      EasyLoading.dismiss();
+      try {
+        print(res);
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => WebView(tt: res)));
       } catch (e) {
         print(e.toString());
         EasyLoading.showError(e.toString());
@@ -312,6 +337,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
 
   void stoptimer() {
     timer?.cancel();
+    print('timer stop');
   }
 
   void update() async {
@@ -713,6 +739,45 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                       },
                     ),
                   ),
+                  GridView(
+                    padding: EdgeInsets.zero,
+                    physics: NeverScrollableScrollPhysics(),
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 4, //横轴三个子widget
+                        childAspectRatio: 0.01),
+                    children: List.generate(
+                      Tool.fastLocationScooter2.length,
+                      (index) {
+                        final tool = Tool.fastLocationScooter2[index];
+                        return SizedBox(
+                          height: 70,
+                          child: InkWell(
+                            child: Column(
+                              children: [
+                                Container(
+                                  width: 60,
+                                  height: 60,
+                                  margin: const EdgeInsets.all(3.0),
+                                  child: Image.asset(
+                                    tool['img'].toString(),
+                                  ),
+                                ),
+                                Text(
+                                  tool['title'].toString(),
+                                  textAlign: TextAlign.center,
+                                )
+                              ],
+                            ),
+                            onTap: () async {
+                              EasyLoading.show(status: 'loading...');
+
+                              WebfindPlacesQuickly(tool['url']);
+                            },
+                          ),
+                        );
+                      },
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -721,8 +786,6 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       ),
     );
   }
-
-
 
 //工具列widget
   Widget toolpublicWidget() {
@@ -809,6 +872,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       ),
     );
   }
+
   //路況速報
   Widget trafficWarningWidget() {
     return Card(
