@@ -25,7 +25,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   var homePageModel;
   var screenWidth;
   var fastTool;
-  CarouselController buttonCarouselController = CarouselController();
+
 
   var nearbyRoadCondition;
   late AnimationController controller;
