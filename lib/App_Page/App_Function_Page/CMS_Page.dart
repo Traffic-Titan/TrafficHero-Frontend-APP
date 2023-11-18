@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, sort_child_properties_last, unused_element, unused_local_variable, override_on_non_overriding_member, prefer_typing_uninitialized_variables, avoid_print, duplicate_ignore, avoid_unnecessary_containers
+// ignore_for_file: file_names, sort_child_properties_last, unused_element, unused_local_variable, override_on_non_overriding_member, prefer_typing_uninitialized_variables, avoid_print, duplicate_ignore, avoid_unnecessary_containers, deprecated_member_use
 import 'package:traffic_hero/Imports.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:traffic_hero/Components/Tool.dart' as Tool;
@@ -17,24 +17,24 @@ class _CMSState extends State<CMS> {
   PageController controller = PageController();
   List<dynamic> cmsList_car = [
     {
-      "type": "高速公路服務區停車位狀態",
+      "type": "",
       "icon":
           "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/ROC_Taiwan_Area_National_Freeway_Bureau_Logo.svg/200px-ROC_Taiwan_Area_National_Freeway_Bureau_Logo.svg.png",
       "content": [
         {
-          "text": ["清水服務區"],
+          "text": [""],
           "color": ["#FFFFFF"]
         },
         {
-          "text": ["狀態:", "未滿"],
+          "text": ["", ""],
           "color": ["#FFFFFF", "#FFFFFF"]
         },
         {
-          "text": ["尚有479格停車位"],
+          "text": [""],
           "color": ["#FFFFFF"]
         }
       ],
-      "voice": "前方清水服務區，目前還有479格停車位，停車位未滿",
+      "voice": "",
       "longitude": "121.000000",
       "latitude": "25.000000",
       "direction": "string",
@@ -450,18 +450,8 @@ class _CMSState extends State<CMS> {
             alignment: Alignment.topCenter,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
-              // crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
+              crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
               children: [
-                // for (var k = 0; k < cmsList_car.length; k++)
-                //   for (var j = 0; j < cmsList_car[k]['content'].length; j++)
-                //     for (var i = 0;
-                //         i < cmsList_car[k]['content'][j]['text'].length;
-                //         i++)
-                //       Text(cmsList_car[k]['content'][j]['text'][i].toString(),
-                //           style: TextStyle(
-                //             color: changeColorCode(
-                //                 cmsList_car[k]['content'][j]['color'][i]),
-                //           )),
                 Container(
                   width: screenWidth - 200,
                   height: 300,
