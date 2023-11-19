@@ -209,7 +209,7 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
             publicTransportInfoBike(),
             publicTransportInfoBus(context),
             publicTransportInfoMRT(context),
-            publicTransportInfoTrain(context),
+            Public_Transport_Information_Train(),
             Public_Transport_Information_Highway(),
           ],
         )
