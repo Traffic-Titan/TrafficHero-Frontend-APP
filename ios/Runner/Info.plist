@@ -5,6 +5,7 @@
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.yourcompany.yourapp.backgroundTaskIdentifier</string>
+		<string>com.transistorsoft.fetch</string>
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
@@ -35,7 +36,7 @@
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>YourPurposeKey</key>
-		<string>The example App requires temporary access to the device's precise location.</string>
+		<string>The example App requires temporary access to the device&apos;s precise location.</string>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to location when open.</string>
@@ -44,6 +45,7 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>audio</string>
+		<string>external-accessory</string>
 		<string>fetch</string>
 		<string>location</string>
 		<string>processing</string>

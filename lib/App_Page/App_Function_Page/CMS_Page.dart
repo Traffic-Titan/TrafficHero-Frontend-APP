@@ -56,38 +56,7 @@ class _CMSState extends State<CMS> {
     size: 40,
   );
 
-  @override
-  void initState() {
-    super.initState();
-    FlPiP().status.addListener(listener);
-    // setDisplay();
-  }
-
-  void listener() {
-    if (FlPiP().status.value == PiPStatus.enabled) {
-      FlPiP().toggle(AppState.background);
-    } else {
-      FlPiP().toggle(AppState.foreground);
-    }
-  }
-
-  Future<void> _getSpeed() async {
-    final LocationSettings locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
-      distanceFilter: 0,
-    );
-    Geolocator.getPositionStream(locationSettings: locationSettings)
-        .listen((Position position) {
-      double speedInMps = position.speed ?? 0.0;
-      int speedInKmh = (speedInMps * 3.6).toInt();
-      setState(() {
-        _speed = speedInKmh;
-        print(_speed);
-      });
-
-      _speedStreamController.add(speedInKmh.toDouble());
-    });
-  }
+  
 
   @override
   void dispose() {
@@ -121,6 +90,45 @@ class _CMSState extends State<CMS> {
   String speed = '0';
   var fontSize;
 
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    FlPiP().status.addListener(listener);
+    _getSpeed();
+    // setDisplay();
+  }
+
+  void listener() {
+    if (FlPiP().status.value == PiPStatus.enabled) {
+      FlPiP().toggle(AppState.background);
+    } else {
+      FlPiP().toggle(AppState.foreground);
+    }
+  }
+
+  Future<void> _getSpeed() async {
+    print('開始抓取速率');
+    final LocationSettings locationSettings = LocationSettings(
+      accuracy: LocationAccuracy.high,
+      distanceFilter: 0,
+    );
+    Geolocator.getPositionStream(locationSettings: locationSettings)
+        .listen((Position position) {
+      double speedInMps = position.speed;
+      int speedInKmh = (speedInMps * 3.6).toInt();
+      print(speedInKmh);
+      setState(() {
+        _speed = speedInKmh;
+        print(_speed);
+      });
+
+      _speedStreamController.add(speedInKmh.toDouble());
+    });
+  }
+
 //當頁面創造時執行
   @override
   void didChangeDependencies() async {
@@ -132,8 +140,7 @@ class _CMSState extends State<CMS> {
     fontSize = screenWidth * 0.05;
     _startTrackingPosition();
     _getSpeed();
-    // SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-    //     overlays: [SystemUiOverlay.top]);
+
     updateCMSList_Car();
     prefs = await SharedPreferences.getInstance();
   }
@@ -293,9 +300,11 @@ class _CMSState extends State<CMS> {
     if (response.statusCode == 200) {
       print('抓取ＣＭＳ成功');
       state.updateCMSList_Car(responseBody);
-      setState(() {
-        cmsList_car = responseBody;
-      });
+      try {
+        setState(() {
+          cmsList_car = responseBody;
+        });
+      } catch (e) {}
 
       setDisplay();
       print(cmsList_car);
@@ -310,11 +319,16 @@ class _CMSState extends State<CMS> {
     // 每5秒向後端要求一次CMS資料
     timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       if (index < cmsList_car.length) {
-        controller.animateToPage(
+        try{
+          controller.animateToPage(
           index,
           duration: Duration(milliseconds: 500),
           curve: Curves.easeInOut,
         );
+        }catch(e){
+          print(e);
+        }
+        
         index++;
       } else {
         index = 0;
@@ -361,15 +375,14 @@ class _CMSState extends State<CMS> {
   //Widget
   Widget CMS_Content() {
     return Container(
-      width: screenWidth - 200,
+      width: screenWidth - 150,
       child: Column(
-        // 將Expanded包裹在Column中
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Expanded(
             child: PageView.builder(
               controller: controller,
-              itemCount: cmsList_car.length, // 更新itemCount，確保與數據源的長度一致
+              itemCount: cmsList_car.length,
               itemBuilder: (context, index) {
                 final pageList = cmsList_car[index];
                 return Column(
@@ -377,25 +390,44 @@ class _CMSState extends State<CMS> {
                   children: [
                     Image.network(
                       pageList['icon'],
-                      width: 100,
-                      height: 100,
+                      width: 130,
+                      height: 130,
                     ),
                     Expanded(
-                        child: ListView.builder(
-                            itemCount: pageList['content'].length,
-                            itemBuilder: (context, index) {
-                              var list1 = pageList['content'][index];
-                              return Center(
-                                child: Text(
-                                  list1['text'][0],
-                                  style: TextStyle(
-                                      color: changeColorCode(
-                                        list1['color'][0],
-                                      ),
-                                      fontSize: 20),
-                                ),
-                              );
-                            }))
+                      child: ListView.builder(
+                        itemCount: pageList['content'].length,
+                        itemBuilder: (context, index) {
+                          var list1 = pageList['content'][index];
+                          return Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: List.generate(
+                                    list1['text'].length,
+                                    (index) {
+                                      var list2text = list1['text'][index];
+                                      var list2color = list1['color'][index];
+                                      return Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          list2text,
+                                          style: TextStyle(
+                                            color: changeColorCode(list2color),
+                                            fontSize: 30,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                )
+                              ],
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ],
                 );
               },
@@ -453,7 +485,7 @@ class _CMSState extends State<CMS> {
               crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
               children: [
                 Container(
-                  width: screenWidth - 200,
+                  width: screenWidth - 150,
                   height: 300,
                   child: Column(
                     children: [
@@ -487,6 +519,22 @@ class _CMSState extends State<CMS> {
                     style: TextStyle(color: Colors.white, fontSize: 50),
                   ),
                   Text(
+                    '放',
+                    style: TextStyle(color: Colors.white, fontSize: 50),
+                  ),
+                   Text(
+                    '放',
+                    style: TextStyle(color: Colors.white, fontSize: 50),
+                  ),
+                   Text(
+                    '放',
+                    style: TextStyle(color: Colors.white, fontSize: 50),
+                  ),
+                   Text(
+                    '放',
+                    style: TextStyle(color: Colors.white, fontSize: 50),
+                  ),
+                   Text(
                     '放',
                     style: TextStyle(color: Colors.white, fontSize: 50),
                   ),
@@ -543,71 +591,79 @@ class _CMSState extends State<CMS> {
         ],
       )),
       floatingActionButton: Container(
-          child: Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-        FloatingActionButton(
-          heroTag: "btn13",
-          child: const Icon(
-            Icons.picture_in_picture,
-            size: 40,
-          ),
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-            Navigator.push(
-                context, MaterialPageRoute(builder: (context) => CMSPIP()));
-          },
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        FloatingActionButton(
-          heroTag: "btn1",
-          child: const Icon(
-            CupertinoIcons.placemark_fill,
-            size: 40,
-          ),
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-            if (Carpostionstatus == false) {
-              savePosition();
-            } else {
-              getPosition();
-            }
-          },
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        FloatingActionButton(
-          heroTag: "btn2",
-          child: phoneIcon,
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-            SystemChrome.setPreferredOrientations([
-              DeviceOrientation.landscapeLeft,
-              DeviceOrientation.landscapeRight,
-            ]);
-            setState(() {
-              directionState = false;
-            });
-          },
-        ),
-        const SizedBox(
-          height: 10,
-        ),
-        FloatingActionButton(
-          heroTag: "btn3",
-          child: const Icon(
-            Icons.output_outlined,
-            size: 40,
-          ),
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-            //顯示導航及最頂端列
-            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-            Navigator.pop(context);
-          },
-        )
-      ])),
+          child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+            FloatingActionButton(
+              heroTag: "btn13",
+              child: const Icon(
+                Icons.picture_in_picture,
+                size: 40,
+              ),
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => CMSPIP()));
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              heroTag: "btn1",
+              child: const Icon(
+                CupertinoIcons.placemark_fill,
+                size: 40,
+              ),
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                if (Carpostionstatus == false) {
+                  savePosition();
+                } else {
+                  getPosition();
+                }
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              heroTag: "btn2",
+              child: phoneIcon,
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                SystemChrome.setPreferredOrientations([
+                  DeviceOrientation.landscapeLeft,
+                  DeviceOrientation.landscapeRight,
+                ]);
+                setState(() {
+                  directionState = false;
+                });
+              },
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            FloatingActionButton(
+              heroTag: "btn3",
+              child: const Icon(
+                Icons.output_outlined,
+                size: 40,
+              ),
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                //顯示導航及最頂端列
+                SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+                Navigator.pop(context);
+              },
+            ),
+            SizedBox(
+              width: 150,
+            ),
+          ]),
+        ],
+      )),
     );
   }
 
