@@ -1,4 +1,6 @@
 // ignore_for_file: camel_case_types, prefer_typing_uninitialized_variables, file_names, unused_field, prefer_final_fields, avoid_print, non_constant_identifier_names
+
+
 import 'imports.dart';
 
 class stateManager with ChangeNotifier {
@@ -104,8 +106,18 @@ class stateManager with ChangeNotifier {
   var _THSR_StartEndSearch_EndName;
   var _THSR_CarNumSearch_CarNum;
   var _THSR_CarNumSearchResult;
+  var _TRA_TimeTableSearch_StartStation;
+  var _TRA_TimeTableSearch_EndStation;
+  var _TRA_TimeTableSearch_StartEndStation_Result;
+  var _TRA_TimeTableSearch_CarType;
+  var _TRA_TimeTableSearch_CarNum;
+  var _TRA_TimeTableSearch_CarNum_Result;
+  var _TRA_TimeTableSearch_Station;
+  var _TRA_TimeTableSearch_Station_Result_OutBound;
+  var _TRA_TimeTableSearch_Station_Result_InBound;
 
-  String get modeName => _modeName;
+
+ String get modeName => _modeName;
   String get accountState => _accountState;
   String get verifyEmail => _verifyEmail;
   String get forgetToken => _forgetToken;
@@ -125,6 +137,55 @@ class stateManager with ChangeNotifier {
   get THSR_StartEndSearch_EndName => _THSR_StartEndSearch_EndName;
   get THSR_CarNumSearch_CarNum => _THSR_CarNumSearch_CarNum;
   get THSR_CarNumSearchResult => _THSR_CarNumSearchResult;
+  get TRA_TimeTableSearch_StartEndStation_Result => _TRA_TimeTableSearch_StartEndStation_Result;
+  get TRA_TimeTableSearch_StartStation => _TRA_TimeTableSearch_StartStation;
+  get TRA_TimeTableSearch_EndStation => _TRA_TimeTableSearch_EndStation;
+  get TRA_TimeTableSearch_CarType => _TRA_TimeTableSearch_CarType;
+  get TRA_TimeTableSearch_CarNum => _TRA_TimeTableSearch_CarNum;
+  get TRA_TimeTableSearch_CarNum_Result => _TRA_TimeTableSearch_CarNum_Result;
+  get TRA_TimeTableSearch_Station => _TRA_TimeTableSearch_Station;
+  get TRA_TimeTableSearch_Station_Result_OutBound => _TRA_TimeTableSearch_Station_Result_OutBound;
+  get TRA_TimeTableSearch_Station_Result_InBound => _TRA_TimeTableSearch_Station_Result_InBound;
+
+  void updateTRA_TimeTableSearch_Station_Result_OutBound(List<dynamic> newValue){
+    _TRA_TimeTableSearch_Station_Result_OutBound = newValue;
+   notifyListeners();
+  }
+  void updateTRA_TimeTableSearch_Station_Result_InBound(List<dynamic> newValue){
+   _TRA_TimeTableSearch_Station_Result_InBound = newValue;
+   notifyListeners();
+  }
+  void updateTRA_TimeTableSearch_Station(String newValue){
+   _TRA_TimeTableSearch_Station = newValue;
+   notifyListeners();
+  }
+  void updateTRA_TimeTableSearch_CarNum_Result(List<dynamic> newValue){
+    _TRA_TimeTableSearch_CarNum_Result = newValue;
+    notifyListeners();
+  }
+  void updateTRA_TimeTableSearch_CarType(String newValue){
+   _TRA_TimeTableSearch_CarType = newValue;
+   notifyListeners();
+  }
+
+  void updateTRA_TimeTableSearch_CarNum(String newValue){
+    _TRA_TimeTableSearch_CarNum = newValue;
+    notifyListeners();
+  }
+
+  void updateTRA_TimeTableSearch_EndStation(String newValue){
+   _TRA_TimeTableSearch_EndStation = newValue;
+   notifyListeners();
+  }
+
+  void updateTRA_TimeTableSearch_StartStation(String newValue){
+    _TRA_TimeTableSearch_StartStation = newValue;
+    notifyListeners();
+  }
+  void updateTRA_TimeTableSearch_StartEndStation_Result(List<dynamic> newValue){
+    _TRA_TimeTableSearch_StartEndStation_Result = newValue;
+    notifyListeners();
+  }
 
  void updateTHSR_CarNumSearch_CarNum (String newValue){
    _THSR_CarNumSearch_CarNum = newValue;
