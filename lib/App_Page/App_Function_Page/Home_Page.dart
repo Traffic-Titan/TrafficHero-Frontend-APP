@@ -758,7 +758,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                                   width: 60,
                                   height: 60,
                                   margin: const EdgeInsets.all(3.0),
-                                  child: Image.asset(
+                                  child: Image.network(
                                     tool['img'].toString(),
                                   ),
                                 ),
@@ -992,7 +992,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                   child: SizedBox(
                     width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
                     height:
-                        (operationalStatus['intercity'].length * 70).toDouble(),
+                        (operationalStatus['intercity'].length * 80).toDouble(),
                     child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: operationalStatus['intercity'].length,
@@ -1010,11 +1010,11 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                                   width: (screenWidth - 30 > 600
                                           ? 600
                                           : screenWidth - 30) *
-                                      0.12,
+                                      0.09,
                                   height: (screenWidth - 30 > 600
                                           ? 600
                                           : screenWidth - 30) *
-                                      0.12,
+                                      0.09,
                                 )
                               ],
                             ),

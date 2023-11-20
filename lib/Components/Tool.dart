@@ -124,19 +124,19 @@ List<Map<String, String>> fastLocationScooter2 = [
   {
     'value': 'Gogoro',
     'title': 'Gogoro',
-    'img': 'assets/fastLocation/batteryStop.png',
+    'img': 'https://play-lh.googleusercontent.com/Bs4qlK0OaYAXWSiGDDKDrSOspEdnsJywkGocYxGY_6tkQB6Ei9SoAkFLSrDxStN83l_1',
     'url': dotenv.env['QuickSearch_BatterySwapStation_Gogoro'].toString()
   },
   {
     'value': 'Ionex',
     'title': 'Ionex',
-    'img': 'assets/fastLocation/batteryStop.png',
+    'img': 'https://play-lh.googleusercontent.com/D2wrctqAbQp6kWdnslPzLsqaUhXWFRn4JkW8wWkLySKS_9NtDdhb-0EaRZ4x3K1z0KdA',
     'url': dotenv.env['QuickSearch_BatterySwapStation_Ionex'].toString()
   },
   {
     'value': 'eMOVING',
     'title': 'eMOVING',
-    'img': 'assets/fastLocation/batteryStop.png',
+    'img': 'https://www.e-moving.com.tw/images/icons-192.png?v=20220317',
     'url': dotenv.env['QuickSearch_BatterySwapStation_eMOVING'].toString()
   },
 
