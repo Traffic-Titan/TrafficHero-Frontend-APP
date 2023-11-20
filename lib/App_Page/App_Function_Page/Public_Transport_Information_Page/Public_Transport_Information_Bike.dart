@@ -92,7 +92,7 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
       width:  screenWidth * 0.85,
       child:ListView.builder(
           controller: scrollController,
-          itemCount:(state.nearbyStationBike == null ) ? 0 : state.nearbyStationBike.length-1,
+          itemCount:0,
           itemBuilder: (context, index) {
             var list = state.nearbyStationBike[index];
             return InkWell(
