@@ -23,6 +23,16 @@ class MyApp extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
+
+@pragma('vm:entry-point')
+void pipMain() {
+  runApp(ChangeNotifierProvider(
+      create: (context) => stateManager(),
+      child: MyApp(),
+    ),);
+}
+
+
 class _MyAppState extends State<MyApp> {
   late SharedPreferences prefs;
   late stateManager state;

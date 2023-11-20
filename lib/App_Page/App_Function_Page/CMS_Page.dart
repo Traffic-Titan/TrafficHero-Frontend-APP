@@ -19,7 +19,7 @@ class _CMSState extends State<CMS> {
     {
       "type": "",
       "icon":
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/ROC_Taiwan_Area_National_Freeway_Bureau_Logo.svg/200px-ROC_Taiwan_Area_National_Freeway_Bureau_Logo.svg.png",
+          "https://www.colorhexa.com/000000.png",
       "content": [
         {
           "text": [""],
@@ -61,7 +61,6 @@ class _CMSState extends State<CMS> {
   @override
   void dispose() {
     super.dispose();
-    FlPiP().status.removeListener(listener);
     _stopTrackingPosition(); // 停止追踪位置更新
     _speedStreamController.close();
   }
@@ -96,15 +95,22 @@ class _CMSState extends State<CMS> {
   @override
   void initState() {
     super.initState();
-    FlPiP().status.addListener(listener);
+     _stopTrackingPosition();
     _getSpeed();
+    controller = PageController(
+      initialPage: 1
+    );
     // setDisplay();
   }
 
   void listener() {
     if (FlPiP().status.value == PiPStatus.enabled) {
+      print(FlPiP().status.value);
+      print('1');
       FlPiP().toggle(AppState.background);
     } else {
+            print(FlPiP().status.value);
+      print('2');
       FlPiP().toggle(AppState.foreground);
     }
   }
@@ -133,7 +139,7 @@ class _CMSState extends State<CMS> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-
+   _stopTrackingPosition();
     state = Provider.of<stateManager>(context, listen: false);
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
