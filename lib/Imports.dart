@@ -49,7 +49,6 @@ export 'package:traffic_hero/App_Page/Account_Page/Forget_Password.dart';
 export 'package:traffic_hero/App_Page/Account_Page/Register.dart';
 export 'package:traffic_hero/App_Page/All_Page.dart';
 export 'package:traffic_hero/App_Page/Account_Page/verify.dart';
-export 'package:traffic_hero/Function/Webview.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/News_Card_View.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/CMS_Page.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/Road_Information_Page.dart';
@@ -74,6 +73,9 @@ export 'package:traffic_hero/Function/Api.dart';
 export 'package:traffic_hero/Function/Google_SSO.dart';
 export 'package:traffic_hero/Function/Geolocator.dart';
 export 'package:traffic_hero/Function/get_Home.dart';
+export 'package:traffic_hero/Function/Webview.dart';
+export 'package:traffic_hero/Function/WebViewForMRT.dart';
+
 
 //Components
 export 'package:traffic_hero/Components/Button.dart';
