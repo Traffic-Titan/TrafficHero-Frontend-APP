@@ -15,35 +15,22 @@ class Home extends StatefulWidget {
 class _Home extends State<Home> with SingleTickerProviderStateMixin {
   late stateManager state;
   late SharedPreferences prefs;
-  late var positionNow;
+
   var carMode = false;
   var scooterMode = false;
   var publicTransportMode = false;
   var operationalStatus;
   var weather;
-  var stationNearby;
-  var homePageModel;
   var screenWidth;
   var fastTool;
-
-
   var nearbyRoadCondition;
-  late AnimationController controller;
   var count = 0;
   var nearbyStationBus, nearbyStationBike, nearbyStationTrain;
   var second = 1;
-  var scooterSecond = 1;
   var publicSecond = 1;
-  var trafficWarningWidgetCount;
-  int currentIndex = 0;
-  Timer? timers;
-  var countss = 0;
   var secondroad = 2;
   final PageController _controller = PageController();
-
-  Timer? timerBus, timerBike, timerTrain, timer, trafficWarningWidgettimer;
-  Timer? counter;
-  bool _timer = true;
+  Timer? timerBus, timer,timers;
   int timeCount = 1;
 
   @override
@@ -102,6 +89,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     prefs = await SharedPreferences.getInstance();
   }
 
+//將首字母更換成大寫
   changeMode(mode) {
     if (mode == 'car') {
       return 'Car';
@@ -179,6 +167,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
+//快速尋找地點顯示webview
   WebfindPlacesQuickly(url) async {
     print('開始抓取');
     var position = await geolocator().updataPosition();
@@ -228,6 +217,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
+//將文本自動換行
   String splitTextIntoChunks(String text, int chunkSize) {
     List<String> chunks = [];
     for (int i = 0; i < text.length; i += chunkSize) {
@@ -917,46 +907,46 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                               ),
                             ),
                             Column(
-                              mainAxisAlignment: MainAxisAlignment.center
-                              ,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Container(
-                                    height: 60,
-                                    width: screenWidth - 30 > 600
-                                        ? 600
-                                        : screenWidth - 30,
-                                    child: CarouselSlider.builder(
-                                      itemCount: list['content'].length,
-                                      options: CarouselOptions(
-                                        enlargeCenterPage: true,
-                                        aspectRatio: 2.0,
-                          
-                                        autoPlay: true,
-                                      ),
-                                      itemBuilder: (ctx, index, realIdx) {
-                                        return Container(
-                                          width: screenWidth - 30 > 600
-                                        ? 600
-                                        : screenWidth - 30,
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.center,
-                                            crossAxisAlignment: CrossAxisAlignment.center,
-                                            children: [
-                                              Text(
-                                                list['content'][index],
-                                                overflow: TextOverflow.clip,
-                                                softWrap: true,
-                                                style: TextStyle(fontSize: 20),
-                                                 maxLines: 2,
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    )),
-                              ]),
-                            
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Container(
+                                      height: 60,
+                                      width: screenWidth - 30 > 600
+                                          ? 600
+                                          : screenWidth - 30,
+                                      child: CarouselSlider.builder(
+                                        itemCount: list['content'].length,
+                                        options: CarouselOptions(
+                                          enlargeCenterPage: true,
+                                          aspectRatio: 2.0,
+                                          autoPlay: true,
+                                        ),
+                                        itemBuilder: (ctx, index, realIdx) {
+                                          return Container(
+                                            width: screenWidth - 30 > 600
+                                                ? 600
+                                                : screenWidth - 30,
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                  list['content'][index],
+                                                  overflow: TextOverflow.clip,
+                                                  softWrap: true,
+                                                  style:
+                                                      TextStyle(fontSize: 20),
+                                                  maxLines: 2,
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      )),
+                                ]),
                           ],
                         );
                       })),

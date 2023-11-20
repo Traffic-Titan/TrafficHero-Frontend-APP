@@ -66,21 +66,7 @@ class _CMSState extends State<CMS> {
   }
 
   bool directionState = true;
-  String displayText1 = '';
-  String displayText2 = '';
-  String displayText3 = '';
-  String displayText4 = '';
-  String displayText5 = '';
-  String displayText6 = '';
-  var Text1Color = 'FFFFFFFF';
-  var Text2Color = 'FFFFFFFF';
-  var Text3Color = 'FFFFFFFF';
-  var Text4Color = 'FFFFFFFF';
-  var Text5Color = 'FFFFFFFF';
-  var Text6Color = 'FFFFFFFF';
   var Carpostionstatus = false;
-  // String displayImg='assets/fastLocation/transparent.png';
-  // 預設圖片：全黑背景圖片
   String displayImg = 'https://www.colorhexa.com/000000.png';
   Timer? timer;
   StreamSubscription<Position>? _positionStreamSubscription;
@@ -98,22 +84,10 @@ class _CMSState extends State<CMS> {
      _stopTrackingPosition();
     _getSpeed();
     controller = PageController(
-      initialPage: 1
     );
-    // setDisplay();
   }
 
-  void listener() {
-    if (FlPiP().status.value == PiPStatus.enabled) {
-      print(FlPiP().status.value);
-      print('1');
-      FlPiP().toggle(AppState.background);
-    } else {
-            print(FlPiP().status.value);
-      print('2');
-      FlPiP().toggle(AppState.foreground);
-    }
-  }
+ 
 
   Future<void> _getSpeed() async {
     print('開始抓取速率');
@@ -144,7 +118,6 @@ class _CMSState extends State<CMS> {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
     fontSize = screenWidth * 0.05;
-    _startTrackingPosition();
     _getSpeed();
 
     updateCMSList_Car();
@@ -237,49 +210,7 @@ class _CMSState extends State<CMS> {
     }
   }
 
-  location() async {
-    try {
-      positionNow = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best,
-      );
-      setState(() {
-        var speed1 = positionNow!.speed.toInt().ceil() <= 0
-            ? 0
-            : positionNow!.speed.toInt().ceil();
-        if (speed1 >= 20) {
-          // FlutterTts().speak('限速10公里，您已超速！');
-        }
-        speed = speed1.toString();
-      });
-    } catch (e) {
-      print(e);
-    }
-  }
 
-  Future<void> _getCurrentLocation() async {
-    try {
-      // 取得目前位置
-      Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.best);
-      location();
-    } catch (e) {
-      // ignore: avoid_print
-      print('Error getting current location: $e');
-    }
-  }
-
-  void _startTrackingPosition() {
-    // 订阅位置更新的流
-    _positionStreamSubscription = Geolocator.getPositionStream().listen(
-      (Position position) {
-        location();
-      },
-      onError: (error) {
-        // ignore: avoid_print
-        print('Position stream error: $error');
-      },
-    );
-  }
 
   void _stopTrackingPosition() {
     // 取消位置更新的订阅
@@ -291,8 +222,9 @@ class _CMSState extends State<CMS> {
   void updateCMSList_Car() async {
     // 讀取API上即時訊息推播-汽車模式
     print('開始抓取ＣＭＳ');
+    var position = await geolocator().updataPosition();
     var url =
-        dotenv.env['CMS_Main_Car'].toString() + '?longitude=all&latitude=all';
+        dotenv.env['CMS_Main_Car'].toString() + '?longitude=${position.longitude}&latitude=${position.latitude}';
     var jwt = ',${state.accountState}';
     var response;
     try {
@@ -719,69 +651,7 @@ class _CMSState extends State<CMS> {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          displayText1,
-                          style: TextStyle(
-                            fontSize: 35,
-                            color: HexColor(Text1Color),
-                          ),
-                          textAlign: TextAlign.center,
-                          softWrap: true,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              displayText2,
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: HexColor(Text2Color),
-                              ),
-                              softWrap: true,
-                            ),
-                            Text(
-                              displayText3,
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: HexColor(Text3Color),
-                              ),
-                              softWrap: true,
-                            ),
-                          ],
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(
-                              displayText4,
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: HexColor(Text4Color),
-                              ),
-                              textAlign: TextAlign.center,
-                              softWrap: true,
-                            ),
-                            Text(
-                              displayText5,
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: HexColor(Text5Color),
-                              ),
-                              textAlign: TextAlign.center,
-                              softWrap: true,
-                            ),
-                            Text(
-                              displayText6,
-                              style: TextStyle(
-                                fontSize: 35,
-                                color: HexColor(Text6Color),
-                              ),
-                              textAlign: TextAlign.center,
-                              softWrap: true,
-                            ),
-                          ],
-                        ),
+                       
                       ],
                     ),
                   ],
