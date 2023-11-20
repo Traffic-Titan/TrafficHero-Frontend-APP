@@ -916,31 +916,47 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                                 style: TextStyle(fontSize: 20),
                               ),
                             ),
-                            ListTile(
-                              title: Column(children: [
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.center
+                              ,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
                                 Container(
-                                    height: 30,
+                                    height: 60,
                                     width: screenWidth - 30 > 600
                                         ? 600
                                         : screenWidth - 30,
                                     child: CarouselSlider.builder(
                                       itemCount: list['content'].length,
                                       options: CarouselOptions(
-                                        aspectRatio: 2.0,
                                         enlargeCenterPage: true,
+                                        aspectRatio: 2.0,
+                          
                                         autoPlay: true,
                                       ),
                                       itemBuilder: (ctx, index, realIdx) {
                                         return Container(
-                                          child: Text(
-                                            list['content'][index],
-                                            style: TextStyle(fontSize: 20),
+                                          width: screenWidth - 30 > 600
+                                        ? 600
+                                        : screenWidth - 30,
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                list['content'][index],
+                                                overflow: TextOverflow.clip,
+                                                softWrap: true,
+                                                style: TextStyle(fontSize: 20),
+                                                 maxLines: 2,
+                                              ),
+                                            ],
                                           ),
                                         );
                                       },
                                     )),
                               ]),
-                            )
+                            
                           ],
                         );
                       })),
@@ -1010,11 +1026,11 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                                   width: (screenWidth - 30 > 600
                                           ? 600
                                           : screenWidth - 30) *
-                                      0.09,
+                                      0.12,
                                   height: (screenWidth - 30 > 600
                                           ? 600
                                           : screenWidth - 30) *
-                                      0.09,
+                                      0.12,
                                 )
                               ],
                             ),

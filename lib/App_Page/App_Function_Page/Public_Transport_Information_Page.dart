@@ -186,14 +186,17 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
       length: 5,
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
+          backgroundColor: Color.fromRGBO(62, 111, 179, 1),
           toolbarHeight: 0,
           bottom: TabBar(
+            labelColor: Colors.white,
+            unselectedLabelColor: Colors.white,
+            
             // labelColor: //被選種顏色,
             // unselectedLabelColor: //未被選種顏色,
             // controller: _tabController,
             tabs: [
-                Tab(text: '腳踏車'),
+                Tab(text: '自行車'),
                 Tab(text: '公車'),
                 Tab(text: '捷運'),
                 Tab(text: '台鐵'),
