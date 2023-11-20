@@ -97,8 +97,8 @@ class _AllPageState extends State<AllPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                icon: Image.asset(public_Transport),
-                iconSize: 50,
+                icon: Image.asset(public_Transport,width: 50,height: 50,),
+                
                 onPressed: () {
                   setState(() {
                     car = 'assets/topbar/select_car.png';
@@ -111,7 +111,7 @@ class _AllPageState extends State<AllPage> {
                 },
               ),
               IconButton(
-                icon: Image.asset(car),
+                icon: Image.asset(car,width: 50,height: 50,),
                 iconSize: 50,
                 onPressed: () {
                   selectedMode('car');
@@ -127,7 +127,7 @@ class _AllPageState extends State<AllPage> {
                 },
               ),
               IconButton(
-                icon: Image.asset(scooter),
+                icon: Image.asset(scooter,width: 50,height: 50,),
                 iconSize: 50,
                 onPressed: () {
                   selectedMode('scooter');
@@ -142,7 +142,7 @@ class _AllPageState extends State<AllPage> {
                 },
               ),
               // IconButton(
-              //   icon: Image.asset(public_Transport),
+              //   icon: Image.asset(public_Transport,width: 50,height: 50,),
               //   iconSize: 50,
               //   onPressed: () {
               //     setState(() {

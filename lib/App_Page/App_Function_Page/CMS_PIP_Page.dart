@@ -1,4 +1,5 @@
 import 'package:traffic_hero/Imports.dart';
+
 class CMSPIP extends StatefulWidget {
   const CMSPIP({Key? key}) : super(key: key);
 
@@ -28,28 +29,40 @@ class _CMSPIPState extends State<CMSPIP> {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
     fontSize = screenWidth * 0.05;
-    updateCMSListCar();
+    // updateCMSListCar();
+
+    setDisplay();
   }
 
   @override
   void initState() {
     super.initState();
-
     FlPiP().status.addListener(listener);
+
     FlPiP().enable(
       ios: const FlPiPiOSConfig(
+        enablePlayback: true,
+        enableControls: true,
         path: 'assets/landscape.mp4',
         packageName: null,
       ),
       android: const FlPiPAndroidConfig(aspectRatio: Rational.maxLandscape()),
     );
-    setDisplay();
+    print(FlPiP().status);
+    // FlPiP().toggle(AppState.background);
+    listener();
   }
 
   void listener() {
+    print(FlPiP().status);
     if (FlPiP().status.value == PiPStatus.enabled) {
-      // 根據你的需求進行調整
+      print(FlPiP().status.value);
+      print('1');
       FlPiP().toggle(AppState.background);
+    } else {
+      print(FlPiP().status.value);
+      print('2');
+      FlPiP().toggle(AppState.foreground);
     }
   }
 
