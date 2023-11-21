@@ -11,7 +11,7 @@ class THSR_StartEndStationSearch extends StatefulWidget {
 var dateTime_date;
 var dateTime_time;
 
-const List<String> stopName = <String>['起始地','南港','台北','板橋','桃園','新竹','苗栗','台中','彰化','雲林','嘉義','台南','左營','目的地'];
+const List<String> stopName = <String>['南港','台北','板橋','桃園','新竹','苗栗','台中','彰化','雲林','嘉義','台南','左營'];
 final DateFormat formatter = DateFormat('yyyy/MM/dd');
 String dropDownValue_Start = stopName.first;
 String dropDownValue_End = stopName.last;
@@ -27,17 +27,14 @@ class _THSR_StartEndStationSearchState extends State<THSR_StartEndStationSearch>
       body: Column(
         children: [
           SizedBox(height: 10,),
-          ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(14)),
-            child: Container(
+          Container(
+            margin: EdgeInsets.only(bottom: 10),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(165, 201, 233, 1),
+                borderRadius: BorderRadius.all(Radius.circular(14)),
+              ),
               width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-              color: Color.fromRGBO(165, 201, 233, 1),
-              child: Text('查詢條件(條件擇一即可)',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerLeft,
-            child:Text('1.起訖站查詢',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 20),textAlign:TextAlign.left,),
+              child: Text('起訖站查詢',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
           ),
           //起訖站查詢按鈕
           Container(
@@ -59,6 +56,7 @@ class _THSR_StartEndStationSearchState extends State<THSR_StartEndStationSearch>
                       alignment: Alignment.center,
                       child: DropdownButton(
                           value: dropDownValue_Start,
+                          hint: Text('起始地'),
                           items: stopName.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
                               value: value,
@@ -90,6 +88,7 @@ class _THSR_StartEndStationSearchState extends State<THSR_StartEndStationSearch>
                       width: 150,
                       alignment: Alignment.center,
                       child: DropdownButton(
+                          hint: Text('目的地'),
                           value: dropDownValue_End,
                           items: stopName.map<DropdownMenuItem<String>>((String value) {
                             return DropdownMenuItem<String>(
