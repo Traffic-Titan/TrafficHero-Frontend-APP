@@ -22,14 +22,6 @@ class _TRA_TimeTableSearch_CarNumSearchState extends State<TRA_TimeTableSearch_C
       body: Column(
         children: [
           SizedBox(height: 10,),
-          ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(14)),
-            child: Container(
-              width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-              color: Color.fromRGBO(165, 201, 233, 1),
-              child: Text('查詢條件(條件擇一即可)',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
-            ),
-          ),
           Align(
             alignment: Alignment.centerLeft,
             child:Text('2.車次查詢',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 20),textAlign:TextAlign.left,),

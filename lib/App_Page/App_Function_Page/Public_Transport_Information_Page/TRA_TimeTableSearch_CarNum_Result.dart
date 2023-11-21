@@ -83,7 +83,7 @@ class _TRA_TimeTableSearch_CarNum_ResultState extends State<TRA_TimeTableSearch_
                         //     child:Icon(Icons.arrow_forward)
                         // ),
                         Expanded(
-                          flex: 310,
+                          flex: 3,
                           child: Text(list['DepartureTime'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
                         ),
                       ],
