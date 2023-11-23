@@ -1,14 +1,8 @@
-// Copyright 2013 The Flutter Authors. All rights reserved.
-// Use of this source code is governed by a BSD-style license that can be
-// found in the LICENSE file.
-
 // ignore_for_file: public_member_api_docs, unnecessary_brace_in_string_interps, unnecessary_import, depend_on_referenced_packages, file_names
-
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:traffic_hero/imports.dart';
@@ -153,34 +147,18 @@ Page resource error:
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Colors.blue,
       appBar: AppBar(
         elevation: 0,
-        // title: const Text('網路瀏覽器'),
-        // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
         actions: <Widget>[
           NavigationControls(webViewController: _controller),
           SampleMenu(webViewController: _controller),
         ],
       ),
       body: WebViewWidget(controller: _controller),
-      // floatingActionButton: favoriteButton(),
+
     );
   }
-
-  // Widget favoriteButton() {
-  //   return FloatingActionButton(
-  //     onPressed: () async {
-  //       final String? url = await _controller.currentUrl();
-  //       if (context.mounted) {
-  //         ScaffoldMessenger.of(context).showSnackBar(
-  //           SnackBar(content: Text('Favorited $url')),
-  //         );
-  //       }
-  //     },
-  //     child: const Icon(Icons.favorite),
-  //   );
-  // }
 }
 
 enum MenuOptions {

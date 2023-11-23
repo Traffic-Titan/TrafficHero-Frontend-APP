@@ -7,10 +7,14 @@ import 'package:traffic_hero/Imports.dart';
 
 class geolocator {
   late List<Placemark> placemarks;
+  late stateManager state;
+
   StreamSubscription<Position>? _positionStreamSubscription;
 
-   Future<Position> updataPosition() async {
+   Future<Position> updataPosition(context) async {
+    state = Provider.of<stateManager>(context, listen: false);
     Position position = await _determinePosition();
+    state.changePositionNow(position);
     try{
 List pm =
         await placemarkFromCoordinates(position.latitude, position.longitude);

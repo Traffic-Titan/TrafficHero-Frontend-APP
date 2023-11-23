@@ -96,7 +96,7 @@ class _NewsState extends State<News> {
   }
 
   location() async {
-    test = await geolocator().updataPosition();
+    test = await geolocator().updataPosition(context);
     placemarks = await placemarkFromCoordinates(test.latitude, test.longitude);
 
     if ((placemarks.isNotEmpty
