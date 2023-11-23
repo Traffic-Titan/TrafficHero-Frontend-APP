@@ -586,7 +586,7 @@ class _Public_Transport_Information_TrainState extends State<Public_Transport_In
                 children: [
                   Text("順行",style: TextStyle(fontSize:20),),
                   Container(
-                    height: 200,
+                    height: 150,
                     width: screenWidth*0.8-10,
                     child: ListView.builder(
                         itemCount: outBound.length,
@@ -636,7 +636,7 @@ class _Public_Transport_Information_TrainState extends State<Public_Transport_In
                   Column(
                     children: [
                       Container(
-                        height: 200,
+                        height: 150,
                         width: screenWidth*0.8-10,
                         child: ListView.builder(
                             itemCount: inBound.length,

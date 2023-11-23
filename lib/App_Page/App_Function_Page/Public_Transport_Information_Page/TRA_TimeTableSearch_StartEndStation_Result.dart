@@ -84,14 +84,23 @@ class _TRA_TimeTableSearch_StartEndStation_ResultState extends State<TRA_TimeTab
                           flex: 3,
                           child: ListTile(
                             title: Container(
-                                height: 30,
-
+                                height: 60,
+                                width: 60,
                                 child: DecoratedBox(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10),
                                     color: Color.fromRGBO(24, 60, 126, 1),
                                   ),
-                                  child: Text(list['TrainNo'],style: TextStyle(color: Colors.white,fontSize: 20),textAlign: TextAlign.center,),
+                                  child: Column(
+                                    children: [
+                                      Text(list['TrainNo'],style: TextStyle(color: Colors.white,fontSize: 20),textAlign: TextAlign.center,),
+                                      Flexible(
+                                          child:SingleChildScrollView(
+                                            child: Text(list['TrainTypeName'],style: TextStyle(color: Colors.white,fontSize: 14),textAlign: TextAlign.center,),
+                                          )
+                                      )
+                                    ],
+                                  )
                                 )
                             ),
                           ),
@@ -110,7 +119,7 @@ class _TRA_TimeTableSearch_StartEndStation_ResultState extends State<TRA_TimeTab
                         ),
                         Expanded(
                           flex: 2,
-                          child: Text("200",style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+                          child: Text(list['Fare'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
                         ),
                       ],
                     ),

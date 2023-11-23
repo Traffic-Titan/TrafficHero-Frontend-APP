@@ -519,7 +519,7 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
               child: Container(
                 width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
                 color: Color.fromRGBO(165, 201, 233, 1),
-                child: Text('查詢條件(條件擇一即可)',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
+                child: Text('查詢條件',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
               ),
             ),
             Align(
@@ -629,9 +629,9 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                   onPressed: () {
                     DatePicker.showTime12hPicker(context, showTitleActions: true,
                         onConfirm: (time) async {
-                          print(time.toString().substring(11,time.toString().length));
+                          print(time.toString().substring(11,time.toString().length-7));
                           setState(() {
-                            dateTime_time = time.toString().substring(11,time.toString().length-3);
+                            dateTime_time = time.toString().substring(11,time.toString().length-7);
                           });
                         }
                     );
@@ -647,7 +647,7 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
             TextButton(
                 onPressed: () async {
                   var url = dotenv.env['TRA_DailyTimeTable_ByStartEndStation'].toString() +
-                      '?OriginStationID=${stationID[stopName.indexOf(dropDownValue_Start)]}&DestinationStationID=${stationID[stopName.indexOf(dropDownValue_End)]}&TrainDate=${dateTime_date}';
+                      '?OriginStationID=${stationID[stopName.indexOf(dropDownValue_Start)]}&DestinationStationID=${stationID[stopName.indexOf(dropDownValue_End)]}&TrainDate=${dateTime_date}&TrainTime=${dateTime_time}';
                   var jwt = ',' + state.accountState.toString();
                   var response = await api().apiGet(url, jwt);
                   if (response.statusCode == 200) {

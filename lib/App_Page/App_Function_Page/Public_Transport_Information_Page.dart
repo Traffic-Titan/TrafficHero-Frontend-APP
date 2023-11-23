@@ -94,90 +94,6 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
   }
 
 
-  // // 取得大眾運輸資訊
-  // getPublicTransportation() async {
-  //   // EasyLoading.show(status: '查詢中...');
-  //   var response;
-  //   var url;
-  //   var jwt = ',${state.accountState}';
-  //   switch(_tabController.index){
-  //
-  //   // 腳踏車
-  //     case 0:
-  //       nearbyStation_list.forEach((element) async {
-  //         // 使用者附近有腳踏車站點
-  //         if (element["公共自行車"] != null) {
-  //           // 將"公共自行車資料"加進要顯示的陣列中
-  //           stationView_list.add(element);
-  //           url = dotenv.env['PublicBicycle'];
-  //           // 1012：area=XXX還未修改成讀取使用者目前所在縣市
-  //           url +=
-  //           '?area=Kaohsiung&StationUID=${element['公共自行車']['StationUID']}';
-  //
-  //           try {
-  //             response = await api().apiGet(url, jwt);
-  //             // 將搜尋到的腳踏車站點資訊回傳至頁面
-  //             var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-  //             if (response.statusCode == 200) {
-  //               stationViewResult_list.add(responseBody);
-  //             }
-  //           } catch (e) {
-  //             print(e);
-  //           }
-  //           setState(() {
-  //             stationViewResult_list;
-  //           });
-  //         }
-  //         // 使用者附近無腳踏車站點
-  //         else {
-  //           // stationViewResult_list.add('');
-  //         };
-  //       }
-  //       );
-  //
-  //       break;
-  //
-  //   // // 公車
-  //   // case 1:
-  //   //   url = dotenv.env['TouristHotel'];
-  //   //   break;
-  //   //
-  //   // // 捷運
-  //   // case 2:
-  //   //   url = dotenv.env['TouristFood'];
-  //   //   break;
-  //   //
-  //   // // 台鐵
-  //   // case 3:
-  //   //   url = dotenv.env['TouristActivity'];
-  //   //   break;
-  //   //
-  //   // // 高鐵
-  //   // case 4:
-  //   //   url = dotenv.env['TouristActivity'];
-  //   //   break;
-  //   // default:
-  //   //   print(_tabController.index);
-  //   //   break;
-  //   }
-  // }
-
-
-  //AppBar
-  // PreferredSizeWidget appBar(){
-  //   return AppBar(
-  //     backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
-  //     toolbarHeight: 0,
-  //     bottom: TabBar(
-  //       // labelColor: //被選種顏色,
-  //       // unselectedLabelColor: //未被選種顏色,
-  //       controller: _tabController,
-  //       tabs: publicTransportationBar,
-  //     ),
-  //
-  //   );
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -191,16 +107,16 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
           bottom: TabBar(
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white,
-            
-            // labelColor: //被選種顏色,
-            // unselectedLabelColor: //未被選種顏色,
-            // controller: _tabController,
+            indicator: UnderlineTabIndicator( // 被選中底線顏色
+                borderSide: BorderSide(color: Colors.white)
+            ),
+            overlayColor: MaterialStateProperty.all(Color.fromRGBO(113, 170, 221, 1)),
             tabs: [
-                Tab(text: '自行車'),
-                Tab(text: '公車'),
-                Tab(text: '捷運'),
-                Tab(text: '台鐵'),
-                Tab(text: '高鐵'),
+                Tab(icon: Icon(Icons.directions_bike_outlined),text: '腳踏車'),
+                Tab(icon: Icon(Icons.directions_bus),text: '公車',),
+                Tab(icon: Icon(Icons.directions_train_outlined),text: '捷運',),
+                Tab(icon: Icon(Icons.train),text: '台鐵',),
+                Tab(icon: Icon(Icons.directions_railway_sharp),text: '高鐵',),
             ],
           ),
 
