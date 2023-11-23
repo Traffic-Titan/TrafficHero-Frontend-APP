@@ -107,10 +107,10 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
           bottom: TabBar(
             labelColor: Colors.white,
             unselectedLabelColor: Colors.white,
-            
-            // labelColor: //被選種顏色,
-            // unselectedLabelColor: //未被選種顏色,
-            // controller: _tabController,
+            indicator: UnderlineTabIndicator( // 被選中底線顏色
+                borderSide: BorderSide(color: Colors.white)
+            ),
+            overlayColor: MaterialStateProperty.all(Color.fromRGBO(113, 170, 221, 1)),
             tabs: [
                 Tab(icon: Icon(Icons.directions_bike_outlined),text: '腳踏車'),
                 Tab(icon: Icon(Icons.directions_bus),text: '公車',),
