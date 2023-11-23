@@ -65,6 +65,8 @@ export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_T
 export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_Train.dart';
 export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_Highway.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/CMS_PIP_Page.dart';
+export 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/THSR_CarNumSearchResult.dart';
+
 //Function
 export 'package:traffic_hero/Function/JWT.dart';
 export 'package:traffic_hero/State_manager.dart';
