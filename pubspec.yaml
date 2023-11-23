@@ -139,8 +139,8 @@ flutter:
     - assets/AppIcon.png
     - assets/
     - assets/publicTransportIcon/BusStop.png
-    - assets/publicTransportIcon/routeDot.png
     - assets/publicTransportIcon/routeLine.png
+    - assets/publicTransportIcon/routeDot.png
     - assets/fastLocation/car-placeholder.png
     - assets/fastLocation/scooter-locate.png
 
