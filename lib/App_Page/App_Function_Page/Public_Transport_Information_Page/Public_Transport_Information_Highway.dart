@@ -28,9 +28,7 @@ class _Public_Transport_Information_HighwayState extends State<Public_Transport_
                 backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
                 toolbarHeight: 0,
                 bottom: TabBar(
-                  // labelColor: //被選種顏色,
-                  // unselectedLabelColor: //未被選種顏色,
-                  // controller: _tabController,
+                  labelColor: Color.fromRGBO(62, 111, 179, 1),//被選種顏色,
                   tabs: [
                     Tab(text: '起始站查詢'),
                     Tab(text: '車次查詢'),

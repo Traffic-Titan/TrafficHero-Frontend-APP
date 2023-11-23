@@ -30,10 +30,10 @@ class _THSR_StartEndStationSearch_ResultState extends State<THSR_StartEndStation
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(221, 235, 247, 1),
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: Colors.blue,
-        title: Text(THSRDetail_StartName+" - "+THSRDetail_EndName),
+        backgroundColor: Color.fromRGBO(113, 170, 221, 1),
+        title: Text(THSRDetail_StartName+" - "+THSRDetail_EndName,style: TextStyle(color: Colors.black),),
       ),
       body: Column(
         children: [
