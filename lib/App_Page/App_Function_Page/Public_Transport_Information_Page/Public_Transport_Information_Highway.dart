@@ -28,9 +28,14 @@ class _Public_Transport_Information_HighwayState extends State<Public_Transport_
                 backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
                 toolbarHeight: 0,
                 bottom: TabBar(
-                  labelColor: Color.fromRGBO(62, 111, 179, 1),//被選種顏色,
+                  labelColor:Colors.white,//被選中文字顏色,
+                  labelStyle: TextStyle(fontSize: 18),
+                  indicator: UnderlineTabIndicator( // 被選中底線顏色
+                        borderSide: BorderSide(color: Color.fromRGBO(29, 73, 153, 1))
+                    ),
+                  overlayColor: MaterialStateProperty.all(Color.fromRGBO(113, 170, 221, 1)),
                   tabs: [
-                    Tab(text: '起始站查詢'),
+                    Tab(text: '起迄站查詢'),
                     Tab(text: '車次查詢'),
                   ],
                 ),
