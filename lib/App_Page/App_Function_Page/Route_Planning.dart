@@ -36,7 +36,7 @@ class _Route_Planning extends State<Route_Planning> {
     state = Provider.of<stateManager>(context, listen: false);
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
-    state.changePositionNow(await geolocator().updataPosition());
+    state.changePositionNow(await geolocator().updataPosition(context));
   }
   _onMapCreated(GoogleMapController controller){
     mapController = controller;

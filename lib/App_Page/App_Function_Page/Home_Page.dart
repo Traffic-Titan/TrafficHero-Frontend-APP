@@ -30,12 +30,13 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   var publicSecond = 1;
   var secondroad = 2;
   final PageController _controller = PageController();
-  Timer? timerBus, timer,timers;
+  Timer? timerBus, timer, timers;
   int timeCount = 1;
 
   @override
   void dispose() {
     super.dispose();
+    print('object');
     stoptimer();
   }
 
@@ -85,7 +86,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       });
     }
 
-    state.changePositionNow(await geolocator().updataPosition());
+    state.changePositionNow(await geolocator().updataPosition(context));
     prefs = await SharedPreferences.getInstance();
   }
 
@@ -102,7 +103,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
 
   void initState() {
     timerBus?.cancel();
-
+    stoptimer();
     super.initState();
   }
 
@@ -143,7 +144,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
 
   //快速尋找地點
   findPlacesQuickly(url) async {
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var urlPosition = url +
         '?os=${prefs.get('system')}&mode=${changeMode(state.modeName)}&latitude=${position.latitude}&longitude=${position.longitude}';
 
@@ -170,7 +171,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
 //快速尋找地點顯示webview
   WebfindPlacesQuickly(url) async {
     print('開始抓取');
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var urlPosition = url;
     print(urlPosition);
     var jwt = ',${state.accountState}';
@@ -182,7 +183,11 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
       try {
         print(res);
         Navigator.push(
-            context, MaterialPageRoute(builder: (context) => WebView(tt: res)));
+            context,
+            MaterialPageRoute(
+              builder: (context) => WebView(tt: res),
+              maintainState: false,
+            ));
       } catch (e) {
         print(e.toString());
         EasyLoading.showError(e.toString());
@@ -435,7 +440,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   }
 
   //工具列widget
-  Widget toolWidget() {
+  Widget toolCarWidget() {
     return Card(
       color: Color.fromARGB(255, 255, 255, 255),
       shape: RoundedRectangleBorder(
@@ -565,11 +570,28 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                               ],
                             ),
                             onTap: () async {
-                              EasyLoading.show(status: 'loading...');
                               if (tool['value'] == "汽車定位") {
+                                EasyLoading.show(status: 'loading...');
                                 vehicleLocate(tool['url']);
+                              } else if (tool['value'] == "充電站") {
+                                EasyLoading.show(status: 'loading...');
+                                WebfindPlacesQuickly(tool['url']);
                               } else {
-                                findPlacesQuickly(tool['url']);
+                                EasyLoading.show(status: 'loading...');
+                              stoptimer();
+                                var position =
+                                    await geolocator().updataPosition(context);
+                                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation,
+                                              secondaryAnimation) =>
+                                          mapPage(
+                                        url: tool['url'],
+                                        position: position,
+                                      ),
+                                      maintainState: false,
+                                    ));
                               }
                             },
                           ),
@@ -717,11 +739,27 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                               ],
                             ),
                             onTap: () async {
-                              EasyLoading.show(status: 'loading...');
                               if (tool['value'] == "機車定位") {
+                                EasyLoading.show(status: 'loading...');
                                 vehicleLocate(tool['url']);
-                              } else {
+                              } else if (tool['value'] == '機車定位') {
+                                EasyLoading.show(status: 'loading...');
                                 findPlacesQuickly(tool['url']);
+                              } else {
+                                EasyLoading.show(status: 'loading...');
+                                var position =
+                                    await geolocator().updataPosition(context);
+                                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation,
+                                              secondaryAnimation) =>
+                                          mapPage(
+                                        url: tool['url'],
+                                        position: position,
+                                      ),
+                                      maintainState: false,
+                                    ));
                               }
                             },
                           ),
@@ -1398,7 +1436,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                 child: Column(
                   children: [
                     weatherWidget(),
-                    toolWidget(),
+                    toolCarWidget(),
                     trafficWarningWidget()
                   ],
                 ),

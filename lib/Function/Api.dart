@@ -21,7 +21,7 @@ class api {
     print(apiJwtHeader + jwt.toString());
     DateTime endTime = DateTime.now();
     Duration durationInMilliseconds = endTime.difference(startTime);
-    print('${durationInMilliseconds.inSeconds}秒');
+    print('${(durationInMilliseconds.inMilliseconds) / 60}秒');
     return response;
   }
 
@@ -34,12 +34,11 @@ class api {
             "Authorization": 'Bearer ' + apiJwtHeader + jwt.toString(),
             "Content-Type": "application/json",
           },
-          body: jsonEncode(Body)
-      );
+          body: jsonEncode(Body));
       if (response.statusCode == 200) {
         DateTime endTime = DateTime.now();
         Duration durationInMilliseconds = endTime.difference(startTime);
-        // print('${durationInMilliseconds.inMicroseconds}秒');
+        print('${(durationInMilliseconds.inMilliseconds) / 60}秒');
         return response;
       } else {
         print(utf8.decode(response.bodyBytes));
@@ -70,7 +69,7 @@ class api {
       if (response.statusCode == 200) {
         DateTime endTime = DateTime.now();
         Duration durationInMilliseconds = endTime.difference(startTime);
-        print('${durationInMilliseconds.inMilliseconds}秒');
+        print('${(durationInMilliseconds.inMilliseconds) / 60}秒');
         return response;
       } else {
         EasyLoading.showError(
@@ -82,7 +81,7 @@ class api {
     } catch (e) {
       EasyLoading.showError('伺服器錯誤');
       print(e.toString());
-      throw e;
+      rethrow;
     }
   }
 
@@ -100,7 +99,7 @@ class api {
       if (response.statusCode == 200) {
         DateTime endTime = DateTime.now();
         Duration durationInMilliseconds = endTime.difference(startTime);
-        print('${durationInMilliseconds.inSeconds}秒');
+        print('${(durationInMilliseconds.inMilliseconds) / 60}秒');
         return response;
       } else {
         EasyLoading.showError(
@@ -112,7 +111,7 @@ class api {
     } catch (e) {
       EasyLoading.showError('伺服器錯誤');
       print(e.toString());
-      throw e;
+      rethrow;
     }
   }
 }

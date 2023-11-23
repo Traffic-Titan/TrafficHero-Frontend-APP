@@ -20,7 +20,7 @@ class getHome {
     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     print('營運狀況開始抓取');
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var url =
         '${dotenv.env['OperationalStatus']}?longitude=${position.longitude}&latitude=${position.latitude}';
     var jwt = ',${prefs.get('userToken')}';
@@ -41,7 +41,7 @@ class getHome {
     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     print('天氣資訊開始抓取');
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var response;
     var url = dotenv.env['Weather'].toString() +
         '?longitude=${position.longitude}&latitude=${position.latitude}';
@@ -100,7 +100,7 @@ class getHome {
     state = Provider.of<stateManager>(context, listen: false);
     print('附近站點公車開始抓取');
     var jwt = ',${prefs.get('userToken')}';
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var url =
         '${dotenv.env['StationNearbyBus']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
@@ -127,7 +127,7 @@ class getHome {
     state = Provider.of<stateManager>(context, listen: false);
     print('附近站點台鐵開始抓取');
     var jwt = ',${prefs.get('userToken')}';
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var url =
         '${dotenv.env['StationNearbyTrain']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
@@ -152,7 +152,7 @@ class getHome {
     state = Provider.of<stateManager>(context, listen: false);
     print('附近站點公共自行車開始抓取');
     var jwt = ',${prefs.get('userToken')}';
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var url =
         '${dotenv.env['StationNearbyBike']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
@@ -180,7 +180,7 @@ class getHome {
     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     print('路況速報開始抓取');
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var url =
         '${dotenv.env['NearbyRoadCondition']}?longitude=${position.longitude}&latitude=${position.latitude}';
     var jwt = ',${prefs.get('userToken')}';
