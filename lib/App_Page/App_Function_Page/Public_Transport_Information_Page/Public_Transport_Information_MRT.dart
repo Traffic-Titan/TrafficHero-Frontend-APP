@@ -1,6 +1,8 @@
 
 // ignore_for_file: unused_local_variable
 
+import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/MRT_AnkengLRT.dart';
+import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/MRT_DanhaiLRT.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/MRT_Kaohsiung.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/MRT_Taichung.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/MRT_Taipei.dart';
@@ -14,7 +16,7 @@ Widget publicTransportInfoMRT(context){
   return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
-          length: 4,
+          length: 6,
           child: Scaffold(
               appBar: AppBar(
                 backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
@@ -25,6 +27,8 @@ Widget publicTransportInfoMRT(context){
                   // controller: _tabController,
                   tabs: [
                     Tab(text: '臺北捷運'),
+                    Tab(text: '淡海輕軌'),
+                    Tab(text: '安坑輕軌'),
                     Tab(text: '桃園捷運'),
                     Tab(text: '臺中捷運'),
                     Tab(text: '高雄捷運'),
@@ -36,6 +40,8 @@ Widget publicTransportInfoMRT(context){
                 physics: NeverScrollableScrollPhysics(),
                 children: [
                   MRT_Taipei(),
+                  MRT_DanhaiLRT(),
+                  MRT_AnkengLRT(),
                   MRT_Taoyuan(),
                   MRT_Taichung(),
                   MRT_Kaohsiung()
