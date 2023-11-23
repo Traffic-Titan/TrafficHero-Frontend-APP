@@ -115,6 +115,7 @@ class stateManager with ChangeNotifier {
   var _TRA_TimeTableSearch_Station;
   var _TRA_TimeTableSearch_Station_Result_OutBound;
   var _TRA_TimeTableSearch_Station_Result_InBound;
+  var _MRT_Taipei_DynamicInfo;
 
 
  String get modeName => _modeName;
@@ -146,6 +147,12 @@ class stateManager with ChangeNotifier {
   get TRA_TimeTableSearch_Station => _TRA_TimeTableSearch_Station;
   get TRA_TimeTableSearch_Station_Result_OutBound => _TRA_TimeTableSearch_Station_Result_OutBound;
   get TRA_TimeTableSearch_Station_Result_InBound => _TRA_TimeTableSearch_Station_Result_InBound;
+  get MRT_Taipei_DynamicInfo => _MRT_Taipei_DynamicInfo;
+
+  void updateMRT_Taipei_DynamicInfo(List<dynamic> newValue){
+    _MRT_Taipei_DynamicInfo = newValue;
+    notifyListeners();
+  }
 
   void updateTRA_TimeTableSearch_Station_Result_OutBound(List<dynamic> newValue){
     _TRA_TimeTableSearch_Station_Result_OutBound = newValue;
