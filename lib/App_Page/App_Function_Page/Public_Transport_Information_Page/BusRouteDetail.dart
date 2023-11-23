@@ -57,11 +57,11 @@ class _BusRouteDetailState extends State<BusRouteDetail> {
                     flex: 4,
                     child: (index == routeDetail_Array.length - 1)
                         ? (Image.asset(
-                      'assets/publicTransportIcon/routeDot.png',
+                      'assets/publicTransportIcon/routeLine.png',
                       height: 35,
                     ))
                         : (Image.asset(
-                      'assets/publicTransportIcon/routeLine.png',
+                      'assets/publicTransportIcon/routeDot.png',
                       height: 60,
                     )),
                   ),

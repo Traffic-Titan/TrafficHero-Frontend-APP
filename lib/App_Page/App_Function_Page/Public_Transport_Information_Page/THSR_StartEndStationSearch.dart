@@ -47,9 +47,8 @@ class _THSR_StartEndStationSearchState extends State<THSR_StartEndStationSearch>
       backgroundColor: Color.fromRGBO(221, 235, 247, 1),
       body: Column(
         children: [
-          SizedBox(height: 10,),
           Container(
-            margin: EdgeInsets.only(bottom: 10),
+            margin: EdgeInsets.only(bottom: 10,top: 10),
               decoration: BoxDecoration(
                 color: Color.fromRGBO(165, 201, 233, 1),
                 borderRadius: BorderRadius.all(Radius.circular(14)),
@@ -155,6 +154,8 @@ class _THSR_StartEndStationSearchState extends State<THSR_StartEndStationSearch>
                   child:TextButton(
                     onPressed: () {
                       DatePicker.showDatePicker(context, showTitleActions: true,
+                          maxTime: DateTime.now().add(Duration(days: 120)),
+                          minTime: DateTime.now(),
                           onConfirm: (date) async {
                             setState(() {
                               selectedDate = date.toString().substring(0, 10);
