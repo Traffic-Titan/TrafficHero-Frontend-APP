@@ -44,7 +44,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
     prefs = await SharedPreferences.getInstance();
 
     screenHeight = MediaQuery.of(context).size.height;
-    state.changePositionNow(await geolocator().updataPosition());
+    state.changePositionNow(await geolocator().updataPosition(context));
     position = state.positionNow;
     getTourismInfo();
   }

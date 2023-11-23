@@ -26,7 +26,7 @@ class _Login extends State<Login> {
     super.didChangeDependencies();
     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     state.changePositionNow(position);
     EasyLoading.dismiss();
   }
@@ -36,7 +36,7 @@ class _Login extends State<Login> {
   // 取得附近站點資訊
   stationNearbySearchBus() async {
     var jwt = ',${state.accountState}';
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var url =
         '${dotenv.env['StationNearbyBus']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
@@ -54,7 +54,7 @@ class _Login extends State<Login> {
 
   stationNearbySearchTrain() async {
     var jwt = ',${state.accountState}';
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var url =
         '${dotenv.env['StationNearbyTrain']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
@@ -71,7 +71,7 @@ class _Login extends State<Login> {
 
   stationNearbySearchBike() async {
     var jwt = ',${state.accountState}';
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var url =
         '${dotenv.env['StationNearbyBike']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;

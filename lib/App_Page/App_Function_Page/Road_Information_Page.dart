@@ -49,7 +49,7 @@ class _Road_InformationState extends State<Road_Information> {
     positionNow = state.positionNow;
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
-    position = await geolocator().updataPosition();
+    position = await geolocator().updataPosition(context);
   }
   @override
   void initState() {
@@ -64,8 +64,9 @@ class _Road_InformationState extends State<Road_Information> {
 // 初始化 customIcon
   Future<void> _initCustomImg() async {
     ParkingInfoImg = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(10, 10)),
+      ImageConfiguration(size: Size(10, 10),),
       'assets/roadInfo/parkingInfoImg.png',
+      
     );
     TrafficControlImg = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(size: Size(10, 10)),

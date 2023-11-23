@@ -37,7 +37,7 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
     positionNow = state.positionNow;
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
-    position = await geolocator().updataPosition();
+    position = await geolocator().updataPosition(context);
     // 取得附近站點有哪些
     // getNearbyStation();
   }
@@ -75,7 +75,7 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
   //腳踏車附近站點
   stationNearbySearchBus() async{
     var jwt = ',${state.accountState}';
-    var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var url= '${dotenv.env['StationNearbyBus']}?latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
     print('SearchBus');

@@ -96,20 +96,20 @@ class _AllPageState extends State<AllPage> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(
-                icon: Image.asset(public_Transport,width: 50,height: 50,),
+              // IconButton(
+              //   icon: Image.asset(public_Transport,width: 50,height: 50,),
                 
-                onPressed: () {
-                  setState(() {
-                    car = 'assets/topbar/select_car.png';
-                    scooter = 'assets/topbar/select_scooter.png';
-                    public_Transport =
-                    'assets/topbar/Mode_Public_Transport.png';
-                  });
-                  selectedMode('publicTransport');
-                  state.updateModeState('publicTransport');
-                },
-              ),
+              //   onPressed: () {
+              //     setState(() {
+              //       car = 'assets/topbar/select_car.png';
+              //       scooter = 'assets/topbar/select_scooter.png';
+              //       public_Transport =
+              //       'assets/topbar/Mode_Public_Transport.png';
+              //     });
+              //     selectedMode('publicTransport');
+              //     state.updateModeState('publicTransport');
+              //   },
+              // ),
               IconButton(
                 icon: Image.asset(car,width: 50,height: 50,),
                 iconSize: 50,
@@ -141,27 +141,27 @@ class _AllPageState extends State<AllPage> {
                   prefs.setString('mode','scooter');
                 },
               ),
-              // IconButton(
-              //   icon: Image.asset(public_Transport,width: 50,height: 50,),
-              //   iconSize: 50,
-              //   onPressed: () {
-              //     setState(() {
-              //       car = 'assets/topbar/select_car.png';
-              //       scooter = 'assets/topbar/select_scooter.png';
-              //       public_Transport =
-              //           'assets/topbar/Mode_Public_Transport.png';
-              //     });
-              //     selectedMode('publicTransport');
-              //     state.updateModeState('publicTransport');
-              //     prefs.setString('mode','publicTransport');
-              //   },
-              // ),
+              IconButton(
+                icon: Image.asset(public_Transport,width: 50,height: 50,),
+                iconSize: 50,
+                onPressed: () {
+                  setState(() {
+                    car = 'assets/topbar/select_car.png';
+                    scooter = 'assets/topbar/select_scooter.png';
+                    public_Transport =
+                        'assets/topbar/Mode_Public_Transport.png';
+                  });
+                  selectedMode('publicTransport');
+                  state.updateModeState('publicTransport');
+                  prefs.setString('mode','publicTransport');
+                },
+              ),
             ],
           ),
         ),
         centerTitle: true,
         leading: IconButton(
-          icon: Image.asset('assets/topbar/message.png'),
+          icon: Image.asset('assets/topbar/message.png',width: 50,height: 50,),
           iconSize: 50,
           onPressed: () => print('object'),
         ),
