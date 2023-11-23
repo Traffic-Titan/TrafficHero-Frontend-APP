@@ -13,7 +13,7 @@ const List<String> stopName = <String>['起始地','南港','台北','板橋','�
 final DateFormat formatter = DateFormat('yyyy/MM/dd');
 String? dropDownValue_Start;
 String? dropDownValue_End ;
-String selectedDate =DateTime.now().toString().substring(0, 10);
+String selectedDate=DateTime.now().toString().substring(0, 10);
 String selectTime = DateFormat('HH:mm:ss').format(DateTime.now());
 
 class _THSR_StartEndStationSearchState extends State<THSR_StartEndStationSearch> {
@@ -163,7 +163,7 @@ class _THSR_StartEndStationSearchState extends State<THSR_StartEndStationSearch>
                           }
                       );
                     },
-                    child: Text(selectedDate,style: TextStyle(color:  Color.fromRGBO(24, 60, 126, 1),fontSize: 20),),
+                    child: Text(selectedDate!,style: TextStyle(color:  Color.fromRGBO(24, 60, 126, 1),fontSize: 20),),
                   ),
                 ),
               ),
@@ -187,7 +187,7 @@ class _THSR_StartEndStationSearchState extends State<THSR_StartEndStationSearch>
                           }
                       );
                     },
-                    child: Text(selectTime,style: TextStyle(color: Colors.white,fontSize: 20),),
+                    child: Text(selectTime!,style: TextStyle(color: Colors.white,fontSize: 20),),
                   ),
                 ),
               ),

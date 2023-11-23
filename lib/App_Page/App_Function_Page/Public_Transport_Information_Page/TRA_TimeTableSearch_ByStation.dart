@@ -498,12 +498,13 @@ class TRA_TimeTableSearch_ByStation extends StatefulWidget {
   @override
   State<TRA_TimeTableSearch_ByStation> createState() => _TRA_TimeTableSearch_ByStationState();
 }
-
+var state;
+var screenWidth;
 class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_ByStation> {
   @override
   Widget build(BuildContext context) {
-    var state = Provider.of<stateManager>(context, listen: false);
-    var screenWidth = MediaQuery. of(context). size. width ;
+    state = Provider.of<stateManager>(context, listen: false);
+    screenWidth = MediaQuery. of(context). size. width ;
     return Scaffold(
       backgroundColor: Color.fromRGBO(221, 235, 247, 1),
       body: Column(
