@@ -128,7 +128,6 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
       licensePlate = responseBody['vehicle'];
-      print('eee');
       Navigator.push(
           context,
           MaterialPageRoute(
