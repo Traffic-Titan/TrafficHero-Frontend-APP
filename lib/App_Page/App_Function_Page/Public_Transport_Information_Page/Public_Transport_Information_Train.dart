@@ -506,9 +506,9 @@ const List<String> stopName =  <String>["八堵",
 // 提供下拉式選單的預設值
 String dropDownValue = stopName.first;
 //順行
-late List<Map<String,dynamic>> outBound = [{"方向": "順行","起點站":"","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
+late List<Map<String,dynamic>> outBound = [{"方向": "順行", "起點站": "暫無發車","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
 //逆行
-late List<Map<String,dynamic>> inBound = [{"方向": "逆行","起點站":"","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
+late List<Map<String,dynamic>> inBound = [{"方向": "逆行", "起點站": "暫無發車","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
 //該站資訊
 var stationInfo = [];
 var state;
@@ -538,10 +538,11 @@ class _Public_Transport_Information_TrainState extends State<Public_Transport_In
             inBound.add(stationInfo[i]);
           }
         }
-      }
-      else{
-        outBound = [{"方向": "順行", "起點站": "暫無發車","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
-        inBound = [{"方向": "逆行", "起點站": "暫無發車","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
+        if(outBound.length==0){
+          outBound = [{"方向": "順行", "起點站": "暫無發車","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
+        }else if(inBound.length==0){
+          inBound = [{"方向": "逆行", "起點站": "暫無發車","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
+        }
       }
     }
   }
