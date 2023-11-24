@@ -70,5 +70,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+<array>
+    <string>com.googleusercontent.apps.1012827309373-nqn992svvc3ic5aip8phd0evrbni4v28</string>
+    <!-- Add any other URL schemes your app needs to query here -->
+</array>
 </dict>
 </plist>

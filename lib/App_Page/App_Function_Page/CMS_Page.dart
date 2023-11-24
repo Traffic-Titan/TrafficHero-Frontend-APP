@@ -214,7 +214,7 @@ class _CMSState extends State<CMS> {
     // 讀取API上即時訊息推播-汽車模式
     print('開始抓取ＣＭＳ');
     // var position = await geolocator().updataPosition();
-    var url = dotenv.env['CMS_Main_Car'].toString() +
+    var url = ( state.modeName == 'car' ? dotenv.env['CMS_Main_Car'].toString():dotenv.env['CMS_Main_Scooter'].toString().toString() ) +
         // '?longitude=${position.longitude}&latitude=${position.latitude}';
         '?longitude=all&latitude=all';
     var jwt = ',${state.accountState}';
@@ -407,6 +407,7 @@ class _CMSState extends State<CMS> {
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment: CrossAxisAlignment.center,
                                     children: List.generate(
                                       list1['text'].length,
                                       (index) {

@@ -13,7 +13,7 @@ export 'package:firebase_auth/firebase_auth.dart';
 export 'package:firebase_core/firebase_core.dart';
 export 'package:get/get.dart' hide Response;
 export 'package:flutter/cupertino.dart';
-// export 'package:google_sign_in/google_sign_in.dart';
+export 'package:google_sign_in/google_sign_in.dart';
 export 'package:flutter/services.dart';
 export 'package:flutter_dotenv/flutter_dotenv.dart';
 export 'package:flutter_awesome_select/flutter_awesome_select.dart';

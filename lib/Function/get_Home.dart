@@ -182,7 +182,7 @@ class getHome {
     print('路況速報開始抓取');
     var position = await geolocator().updataPosition(context);
     var url =
-        '${dotenv.env['NearbyRoadCondition']}?longitude=${position.longitude}&latitude=${position.latitude}';
+        '${state.modeName == 'car' ? dotenv.env['NearbyRoadCondition']:dotenv.env['NearbyRoadConditionScooter'].toString()}?longitude=${position.longitude}&latitude=${position.latitude}';
     var jwt = ',${prefs.get('userToken')}';
 
     var response = await api().apiGet(url, jwt);

@@ -275,7 +275,7 @@ class _mapPageState extends State<mapPage> {
                   
                           ],
                         ),
-                        subtitle: Text(list['basic']['address']),
+                        subtitle: Text(list['basic']['address'],overflow: TextOverflow.clip,),
                         trailing: InkWell(
                           child: Container(
                             width: 90,
@@ -332,9 +332,10 @@ class _mapPageState extends State<mapPage> {
                     children: [
                       Expanded(
                           child: ListTile(
-                            leading: Image.network(list['icon_url'],width: screenWidth * 0.15,height: screenWidth * 0.15,),
+                            leading: Image.network(list['icon_url'],width:screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,height: screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,),
                         title: 
                         Container(
+                          width: screenWidth > 600 ? 600 : 200,
                           height: 50,
                           child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -342,18 +343,18 @@ class _mapPageState extends State<mapPage> {
                           children: [
                             Row(
                               children: [
-                                Text(list['company_name']),
+                                Text(list['company_name'],style: TextStyle(fontSize: screenWidth > 600 ? 12  : 15),overflow: TextOverflow.ellipsis),
                               ],
                             ),
                             Row(
                               children: [
-                                Text(list['branch_name']),
+                                Text(list['branch_name'],overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: screenWidth > 600 ? 12  : 15)),
                               ],
                             )
                           ],
                         ),),
                         
-                        subtitle: Text(list['branch_address']),
+                        subtitle: Text(list['branch_address'],overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: screenWidth > 600 ? 12  : 15)),
                          trailing: InkWell(
                           child: Container(
                             width: 90,

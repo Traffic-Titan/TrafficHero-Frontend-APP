@@ -67,16 +67,28 @@ class stateManager with ChangeNotifier {
     },
   ];
   List<dynamic> _nearbyStationBike = [
-    {
-      '公共自行車': {
-        'StationUID': '',
-        'StationName': '附近無站點',
-        'LocationX': '',
-        'LocationY': ''
-      },
-      '剩餘空位': '',
-      '可借車位': ''
+  {
+    "station_uid": "TPE500103027",
+    "area": "TaipeiCity",
+    "available_rent_bikes": 2,
+    "available_rent_bikes_detail": {
+      "general_bikes": 2,
+      "electric_bikes": 0
     },
+    "available_return_bikes": 39,
+    "bikes_capacity": 41,
+    "icon_url": "https://play-lh.googleusercontent.com/DmDUCLudSKb5hZV5P_i3S-oZkF-udIPfW1OSa-fq2FS9rTV5A2v_tTGgpS0wuSs0bA=w240-h480-rw",
+    "location": {
+      "longitude": 121.52063,
+      "latitude": 25.05826
+    },
+    "service_status": "正常營運",
+    "service_type": "YouBike2.0",
+    "station_address_zh_tw": "萬全街22號對面",
+    "station_id": "500103027",
+    "station_name_zh_tw": "捷運雙連站(2號出口)",
+    "distance": 0.2009265565158994
+  },
   ];
 
   List<dynamic> _NearbyRoadCondition = [

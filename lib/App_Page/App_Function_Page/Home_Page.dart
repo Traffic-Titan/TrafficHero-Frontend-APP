@@ -32,6 +32,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
   final PageController _controller = PageController();
   Timer? timerBus, timer, timers;
   int timeCount = 1;
+  var NearbyRoadConditionUrl;
 
   @override
   void dispose() {
@@ -64,6 +65,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
         scooterMode = false;
         publicTransportMode = false;
         timeCount = 1;
+        NearbyRoadConditionUrl = dotenv.env['NearbyRoadCondition'].toString();
       });
     } else if (state.modeName == 'scooter') {
       stoptimer();
@@ -74,6 +76,8 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
         scooterMode = true;
         publicTransportMode = false;
         timeCount = 1;
+        NearbyRoadConditionUrl =
+            dotenv.env['NearbyRoadConditionScooter'].toString();
       });
     } else {
       stoptimer();
@@ -578,7 +582,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                                 WebfindPlacesQuickly(tool['url']);
                               } else {
                                 EasyLoading.show(status: 'loading...');
-                              stoptimer();
+                                stoptimer();
                                 var position =
                                     await geolocator().updataPosition(context);
                                 Navigator.push(
@@ -1196,6 +1200,9 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                     children: [
                       Expanded(
                           child: MaterialApp(
+                        theme: ThemeData(
+                          primarySwatch: Colors.blue,
+                        ),
                         home: DefaultTabController(
                             length: 3,
                             child: Scaffold(
@@ -1208,8 +1215,12 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                                 //讓最上面的空白消失
                                 toolbarHeight: 0,
                                 bottom: TabBar(
+                                  labelColor: Colors.white,
+                                  unselectedLabelColor: Colors.white,
                                   tabs: [
-                                    Tab(text: '腳踏車'),
+                                    Tab(
+                                      text: '自行車',
+                                    ),
                                     Tab(text: '台鐵'),
                                     Tab(text: '公車'),
                                     // Tab(text: '公車'),
@@ -1338,84 +1349,82 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
 
   //附近站點腳踏車-Bike
   Widget nearbyStationBikeView() {
-    return Column(children: [
-      Column(children: [
+    return Column(
+      children: [
         Container(
           height: 50,
-          color: Color.fromRGBO(47, 125, 195, 1),
+          color: const Color.fromRGBO(67, 150, 200, 1),
           padding: EdgeInsets.only(left: 23),
-          child: Row(
-            children: [
-              Container(
-                width: screenWidth * 0.6,
-                child: Text(
-                  '附近站點',
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-              ),
-              Container(
-                width: screenWidth * 0.1,
-                child: Text(
-                  '可還',
-                  style: TextStyle(
-                    color: Colors.white,
+          child: ListTile(
+            title: Text(
+              '附近站點',
+              style: TextStyle(color: Colors.white),
+            ),
+            trailing: Container(
+              width: 100,
+              height: 50,
+              child: Row(
+                children: [
+                  Text(
+                    '可借',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
-                ),
-              ),
-              Container(
-                width: screenWidth * 0.1,
-                child: Text(
-                  '可借',
-                  style: TextStyle(
-                    color: Colors.white,
+                  SizedBox(width: 10),
+                  Text(
+                    '可還',
+                    style: TextStyle(fontSize: 18, color: Colors.white),
                   ),
-                ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
-      ]),
-      Expanded(
-        child: ListView.builder(
+        Expanded(
+          child: ListView.builder(
             itemCount: nearbyStationBike.length,
             itemBuilder: (context, index) {
               var list = nearbyStationBike[index];
               return InkWell(
                 child: ListTile(
-                  leading: Container(
-                    width: screenWidth * 0.6,
+                  leading: Image.network(list['icon_url']),
+                  title: Container(
                     child: Text(
-                      list['公共自行車']['StationName'],
+                      list['station_name_zh_tw'],
                       style: TextStyle(
-                          fontSize: 15, color: Color.fromRGBO(0, 32, 96, 1)),
+                        fontSize: 15,
+                        color: Color.fromRGBO(0, 32, 96, 1),
+                      ),
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  title: Row(
-                    children: [
-                      Container(
-                        width: screenWidth * 0.1,
-                        child: Text(
-                          list['可借車位'].toString(),
+                  subtitle: Text(list['service_type']),
+                  trailing: Container(
+                    width: 100,
+                    height: 50,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 10),
+                        Text(
+                          list['available_rent_bikes'].toString(),
                           style: TextStyle(fontSize: 18, color: Colors.red),
                         ),
-                      ),
-                      Container(
-                        width: screenWidth * 0.1,
-                        child: Text(
-                          list['剩餘空位'].toString(),
+                        SizedBox(width: 30),
+                        Text(
+                          list['available_return_bikes'].toString(),
                           style:
                               TextStyle(fontSize: 18, color: Colors.blueAccent),
                         ),
-                      )
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 onTap: () {},
               );
-            }),
-      ),
-    ]);
+            },
+          ),
+        ),
+      ],
+    );
   }
 
 //創建首頁頁面
