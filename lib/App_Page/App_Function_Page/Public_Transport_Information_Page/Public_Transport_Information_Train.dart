@@ -615,8 +615,8 @@ class _Public_Transport_Information_TrainState extends State<Public_Transport_In
                                       child: Row(
                                         children: [
                                           Container(
-                                            height: 50,
-                                            width:100,
+                                            height: 60,
+                                            width: 100,
                                             child: DecoratedBox(
                                                 decoration: new BoxDecoration(
                                                   color: Color.fromRGBO(255, 0, 0, 1),
@@ -671,7 +671,7 @@ class _Public_Transport_Information_TrainState extends State<Public_Transport_In
                                           child:Row(
                                             children: [
                                               Container(
-                                                height: 50,
+                                                height: 60,
                                                 width:100,
                                                 child: DecoratedBox(
                                                     decoration: new BoxDecoration(

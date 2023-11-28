@@ -3,16 +3,16 @@
 
 
 import 'Imports.dart';
-import 'firebase_options.dart';
+// import 'firebase_options.dart';
 
 void main() async {
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
   // await Firebase.initializeApp()s;
   // await FlutterConfig.loadEnvVariables();
-await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-);
+// await Firebase.initializeApp(
+//     options: DefaultFirebaseOptions.currentPlatform,
+// );
   runApp(
     ChangeNotifierProvider(
       create: (context) => stateManager(),

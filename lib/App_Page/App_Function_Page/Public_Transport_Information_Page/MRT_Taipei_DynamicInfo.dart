@@ -19,6 +19,9 @@ var stopID_O = ["O01","O02","O03","O04","O05","O06","O07","O08","O09","O10","O11
 var stopID_BL = ["BL01","BL02","BL03","BL04","BL05","BL06","BL07","BL08","BL09","BL10","BL11","BL12","BL13","BL14","BL15","BL16","BL17","BL18","BL19","BL20","BL21","BL22","BL23"];
 var stopID_Y = ["Y07","Y08","Y09","Y10","Y11","Y12","Y13","Y14","Y15","Y16","Y17","Y18","Y19","Y20"];
 
+Timer? timer;
+
+
 class MRT_Taipei_DynamicInfo extends StatefulWidget {
   const MRT_Taipei_DynamicInfo({Key? key}) : super(key: key);
 
@@ -37,10 +40,10 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
       response = await api().apiGet(url, jwt);
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       if (response.statusCode == 200) {
-        // setState(() {
-        //   outBound.clear();
-        //   inBound.clear();
-        // });
+        setState(() {
+          outBound.clear();
+          inBound.clear();
+        });
 
         var destinationArray = []; // 儲存該線的終點站及起點站
         for(var data in responseBody){
@@ -103,7 +106,18 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
         backgroundColor: Color.fromRGBO(221, 235, 247, 1),
         body: Column(
         children: [
-          Text("文湖線",style: TextStyle(color: Colors.black,fontSize: 20)),
+          Row(
+            children: [
+              TextButton(
+                  onPressed: (){
+                    updateStationState("BR");
+                  },
+                  child: Text("更新")
+              ),
+              Text("文湖線",style: TextStyle(color: Colors.black,fontSize: 20)),
+
+            ],
+          ),
           Flexible(
             child: ListView.builder(
                 itemCount: stopName_BR.length,
@@ -150,14 +164,24 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
   }
   // 淡水信義線
   Widget R_DynamicInfo(){
-    updateStationState("R");
     var trainOutBound = stationCurrentLocate(outBound,stopID_R,0);
     var trainInBound = stationCurrentLocate(inBound,stopID_R,1);
     return Scaffold(
         backgroundColor: Color.fromRGBO(221, 235, 247, 1),
         body: Column(
           children: [
-            Text("淡水信義線",style: TextStyle(color: Colors.black,fontSize: 20)),
+            Row(
+              children: [
+                TextButton(
+                    onPressed: (){
+                      updateStationState("R");
+                    },
+                    child: Text("更新")
+                ),
+                Text("淡水信義線",style: TextStyle(color: Colors.black,fontSize: 20)),
+
+              ],
+            ),
             Flexible(
               child: ListView.builder(
                   itemCount: stopName_R.length,
@@ -204,14 +228,24 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
   }
   // 松山新店線
   Widget G_DynamicInfo(){
-    updateStationState("G");
     var trainOutBound = stationCurrentLocate(outBound,stopID_G,0);
     var trainInBound = stationCurrentLocate(inBound,stopID_G,1);
     return Scaffold(
         backgroundColor: Color.fromRGBO(221, 235, 247, 1),
         body: Column(
           children: [
-            Text("松山新店線",style: TextStyle(color: Colors.black,fontSize: 20)),
+            Row(
+              children: [
+                TextButton(
+                    onPressed: (){
+                      updateStationState("G");
+                    },
+                    child: Text("更新")
+                ),
+                Text("松山新店線",style: TextStyle(color: Colors.black,fontSize: 20)),
+
+              ],
+            ),
             Flexible(
               child: ListView.builder(
                   itemCount: stopName_G.length,
@@ -258,14 +292,24 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
   }
   // 中和新蘆線
   Widget O_DynamicInfo(){
-    updateStationState("O");
     var trainOutBound = stationCurrentLocate(outBound,stopID_O,0);
     var trainInBound = stationCurrentLocate(inBound,stopID_O,1);
     return Scaffold(
         backgroundColor: Color.fromRGBO(221, 235, 247, 1),
         body: Column(
           children: [
-            Text("中和新蘆線",style: TextStyle(color: Colors.black,fontSize: 20)),
+            Row(
+              children: [
+                TextButton(
+                    onPressed: (){
+                      updateStationState("O");
+                    },
+                    child: Text("更新")
+                ),
+                Text("中和新蘆線",style: TextStyle(color: Colors.black,fontSize: 20)),
+
+              ],
+            ),
             Flexible(
               child: ListView.builder(
                   itemCount: stopName_O.length,
@@ -312,14 +356,24 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
   }
   // 板南線
   Widget BL_DynamicInfo(){
-    updateStationState("BL");
     var trainOutBound = stationCurrentLocate(outBound,stopID_BL,0);
     var trainInBound = stationCurrentLocate(inBound,stopID_BL,1);
     return Scaffold(
         backgroundColor: Color.fromRGBO(221, 235, 247, 1),
         body: Column(
           children: [
-            Text("板南線",style: TextStyle(color: Colors.black,fontSize: 20)),
+            Row(
+              children: [
+                TextButton(
+                    onPressed: (){
+                      updateStationState("BL");
+                    },
+                    child: Text("更新")
+                ),
+                Text("板南線",style: TextStyle(color: Colors.black,fontSize: 20)),
+
+              ],
+            ),
             Flexible(
               child: ListView.builder(
                   itemCount: stopName_BL.length,
@@ -366,14 +420,23 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
   }
   // 環狀線
   Widget Y_DynamicInfo(){
-    updateStationState("Y");
     var trainOutBound = stationCurrentLocate(outBound,stopID_Y,0);
     var trainInBound = stationCurrentLocate(inBound,stopID_Y,1);
     return Scaffold(
         backgroundColor: Color.fromRGBO(221, 235, 247, 1),
         body: Column(
           children: [
-            Text("環狀線",style: TextStyle(color: Colors.black,fontSize: 20)),
+            Row(
+              children: [
+                TextButton(
+                    onPressed: (){
+                      updateStationState("Y");
+                    },
+                    child: Text("更新")
+                ),
+                Text("環狀線",style: TextStyle(color: Colors.black,fontSize: 20)),
+              ],
+            ),
             Flexible(
               child: ListView.builder(
                   itemCount: stopName_Y.length,
