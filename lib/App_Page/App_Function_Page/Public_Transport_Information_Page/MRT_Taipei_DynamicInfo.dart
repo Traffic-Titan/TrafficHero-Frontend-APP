@@ -18,7 +18,7 @@ var stopID_G = ["G01","G02","G03","G04","G05","G06","G07","G08","G09","G10","G11
 var stopID_O = ["O01","O02","O03","O04","O05","O06","O07","O08","O09","O10","O11","O12","O13","O14","O15","O16","O17","O18","O19","O20","O21","O50","O51","O52","O53","O54"];
 var stopID_BL = ["BL01","BL02","BL03","BL04","BL05","BL06","BL07","BL08","BL09","BL10","BL11","BL12","BL13","BL14","BL15","BL16","BL17","BL18","BL19","BL20","BL21","BL22","BL23"];
 var stopID_Y = ["Y07","Y08","Y09","Y10","Y11","Y12","Y13","Y14","Y15","Y16","Y17","Y18","Y19","Y20"];
-
+//文湖線、淡水信義線、松山新店線、中和新蘆線、板南線、環狀線
 Timer? timer;
 
 
@@ -99,7 +99,6 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
 
   // 文湖線
   Widget BR_DynamicInfo(){
-    // updateStationState("BR");
     var trainOutBound = stationCurrentLocate(outBound,stopID_BR,0);
     var trainInBound = stationCurrentLocate(inBound,stopID_BR,1);
     return Scaffold(
@@ -108,14 +107,24 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
         children: [
           Row(
             children: [
-              TextButton(
+              SizedBox(width: 10,),
+              Expanded(
+                flex: 5,
+                child: Text("文湖線",style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 30),textAlign: TextAlign.left,),
+              ),
+              Expanded(
+                flex: 2,
+                child: ElevatedButton(
+                  child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
+                    iconColor: MaterialStateProperty.all(Colors.white,),
+                  ),
                   onPressed: (){
                     updateStationState("BR");
                   },
-                  child: Text("更新")
+                ),
               ),
-              Text("文湖線",style: TextStyle(color: Colors.black,fontSize: 20)),
-
             ],
           ),
           Flexible(
@@ -172,14 +181,24 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
           children: [
             Row(
               children: [
-                TextButton(
+                SizedBox(width: 10,),
+                Expanded(
+                  flex: 5,
+                  child: Text("淡水信義線",style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 30),textAlign: TextAlign.left,),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
+                      iconColor: MaterialStateProperty.all(Colors.white,),
+                    ),
                     onPressed: (){
                       updateStationState("R");
                     },
-                    child: Text("更新")
+                  ),
                 ),
-                Text("淡水信義線",style: TextStyle(color: Colors.black,fontSize: 20)),
-
               ],
             ),
             Flexible(
@@ -236,14 +255,24 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
           children: [
             Row(
               children: [
-                TextButton(
+                SizedBox(width: 10,),
+                Expanded(
+                  flex: 5,
+                  child: Text("松山新店線",style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 30),textAlign: TextAlign.left,),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
+                      iconColor: MaterialStateProperty.all(Colors.white,),
+                    ),
                     onPressed: (){
                       updateStationState("G");
                     },
-                    child: Text("更新")
+                  ),
                 ),
-                Text("松山新店線",style: TextStyle(color: Colors.black,fontSize: 20)),
-
               ],
             ),
             Flexible(
@@ -300,14 +329,24 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
           children: [
             Row(
               children: [
-                TextButton(
+                SizedBox(width: 10,),
+                Expanded(
+                  flex: 5,
+                  child: Text("中和新蘆線",style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 30),textAlign: TextAlign.left,),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
+                      iconColor: MaterialStateProperty.all(Colors.white,),
+                    ),
                     onPressed: (){
                       updateStationState("O");
                     },
-                    child: Text("更新")
+                  ),
                 ),
-                Text("中和新蘆線",style: TextStyle(color: Colors.black,fontSize: 20)),
-
               ],
             ),
             Flexible(
@@ -364,14 +403,24 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
           children: [
             Row(
               children: [
-                TextButton(
+                SizedBox(width: 10,),
+                Expanded(
+                  flex: 5,
+                  child: Text("板南線",style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 30),textAlign: TextAlign.left,),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
+                      iconColor: MaterialStateProperty.all(Colors.white,),
+                    ),
                     onPressed: (){
                       updateStationState("BL");
                     },
-                    child: Text("更新")
+                  ),
                 ),
-                Text("板南線",style: TextStyle(color: Colors.black,fontSize: 20)),
-
               ],
             ),
             Flexible(
@@ -428,13 +477,24 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
           children: [
             Row(
               children: [
-                TextButton(
+                SizedBox(width: 10,),
+                Expanded(
+                  flex: 5,
+                  child: Text("環狀線",style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 30),textAlign: TextAlign.left,),
+                ),
+                Expanded(
+                  flex: 2,
+                  child: ElevatedButton(
+                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
+                    style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
+                      iconColor: MaterialStateProperty.all(Colors.white,),
+                    ),
                     onPressed: (){
                       updateStationState("Y");
                     },
-                    child: Text("更新")
+                  ),
                 ),
-                Text("環狀線",style: TextStyle(color: Colors.black,fontSize: 20)),
               ],
             ),
             Flexible(
@@ -495,10 +555,14 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
               appBar: AppBar(
                 backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
                 toolbarHeight: 0,
+                titleTextStyle: TextStyle(color: Colors.white),
                 bottom: TabBar(
-                  // labelColor: //被選種顏色,
-                  // unselectedLabelColor: //未被選種顏色,
-                  // controller: _tabController,
+                  labelColor:Colors.white,//被選中文字顏色,
+                  labelStyle: TextStyle(fontSize: 18),
+                  indicator: UnderlineTabIndicator( // 被選中底線顏色
+                      borderSide: BorderSide(color: Color.fromRGBO(29, 73, 153, 1))
+                  ),
+                  overlayColor: MaterialStateProperty.all(Color.fromRGBO(113, 170, 221, 1)),
                   tabs: [
                     Tab(text: 'BR'),
                     Tab(text: 'R'),
@@ -519,6 +583,13 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                   BL_DynamicInfo(),
                   Y_DynamicInfo()
                 ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                  child: Icon(Icons.arrow_back),
+                  backgroundColor: Color.fromRGBO(187, 214, 239, 1),
+                  onPressed: (){{
+                    Navigator.pop(context);
+                  }}
               ),
             )
         )
