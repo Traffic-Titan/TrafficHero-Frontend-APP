@@ -319,48 +319,49 @@ class _Tourist_InformationState extends State<Tourist_Information>
         size: 28,
       ),
       title: ListTile(
-        leading: InkWell(
-            onTap: () async {
-              LatLngBounds bounds = await mapController.getVisibleRegion();
+        // leading: InkWell(
+        //     onTap: () async {
+        //       LatLngBounds bounds = await mapController.getVisibleRegion();
 
-              // 計算中心座標
-              double centerLatitude =
-                  (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
-              double centerLongitude =
-                  (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
+        //       // 計算中心座標
+        //       double centerLatitude =
+        //           (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
+        //       double centerLongitude =
+        //           (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
 
-              // 將中心座標輸出到控制台
-              print("地圖中心座標：$centerLatitude, $centerLongitude");
-            },
-            child: Icon(
-              Icons.search,
-              color: Colors.white,
-              size: 28,
-            )),
-        title: TextField(
-          decoration: InputDecoration(
-            hintText: '以名稱搜尋',
-            hintStyle: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-              fontStyle: FontStyle.italic,
-            ),
-            border: InputBorder.none,
-          ),
-          onTap: () {
-            // 只要點擊搜尋欄就跳轉到另外一個空白頁面
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Tourist_Information_Page_SearchPage()));
-          },
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
+        //       // 將中心座標輸出到控制台
+        //       print("地圖中心座標：$centerLatitude, $centerLongitude");
+        //     },
+        //     child: Icon(
+        //       Icons.search,
+        //       color: Colors.white,
+        //       size: 28,
+        //     )),
+        // title: TextField(
+        //   decoration: InputDecoration(
+        //     hintText: '以名稱搜尋',
+        //     hintStyle: TextStyle(
+        //       color: Colors.white,
+        //       fontSize: 18,
+        //       fontStyle: FontStyle.italic,
+        //     ),
+        //     border: InputBorder.none,
+        //   ),
+        //   onTap: () {
+        //     // 只要點擊搜尋欄就跳轉到另外一個空白頁面
+        //     Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //             builder: (context) => Tourist_Information_Page_SearchPage()));
+        //   },
+        //   style: TextStyle(
+        //     color: Colors.white,
+        //   ),
+        // ),
       ),
       bottom: TabBar(
-        // labelColor: //被選種顏色,
+        labelColor: Colors.white,
+        unselectedLabelColor: Colors.white, //被選種顏色,
         // unselectedLabelColor: //未被選種顏色,
         controller: _tabController,
         enableFeedback: true,

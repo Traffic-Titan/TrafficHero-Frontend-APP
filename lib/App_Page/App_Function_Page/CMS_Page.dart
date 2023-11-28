@@ -1,4 +1,5 @@
 // ignore_for_file: file_names, sort_child_properties_last, unused_element, unused_local_variable, override_on_non_overriding_member, prefer_typing_uninitialized_variables, avoid_print, duplicate_ignore, avoid_unnecessary_containers, deprecated_member_use
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:traffic_hero/Imports.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:traffic_hero/Components/Tool.dart' as Tool;
@@ -13,6 +14,7 @@ class CMS extends StatefulWidget {
 class _CMSState extends State<CMS> {
   var screenWidth;
   var screenHeight;
+  List<String> stringList = [];
 
   PageController controller = PageController();
   List<dynamic> cmsList_car = [
@@ -113,6 +115,7 @@ class _CMSState extends State<CMS> {
     screenHeight = MediaQuery.of(context).size.height;
     fontSize = screenWidth * 0.05;
     updateCMSList_Car();
+    updateCMS_Sidbar_List_Car();
     prefs = await SharedPreferences.getInstance();
   }
 
@@ -246,12 +249,48 @@ class _CMSState extends State<CMS> {
     }
   }
 
+
+    void updateCMS_Sidbar_List_Car() async {
+    // 讀取API上即時訊息推播-汽車模式
+    print('開始抓取ＣＭＳ');
+    // var position = await geolocator().updataPosition();
+    var url = ( state.modeName == 'car' ? dotenv.env['CMS_Sidebar_Car'].toString():dotenv.env['CMS_Sidebar_Scooter'].toString().toString() ) +
+        // '?longitude=${position.longitude}&latitude=${position.latitude}';
+        '?longitude=all&latitude=all';
+    var jwt = ',${state.accountState}';
+    var response;
+    try {
+      print(url);
+      response = await api().apiGet(url, jwt);
+    } catch (e) {
+      print(e);
+    }
+
+    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+    if (response.statusCode == 200) {
+      print('抓取ＣＭＳ成功');
+      
+      try {
+        setState(() {
+        stringList = responseBody[0]['content'][0]['text'][0].split('');
+        print(stringList);
+        });
+      } catch (e) {}
+
+      
+    } else {
+      print('CMS抓取失敗');
+    }
+  }
+
   void setDisplay() {
     int index = 0;
     // 每5秒向後端要求一次CMS資料
-    timer = Timer.periodic(const Duration(seconds: 2), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (index < cmsList_car.length) {
         try {
+          // FlutterTts().speak(cmsList_car[index]['voice']);
+           FlutterTts().speak('測試');
           controller.animateToPage(
             index,
             duration: Duration(milliseconds: 500),
@@ -308,6 +347,7 @@ class _CMSState extends State<CMS> {
   Widget CMS_Content() {
     return Container(
       width: screenWidth - 150,
+      height: screenHeight - 150,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -395,7 +435,7 @@ class _CMSState extends State<CMS> {
                       ),
                     ),
                     Container(
-                      width: 350,
+                      width: screenHeight ,
                       child: Expanded(
                         child: ListView.builder(
                           itemCount: pageList['content'].length,
@@ -492,7 +532,7 @@ class _CMSState extends State<CMS> {
               children: [
                 Container(
                   width: screenWidth - 150,
-                  height: 300,
+                  height: screenHeight - 600,
                   child: Column(
                     children: [
                       Expanded(child: CMS_Content()),
@@ -508,44 +548,21 @@ class _CMSState extends State<CMS> {
               color: Colors.green,
               height: screenHeight,
               width: 50,
-              child: Column(
+              child: 
+              Center(child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text(
-                    '路',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
-                  Text(
-                    '肩',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
-                  Text(
-                    '開',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
-                  Text(
-                    '放',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
-                  Text(
-                    '放',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
-                  Text(
-                    '放',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
-                  Text(
-                    '放',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
-                  Text(
-                    '放',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
+                  Container(
+                    height: 300,
+                    child: Expanded(child: ListView.builder(itemCount: stringList.length ,itemBuilder: (context,index){
+                      final list = stringList[index];
+                      return Text(list,style: TextStyle(color: Colors.white,fontSize: 40),);
+                    })),
+                  )
                 ],
-              ),
+              ),)
+              ,
             ),
           ),
           Align(
@@ -605,21 +622,21 @@ class _CMSState extends State<CMS> {
               visible: showIcon,
                 child: Column(
               children: [
-                FloatingActionButton(
-                  heroTag: "btn13",
-                  child: const Icon(
-                    Icons.picture_in_picture,
-                    size: 40,
-                  ),
-                  backgroundColor: Colors.blueAccent,
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => CMSPIP()));
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
+                // FloatingActionButton(
+                //   heroTag: "btn13",
+                //   child: const Icon(
+                //     Icons.picture_in_picture,
+                //     size: 40,
+                //   ),
+                //   backgroundColor: Colors.blueAccent,
+                //   onPressed: () {
+                //     Navigator.push(context,
+                //         MaterialPageRoute(builder: (context) => CMSPIP()));
+                //   },
+                // ),
+                // const SizedBox(
+                //   height: 10,
+                // ),
                 FloatingActionButton(
                   heroTag: "btn1",
                   child: const Icon(

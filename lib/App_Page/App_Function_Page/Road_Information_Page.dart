@@ -1,9 +1,4 @@
 // ignore_for_file: camel_case_types, library_private_types_in_public_api, file_names, unused_import, override_on_non_overriding_member, prefer_typing_uninitialized_variables, prefer_final_fields
-
-
-
-
-import 'package:flutter/material.dart';
 import 'package:flutter_waya/components/check_box.dart';
 import 'package:flutter_waya/extension/object_extension.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Road_Information/Road_Information_ParkingLot.dart';
@@ -328,6 +323,8 @@ class _Road_InformationState extends State<Road_Information> {
   //Google Map View
   Widget mapView(){
     return  GoogleMap(
+      myLocationEnabled: false,
+      myLocationButtonEnabled: false,
       onMapCreated: _onMapCreated,
       initialCameraPosition:CameraPosition(
         target: LatLng(state.positionNow.latitude,state.positionNow.longitude),
@@ -413,7 +410,7 @@ class _Road_InformationState extends State<Road_Information> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         FloatingActionButton(
-          child: Icon(Icons.location_searching),
+          child: Icon(Icons.location_searching,color: Colors.white,),
           backgroundColor: Color.fromRGBO(33, 84, 144, 1),
           onPressed: () {
             addPositionMarkers(state.positionNow.latitude,state.positionNow.longitude,'目前位置');
@@ -421,7 +418,7 @@ class _Road_InformationState extends State<Road_Information> {
         ),
         SizedBox(width: 10,),
         FloatingActionButton(
-          child: Icon(Icons.line_weight),
+          child: Icon(Icons.line_weight,color: Colors.white,),
           backgroundColor: Color.fromRGBO(33, 84, 144, 1),
           onPressed: () {
             roadInfoFilter(context);
