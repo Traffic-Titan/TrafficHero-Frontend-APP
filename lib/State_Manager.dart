@@ -70,12 +70,12 @@ class stateManager with ChangeNotifier {
   {
     "station_uid": "TPE500103027",
     "area": "TaipeiCity",
-    "available_rent_bikes": 2,
+    "available_rent_bikes": '',
     "available_rent_bikes_detail": {
       "general_bikes": 2,
       "electric_bikes": 0
     },
-    "available_return_bikes": 39,
+    "available_return_bikes": '',
     "bikes_capacity": 41,
     "icon_url": "https://play-lh.googleusercontent.com/DmDUCLudSKb5hZV5P_i3S-oZkF-udIPfW1OSa-fq2FS9rTV5A2v_tTGgpS0wuSs0bA=w240-h480-rw",
     "location": {
@@ -83,10 +83,10 @@ class stateManager with ChangeNotifier {
       "latitude": 25.05826
     },
     "service_status": "正常營運",
-    "service_type": "YouBike2.0",
+    "service_type": "",
     "station_address_zh_tw": "萬全街22號對面",
     "station_id": "500103027",
-    "station_name_zh_tw": "捷運雙連站(2號出口)",
+    "station_name_zh_tw": "",
     "distance": 0.2009265565158994
   },
   ];

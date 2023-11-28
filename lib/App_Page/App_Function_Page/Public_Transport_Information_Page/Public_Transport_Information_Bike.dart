@@ -1,4 +1,5 @@
 
+import 'package:flutter_waya/flutter_waya.dart';
 import 'package:traffic_hero/Imports.dart';
 
 class publicTransportInfoBike extends StatefulWidget {
@@ -17,6 +18,8 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
   late GoogleMapController _mapController;
   final Set<Marker> _markers = Set<Marker>();
   var draggleHeight=0.3;
+  List<dynamic> content = [];
+
 
   void didChangeDependencies() async {
     super.didChangeDependencies();
@@ -24,12 +27,22 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
     position = state.positionNow;
-    await getHome().stationNearbySearchBike(context);
-    addMarkers();
+    setState(() {
+      content = state.nearbyStationBike;
+    });
+    get_home();
+    
   }
 
+
+  get_home()async{
+      await getHome().stationNearbySearchBike(context);
+     addMarkers(content);
+  }
+
+
   //新增標記
-  void addMarkers() {
+  void addMarkers(content) {
     print(position.toString());
     _markers.clear();
     // 目前位置標記
@@ -43,29 +56,35 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
           ),
         )
     );
-    // 添加標記
-    // try{
-    //   for (int i=0;i <state.nearbyStationBike.length;i++) {
-    //   var list = state.nearbyStationBike[i];
-    //   print('${list['公共自行車']['LocationY'].toString()},${list['公共自行車']['LocationX'].toString()}+LATLNG');
-    //   if(list['公共自行車']['LocationY'] != null || list['公共自行車']['LocationX'] != null){
-    //     _markers.add(
-    //       Marker(
-    //         markerId: MarkerId(list['公共自行車']['StationUID']),
-    //         position: LatLng(list['公共自行車']['LocationY'],list['公共自行車']['LocationX']),
-    //         infoWindow: InfoWindow(
-    //             title: list['公共自行車']['StationName'].substring(11),
-    //             snippet: '可借:${list['可借車位']}/可還:${list['剩餘空位']}'
-    //         ),
-    //       ),
-    //     );
-    //   }
-    // }
-    // }catch(e){
-    //   print(e);
-    //   // getHome().stationNearbySearchBike(context);
-    //   // addMarkers();
-    // }
+
+    for(var i = 0; i<content.length;i++){
+       var list = content[i];
+
+        try {
+          _markers.add(
+            Marker(
+                markerId: MarkerId(list['station_name_zh_tw']),
+                position: LatLng(list['location']['latitude'],
+                    list['location']['longitude']),
+                infoWindow: InfoWindow(
+                  title: list['station_name_zh_tw'],
+                  snippet: '可借 - ' + list['available_rent_bikes'].toString() + ',可還 - ' + list['available_return_bikes'].toString(),
+                ),
+                onTap: () {
+                  // launch();
+                  setState(() {});
+                }),
+          );
+          print(i.toString() +
+              '標記成功' +
+              list['location']['latitude'].toString() +
+              list['location']['longitude'].toString());
+        } catch (e) {
+          print(e);
+          print(i.toString() + '標記失敗');
+        }
+    }
+
     
   }
   _onMapCreated(GoogleMapController controller){
@@ -76,10 +95,12 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
 //Google Map View
   Widget mapView(){
     return  GoogleMap(
+      mapToolbarEnabled: false,
+      myLocationButtonEnabled: false,
       onMapCreated: _onMapCreated,
       initialCameraPosition: CameraPosition(
         target: LatLng(state.positionNow.latitude,state.positionNow.longitude),
-        zoom: 11.0,
+        zoom: 15.0,
       ),
       markers: _markers,
     );
@@ -133,87 +154,7 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
     return Stack(
       children: [
         mapView(),
-        DraggableScrollableSheet(
-          builder: (BuildContext context,ScrollController scrollController) {
-            return Container(
-              color: Color.fromRGBO(222, 235, 247, 1),
-              padding: EdgeInsets.only(right: 15,left: 15),
-              child: Column(
-                children: [
-                  SizedBox(height: 10,),
-                  SizedBox(
-                    width:30,
-                    height: 8,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        openSheet(0.5);
-                      },
-                      style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.white),
-                      ),
-                      child: Container(
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(50)),
-                      ),
-
-                    ),
-                  ),
-                  Expanded(
-                      child: ListView(
-                        controller: scrollController,
-                        children: [
-                          Container(
-                              width:  screenWidth ,
-                              child: Column(
-                                children: [
-                                  TextField(
-                                    decoration: InputDecoration(
-                                      hintText: '搜尋站點',
-                                      hintStyle: TextStyle(color: Color.fromRGBO(47, 125, 195, 1),),
-                                    ),
-                                  ),
-                                  Container(
-                                    height: 50,
-                                    width: screenWidth,
-                                    color: Color.fromRGBO(47, 125, 195, 1),
-                                    padding: EdgeInsets.only(left: 18),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          width: screenWidth * 0.55,
-                                          child: Text('附近站點',style:TextStyle(color: Colors.white,fontSize: 20),),
-                                        ),
-                                        Container(
-                                          width: screenWidth * 0.1,
-                                          child: Text('可還',style:TextStyle(color: Colors.white,),),
-                                        ),
-                                        Container(
-                                          width: screenWidth * 0.1,
-                                          child: Text('可借',style:TextStyle(color: Colors.white,),),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )
-                          ),
-
-                        ],
-                      ),
-
-                  ),
-                  Expanded(child: nearbyStation(scrollController),),
-                ],
-            )
-
-            );
-          },
-          initialChildSize: draggleHeight, // 初始高度比例
-          minChildSize: 0.1, // 最小高度比例
-          maxChildSize: 1,
-          // 最大高度比例
-        ),
+        
       ],
     );
 

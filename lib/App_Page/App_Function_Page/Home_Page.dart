@@ -953,7 +953,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Container(
-                                      height: 60,
+                                      height: 100,
                                       width: screenWidth - 30 > 600
                                           ? 600
                                           : screenWidth - 30,
@@ -1056,11 +1056,11 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                                 Image.network(
                                   intercity['logo_url'],
                                   width: (screenWidth - 30 > 600
-                                          ? 600
+                                          ? 400
                                           : screenWidth - 30) *
                                       0.12,
                                   height: (screenWidth - 30 > 600
-                                          ? 600
+                                          ? 400
                                           : screenWidth - 30) *
                                       0.12,
                                 )
@@ -1361,9 +1361,10 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
               style: TextStyle(color: Colors.white),
             ),
             trailing: Container(
-              width: 100,
+              width: 110,
               height: 50,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     '可借',

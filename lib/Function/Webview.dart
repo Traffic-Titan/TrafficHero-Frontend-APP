@@ -147,8 +147,9 @@ Page resource error:
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue,
+      backgroundColor: Colors.white,
       appBar: AppBar(
+          backgroundColor: Colors.blue,
         elevation: 0,
         actions: <Widget>[
           NavigationControls(webViewController: _controller),

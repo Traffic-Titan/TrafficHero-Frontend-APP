@@ -167,6 +167,7 @@ class getHome {
       if (response.statusCode == 200) {
         print(responseBody);
         state.updateNearbyStationBike(responseBody);
+        return responseBody;
         print('附近站點公共自行車抓取成功');
       } else {
         print('附近站點公共自行車抓取失敗');
