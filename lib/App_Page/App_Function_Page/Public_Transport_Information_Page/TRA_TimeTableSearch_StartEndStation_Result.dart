@@ -106,13 +106,19 @@ class _TRA_TimeTableSearch_StartEndStation_ResultState extends State<TRA_TimeTab
                     ),
                     title: Row(
                       children: [
-                    Expanded(
-                        flex: 2,
-                        child: Text(list['StopTimes'][0]['ArrivalTime'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
-                      ),
+                      Expanded(
+                          flex: 2,
+                          child: Text(list['StopTimes'][0]['ArrivalTime'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+                        ),
                       Expanded(
                           flex: 1,
-                          child:Icon(Icons.arrow_forward)
+                          child:Column(
+                            children: [
+                              Icon(Icons.arrow_forward),
+                              // Text(list['Duration'])
+                            ],
+                          )
+                          
                       ),
                       Expanded(
                         flex: 2,
