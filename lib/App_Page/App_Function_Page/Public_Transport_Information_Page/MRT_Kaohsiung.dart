@@ -126,8 +126,6 @@ class _MRT_KaohsiungState extends State<MRT_Kaohsiung> {
       )
     );
 
-    //   },
-    // );
   }
   @override
   Widget build(BuildContext context) {
@@ -174,7 +172,7 @@ class _MRT_KaohsiungState extends State<MRT_Kaohsiung> {
             expand: false,
 
             initialChildSize: 0.3, // 初始高度比例
-            minChildSize: 0.2, // 最小高度比例
+            minChildSize: 0.1, // 最小高度比例
             maxChildSize: 1, // 最大高度比例
           ),
         ),

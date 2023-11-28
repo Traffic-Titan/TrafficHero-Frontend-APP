@@ -137,7 +137,7 @@ flutter:
     - assets/roadInfo/trafficjamImg.png
     - assets/roadInfo/roadConstructionImg.png
     - assets/AppIcon.png
-    - assets/
+    - assets/publicTransportIcon/MRTRouteMap.png
     - assets/publicTransportIcon/BusStop.png
     - assets/publicTransportIcon/routeLine.png
     - assets/publicTransportIcon/routeDot.png

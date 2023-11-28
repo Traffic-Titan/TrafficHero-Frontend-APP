@@ -22,9 +22,12 @@ Widget publicTransportInfoMRT(context){
                 backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
                 toolbarHeight: 0,
                 bottom: TabBar(
-                  // labelColor: //被選種顏色,
-                  // unselectedLabelColor: //未被選種顏色,
-                  // controller: _tabController,
+                  labelColor:Colors.white,//被選中文字顏色,
+                  labelStyle: TextStyle(fontSize: 18),
+                  indicator: UnderlineTabIndicator( // 被選中底線顏色
+                      borderSide: BorderSide(color: Color.fromRGBO(29, 73, 153, 1))
+                  ),
+                  overlayColor: MaterialStateProperty.all(Color.fromRGBO(113, 170, 221, 1)),
                   tabs: [
                     Tab(text: '臺北捷運'),
                     Tab(text: '淡海輕軌'),
@@ -33,10 +36,10 @@ Widget publicTransportInfoMRT(context){
                     Tab(text: '臺中捷運'),
                     Tab(text: '高雄捷運'),
                   ],
+                  isScrollable: true,
                 ),
               ),
               body: TabBarView(
-                //禁止左右滑動
                 physics: NeverScrollableScrollPhysics(),
                 children: [
                   MRT_Taipei(),
