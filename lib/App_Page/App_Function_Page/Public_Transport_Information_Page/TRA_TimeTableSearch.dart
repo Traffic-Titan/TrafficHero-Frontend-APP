@@ -15,7 +15,8 @@ class _TRA_TimeTableSearchState extends State<TRA_TimeTableSearch> {
   @override
   Widget build(BuildContext context) {
     return  MaterialApp(
-          home: DefaultTabController(
+        debugShowCheckedModeBanner: false,
+        home: DefaultTabController(
               length:3,
               child: Scaffold(
                 appBar: AppBar(

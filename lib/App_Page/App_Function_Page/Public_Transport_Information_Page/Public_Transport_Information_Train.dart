@@ -1,6 +1,7 @@
 
 // ignore_for_file: unused_local_variable
 
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_waya/flutter_waya.dart';
 import 'package:intl/intl.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/MRT_Kaohsiung.dart';
@@ -557,7 +558,7 @@ class _Public_Transport_Information_TrainState extends State<Public_Transport_In
         child: Column(
           children: [
             Container(
-              height: 40,
+              height: 60,
               width: screenWidth*0.9,
               alignment: Alignment.center,
               padding: EdgeInsets.only(left: 10),
@@ -568,22 +569,43 @@ class _Public_Transport_Information_TrainState extends State<Public_Transport_In
               child: Row(
                 children: [
                   Text('選擇車站：',style: const TextStyle(fontSize: 18,color: Colors.white)),
-                  DropdownButton(
-                    value: dropDownValue,
-                    dropdownColor: Color.fromRGBO(47, 125, 195, 1),
-                    items: stopName.map<DropdownMenuItem<String>>((String value) {
-                      return DropdownMenuItem<String>(
-                        value: value,
-                        child: Text(value,style: const TextStyle(fontSize: 18,color: Colors.white),),
-                      );
-                    }).toList(),
-                    onChanged: (String? value) async {
-                      setState(() {
-                        dropDownValue = value!;
-                      });
-                      await getStopList(dropDownValue);
-                    },
-                  ),
+                  Container(
+                      height: 60,
+                      width: 150,
+                      child: DropdownSearch<String>(
+                        items: stopName,
+                        popupProps: PopupProps.menu(
+                          showSearchBox: true, // add this line
+                          // showSelectedItems: true,
+                        ),
+                        dropdownDecoratorProps: DropDownDecoratorProps(
+                            baseStyle:TextStyle(fontSize:20,color: Colors.white),
+                            dropdownSearchDecoration: InputDecoration(
+                            )),
+                        onChanged: (String? value) => setState(() async {
+                          dropDownValue = value!;
+                          await getStopList(dropDownValue);
+                        }),
+                        selectedItem: stopName.first,
+                      )
+                  )
+
+                  // DropdownButton(
+                  //   value: dropDownValue,
+                  //   dropdownColor: Color.fromRGBO(47, 125, 195, 1),
+                  //   items: stopName.map<DropdownMenuItem<String>>((String value) {
+                  //     return DropdownMenuItem<String>(
+                  //       value: value,
+                  //       child: Text(value,style: const TextStyle(fontSize: 18,color: Colors.white),),
+                  //     );
+                  //   }).toList(),
+                  //   onChanged: (String? value) async {
+                  //     setState(() {
+                  //       dropDownValue = value!;
+                  //     });
+                  //     await getStopList(dropDownValue);
+                  //   },
+                  // ),
                 ],
               )
             ),

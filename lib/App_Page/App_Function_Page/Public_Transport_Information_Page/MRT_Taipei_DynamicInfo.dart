@@ -113,7 +113,7 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                 child: Text("文湖線",style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 30),textAlign: TextAlign.left,),
               ),
               Expanded(
-                flex: 2,
+                flex: 3,
                 child: ElevatedButton(
                   child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                   style: ButtonStyle(

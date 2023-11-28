@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/TRA_TimeTableSearch_StartEndStation_Result.dart';
@@ -426,8 +427,6 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
     screenWidth = MediaQuery. of(context). size. width ;
     //根據起訖點取得火車時刻表
     getStationTimeTable() async{
-      // ?OriginStationID=0920&DestinationStationID=1020&TrainDate=2023-11-24&TrainTime=20%3A00
-      // var url = 'https://app.traffic-hero.eddie.tw/APP/Information/PublicTransport/TaiwanRailway/DailyTimeTable_ByStartEndStation?OriginStationID=4170&DestinationStationID=4440&TrainDate=2023-11-24&TrainTime=09:09';
       var url = dotenv.env['TRA_DailyTimeTable_ByStartEndStation'].toString() +
           '?OriginStationID=${stationID[stopName.indexOf(dropDownValue_Start)]}&DestinationStationID=${stationID[stopName.indexOf(dropDownValue_End)]}&TrainDate=${dateTime_date}&TrainTime=${dateTime_time}';
       var jwt = ',' + state.accountState.toString();
@@ -470,7 +469,6 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  //選擇起始地
                   DecoratedBox(
                       decoration: BoxDecoration(
                           border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
@@ -481,24 +479,54 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                         height: 60,
                         width: 150,
                         alignment: Alignment.center,
-                        child: DropdownButton(
-                            value: dropDownValue_Start,
-                            items: stopName.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,style: const TextStyle(
-                                  fontSize: 20,
-                                ),),
-                              );
-                            }).toList(),
-                            onChanged:(String? value){
-                              setState(() {
-                                dropDownValue_Start = value!;
-                              });
-                            }
-                        ),
+
+                        child: DropdownSearch<String>(
+                          items: stopName,
+                          popupProps: PopupProps.menu(
+                            showSearchBox: true, // add this line
+                            showSelectedItems: true,
+                          ),
+                          dropdownDecoratorProps: DropDownDecoratorProps(
+                              textAlign: TextAlign.center,
+                              baseStyle:TextStyle(fontSize: 20),
+                              dropdownSearchDecoration: InputDecoration(
+                              )),
+                          onChanged: (String? value) => setState(() {
+                            dropDownValue_Start = value!;
+                          }),
+                          selectedItem: stopName.first,
+                        )
                       )
                   ),
+                  //選擇起始地
+                  // DecoratedBox(
+                  //     decoration: BoxDecoration(
+                  //         border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
+                  //         borderRadius: BorderRadius.circular(15),
+                  //         color: Color.fromRGBO(221, 235, 247, 1)
+                  //     ),
+                  //     child: Container(
+                  //       height: 60,
+                  //       width: 150,
+                  //       alignment: Alignment.center,
+                  //       child: DropdownButton(
+                  //           value: dropDownValue_Start,
+                  //           items: stopName.map<DropdownMenuItem<String>>((String value) {
+                  //             return DropdownMenuItem<String>(
+                  //               value: value,
+                  //               child: Text(value,style: const TextStyle(
+                  //                 fontSize: 20,
+                  //               ),),
+                  //             );
+                  //           }).toList(),
+                  //           onChanged:(String? value){
+                  //             setState(() {
+                  //               dropDownValue_Start = value!;
+                  //             });
+                  //           }
+                  //       ),
+                  //     )
+                  // ),
                   //交換按鈕
                   Icon(Icons.cached,size: 20,),
                   //選擇目的地
@@ -506,29 +534,57 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                       decoration: BoxDecoration(
                           border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
                           borderRadius: BorderRadius.circular(15),
-                          color: Color.fromRGBO(24, 60, 126, 1)
+                          color: Color.fromRGBO(221, 235, 247, 1)
                       ),
-                      child:Container(
-                        height: 60,
-                        width: 150,
-                        alignment: Alignment.center,
-                        child: DropdownButton(
-                            dropdownColor: Color.fromRGBO(24, 60, 126, 1),
-                            value: dropDownValue_End,
-                            items: stopName.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value,style: const TextStyle(fontSize: 20,color: Colors.white),),
-                              );
-                            }).toList(),
-                            onChanged:(String? value){
-                              setState(() {
-                                dropDownValue_End = value!;
-                              });
-                            }
-                        ),
+                      child: Container(
+                          height: 60,
+                          width: 150,
+                          alignment: Alignment.center,
+                          child: DropdownSearch<String>(
+                            items: stopName,
+                            popupProps: PopupProps.menu(
+                              showSearchBox: true, // add this line
+                              showSelectedItems: true,
+                            ),
+                            dropdownDecoratorProps: DropDownDecoratorProps(
+                                textAlign: TextAlign.center,
+                                baseStyle:TextStyle(fontSize: 20),
+                                dropdownSearchDecoration: InputDecoration(
+                                )),
+                            onChanged: (String? value) => setState(() {
+                              dropDownValue_Start = value!;
+                            }),
+                            selectedItem: stopName.last,
+                          )
                       )
                   ),
+                  // DecoratedBox(
+                  //     decoration: BoxDecoration(
+                  //         border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
+                  //         borderRadius: BorderRadius.circular(15),
+                  //         color: Color.fromRGBO(24, 60, 126, 1)
+                  //     ),
+                  //     child:Container(
+                  //       height: 60,
+                  //       width: 150,
+                  //       alignment: Alignment.center,
+                  //       child: DropdownButton(
+                  //           dropdownColor: Color.fromRGBO(24, 60, 126, 1),
+                  //           value: dropDownValue_End,
+                  //           items: stopName.map<DropdownMenuItem<String>>((String value) {
+                  //             return DropdownMenuItem<String>(
+                  //               value: value,
+                  //               child: Text(value,style: const TextStyle(fontSize: 20,color: Colors.white),),
+                  //             );
+                  //           }).toList(),
+                  //           onChanged:(String? value){
+                  //             setState(() {
+                  //               dropDownValue_End = value!;
+                  //             });
+                  //           }
+                  //       ),
+                  //     )
+                  // ),
                 ],
               ),
             ),
