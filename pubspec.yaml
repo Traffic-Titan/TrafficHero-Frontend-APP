@@ -53,6 +53,7 @@ dependencies:
   firebase_core: ^2.15.0
   get: ^4.6.5
   dio: ^5.3.0
+  dropdown_search: ^5.0.6
   flutter_dotenv: ^5.1.0
   custom_searchable_dropdown: ^2.1.1
   flutter_awesome_select: ^6.5.0

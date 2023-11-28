@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:extended_image/extended_image.dart';
 import 'package:traffic_hero/Imports.dart';
 
@@ -89,20 +90,36 @@ class _MRT_KaohsiungState extends State<MRT_Kaohsiung> {
                 color: Color.fromRGBO(46, 80, 140, 1),
                 size: 28,
               ),
-              title: DropdownButton<String>(
-                value: _selectedItem,
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _selectedItem = newValue!;
-                  });
-                },
-                items: MRTList_kaohsiung.map((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
+              title: DropdownSearch<String>(
+                items: MRTList_kaohsiung,
+                popupProps: PopupProps.menu(
+                  showSearchBox: true, // add this line
+                  showSelectedItems: true,
+                ),
+                dropdownDecoratorProps: DropDownDecoratorProps(
+                    textAlign: TextAlign.center,
+                    baseStyle:TextStyle(fontSize: 20),
+                    dropdownSearchDecoration: InputDecoration(
+                    )),
+                onChanged: (String? value) => setState(() {
+                  _selectedItem = value!;
+                }),
+                selectedItem: MRTList_kaohsiung.first,
               ),
+              // DropdownButton<String>(
+              //   value: _selectedItem,
+              //   onChanged: (String? newValue) {
+              //     setState(() {
+              //       _selectedItem = newValue!;
+              //     });
+              //   },
+              //   items: MRTList_kaohsiung.map((String value) {
+              //     return DropdownMenuItem<String>(
+              //       value: value,
+              //       child: Text(value),
+              //     );
+              //   }).toList(),
+              // ),
             trailing: TextButton(
               onPressed: () {
                 stationState();

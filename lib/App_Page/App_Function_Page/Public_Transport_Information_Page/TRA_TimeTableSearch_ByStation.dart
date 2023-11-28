@@ -1,3 +1,4 @@
+import 'package:dropdown_search/dropdown_search.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/TRA_TimeTableSearch_ByStation_Result.dart';
 import 'package:traffic_hero/imports.dart';
 
@@ -529,25 +530,54 @@ class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_BySt
                             color: Color.fromRGBO(221, 235, 247, 1)
                         ),
                         child: Container(
-                          height: 60,
-                          width: 150,
-                          alignment: Alignment.center,
-                          child: DropdownButton(
-                              value: dropDownValue_Start,
-                              items: stopName.map<DropdownMenuItem<String>>((String value) {
-                                return DropdownMenuItem<String>(
-                                  value: value,
-                                  child: Text(value),
-                                );
-                              }).toList(),
-                              onChanged:(String? value){
-                                setState(() {
-                                  dropDownValue_Start = value!;
-                                });
-                              }
-                          ),
+                            height: 60,
+                            width: 150,
+                            alignment: Alignment.center,
+
+                            child: DropdownSearch<String>(
+                              items: stopName,
+                              popupProps: PopupProps.menu(
+                                showSearchBox: true, // add this line
+                                showSelectedItems: true,
+                              ),
+                              dropdownDecoratorProps: DropDownDecoratorProps(
+                                  textAlign: TextAlign.center,
+                                  baseStyle:TextStyle(fontSize: 20),
+                                  dropdownSearchDecoration: InputDecoration(
+                                  )),
+                              onChanged: (String? value) => setState(() {
+                                dropDownValue_Start = value!;
+                              }),
+                              selectedItem: stopName.first,
+                            )
                         )
                     ),
+                    // DecoratedBox(
+                    //     decoration: BoxDecoration(
+                    //         border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
+                    //         borderRadius: BorderRadius.circular(15),
+                    //         color: Color.fromRGBO(221, 235, 247, 1)
+                    //     ),
+                    //     child: Container(
+                    //       height: 60,
+                    //       width: 150,
+                    //       alignment: Alignment.center,
+                    //       child: DropdownButton(
+                    //           value: dropDownValue_Start,
+                    //           items: stopName.map<DropdownMenuItem<String>>((String value) {
+                    //             return DropdownMenuItem<String>(
+                    //               value: value,
+                    //               child: Text(value),
+                    //             );
+                    //           }).toList(),
+                    //           onChanged:(String? value){
+                    //             setState(() {
+                    //               dropDownValue_Start = value!;
+                    //             });
+                    //           }
+                    //       ),
+                    //     )
+                    // ),
                   ]
               )
           ),
