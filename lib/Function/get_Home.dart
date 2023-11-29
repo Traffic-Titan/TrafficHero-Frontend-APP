@@ -154,7 +154,7 @@ class getHome {
     var jwt = ',${prefs.get('userToken')}';
     var position = await geolocator().updataPosition(context);
     var url =
-        '${dotenv.env['StationNearbyBike']}?latitude=${position.latitude}&longitude=${position.longitude}';
+        '${dotenv.env['StationNearbyBike']}?os=${prefs.get('system')}&latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
     try {
       response = await api().apiGet(url, jwt);
