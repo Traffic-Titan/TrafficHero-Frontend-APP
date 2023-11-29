@@ -98,7 +98,7 @@ class _StationMap_BusState extends State<StationMap_Bus> {
   Widget floatingBtn(){
     return FloatingActionButton(
       child: Icon(Icons.location_searching),
-      backgroundColor: Color.fromRGBO(33, 84, 144, 1),
+      backgroundColor:Color.fromRGBO(113, 170, 221, 1),
       onPressed: () {
         addPositionMarkers(state.positionNow.latitude,state.positionNow.longitude,'目前位置');
       },
@@ -112,6 +112,8 @@ class _StationMap_BusState extends State<StationMap_Bus> {
             length: 4,
             child: Scaffold(
                 appBar: AppBar(
+                  iconTheme: IconThemeData(color: Colors.white),
+                  backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
                   leading: IconButton(
                     onPressed: () {
                       Navigator.pop(context);
@@ -120,7 +122,6 @@ class _StationMap_BusState extends State<StationMap_Bus> {
                   ),
                   title: Text('站點地圖', style: TextStyle(
                       color: Colors.white),),
-                  backgroundColor: Color.fromRGBO(33, 84, 144, 1),
                 ),
                 body: Stack(
                     children: [

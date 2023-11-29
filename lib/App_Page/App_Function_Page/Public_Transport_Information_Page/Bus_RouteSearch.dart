@@ -78,6 +78,7 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(221, 235, 247, 1),
       appBar: new AppBar(
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
         title: Container(
           margin: EdgeInsets.only(top: 20,bottom: 20),
@@ -96,13 +97,12 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
             height: 10,
           ),
           // 公車班次輸入框
-          // Expanded(
-          //     flex:1,
-          //     child:
               Container(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: 45,
                 child: TextField(
+                  style: TextStyle(color: Colors.white),
+                  cursorColor:  Color.fromRGBO(29, 73, 153, 1),
                   textAlign: TextAlign.start,
                   decoration: InputDecoration(
                     fillColor: Color.fromRGBO(120, 173, 222, 1),
@@ -130,7 +130,6 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
                   },
                 ),
               ),
-          // ),
           // 下排搜尋結果
           Expanded(
             flex: 9,
@@ -155,7 +154,7 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(data['route'],style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 20),),
-                            Text(data['description'],style: TextStyle(fontSize: 18)),
+                            Text(data['description'],style: TextStyle(color: Colors.black,fontSize: 18)),
                           ],
                         ),
                       ],
