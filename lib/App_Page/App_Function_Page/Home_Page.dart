@@ -1419,7 +1419,10 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                     ),
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  print('開啟導航');
+                  launch(list['url']);
+                },
               );
             },
           ),

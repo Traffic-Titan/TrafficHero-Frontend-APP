@@ -289,8 +289,8 @@ class _CMSState extends State<CMS> {
     timer = Timer.periodic(const Duration(seconds: 10), (timer) {
       if (index < cmsList_car.length) {
         try {
-          // FlutterTts().speak(cmsList_car[index]['voice']);
-           FlutterTts().speak('測試');
+          FlutterTts().speak(cmsList_car[index]['voice']);
+          //  FlutterTts().speak('測試');
           controller.animateToPage(
             index,
             duration: Duration(milliseconds: 500),
