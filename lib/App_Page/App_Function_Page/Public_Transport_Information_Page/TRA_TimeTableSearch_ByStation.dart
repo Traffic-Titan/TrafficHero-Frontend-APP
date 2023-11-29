@@ -502,6 +502,41 @@ class TRA_TimeTableSearch_ByStation extends StatefulWidget {
 var state;
 var screenWidth;
 class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_ByStation> {
+
+  //根據車站查詢火車時刻表
+  getStationTimeTableByStation() async{
+    var outBoundList = [];
+    var inBoundList = [];
+    var url = dotenv.env['TRA_DailyTimeTable_ByStation'].toString() +
+        '?StationID=${stationID[stopName.indexOf(dropDownValue_Start)]}';
+    var jwt = ',' + state.accountState.toString();
+    var response = await api().apiGet(url, jwt);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(utf8.decode(response.bodyBytes));
+      for(int i =0;i<data.length;i++){
+        if(data[i]['Direction'] == 0){
+          setState(() {
+            outBoundList.add(data[i]);
+          });
+        }
+        else{
+          setState(() {
+            inBoundList.add(data[i]);
+          });
+        }
+      }
+      setState(() {
+        state.updateTRA_TimeTableSearch_Station(dropDownValue_Start);
+        state.updateTRA_TimeTableSearch_Station_Result_OutBound(outBoundList);
+        state.updateTRA_TimeTableSearch_Station_Result_InBound(inBoundList);
+      });
+      Future.delayed(Duration(seconds: 1),(){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => TRA_TimeTableSearch_ByStation_Result()));
+      });
+
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     state = Provider.of<stateManager>(context, listen: false);
@@ -510,10 +545,14 @@ class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_BySt
       backgroundColor: Color.fromRGBO(221, 235, 247, 1),
       body: Column(
         children: [
-          SizedBox(height: 10,),
-          Align(
-            alignment: Alignment.centerLeft,
-            child:Text('3.車站查詢',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 20),textAlign:TextAlign.left,),
+          Container(
+            margin: EdgeInsets.only(bottom: 10,top: 10),
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(165, 201, 233, 1),
+              borderRadius: BorderRadius.all(Radius.circular(14)),
+            ),
+            width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+            child: Text('車站查詢',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
           ),
         //起訖站查詢按鈕
           Container(
@@ -552,73 +591,24 @@ class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_BySt
                             )
                         )
                     ),
-                    // DecoratedBox(
-                    //     decoration: BoxDecoration(
-                    //         border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
-                    //         borderRadius: BorderRadius.circular(15),
-                    //         color: Color.fromRGBO(221, 235, 247, 1)
-                    //     ),
-                    //     child: Container(
-                    //       height: 60,
-                    //       width: 150,
-                    //       alignment: Alignment.center,
-                    //       child: DropdownButton(
-                    //           value: dropDownValue_Start,
-                    //           items: stopName.map<DropdownMenuItem<String>>((String value) {
-                    //             return DropdownMenuItem<String>(
-                    //               value: value,
-                    //               child: Text(value),
-                    //             );
-                    //           }).toList(),
-                    //           onChanged:(String? value){
-                    //             setState(() {
-                    //               dropDownValue_Start = value!;
-                    //             });
-                    //           }
-                    //       ),
-                    //     )
-                    // ),
+
                   ]
               )
           ),
-          SizedBox(height: 10,),
-          TextButton(
-              onPressed: () async {
-                var outBoundList = [];
-                var inBoundList = [];
-                var url = dotenv.env['TRA_DailyTimeTable_ByStation'].toString() +
-                    '?StationID=${stationID[stopName.indexOf(dropDownValue_Start)]}';
-                var jwt = ',' + state.accountState.toString();
-                var response = await api().apiGet(url, jwt);
-                if (response.statusCode == 200) {
-                  // inBoundList.clear();
-                  // outBoundList.clear();
-                  var data = jsonDecode(utf8.decode(response.bodyBytes));
-                  for(int i =0;i<data.length;i++){
-                    if(data[i]['Direction'] == 0){
-                      setState(() {
-                        outBoundList.add(data[i]);
-                      });
-                    }
-                    else{
-                      setState(() {
-                        inBoundList.add(data[i]);
-                      });
-                    }
-                  }
-                  setState(() {
-                    state.updateTRA_TimeTableSearch_Station(dropDownValue_Start);
-                    state.updateTRA_TimeTableSearch_Station_Result_OutBound(outBoundList);
-                    state.updateTRA_TimeTableSearch_Station_Result_InBound(inBoundList);
-                  });
-                  Future.delayed(Duration(seconds: 1),(){
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => TRA_TimeTableSearch_ByStation_Result()));
-                  });
-
-                }
-              },
-              child: Text("搜尋")
-          )
+          Container(
+              margin: EdgeInsets.only(top: 20),
+              decoration: BoxDecoration(
+                color: Color.fromRGBO(24, 60, 126, 1),
+                borderRadius: BorderRadius.all(Radius.circular(14)),
+              ),
+              width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
+              child: TextButton(
+                onPressed: () async {
+                  await getStationTimeTableByStation();
+                },
+                child: Text('搜尋',style: TextStyle(color: Colors.white,fontSize: 20),),
+              )
+          ),
         ],
       ),
     );

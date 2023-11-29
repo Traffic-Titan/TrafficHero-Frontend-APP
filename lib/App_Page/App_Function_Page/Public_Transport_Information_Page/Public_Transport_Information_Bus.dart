@@ -1,6 +1,6 @@
 
-import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/BusRouteSearch.dart';
-import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/StationMap_Bus.dart';
+import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/Bus_RouteSearch.dart';
+import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/Bus_StationMap.dart';
 import 'package:traffic_hero/Imports.dart';
 
 //公車頁面

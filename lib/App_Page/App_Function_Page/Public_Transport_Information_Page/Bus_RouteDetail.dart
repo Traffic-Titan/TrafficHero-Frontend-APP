@@ -23,13 +23,6 @@ class _BusRouteDetailState extends State<BusRouteDetail> {
       routeDetail_Array;
     });
   }
-  // 回傳下一站的箭頭符號，並判斷是否為最終站
-  // IconData? arrowReturn(element,List<dynamic> list){
-  //   if(list.last == element){
-  //     return null;
-  //   }
-  //   return CupertinoIcons.arrow_down_square_fill;
-  // }
 
   @override
   Widget build(BuildContext context) {
