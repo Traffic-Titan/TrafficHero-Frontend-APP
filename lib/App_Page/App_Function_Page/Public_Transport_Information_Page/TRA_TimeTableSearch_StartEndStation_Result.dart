@@ -86,7 +86,7 @@ class _TRA_TimeTableSearch_StartEndStation_ResultState extends State<TRA_TimeTab
                 itemBuilder: (context, index){
                   var list = DailyTimeTable_Result[index];
                   return ListTile(
-                      minVerticalPadding:10,
+                    minVerticalPadding:15,
                     leading: Container(
                         height: 50,
                         width: 80,

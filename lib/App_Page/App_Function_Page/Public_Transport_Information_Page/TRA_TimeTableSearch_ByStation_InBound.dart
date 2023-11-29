@@ -18,39 +18,36 @@ class _TRA_TimeTableSearch_ByStation_InBoundState extends State<TRA_TimeTableSea
     DailyTimeTable_Result = state.TRA_TimeTableSearch_Station_Result_InBound;
     StationName = state.TRA_TimeTableSearch_Station;
     screenWidth = MediaQuery.of(context).size.width;
-    return Scaffold(
-      backgroundColor: Color.fromRGBO(221, 235, 247, 1),
-      appBar: AppBar(
-        title: Text(StationName+"車站"),
-        backgroundColor: Color.fromRGBO(113, 170, 221, 1),
-      ),
-      body: Column(
+    return Column(
         children: [
           SizedBox(height: 10,),
-          Container(
-            child: Row(
-              children: [
-                Icon(Icons.add_business,size: 20,),
-                Text("山線"),
-                Icon(Icons.add_business,size: 20,),
-                Text("海線"),
-                Icon(Icons.add_business,size: 20,),
-                Text("身障座"),
-                Icon(Icons.add_business,size: 20,),
-                Text("哺乳室"),
-                Icon(Icons.add_business,size: 20,),
-                Text("每日行駛"),
-                Icon(Icons.add_business,size: 20,),
-                Text("便當"),
-              ],
-            ),
-          ),
-          Divider(),
+          // Container(
+          //   child: Row(
+          //     children: [
+          //       Icon(Icons.add_business,size: 20,),
+          //       Text("山線"),
+          //       Icon(Icons.add_business,size: 20,),
+          //       Text("海線"),
+          //       Icon(Icons.add_business,size: 20,),
+          //       Text("身障座"),
+          //       Icon(Icons.add_business,size: 20,),
+          //       Text("哺乳室"),
+          //       Icon(Icons.add_business,size: 20,),
+          //       Text("每日行駛"),
+          //       Icon(Icons.add_business,size: 20,),
+          //       Text("便當"),
+          //     ],
+          //   ),
+          // ),
           Container(
             child: Row(
               children: [
                 Expanded(
-                    flex: 2,
+                    flex: 1,
+                    child: SizedBox(width: 10,)
+                ),
+                Expanded(
+                    flex: 3,
                     child: Text("車號", textScaleFactor: 1.5, style: TextStyle(color: Colors.black),)
                 ),
                 Expanded(
@@ -58,17 +55,13 @@ class _TRA_TimeTableSearch_ByStation_InBoundState extends State<TRA_TimeTableSea
                     child: Text("到站時間", textScaleFactor: 1.5, style: TextStyle(color: Colors.black),)
                 ),
                 Expanded(
-                    flex: 3,
-                    child: Text("終點站", textScaleFactor: 1.5, style: TextStyle(color: Colors.black),)
-                ),
-                Expanded(
                     flex: 2,
-                    child: Text("車種", textScaleFactor: 1.5, style: TextStyle(color: Colors.black),)
+                    child: Text("終點站", textScaleFactor: 1.5, style: TextStyle(color: Colors.black),)
                 ),
               ],
             ),
           ),
-          Divider(),
+          Divider(height: 5,color:Color.fromRGBO(24, 60, 126, 1)),
           // 內容
           Flexible(
             child: ListView.builder(
@@ -76,43 +69,31 @@ class _TRA_TimeTableSearch_ByStation_InBoundState extends State<TRA_TimeTableSea
                 itemBuilder: (context, index){
                   var list = DailyTimeTable_Result[index];
                   return ListTile(
-                    title: Row(
-                      children: [
-                        Expanded(
-                          flex: 3,
-                          child: ListTile(
-                            title: Container(
-                                height: 30,
-                                child: DecoratedBox(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    color: Color.fromRGBO(24, 60, 126, 1),
-                                  ),
-                                  child: Text(list['TrainNo'],style: TextStyle(color: Colors.white,fontSize: 20),textAlign: TextAlign.center,),
-                                )
+                    minVerticalPadding:15,
+                    leading: Container(
+                        height: 50,
+                        width: 80,
+                        child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: (list['TrainTypeName'].toString().contains('區間')) ? Color.fromRGBO(24, 60, 126, 1) : Colors.red,
                             ),
-                          ),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Text(list['ArrivalTime'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Text(list['DestinationStationName'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
-                        ),
-                        Expanded(
-                          flex: 2,
-                          child: Text(list['TrainTypeName'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
-                        ),
-                      ],
+                            child:Column(
+                              children: [
+                                Text(list['TrainNo'],style: TextStyle(color: Colors.white,fontSize: 18),textAlign: TextAlign.center,),
+                                Text(list['TrainTypeName'],style: TextStyle(color: Colors.white,fontSize: 13),textAlign: TextAlign.center,overflow: TextOverflow.ellipsis,),
+                              ],
+                            )
+
+                        )
                     ),
+                    title: Text(list['ArrivalTime'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+                    trailing: Text(list['DestinationStationName'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
                   );
                 }
             ),
           ),
         ],
-      ),
     );
   }
 }

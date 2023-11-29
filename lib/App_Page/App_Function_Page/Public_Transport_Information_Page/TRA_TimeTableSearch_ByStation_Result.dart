@@ -11,8 +11,12 @@ class TRA_TimeTableSearch_ByStation_Result extends StatefulWidget {
 }
 
 class _TRA_TimeTableSearch_ByStation_ResultState extends State<TRA_TimeTableSearch_ByStation_Result> {
+  var StationName;
+  var state;
   @override
   Widget build(BuildContext context) {
+    state = Provider.of<stateManager>(context, listen: false);
+    StationName = state.TRA_TimeTableSearch_Station;
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: DefaultTabController(
@@ -20,11 +24,24 @@ class _TRA_TimeTableSearch_ByStation_ResultState extends State<TRA_TimeTableSear
             child: Scaffold(
               appBar: AppBar(
                 backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
-                toolbarHeight: 0,
+                title: Row(
+                  children: [
+                    BackButton(
+                      color: Colors.white,
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Text(StationName+"車站",style: TextStyle(color: Colors.white),),
+                  ],
+                ),
                 bottom: TabBar(
-                  // labelColor: //被選種顏色,
-                  // unselectedLabelColor: //未被選種顏色,
-                  // controller: _tabController,
+                  labelColor: Colors.white,//被選中文字顏色,
+                  labelStyle: TextStyle(fontSize: 18),
+                  indicator: UnderlineTabIndicator( // 被選中底線顏色
+                      borderSide: BorderSide(color: Color.fromRGBO(29, 73, 153, 1))
+                  ),
+                  overlayColor: MaterialStateProperty.all(Color.fromRGBO(113, 170, 221, 1)),
                   tabs: [
                     Tab(text: '順行'),
                     Tab(text: '逆行'),

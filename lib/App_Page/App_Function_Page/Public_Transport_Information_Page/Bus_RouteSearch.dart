@@ -1,6 +1,6 @@
 // ignore_for_file: unused_import
 
-import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/BusRouteDetail.dart';
+import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/Bus_RouteDetail.dart';
 import 'package:traffic_hero/imports.dart';
 
 const List<String> countyName_Cn = <String>['請選擇縣市','新北市','台北市','桃園市','台中市','台南市','高雄市','基隆市','新竹市','新竹縣','苗栗縣','彰化縣','南投縣','雲林縣','嘉義縣','嘉義市','屏東縣','宜蘭縣','花蓮縣','台東縣','金門縣','澎湖縣','連江縣'];
