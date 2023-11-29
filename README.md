@@ -48,7 +48,7 @@ Traffic Hero APP
 ```zsh
 vim ~/.zshrc
 ```
-
+/Users/linjiaming/development/flutter/bin
 進入到
 
 ![Alt text](/readme_image/image-2.png)
