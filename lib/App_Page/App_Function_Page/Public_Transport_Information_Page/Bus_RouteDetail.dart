@@ -18,6 +18,7 @@ class _BusRouteDetailState extends State<BusRouteDetail> {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
     routeDetail_Array = state.busRouteDetail as List;
+    print(routeDetail_Array);
     setState(() {
       // routeDetail;
       routeDetail_Array;
@@ -29,8 +30,7 @@ class _BusRouteDetailState extends State<BusRouteDetail> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(221, 235, 247, 1),
       appBar: new AppBar(
-        // 公車路線名稱
-        // title: Text(),
+        iconTheme: IconThemeData(color: Colors.white),
         backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
       ),
       body: ListView.builder(
@@ -38,24 +38,20 @@ class _BusRouteDetailState extends State<BusRouteDetail> {
         itemBuilder: (context, index) {
           var data = routeDetail_Array[index];
           return ListTile(
+            minVerticalPadding:0,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Expanded(
-                    flex: 3,
-                    child: Text(data['StopName']),
+                    flex: 5,
+                    child: Text(data['StopName'],textAlign: TextAlign.right,),
                   ),
                   Expanded(
-                    flex: 4,
-                    child: (index == routeDetail_Array.length - 1)
-                        ? (Image.asset(
-                      'assets/publicTransportIcon/routeLine.png',
-                      height: 35,
-                    ))
-                        : (Image.asset(
-                      'assets/publicTransportIcon/routeDot.png',
-                      height: 60,
+                    flex: 2,
+                    child: (index == 0)
+                        ?(Image.asset('assets/publicTransportIcon/routeDot.png', height: 35,))
+                        :(Image.asset('assets/publicTransportIcon/routeLine.png',height: 60,
                     )),
                   ),
                   Expanded(

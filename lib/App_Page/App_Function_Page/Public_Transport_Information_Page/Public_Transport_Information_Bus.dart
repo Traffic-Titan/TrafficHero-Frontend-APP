@@ -88,7 +88,7 @@ Widget publicTransportInfoBus(context){
                 child: Column(
                   children: [
                     Container(
-                        padding: EdgeInsets.only(left: 30,right: 30),
+                      width: screenWidth*0.9,
                       child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(Color.fromRGBO(165, 201, 233, 1)),
@@ -99,8 +99,8 @@ Widget publicTransportInfoBus(context){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => BusRouteSearch()));
                           },
                           child: ListTile(
-                              leading: Icon(Icons.directions_bus_sharp,size: 50,color: Color.fromRGBO(29, 73, 153, 1),),
-                              title: Text('公車/客運路線搜尋',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.left,)
+                              leading: Icon(Icons.directions_bus_sharp,size: 40,color: Color.fromRGBO(29, 73, 153, 1),),
+                              title: Text('公車/客運路線搜尋',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 20),textAlign:TextAlign.left,)
                           )
                       ),
                     ),
@@ -108,7 +108,7 @@ Widget publicTransportInfoBus(context){
                       height: 10,
                     ),
                     Container(
-                      padding: EdgeInsets.only(left: 30,right: 30,top: 0),
+                      width: screenWidth*0.9,
                       child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(Color.fromRGBO(165, 201, 233, 1)),
@@ -120,8 +120,8 @@ Widget publicTransportInfoBus(context){
                             Navigator.push(context, MaterialPageRoute(builder: (context) => StationMap_Bus()));
                           },
                           child: ListTile(
-                              leading: Icon(Icons.map_rounded,size: 50,color: Color.fromRGBO(29, 73, 153, 1),),
-                              title: Text('站點地圖',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.left,)
+                              leading: Icon(Icons.map_rounded,size: 40,color: Color.fromRGBO(29, 73, 153, 1),),
+                              title: Text('站點地圖',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 20),textAlign:TextAlign.left,)
                           )
                       ),
                     ),
