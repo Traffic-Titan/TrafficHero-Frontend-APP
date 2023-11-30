@@ -105,6 +105,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
+
   void initState() {
     timerBus?.cancel();
     stoptimer();
@@ -886,9 +887,26 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                             onTap: () async {
                               EasyLoading.show(status: 'loading...');
                               if (tool['value'] == "機車定位") {
+                                EasyLoading.show(status: 'loading...');
                                 vehicleLocate(tool['url']);
-                              } else {
+                              } else if (tool['value'] == '機車定位') {
+                                EasyLoading.show(status: 'loading...');
                                 findPlacesQuickly(tool['url']);
+                              } else {
+                                EasyLoading.show(status: 'loading...');
+                                var position =
+                                    await geolocator().updataPosition(context);
+                                Navigator.push(
+                                    context,
+                                    PageRouteBuilder(
+                                      pageBuilder: (context, animation,
+                                              secondaryAnimation) =>
+                                          mapPage(
+                                        url: tool['url'],
+                                        position: position,
+                                      ),
+                                      maintainState: false,
+                                    ));
                               }
                             },
                           ),

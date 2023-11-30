@@ -163,59 +163,52 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
             ),
           ),
           Expanded(
-            child: GridView(
-              controller: scrollController,
-              padding: EdgeInsets.zero,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1, //横轴三个子widget
-                  childAspectRatio: 5 / 1),
-              children: List.generate(
-                content.length,
-                (index) {
-                  final list = content[index];
-                  return InkWell(
-                    child: ListTile(
-                      leading: Image.network(list['icon_url']),
-                      title: Container(
-                        child: Text(
-                          list['station_name_zh_tw'],
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Color.fromRGBO(0, 32, 96, 1),
-                          ),
-                          overflow: TextOverflow.ellipsis,
-                        ),
+              child: ListView.builder(
+            controller: scrollController,
+            itemCount: content.length,
+            itemBuilder: (context, index) {
+              final list = content[index];
+              return InkWell(
+                child: ListTile(
+                  leading: Image.network(list['icon_url']),
+                  title: Container(
+                    child: Text(
+                      list['station_name_zh_tw'],
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Color.fromRGBO(0, 32, 96, 1),
                       ),
-                      subtitle: Text(list['service_type']),
-                      trailing: Container(
-                        width: 100,
-                        height: 50,
-                        child: Row(
-                          children: [
-                            SizedBox(width: 10),
-                            Text(
-                              list['available_rent_bikes'].toString(),
-                              style: TextStyle(fontSize: 18, color: Colors.red),
-                            ),
-                            SizedBox(width: 30),
-                            Text(
-                              list['available_return_bikes'].toString(),
-                              style: TextStyle(
-                                  fontSize: 18, color: Colors.blueAccent),
-                            ),
-                          ],
-                        ),
-                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    onTap: () {
-                      print('開始導航');
-                      launch(list['url']);
-                    },
-                  );
+                  ),
+                  subtitle: Text(list['service_type']),
+                  trailing: Container(
+                    width: 100,
+                    height: 50,
+                    child: Row(
+                      children: [
+                        SizedBox(width: 10),
+                        Text(
+                          list['available_rent_bikes'].toString(),
+                          style: TextStyle(fontSize: 18, color: Colors.red),
+                        ),
+                        SizedBox(width: 30),
+                        Text(
+                          list['available_return_bikes'].toString(),
+                          style:
+                              TextStyle(fontSize: 18, color: Colors.blueAccent),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  print('開始導航');
+                  launch(list['url']);
                 },
-              ),
-            ),
-          )
+              );
+            },
+          ))
         ],
       ),
     );

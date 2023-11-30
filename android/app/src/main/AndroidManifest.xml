@@ -7,7 +7,9 @@
 <application android:label="FlPiP">
     <activity android:name=".MainActivity"
         android:launchMode="singleTop"
-        android:supportsPictureInPicture="true" />
+        android:supportsPictureInPicture="true" 
+        android:enableOnBackInvokedCallback="true"/>
+        
 </application>
 
 
@@ -15,7 +17,8 @@
     <application
         android:label="Traffic Hero"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true">
 
         <uses-library
             android:name="org.apache.http.legacy"

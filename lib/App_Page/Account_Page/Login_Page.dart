@@ -396,6 +396,7 @@ class _Login extends State<Login> {
                           try {
                             if (googleController.googleAccount.value == null) {
                               EasyLoading.show(status: '登入中...');
+                              print('1');
                               googleController.google();
                             } else {
                               //確保在登錄界面保持登出
@@ -403,6 +404,7 @@ class _Login extends State<Login> {
                             }
                           } catch (e) {
                             EasyLoading.dismiss();
+                            print(e);
                             EasyLoading.showError(e.toString());
                           }
 
