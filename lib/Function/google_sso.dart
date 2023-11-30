@@ -9,31 +9,35 @@ class googlesso extends GetxController {
   var scopes = <String>[];
 
   Future<void> google() async {
-    googleAccount.value = await googleSignIn.signIn();
+    try {
+      googleAccount.value = await googleSignIn.signIn();
+    } catch (e) {
+      print(e);
+    }
   }
 
   Future<void> google_signOut() async {
     googleAccount.value = await googleSignIn.signOut();
   }
 
-  Future<User?> signinWithGoogle() async {
-    GoogleSignInAccount? gUser;
+  // Future<User?> signinWithGoogle() async {
+  //   GoogleSignInAccount? gUser;
 
-      gUser = await googleSignIn.signIn();
+  //     gUser = await googleSignIn.signIn();
 
-    // if (gUser != null) {
-    //   // final GoogleSignInAuthentication gAuth = await gUser.authentication;
+  //   // if (gUser != null) {
+  //   //   // final GoogleSignInAuthentication gAuth = await gUser.authentication;
 
-    //   // final credential = GoogleAuthProvider.credential(
-    //   //   accessToken: gAuth.accessToken,
-    //   //   idToken: gAuth.idToken,
-    //   // );
+  //   //   // final credential = GoogleAuthProvider.credential(
+  //   //   //   accessToken: gAuth.accessToken,
+  //   //   //   idToken: gAuth.idToken,
+  //   //   // );
 
-    //   final userCredential =
-    //       await FirebaseAuth.instance.signInWithCredential(credential);
-    //   return userCredential.user;
-    // }
+  //   //   final userCredential =
+  //   //       await FirebaseAuth.instance.signInWithCredential(credential);
+  //   //   return userCredential.user;
+  //   // }
 
-    return null;
-  }
+  //   return null;
+  // }
 }

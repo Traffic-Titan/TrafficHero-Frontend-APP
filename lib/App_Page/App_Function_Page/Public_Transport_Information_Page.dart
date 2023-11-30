@@ -103,6 +103,7 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Color.fromRGBO(62, 111, 179, 1),
+          elevation: 0,
           toolbarHeight: 0,
           bottom: TabBar(
             labelColor: Colors.white,

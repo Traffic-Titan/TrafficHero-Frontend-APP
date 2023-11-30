@@ -27,10 +27,10 @@ class _mapPageState extends State<mapPage> {
     {
       "basic": {
         "station_code": "D4342",
-        "type": "自營站",
-        "station_name": "斗六站",
-        "address": "雲林縣斗六市雲林路二段334號",
-        "phone": "(05)5322534",
+        "type": "",
+        "station_name": "",
+        "address": "",
+        "phone": "",
         "available": true,
         "in_freeway": false,
         "business_hours": "07:00-21:00"
@@ -58,7 +58,7 @@ class _mapPageState extends State<mapPage> {
         "maintenance": "\n    "
       },
       "location": {"longitude": 120.527777777778, "latitude": 23.7008333333333},
-      "distance": 818.3955593862947,
+      "distance": 0,
       "url":
           "comgooglemapsurl://www.google.com/maps/dir/?api=1&destination=雲林縣斗六市雲林路二段334號&travelmode=driving&dir_action=navigate"
     }
@@ -68,13 +68,13 @@ class _mapPageState extends State<mapPage> {
     {
       "company_id": 23285582,
       "branch_id": 80490752,
-      "company_name": "萊爾富國際股份有限公司",
-      "branch_name": "斗六雲德分公司",
-      "branch_address": "雲林縣斗六市鎮南里明德路四五五號一樓",
+      "company_name": "",
+      "branch_name": "",
+      "branch_address": "",
       "status": "核准設立",
       "location": {"longitude": 120.5357042, "latitude": 23.6984855},
       "icon_url":
-          "https://upload.wikimedia.org/wikipedia/commons/thumb/5/56/OK_LOGO-%E6%96%B9%E5%BD%A2-01.png/1024px-OK_LOGO-%E6%96%B9%E5%BD%A2-01.png",
+          "https://www.colorhexa.com/e7f1fe.png",
       "distance": 299.86522728507106,
       "url":
           "comgooglemapsurl://www.google.com/maps/dir/?api=1&destination=雲林縣斗六市鎮南里明德路四五五號一樓&travelmode=driving&dir_action=navigate"
@@ -108,11 +108,20 @@ class _mapPageState extends State<mapPage> {
   }
 
   //function
+  changeMode(mode) {
+    if (mode == 'car') {
+      return 'Car';
+    } else if (mode == 'scooter') {
+      return 'Scooter';
+    } else {
+      return 'Transit';
+    }
+  }
 
   getContent() async {
     var response;
     var url = widget.url +
-        '?os=${prefs.get('system')}&mode=Car&longitude=${widget.position.longitude}&latitude=${widget.position.latitude}';
+        '?os=${prefs.get('system')}&mode=${changeMode(state.modeName)}&longitude=${widget.position.longitude}&latitude=${widget.position.latitude}';
     var jwt = ',${state.accountState}';
     var responseBody;
     try {
@@ -275,7 +284,7 @@ class _mapPageState extends State<mapPage> {
                   
                           ],
                         ),
-                        subtitle: Text(list['basic']['address'],overflow: TextOverflow.clip,),
+                        subtitle: Text(list['basic']['address'],overflow: TextOverflow.ellipsis,),
                         trailing: InkWell(
                           child: Container(
                             width: 90,
@@ -343,12 +352,14 @@ class _mapPageState extends State<mapPage> {
                           children: [
                             Row(
                               children: [
-                                Text(list['company_name'],style: TextStyle(fontSize: screenWidth > 600 ? 12  : 15),overflow: TextOverflow.ellipsis),
+                                Text(list['company_name'],style: TextStyle(fontSize: screenWidth > 600 ? 12  : 17),overflow: TextOverflow.ellipsis),
                               ],
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(list['branch_name'],overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: screenWidth > 600 ? 12  : 15)),
+                                Text(list['branch_name'],style: TextStyle(fontSize: screenWidth > 600 ? 15  : 13),overflow: TextOverflow.ellipsis),
                               ],
                             )
                           ],
