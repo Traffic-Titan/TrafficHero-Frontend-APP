@@ -20,9 +20,9 @@ class _mapPageState extends State<mapPage> {
   var screenHeight;
   final Set<Marker> _markers = Set<Marker>();
   var scrollview = true;
+  var gasStationDetail;
   String name = '';
   var position;
-
   List<dynamic> mapListGasStation = [
     {
       "basic": {
@@ -59,8 +59,11 @@ class _mapPageState extends State<mapPage> {
       },
       "location": {"longitude": 120.527777777778, "latitude": 23.7008333333333},
       "distance": 0,
+      "icon_url":
+      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/CPC_Corporation%2C_Taiwan_Seal.svg/1024px-CPC_Corporation%2C_Taiwan_Seal.svg.png",
+
       "url":
-          "comgooglemapsurl://www.google.com/maps/dir/?api=1&destination=雲林縣斗六市雲林路二段334號&travelmode=driving&dir_action=navigate"
+      "comgooglemapsurl://www.google.com/maps/dir/?api=1&destination=雲林縣斗六市雲林路二段334號&travelmode=driving&dir_action=navigate"
     }
   ];
 
@@ -249,63 +252,136 @@ class _mapPageState extends State<mapPage> {
     mapController = controller;
   }
 
+  //加油站詳細資訊
+  Future<void> showGasStationDetail() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          icon: Image.network(gasStationDetail['icon_url'],height: 70,),
+          title: Text('${gasStationDetail['basic']['station_name']}-${gasStationDetail['basic']['type']}'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('地址${gasStationDetail['basic']['address']}',style: TextStyle(fontSize: 13),),
+                Text('營業時間${gasStationDetail['basic']['business_hours']}',style: TextStyle(fontSize: 13)),
+                SizedBox(height: 5,),
+                Row(
+                  children: [
+                    Image.asset('assets/gasStation/gas.png',height: 25,),
+                    SizedBox(width: 5,),
+                    Text('提供油種',style: TextStyle(fontSize: 18,color: Colors.indigo)),
+                  ],
+                ),
+                SizedBox(height: 3,),
+                Row(
+                  children: [
+                    (gasStationDetail['gasoline']['92']) ? Image.asset('assets/gasStation/gasoline_92.png',height: 35,):Text(''),
+                    (gasStationDetail['gasoline']['95']) ? Image.asset('assets/gasStation/gasoline_95.png',height: 35,):Text(''),
+                    (gasStationDetail['gasoline']['98']) ? Image.asset('assets/gasStation/gasoline_98.png',height: 35,):Text(''),
+                    (gasStationDetail['gasoline']['alcohol_gasoline']) ? Image.asset('assets/gasStation/gasoline_Alcohol.png',height: 35,):Text(''),
+                    (gasStationDetail['gasoline']['kerosene']) ? Image.asset('assets/gasStation/gasoline_Alcohol.png',height: 35,):Text(''),
+                    (gasStationDetail['gasoline']['super_diesel']) ? Image.asset('assets/gasStation/gasoline_Kerosene.png',height: 35,):Text(''),
+                  ],
+                ),
+                SizedBox(height: 5,),
+                Row(
+                  children: [
+                    Image.asset('assets/gasStation/payment.png',height: 25,),
+                    SizedBox(width: 5,),
+                    Text('付款方式',style: TextStyle(fontSize: 18,color: Colors.indigo)),
+                  ],
+                ),
+                SizedBox(height: 3,),
+                Wrap(
+                  children: [
+                    (gasStationDetail['payment']['member_card']) ? Text('會員卡 ',style: TextStyle(color: Colors.green),):Text(''),
+                    (gasStationDetail['payment']['e_invoice']) ? Text('電子發票 ',style: TextStyle(color: Colors.green),):Text(''),
+                    (gasStationDetail['payment']['easy_card']) ? Text('悠遊卡 ',style: TextStyle(color: Colors.green),):Text(''),
+                    (gasStationDetail['payment']['i_pass']) ? Text('一卡通 ',style: TextStyle(color: Colors.green),):Text(''),
+                    (gasStationDetail['payment']['happy_cash']) ? Text('Happy Card ',style: TextStyle(color: Colors.green),):Text(''),
+                  ],
+                ),
+                SizedBox(height: 5,),
+                Row(
+                  children: [
+                    Image.asset('assets/gasStation/service.png',height: 25,),
+                    SizedBox(width: 5,),
+                    Text('其他服務',style: TextStyle(fontSize: 18,color: Colors.indigo)),
+                  ],
+                ),
+                SizedBox(height: 3,),
+                Row(
+                  children: [
+                    (gasStationDetail['other_service']['self_service']) ? Text('自助加油 ',style: TextStyle(color: Colors.green),):Text(''),
+                    (gasStationDetail['other_service']['self_service_diesel']) ? Text('自助柴油加油 ',style: TextStyle(color: Colors.green),):Text(''),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('返回'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Icon(Icons.navigation,color: Colors.indigo,),
+              onPressed: () {
+                launch(gasStationDetail['url']);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget GasStationView(ScrollController scrollController) {
     return SizedBox(
       width: screenWidth,
-      // height: 200,
       child: Column(
         children: [
-          // Container(width: screenWidth,height: 50,color: Colors.blue,child: Center(child: Text('dddd')),),
           Expanded(
-            child: GridView(
+            child: ListView(
               controller: scrollController,
-              padding: EdgeInsets.zero,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1, //横轴三个子widget
-                  childAspectRatio: 5 / 1),
               children: List.generate(
                 mapListGasStation.length,
-                (index) {
+                    (index) {
                   final list = mapListGasStation[index];
                   return Column(
                     children: [
-                      Expanded(
-                          child: ListTile(
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              list['basic']['station_name'] +
-                                  " - 距離: " +
-                                  list['distance'].toInt().toString() +
-                                  '公尺',
-                            ),
-                  
-                          ],
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+                            gasStationDetail = list;
+                          });
+                          showGasStationDetail();
+                        },
+                        child: ListTile(
+                            leading: Image.network(list['icon_url']),
+                            title:Text('${list['basic']['station_name']}-${list['distance']}公尺'),
+                            subtitle: Text(list['basic']['address']),
+                            trailing: IconButton(
+                              onPressed: () {
+                                launch(list['url']);
+                              },
+                              icon: Icon(Icons.navigation,color: Colors.indigo,),
+                            )
+
                         ),
-                        subtitle: Text(list['basic']['address'],overflow: TextOverflow.ellipsis,),
-                        trailing: InkWell(
-                          child: Container(
-                            width: 90,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.white,
-                            ),
-                            child: Center(child: Text('導航')),
-                          ),
-                          onTap: () {
-                            launch(list['url']);
-                          },
-                        ),
-                      )),
+                      ),
                       Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                          indent: 10,
-                          endIndent: 10)
+                        thickness: 1,
+                        color: Colors.grey,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
                     ],
+
                   );
                 },
               ),
@@ -314,9 +390,6 @@ class _mapPageState extends State<mapPage> {
         ],
       ),
     );
-
-    //   },
-    // );
   }
 
   Widget ConvenientStoreView(ScrollController scrollController) {
