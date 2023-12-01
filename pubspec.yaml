@@ -144,6 +144,15 @@ flutter:
     - assets/publicTransportIcon/routeDot.png
     - assets/fastLocation/car-placeholder.png
     - assets/fastLocation/scooter-locate.png
+    - assets/gasStation/gasoline_92.png
+    - assets/gasStation/gasoline_95.png
+    - assets/gasStation/gasoline_98.png
+    - assets/gasStation/gasoline_SuperDiesel.png
+    - assets/gasStation/gasoline_Alcohol.png
+    - assets/gasStation/gasoline_Kerosene.png
+    - assets/gasStation/gas.png
+    - assets/gasStation/payment.png
+    - assets/gasStation/service.png
 
 
   # The following line ensures that the Material Icons font is
