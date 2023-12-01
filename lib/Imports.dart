@@ -35,6 +35,8 @@ export 'package:flutter/services.dart';
 export 'package:flutter_in_app_pip/flutter_in_app_pip.dart';
 export 'package:fl_pip/fl_pip.dart';
 export 'package:carousel_slider/carousel_slider.dart';
+export 'package:firebase_messaging/firebase_messaging.dart';
+
 
 
 //引入頁面
@@ -79,7 +81,7 @@ export 'package:traffic_hero/Function/Geolocator.dart';
 export 'package:traffic_hero/Function/get_Home.dart';
 export 'package:traffic_hero/Function/Webview.dart';
 export 'package:traffic_hero/Function/WebViewForMRT.dart';
-
+export 'package:traffic_hero/Function/firebase_message.dart';
 
 //Components
 export 'package:traffic_hero/Components/Button.dart';

@@ -86,12 +86,12 @@ List<Map<String, String>> fastLocationCarCms = [
     'url': dotenv.env['CMS_ConvenientStore'].toString()
   },
 
-  {
-    'value': '充電站',
-    'title': '充電站',
-    'img': 'assets/fastLocation/chargingStation.png',
-    'url': dotenv.env['QuickSearch_ChargingStation'].toString()
-  },
+  // {
+  //   'value': '充電站',
+  //   'title': '充電站',
+  //   'img': 'assets/fastLocation/chargingStation.png',
+  //   'url': dotenv.env['QuickSearch_ChargingStation'].toString()
+  // },
  
 ];
 

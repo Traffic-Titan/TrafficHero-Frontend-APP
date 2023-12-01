@@ -113,7 +113,7 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
             ),
             overlayColor: MaterialStateProperty.all(Color.fromRGBO(113, 170, 221, 1)),
             tabs: [
-                Tab(icon: Icon(Icons.directions_bike_outlined),text: '腳踏車'),
+                Tab(icon: Icon(Icons.directions_bike_outlined),text: '自行車'),
                 Tab(icon: Icon(Icons.directions_bus),text: '公車',),
                 Tab(icon: Icon(Icons.directions_train_outlined),text: '捷運',),
                 Tab(icon: Icon(Icons.train),text: '台鐵',),

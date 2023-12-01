@@ -3,6 +3,7 @@ import Flutter
 import GoogleMaps
 import AVFoundation
 import flutter_config_plus
+import FirebaseCore
 
 @UIApplicationMain
 @objc class AppDelegate: FlutterAppDelegate {
@@ -10,6 +11,7 @@ import flutter_config_plus
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
+    FirebaseApp.configure()
       do {
                  // 设置AVAudioSession.Category.playback后，在静音模式下，或者APP进入后台，或者锁定屏幕后还可以继续播放。
                  try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, mode: AVAudioSession.Mode.moviePlayback)

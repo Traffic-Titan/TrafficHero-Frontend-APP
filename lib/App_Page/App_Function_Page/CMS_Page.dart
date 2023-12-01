@@ -1,5 +1,5 @@
 // ignore_for_file: file_names, sort_child_properties_last, unused_element, unused_local_variable, override_on_non_overriding_member, prefer_typing_uninitialized_variables, avoid_print, duplicate_ignore, avoid_unnecessary_containers, deprecated_member_use
-import 'package:flutter_waya/flutter_waya.dart';
+
 import 'package:traffic_hero/Imports.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:traffic_hero/Components/Tool.dart' as Tool;
@@ -61,16 +61,17 @@ class _CMSState extends State<CMS> {
   @override
   void dispose() {
     super.dispose();
+    print('離開頁面');
     _stopTrackingPosition(); // 停止追踪位置更新
     _speedStreamController.close();
     controller.dispose();
-
+    print(timer2?.isActive);
   }
 
   bool directionState = true;
   var Carpostionstatus = false;
   String displayImg = 'https://www.colorhexa.com/000000.png';
-  Timer? timer, timer2;
+  Timer?  timer2;
   StreamSubscription<Position>? _positionStreamSubscription;
   late List<Placemark> placemarks;
   var positionNow;
@@ -130,27 +131,32 @@ class _CMSState extends State<CMS> {
   //快速尋找地點
   findPlacesQuickly(url) async {
     var position = await geolocator().updataPosition(context);
+    var response;
+    var res;
     var urlPosition = url +
         '?os=${prefs.get('system')}&mode=${changeMode(state.modeName)}&longitude=${position.longitude}&latitude=${position.latitude}';
 
     print(urlPosition);
     var jwt = ',${state.accountState}';
-
-    var response = await api().apiGet(urlPosition, jwt);
-    print(jsonDecode(utf8.decode(response.bodyBytes)));
-    var res = jsonDecode(utf8.decode(response.bodyBytes))['url'];
-    if (response.statusCode == 200) {
-      EasyLoading.dismiss();
-      try {
-        print(res);
-        await launch(res);
-      } catch (e) {
-        print(e.toString());
-        EasyLoading.showError(e.toString());
-      }
-    } else {
-      EasyLoading.dismiss();
+    try {
+      response = await api().apiGet(urlPosition, jwt);
       print(jsonDecode(utf8.decode(response.bodyBytes)));
+      res = jsonDecode(utf8.decode(response.bodyBytes))['url'];
+      if (response.statusCode == 200) {
+        EasyLoading.dismiss();
+        try {
+          print(res);
+          await launch(res);
+        } catch (e) {
+          print(e.toString());
+          EasyLoading.showError(e.toString());
+        }
+      } else {
+        EasyLoading.dismiss();
+        print(jsonDecode(utf8.decode(response.bodyBytes)));
+      }
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -206,9 +212,16 @@ class _CMSState extends State<CMS> {
     }
   }
 
-  void _stopTrackingPosition() {
+  void _stopTrackingPosition() async{
     // 取消位置更新的订阅
-    timer?.cancel();
+    //  timer2?.cancel();
+      if (timer2 != null) {
+    try {
+      timer2?.cancel();
+    } catch (e) {
+      print('Error while canceling timer2: $e');
+    }
+  }
     _positionStreamSubscription?.cancel();
   }
 
@@ -217,7 +230,9 @@ class _CMSState extends State<CMS> {
     // 讀取API上即時訊息推播-汽車模式
     print('開始抓取ＣＭＳ');
     // var position = await geolocator().updataPosition();
-    var url = ( state.modeName == 'car' ? dotenv.env['CMS_Main_Car'].toString():dotenv.env['CMS_Main_Scooter'].toString().toString() ) +
+    var url = (state.modeName == 'car'
+            ? dotenv.env['CMS_Main_Car'].toString()
+            : dotenv.env['CMS_Main_Scooter'].toString().toString()) +
         // '?longitude=${position.longitude}&latitude=${position.latitude}';
         '?longitude=all&latitude=all';
     var jwt = ',${state.accountState}';
@@ -237,9 +252,10 @@ class _CMSState extends State<CMS> {
         setState(() {
           cmsList_car = responseBody;
         });
+        setDisplay();
       } catch (e) {}
 
-      setDisplay();
+      // setDisplay();
       print(cmsList_car);
       print(cmsList_car[0]['content'][0]['text'][0]);
       print(cmsList_car[0]['content'][0]['color'][0]);
@@ -249,12 +265,13 @@ class _CMSState extends State<CMS> {
     }
   }
 
-
-    void updateCMS_Sidbar_List_Car() async {
+  void updateCMS_Sidbar_List_Car() async {
     // 讀取API上即時訊息推播-汽車模式
     print('開始抓取ＣＭＳ');
     // var position = await geolocator().updataPosition();
-    var url = ( state.modeName == 'car' ? dotenv.env['CMS_Sidebar_Car'].toString():dotenv.env['CMS_Sidebar_Scooter'].toString().toString() ) +
+    var url = (state.modeName == 'car'
+            ? dotenv.env['CMS_Sidebar_Car'].toString()
+            : dotenv.env['CMS_Sidebar_Scooter'].toString().toString()) +
         // '?longitude=${position.longitude}&latitude=${position.latitude}';
         '?longitude=all&latitude=all';
     var jwt = ',${state.accountState}';
@@ -269,15 +286,13 @@ class _CMSState extends State<CMS> {
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
       print('抓取ＣＭＳ成功');
-      
+
       try {
         setState(() {
-        stringList = responseBody[0]['content'][0]['text'][0].split('');
-        print(stringList);
+          stringList = responseBody[0]['content'][0]['text'][0].split('');
+          print(stringList);
         });
       } catch (e) {}
-
-      
     } else {
       print('CMS抓取失敗');
     }
@@ -286,14 +301,16 @@ class _CMSState extends State<CMS> {
   void setDisplay() {
     int index = 0;
     // 每5秒向後端要求一次CMS資料
-    timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+    timer2 = Timer.periodic(const Duration(seconds: 10), (timer) {
+      print(timer);
       if (index < cmsList_car.length) {
         try {
           FlutterTts().speak(cmsList_car[index]['voice']);
+          
           //  FlutterTts().speak('測試');
           controller.animateToPage(
             index,
-            duration: Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 1000),
             curve: Curves.easeInOut,
           );
         } catch (e) {
@@ -435,7 +452,7 @@ class _CMSState extends State<CMS> {
                       ),
                     ),
                     Container(
-                      width: screenHeight ,
+                      width: screenHeight,
                       child: Expanded(
                         child: ListView.builder(
                           itemCount: pageList['content'].length,
@@ -447,7 +464,8 @@ class _CMSState extends State<CMS> {
                                 children: [
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: List.generate(
                                       list1['text'].length,
                                       (index) {
@@ -548,21 +566,28 @@ class _CMSState extends State<CMS> {
               color: Colors.green,
               height: screenHeight,
               width: 50,
-              child: 
-              Center(child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    height: 300,
-                    child: Expanded(child: ListView.builder(itemCount: stringList.length ,itemBuilder: (context,index){
-                      final list = stringList[index];
-                      return Text(list,style: TextStyle(color: Colors.white,fontSize: 40),);
-                    })),
-                  )
-                ],
-              ),)
-              ,
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      height: 300,
+                      child: Expanded(
+                          child: ListView.builder(
+                              itemCount: stringList.length,
+                              itemBuilder: (context, index) {
+                                final list = stringList[index];
+                                return Text(
+                                  list,
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 40),
+                                );
+                              })),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
           Align(
@@ -602,7 +627,7 @@ class _CMSState extends State<CMS> {
                           ),
                           onTap: () async {
                             EasyLoading.show(status: 'loading...');
-
+                            print(tool['url']);
                             findPlacesQuickly(tool['url']);
                           },
                         ),
@@ -619,75 +644,76 @@ class _CMSState extends State<CMS> {
         children: [
           Column(mainAxisAlignment: MainAxisAlignment.end, children: [
             Visibility(
-              visible: showIcon,
+                visible: showIcon,
                 child: Column(
-              children: [
-                // FloatingActionButton(
-                //   heroTag: "btn13",
-                //   child: const Icon(
-                //     Icons.picture_in_picture,
-                //     size: 40,
-                //   ),
-                //   backgroundColor: Colors.blueAccent,
-                //   onPressed: () {
-                //     Navigator.push(context,
-                //         MaterialPageRoute(builder: (context) => CMSPIP()));
-                //   },
-                // ),
-                // const SizedBox(
-                //   height: 10,
-                // ),
-                FloatingActionButton(
-                  heroTag: "btn1",
-                  child: const Icon(
-                    CupertinoIcons.placemark_fill,
-                    size: 40,
-                  ),
-                  backgroundColor: Colors.blueAccent,
-                  onPressed: () {
-                    if (Carpostionstatus == false) {
-                      savePosition();
-                    } else {
-                      getPosition();
-                    }
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                FloatingActionButton(
-                  heroTag: "btn2",
-                  child: phoneIcon,
-                  backgroundColor: Colors.blueAccent,
-                  onPressed: () {
-                    SystemChrome.setPreferredOrientations([
-                      DeviceOrientation.landscapeLeft,
-                      DeviceOrientation.landscapeRight,
-                    ]);
-                    setState(() {
-                      directionState = false;
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 10,
-                ),
-                FloatingActionButton(
-                  heroTag: "btn3",
-                  child: const Icon(
-                    Icons.output_outlined,
-                    size: 40,
-                  ),
-                  backgroundColor: Colors.blueAccent,
-                  onPressed: () {
-                    //顯示導航及最頂端列
-                    SystemChrome.setEnabledSystemUIMode(
-                        SystemUiMode.edgeToEdge);
-                    Navigator.pop(context);
-                  },
-                ),
-              ],
-            )),
+                  children: [
+                    // FloatingActionButton(
+                    //   heroTag: "btn13",
+                    //   child: const Icon(
+                    //     Icons.picture_in_picture,
+                    //     size: 40,
+                    //   ),
+                    //   backgroundColor: Colors.blueAccent,
+                    //   onPressed: () {
+                    //     Navigator.push(context,
+                    //         MaterialPageRoute(builder: (context) => CMSPIP()));
+                    //   },
+                    // ),
+                    // const SizedBox(
+                    //   height: 10,
+                    // ),
+                    FloatingActionButton(
+                      heroTag: "btn1",
+                      child: const Icon(
+                        CupertinoIcons.placemark_fill,
+                        size: 40,
+                      ),
+                      backgroundColor: Colors.blueAccent,
+                      onPressed: () {
+                        if (Carpostionstatus == false) {
+                          savePosition();
+                        } else {
+                          getPosition();
+                        }
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    FloatingActionButton(
+                      heroTag: "btn2",
+                      child: phoneIcon,
+                      backgroundColor: Colors.blueAccent,
+                      onPressed: () {
+                        SystemChrome.setPreferredOrientations([
+                          DeviceOrientation.landscapeLeft,
+                          DeviceOrientation.landscapeRight,
+                        ]);
+                        setState(() {
+                          directionState = false;
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    FloatingActionButton(
+                      heroTag: "btn3",
+                      child: const Icon(
+                        Icons.output_outlined,
+                        size: 40,
+                      ),
+                      backgroundColor: Colors.blueAccent,
+                      onPressed: ()async {
+                        //顯示導航及最頂端列
+                         _stopTrackingPosition(); // 停止追踪位置更新
+                        _speedStreamController.close();
+                     
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                )),
             const SizedBox(
               height: 10,
             ),
@@ -901,6 +927,8 @@ class _CMSState extends State<CMS> {
             }
             //顯示導航及最頂端列
             SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+            _stopTrackingPosition(); // 停止追踪位置更新
+                        _speedStreamController.close();
             Navigator.pop(context);
           },
         ),

@@ -81,6 +81,7 @@ dependencies:
   carousel_slider: ^4.2.1
   # background_fetch: ^1.2.1
   extended_image: ^8.1.1
+  firebase_messaging: ^14.7.6
 
 
 dev_dependencies:
