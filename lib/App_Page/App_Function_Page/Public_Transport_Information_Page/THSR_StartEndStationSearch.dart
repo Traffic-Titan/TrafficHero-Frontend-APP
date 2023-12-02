@@ -163,7 +163,7 @@ class _THSR_StartEndStationSearchState extends State<THSR_StartEndStationSearch>
                           }
                       );
                     },
-                    child: Text(selectedDate!,style: TextStyle(color:  Color.fromRGBO(24, 60, 126, 1),fontSize: 20),),
+                    child: Text(selectedDate,style: TextStyle(color:  Color.fromRGBO(24, 60, 126, 1),fontSize: 20),),
                   ),
                 ),
               ),
@@ -187,7 +187,7 @@ class _THSR_StartEndStationSearchState extends State<THSR_StartEndStationSearch>
                           }
                       );
                     },
-                    child: Text(selectTime!,style: TextStyle(color: Colors.white,fontSize: 20),),
+                    child: Text(selectTime,style: TextStyle(color: Colors.white,fontSize: 20),),
                   ),
                 ),
               ),

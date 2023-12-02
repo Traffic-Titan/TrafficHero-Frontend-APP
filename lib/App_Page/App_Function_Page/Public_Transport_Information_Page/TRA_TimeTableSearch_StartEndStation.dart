@@ -620,7 +620,7 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                             }
                         );
                       },
-                      child: Text(dateTime_date!,style: TextStyle(color:  Color.fromRGBO(24, 60, 126, 1),fontSize: 20),),
+                      child: Text(dateTime_date,style: TextStyle(color:  Color.fromRGBO(24, 60, 126, 1),fontSize: 20),),
                     ),
                   ),
                 ),
@@ -644,7 +644,7 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                             }
                         );
                       },
-                      child: Text(dateTime_time!,style: TextStyle(color: Colors.white,fontSize: 20),),
+                      child: Text(dateTime_time,style: TextStyle(color: Colors.white,fontSize: 20),),
                     ),
                   ),
                 ),

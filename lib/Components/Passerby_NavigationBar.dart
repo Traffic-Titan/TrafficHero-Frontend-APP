@@ -93,10 +93,8 @@ class _PasserbyPage extends State<PasserbyPage> {
   }
 
   void _navigateToCMS(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => CMS()), // 創建新的空白頁面
-    );
+    Navigator.pushAndRemoveUntil(
+          context, MaterialPageRoute(builder: (context) => const CMS()),(router)=>false);
   }
 
   final List carAndScooterNavigationBar = [

@@ -71,7 +71,7 @@ class _CMSState extends State<CMS> {
   bool directionState = true;
   var Carpostionstatus = false;
   String displayImg = 'https://www.colorhexa.com/000000.png';
-  Timer?  timer2;
+  Timer? timer2;
   StreamSubscription<Position>? _positionStreamSubscription;
   late List<Placemark> placemarks;
   var positionNow;
@@ -212,16 +212,16 @@ class _CMSState extends State<CMS> {
     }
   }
 
-  void _stopTrackingPosition() async{
+  void _stopTrackingPosition() async {
     // 取消位置更新的订阅
     //  timer2?.cancel();
-      if (timer2 != null) {
-    try {
-      timer2?.cancel();
-    } catch (e) {
-      print('Error while canceling timer2: $e');
+    if (timer2 != null) {
+      try {
+        timer2?.cancel();
+      } catch (e) {
+        print('Error while canceling timer2: $e');
+      }
     }
-  }
     _positionStreamSubscription?.cancel();
   }
 
@@ -306,7 +306,7 @@ class _CMSState extends State<CMS> {
       if (index < cmsList_car.length) {
         try {
           FlutterTts().speak(cmsList_car[index]['voice']);
-          
+
           //  FlutterTts().speak('測試');
           controller.animateToPage(
             index,
@@ -704,12 +704,16 @@ class _CMSState extends State<CMS> {
                         size: 40,
                       ),
                       backgroundColor: Colors.blueAccent,
-                      onPressed: ()async {
+                      onPressed: () async {
                         //顯示導航及最頂端列
-                         _stopTrackingPosition(); // 停止追踪位置更新
+                        _stopTrackingPosition(); // 停止追踪位置更新
                         _speedStreamController.close();
-                     
-                        Navigator.pop(context);
+
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const AllPage()),
+                            (router) => false);
                       },
                     ),
                   ],
@@ -928,7 +932,7 @@ class _CMSState extends State<CMS> {
             //顯示導航及最頂端列
             SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
             _stopTrackingPosition(); // 停止追踪位置更新
-                        _speedStreamController.close();
+            _speedStreamController.close();
             Navigator.pop(context);
           },
         ),

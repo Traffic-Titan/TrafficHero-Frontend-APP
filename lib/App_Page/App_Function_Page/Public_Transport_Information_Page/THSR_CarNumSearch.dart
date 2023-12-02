@@ -1,5 +1,3 @@
-import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/THSR_CarNumSearchResult.dart';
-import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/THSR_StartEndStationSearch_Result.dart';
 import 'package:traffic_hero/Imports.dart';
 class THSR_CarNumSearch extends StatefulWidget {
   const THSR_CarNumSearch({Key? key}) : super(key: key);
