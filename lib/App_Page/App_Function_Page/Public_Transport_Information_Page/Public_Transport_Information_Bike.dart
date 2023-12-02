@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-import 'package:flutter_waya/flutter_waya.dart';
 import 'package:traffic_hero/Imports.dart';
 
 class publicTransportInfoBike extends StatefulWidget {

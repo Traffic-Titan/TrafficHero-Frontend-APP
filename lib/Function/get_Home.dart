@@ -167,8 +167,8 @@ class getHome {
       if (response.statusCode == 200) {
         print(responseBody);
         state.updateNearbyStationBike(responseBody);
-        return responseBody;
         print('附近站點公共自行車抓取成功');
+        return responseBody;
       } else {
         print('附近站點公共自行車抓取失敗');
       }
@@ -183,7 +183,7 @@ class getHome {
     print('路況速報開始抓取');
     var position = await geolocator().updataPosition(context);
     var url =
-        '${state.modeName == 'car' ? dotenv.env['NearbyRoadCondition']:dotenv.env['NearbyRoadConditionScooter'].toString()}?longitude=${position.longitude}&latitude=${position.latitude}';
+        '${state.modeName == 'car' ? dotenv.env['NearbyRoadCondition'] : dotenv.env['NearbyRoadConditionScooter'].toString()}?longitude=${position.longitude}&latitude=${position.latitude}';
     var jwt = ',${prefs.get('userToken')}';
 
     var response = await api().apiGet(url, jwt);

@@ -4,6 +4,7 @@
 <dict>
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
+		<string>com.googleusercontent.apps.1012827309373-nqn992svvc3ic5aip8phd0evrbni4v28</string>
 		<string>com.yourcompany.yourapp.backgroundTaskIdentifier</string>
 		<string>com.transistorsoft.fetch</string>
 	</array>
@@ -51,7 +52,7 @@
 	<key>NSLocationTemporaryUsageDescriptionDictionary</key>
 	<dict>
 		<key>YourPurposeKey</key>
-		<string>The example App requires temporary access to the device's precise location.</string>
+		<string>The example App requires temporary access to the device&apos;s precise location.</string>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to location when open.</string>

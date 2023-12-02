@@ -1,7 +1,6 @@
-// ignore_for_file: file_names, camel_case_types
+// ignore_for_file: file_names, camel_case_types, deprecated_member_use
 // ignore: unnecessary_import
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page_SearchPage.dart';
 import 'package:traffic_hero/imports.dart';
 
 // ignore: unused_import
@@ -131,9 +130,9 @@ class _Tourist_InformationState extends State<Tourist_Information>
           await getTourismInfo2(latitude, longitude);
         } catch (e) {
           stoptimer();
-          setState(() {
+       
             second = 1;
-          });
+          
         }
       }
     });

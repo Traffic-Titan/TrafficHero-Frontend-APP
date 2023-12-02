@@ -1,5 +1,5 @@
 //套件
-// ignore_for_file: undefined_hidden_name, file_names, depend_on_referenced_packages
+// ignore_for_file: undefined_hidden_name, file_names, depend_on_referenced_packages, duplicate_export
 export 'package:provider/provider.dart';
 export 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 export 'package:flutter_easyloading/flutter_easyloading.dart';
