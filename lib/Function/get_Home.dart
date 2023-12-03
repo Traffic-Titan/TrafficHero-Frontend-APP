@@ -151,11 +151,13 @@ class getHome {
     prefs = await SharedPreferences.getInstance();
     state = Provider.of<stateManager>(context, listen: false);
     print('附近站點公共自行車開始抓取');
+
     var jwt = ',${prefs.get('userToken')}';
     var position = await geolocator().updataPosition(context);
     var url =
         '${dotenv.env['StationNearbyBike']}?os=${prefs.get('system')}&latitude=${position.latitude}&longitude=${position.longitude}';
     var response;
+    print(url);
     try {
       response = await api().apiGet(url, jwt);
     } catch (e) {

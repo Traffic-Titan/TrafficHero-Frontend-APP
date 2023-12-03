@@ -55,7 +55,6 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
 
     for (var i = 0; i < content.length; i++) {
       var list = content[i];
-
       try {
         _markers.add(
           Marker(
@@ -70,7 +69,7 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
                     list['available_return_bikes'].toString(),
               ),
               onTap: () {
-                // launch();
+                launch(list['url']);
                 setState(() {});
               }),
         );
@@ -167,45 +166,52 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
             itemCount: content.length,
             itemBuilder: (context, index) {
               final list = content[index];
-              return InkWell(
-                child: ListTile(
-                  leading: Image.network(list['icon_url']),
-                  title: Container(
-                    child: Text(
-                      list['station_name_zh_tw'],
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: Color.fromRGBO(0, 32, 96, 1),
+                return InkWell(
+                  child: ListTile(
+                    leading: Image.network(list['icon_url']),
+                    title: Container(
+                      child: Text(
+                        list['station_name_zh_tw'],
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: Color.fromRGBO(0, 32, 96, 1),
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
-                  ),
-                  subtitle: Text(list['service_type']),
-                  trailing: Container(
-                    width: 100,
-                    height: 50,
-                    child: Row(
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        SizedBox(width: 10),
-                        Text(
-                          list['available_rent_bikes'].toString(),
-                          style: TextStyle(fontSize: 18, color: Colors.red),
-                        ),
-                        SizedBox(width: 30),
-                        Text(
-                          list['available_return_bikes'].toString(),
-                          style:
-                              TextStyle(fontSize: 18, color: Colors.blueAccent),
-                        ),
+                        Text(list['service_type']),
+                        Text('${list['distance']}m',style: TextStyle(color: Colors.indigo),),
                       ],
                     ),
+                    trailing: Container(
+                      width: 100,
+                      height: 50,
+                      child: Row(
+                        children: [
+                          SizedBox(width: 10),
+                          Text(
+                            list['available_rent_bikes'].toString(),
+                            style: TextStyle(fontSize: 18, color: Colors.red),
+                          ),
+                          SizedBox(width: 30),
+                          Text(
+                            list['available_return_bikes'].toString(),
+                            style:
+                                TextStyle(fontSize: 18, color: Colors.blueAccent),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                onTap: () {
-                  print('開始導航');
-                  launch(list['url']);
-                },
-              );
+                  onTap: () {
+                    setState(() {
+                      _mapController.showMarkerInfoWindow(MarkerId(list['station_name_zh_tw']));
+                    });
+                  },
+                );
             },
           ))
         ],
