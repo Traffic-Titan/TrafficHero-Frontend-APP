@@ -151,6 +151,8 @@ Page resource error:
       appBar: AppBar(
           backgroundColor: Colors.blue,
         elevation: 0,
+
+        
         actions: <Widget>[
           NavigationControls(webViewController: _controller),
           SampleMenu(webViewController: _controller),

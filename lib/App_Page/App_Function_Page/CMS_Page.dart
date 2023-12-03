@@ -15,7 +15,9 @@ class _CMSState extends State<CMS> {
   var screenWidth;
   var screenHeight;
   List<String> stringList = [];
-  var position;
+  var position1;
+  var SpeedEnforcement;
+  List<dynamic> ShowSpeedEnforcement = [];
 
   PageController controller = PageController();
   List<dynamic> cmsList_car = [
@@ -79,6 +81,8 @@ class _CMSState extends State<CMS> {
   var positionNow;
   String speed = '0';
   var fontSize;
+  var showCMS = true;
+  var showSpeed = false;
 
   @override
   void initState() {
@@ -104,10 +108,77 @@ class _CMSState extends State<CMS> {
         print(_speed);
       });
 
-      
+      //25.068250, 121.529460
+      double distance = Geolocator.distanceBetween(
+        position.latitude,
+        position.longitude,
+        position1.latitude,
+        position1.longitude,
+      );
+
+      double direction = Geolocator.bearingBetween(
+        position1.latitude,
+        position1.longitude,
+        position.latitude,
+        position.longitude,
+      );
+      print(distance);
+      print(direction);
+      String directionString = getDirectionString(direction);
+      print(directionString);
+
+      print((_speed > 100 ? 500 : 150));
+      if (distance < (_speed > 100 ? 500 : 150)) {
+        print(true);
+      } else {
+        print(distance);
+        getSpeedEnforcement();
+        // updateCMSList_Car();
+      }
+
+      for (var i = 0; i < SpeedEnforcement.length; i++) {
+        double SpeedEnforcementDistance = Geolocator.distanceBetween(
+          position.latitude,
+          position.longitude,
+          SpeedEnforcement[i]['location']['latitude'],
+          SpeedEnforcement[i]['location']['longitude'],
+        );
+
+        // if (SpeedEnforcement[i]['direction'] == directionString) {
+        if (SpeedEnforcementDistance < 650) {
+          setState(() {
+            ShowSpeedEnforcement = [];
+            showCMS = false;
+            showSpeed = true;
+          });
+          ShowSpeedEnforcement.add(SpeedEnforcement[i]);
+          print('前方有測速照相600公尺');
+        }else{
+          setState(() {
+            showCMS = true;
+            showSpeed = false;
+          });
+        }
+        // }
+      }
 
       _speedStreamController.add(speedInKmh.toDouble());
     });
+  }
+
+  String getDirectionString(double direction) {
+    if ((direction >= 337.5 && direction <= 360) ||
+        (direction >= 0 && direction < 22.5)) {
+      return '南向北';
+    } else if (direction >= 22.5 && direction < 112.5) {
+      return '西向東';
+    } else if (direction >= 112.5 && direction < 202.5) {
+      return '北向南';
+    } else if (direction >= 202.5 && direction < 292.5) {
+      return '東向西';
+    } else {
+      return '未知方向';
+    }
   }
 
 //當頁面創造時執行
@@ -165,6 +236,7 @@ class _CMSState extends State<CMS> {
     }
   }
 
+  //Save Position
   savePosition() async {
     print('儲存停車開始存取');
     EasyLoading.show(status: '儲存中');
@@ -234,12 +306,12 @@ class _CMSState extends State<CMS> {
   Future<void> updateCMSList_Car() async {
     // 讀取API上即時訊息推播-汽車模式
     print('開始抓取ＣＭＳ');
-    // var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var url = (state.modeName == 'car'
             ? dotenv.env['CMS_Main_Car'].toString()
             : dotenv.env['CMS_Main_Scooter'].toString().toString()) +
-        // '?longitude=${position.longitude}&latitude=${position.latitude}';
-        '?longitude=all&latitude=all';
+        '?longitude=${position.longitude}&latitude=${position.latitude}';
+    '?longitude=all&latitude=all';
     var jwt = ',${state.accountState}';
     var response;
     try {
@@ -270,18 +342,22 @@ class _CMSState extends State<CMS> {
     }
   }
 
+  //更新測速照相
   getSpeedEnforcement() async {
     print('開始抓取測速照相');
-    position = await geolocator().updataPosition(context);
+    position1 = await geolocator().updataPosition(context);
     var response,
         responseBody,
         url = dotenv.env['SpeedEnforcement'].toString() +
-            '?longitude=${position.longitude}&latitude=${position.latitude}&max_distance=5',
+            '?longitude=${position1.longitude}&latitude=${position1.latitude}&max_distance=1',
         jwt = ',${state.accountState}';
 
     try {
       response = await api().apiGet(url, jwt);
       responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      setState(() {
+        SpeedEnforcement = responseBody;
+      });
       print('測速照相抓取成功');
       print(responseBody);
     } catch (e) {
@@ -289,15 +365,16 @@ class _CMSState extends State<CMS> {
     }
   }
 
+  //UpDate CMS Sidbar
   void updateCMS_Sidbar_List_Car() async {
     // 讀取API上即時訊息推播-汽車模式
     print('開始抓取ＣＭＳ');
-    // var position = await geolocator().updataPosition();
+    var position = await geolocator().updataPosition(context);
     var url = (state.modeName == 'car'
             ? dotenv.env['CMS_Sidebar_Car'].toString()
             : dotenv.env['CMS_Sidebar_Scooter'].toString().toString()) +
-        // '?longitude=${position.longitude}&latitude=${position.latitude}';
-        '?longitude=all&latitude=all';
+        '?longitude=${position.longitude}&latitude=${position.latitude}';
+    '?longitude=all&latitude=all';
     var jwt = ',${state.accountState}';
     var response;
     try {
@@ -387,65 +464,119 @@ class _CMSState extends State<CMS> {
   Widget CMS_Content() {
     return Container(
       width: screenWidth - 150,
-      height: screenHeight - 150,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-            child: PageView.builder(
-              controller: controller,
-              itemCount: cmsList_car.length,
-              itemBuilder: (context, index) {
-                final pageList = cmsList_car[index];
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.network(
-                      pageList['icon'],
-                      width: 130,
-                      height: 130,
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: pageList['content'].length,
-                        itemBuilder: (context, index) {
-                          var list1 = pageList['content'][index];
-                          return Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: List.generate(
-                                    list1['text'].length,
-                                    (index) {
-                                      var list2text = list1['text'][index];
-                                      var list2color = list1['color'][index];
-                                      return Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          list2text,
-                                          style: TextStyle(
-                                            color: changeColorCode(list2color),
-                                            fontSize: 30,
-                                          ),
-                                        ),
-                                      );
-                                    },
+      height: 400,
+      child: PageView.builder(
+        controller: controller,
+        itemCount: cmsList_car.length,
+        itemBuilder: (context, index) {
+          final pageList = cmsList_car[index];
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.network(
+                pageList['icon'],
+                width: 130,
+                height: 130,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true, // 添加這一行
+                  itemCount: pageList['content'].length,
+                  itemBuilder: (context, index) {
+                    var list1 = pageList['content'][index];
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              list1['text'].length,
+                              (index) {
+                                var list2text = list1['text'][index];
+                                var list2color = list1['color'][index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    list2text,
+                                    style: TextStyle(
+                                      color: changeColorCode(list2color),
+                                      fontSize: 30,
+                                    ),
                                   ),
-                                )
-                              ],
+                                );
+                              },
                             ),
-                          );
-                        },
+                          )
+                        ],
                       ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-        ],
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget SpeedEnforcement_Content() {
+    return Container(
+      width: screenWidth - 150,
+      height: 300,
+      child: PageView.builder(
+        controller: controller,
+        itemCount: ShowSpeedEnforcement.length,
+        itemBuilder: (context, index) {
+          final pageList = ShowSpeedEnforcement[index];
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.network(
+                pageList['icon'],
+                width: 130,
+                height: 130,
+              ),
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true, // 添加這一行
+                  itemCount: pageList['content'].length,
+                  itemBuilder: (context, index) {
+                    var list1 = pageList['content'][index];
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: List.generate(
+                              list1['text'].length,
+                              (index) {
+                                var list2text = list1['text'][index];
+                                var list2color = list1['color'][index];
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    list2text,
+                                    style: TextStyle(
+                                      color: changeColorCode(list2color),
+                                      fontSize: 30,
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ],
+          );
+        },
       ),
     );
   }
@@ -474,9 +605,9 @@ class _CMSState extends State<CMS> {
                         height: 130,
                       ),
                     ),
-                    Container(
-                      width: screenHeight,
-                      child: Expanded(
+                    Expanded(
+                      child: Container(
+                        width: screenHeight, // 這裡的寬度可能需要調整，根據你的需求
                         child: ListView.builder(
                           itemCount: pageList['content'].length,
                           itemBuilder: (context, index) {
@@ -543,8 +674,7 @@ class _CMSState extends State<CMS> {
         leading: const Text(''),
       ),
       backgroundColor: Colors.black,
-      body: Center(
-          child: Stack(
+      body: Stack(
         alignment: Alignment.center,
         fit: StackFit.expand,
         children: [
@@ -559,29 +689,34 @@ class _CMSState extends State<CMS> {
                   style: const TextStyle(fontSize: 80, color: Colors.yellow),
                   textAlign: TextAlign.right,
                 ),
-                const Text('km/h',
-                    style: TextStyle(fontSize: 30, color: Colors.yellow),
-                    textAlign: TextAlign.right)
+                const Text(
+                  'km/h',
+                  style: TextStyle(fontSize: 30, color: Colors.yellow),
+                  textAlign: TextAlign.right,
+                ),
               ],
             ),
           ),
           Align(
-              alignment: Alignment.topCenter,
+            alignment: Alignment.center,
+            child: Container(
+              width: screenWidth - 150,
+              height: screenHeight - 100,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
-                crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
-                    width: screenWidth - 150,
-                    height: screenHeight - 600,
-                    child: Column(
-                      children: [
-                        Expanded(child: CMS_Content()),
-                      ],
-                    ),
+                  Visibility(
+                    visible: showSpeed,
+                    child: SpeedEnforcement_Content(),
+                  ),
+                  Visibility(
+                    visible: showCMS,
+                    child: CMS_Content(),
                   )
                 ],
-              )),
+              ),
+            ),
+          ),
           Align(
             alignment: Alignment.centerRight,
             child: Container(
@@ -589,30 +724,236 @@ class _CMSState extends State<CMS> {
               height: screenHeight,
               width: 50,
               child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      height: 300,
-                      child: Expanded(
-                          child: ListView.builder(
-                              itemCount: stringList.length,
-                              itemBuilder: (context, index) {
-                                final list = stringList[index];
-                                return Text(
-                                  list,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 40),
-                                );
-                              })),
-                    )
-                  ],
+                child: Container(
+                  height: 300,
+                  child: ListView.builder(
+                    itemCount: stringList.length,
+                    itemBuilder: (context, index) {
+                      final list = stringList[index];
+                      return Text(
+                        list,
+                        style: TextStyle(color: Colors.white, fontSize: 40),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
           ),
           Align(
+            alignment: Alignment.bottomLeft,
+            child: Container(
+              width: 300,
+              height: 100,
+              child: GridView(
+                padding: EdgeInsets.zero,
+                physics: NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 4, //横轴三个子widget
+                  childAspectRatio: 0.01,
+                ),
+                children: List.generate(
+                  Tool.fastLocationCarCms.length,
+                  (index) {
+                    final tool = Tool.fastLocationCarCms[index];
+                    return SizedBox(
+                      height: 70,
+                      child: InkWell(
+                        child: Column(
+                          children: [
+                            Container(
+                              width: 60,
+                              height: 60,
+                              margin: const EdgeInsets.all(3.0),
+                              child: Card(
+                                color: Colors.blue,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                ),
+                                child: Image.asset(
+                                  tool['img'].toString(),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        onTap: () async {
+                          EasyLoading.show(status: 'loading...');
+                          print(tool['url']);
+                          findPlacesQuickly(tool['url']);
+                        },
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+      floatingActionButton: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Visibility(
+                  visible: showIcon,
+                  child: Column(
+                    children: [
+                      FloatingActionButton(
+                        heroTag: "btn1",
+                        child: const Icon(
+                          CupertinoIcons.placemark_fill,
+                          size: 40,
+                        ),
+                        backgroundColor: Colors.blueAccent,
+                        onPressed: () {
+                          if (Carpostionstatus == false) {
+                            savePosition();
+                          } else {
+                            getPosition();
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      FloatingActionButton(
+                        heroTag: "btn2",
+                        child: phoneIcon,
+                        backgroundColor: Colors.blueAccent,
+                        onPressed: () {
+                          SystemChrome.setPreferredOrientations([
+                            DeviceOrientation.landscapeLeft,
+                            DeviceOrientation.landscapeRight,
+                          ]);
+                          setState(() {
+                            directionState = false;
+                          });
+                        },
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      FloatingActionButton(
+                        heroTag: "btn3",
+                        child: const Icon(
+                          Icons.output_outlined,
+                          size: 40,
+                        ),
+                        backgroundColor: Colors.blueAccent,
+                        onPressed: () async {
+                          _stopTrackingPosition();
+                          _speedStreamController.close();
+
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AllPage(),
+                            ),
+                            (router) => false,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                FloatingActionButton(
+                  heroTag: "btn32",
+                  child: const Icon(
+                    Icons.menu,
+                    size: 40,
+                  ),
+                  backgroundColor: Colors.blueAccent,
+                  onPressed: () {
+                    setState(() {
+                      showIcon = !showIcon;
+                    });
+                  },
+                ),
+                SizedBox(
+                  width: 150,
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget horizontalPage(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: Stack(
+          alignment: Alignment.center,
+          fit: StackFit.expand,
+          children: [
+            Align(
+              alignment: Alignment.topCenter,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    _speed.toString(),
+                    style: const TextStyle(fontSize: 80, color: Colors.yellow),
+                    textAlign: TextAlign.right,
+                  ),
+                  const Text(
+                    'km/h',
+                    style: TextStyle(fontSize: 30, color: Colors.yellow),
+                    textAlign: TextAlign.right,
+                  ),
+                ],
+              ),
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Container(
+                width: screenWidth - 150,
+                height: 200,
+                child: CMS_Content2(),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerRight,
+              child: Container(
+                color: Colors.green,
+                height: screenHeight,
+                width: 100,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      '路',
+                      style: TextStyle(color: Colors.white, fontSize: 50),
+                    ),
+                    Text(
+                      '肩',
+                      style: TextStyle(color: Colors.white, fontSize: 50),
+                    ),
+                    Text(
+                      '開',
+                      style: TextStyle(color: Colors.white, fontSize: 50),
+                    ),
+                    Text(
+                      '放',
+                      style: TextStyle(color: Colors.white, fontSize: 50),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Align(
               alignment: Alignment.bottomLeft,
               child: Container(
                 width: 300,
@@ -621,8 +962,9 @@ class _CMSState extends State<CMS> {
                   padding: EdgeInsets.zero,
                   physics: NeverScrollableScrollPhysics(),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4, //横轴三个子widget
-                      childAspectRatio: 0.01),
+                    crossAxisCount: 4, //横轴三个子widget
+                    childAspectRatio: 0.01,
+                  ),
                   children: List.generate(
                     Tool.fastLocationCarCms.length,
                     (index) {
@@ -633,23 +975,23 @@ class _CMSState extends State<CMS> {
                           child: Column(
                             children: [
                               Container(
-                                  width: 60,
-                                  height: 60,
-                                  margin: const EdgeInsets.all(3.0),
-                                  child: Card(
-                                    color: Colors.blue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                    ),
-                                    child: Image.asset(
-                                      tool['img'].toString(),
-                                    ),
-                                  )),
+                                width: 60,
+                                height: 60,
+                                margin: const EdgeInsets.all(3.0),
+                                child: Card(
+                                  color: Colors.blue,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50.0),
+                                  ),
+                                  child: Image.asset(
+                                    tool['img'].toString(),
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                           onTap: () async {
                             EasyLoading.show(status: 'loading...');
-                            print(tool['url']);
                             findPlacesQuickly(tool['url']);
                           },
                         ),
@@ -657,311 +999,87 @@ class _CMSState extends State<CMS> {
                     },
                   ),
                 ),
-              ))
-        ],
-      )),
-      floatingActionButton: Container(
-          child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            Visibility(
-                visible: showIcon,
-                child: Column(
-                  children: [
-                    // FloatingActionButton(
-                    //   heroTag: "btn13",
-                    //   child: const Icon(
-                    //     Icons.picture_in_picture,
-                    //     size: 40,
-                    //   ),
-                    //   backgroundColor: Colors.blueAccent,
-                    //   onPressed: () {
-                    //     Navigator.push(context,
-                    //         MaterialPageRoute(builder: (context) => CMSPIP()));
-                    //   },
-                    // ),
-                    // const SizedBox(
-                    //   height: 10,
-                    // ),
-                    FloatingActionButton(
-                      heroTag: "btn1",
-                      child: const Icon(
-                        CupertinoIcons.placemark_fill,
-                        size: 40,
-                      ),
-                      backgroundColor: Colors.blueAccent,
-                      onPressed: () {
-                        if (Carpostionstatus == false) {
-                          savePosition();
-                        } else {
-                          getPosition();
-                        }
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    FloatingActionButton(
-                      heroTag: "btn2",
-                      child: phoneIcon,
-                      backgroundColor: Colors.blueAccent,
-                      onPressed: () {
-                        SystemChrome.setPreferredOrientations([
-                          DeviceOrientation.landscapeLeft,
-                          DeviceOrientation.landscapeRight,
-                        ]);
-                        setState(() {
-                          directionState = false;
-                        });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    FloatingActionButton(
-                      heroTag: "btn3",
-                      child: const Icon(
-                        Icons.output_outlined,
-                        size: 40,
-                      ),
-                      backgroundColor: Colors.blueAccent,
-                      onPressed: () async {
-                        //顯示導航及最頂端列
-                        _stopTrackingPosition(); // 停止追踪位置更新
-                        _speedStreamController.close();
-
-                        Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const AllPage()),
-                            (router) => false);
-                      },
-                    ),
-                  ],
-                )),
-            const SizedBox(
-              height: 10,
+              ),
             ),
+          ],
+        ),
+      ),
+      floatingActionButton: Container(
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
             FloatingActionButton(
-              heroTag: "btn32",
+              heroTag: "btn1",
               child: const Icon(
-                Icons.menu,
+                CupertinoIcons.placemark_fill,
                 size: 40,
               ),
               backgroundColor: Colors.blueAccent,
               onPressed: () {
-                //顯示導航及最頂端列
+                if (Carpostionstatus == false) {
+                  savePosition();
+                } else {
+                  getPosition();
+                }
+              },
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            FloatingActionButton(
+              heroTag: "btn2",
+              child: phoneIcon,
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                SystemChrome.setPreferredOrientations([
+                  DeviceOrientation.portraitUp,
+                  DeviceOrientation.portraitDown,
+                ]);
                 setState(() {
-                  showIcon = showIcon == true ? false : true;
+                  phoneIcon = const Icon(
+                    CupertinoIcons.device_phone_landscape,
+                    size: 40,
+                  );
+                  directionState = true;
                 });
               },
             ),
-            SizedBox(
-              width: 150,
+            const SizedBox(
+              width: 10,
             ),
-          ]),
-        ],
-      )),
-    );
-  }
-
-  Widget horizontalPage(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.black,
-      body: Center(
-          child: Stack(
-        alignment: Alignment.center,
-        fit: StackFit.expand,
-        children: [
-          Align(
-            alignment: Alignment.topCenter,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  _speed.toString(),
-                  style: const TextStyle(fontSize: 80, color: Colors.yellow),
-                  textAlign: TextAlign.right,
-                ),
-                const Text('km/h',
-                    style: TextStyle(fontSize: 30, color: Colors.yellow),
-                    textAlign: TextAlign.right)
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
-              crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
-              children: [
-                Container(
-                  width: screenWidth - 150,
-                  height: 200,
-                  child: Column(
-                    children: [
-                      Expanded(child: CMS_Content2()),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              color: Colors.green,
-              height: screenHeight,
-              width: 100,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    '路',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
-                  Text(
-                    '肩',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
-                  Text(
-                    '開',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
-                  Text(
-                    '放',
-                    style: TextStyle(color: Colors.white, fontSize: 50),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Align(
-              alignment: Alignment.bottomLeft,
-              child: Container(
-                width: 300,
-                height: 100,
-                child: GridView(
-                  padding: EdgeInsets.zero,
-                  physics: NeverScrollableScrollPhysics(),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 4, //横轴三个子widget
-                      childAspectRatio: 0.01),
-                  children: List.generate(
-                    Tool.fastLocationCarCms.length,
-                    (index) {
-                      final tool = Tool.fastLocationCar[index];
-                      return SizedBox(
-                        height: 70,
-                        child: InkWell(
-                          child: Column(
-                            children: [
-                              Container(
-                                  width: 60,
-                                  height: 60,
-                                  margin: const EdgeInsets.all(3.0),
-                                  child: Card(
-                                    color: Colors.blue,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(50.0),
-                                    ),
-                                    child: Image.asset(
-                                      tool['img'].toString(),
-                                    ),
-                                  )),
-                            ],
-                          ),
-                          onTap: () async {
-                            EasyLoading.show(status: 'loading...');
-
-                            findPlacesQuickly(tool['url']);
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ))
-        ],
-      )),
-      floatingActionButton: Container(
-          child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
-        FloatingActionButton(
-          heroTag: "btn1",
-          child: const Icon(
-            CupertinoIcons.placemark_fill,
-            size: 40,
-          ),
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-            if (Carpostionstatus == false) {
-              savePosition();
-            } else {
-              getPosition();
-            }
-          },
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        FloatingActionButton(
-          heroTag: "btn2",
-          child: phoneIcon,
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-            SystemChrome.setPreferredOrientations([
-              DeviceOrientation.portraitUp,
-              DeviceOrientation.portraitDown,
-            ]);
-            setState(() {
-              // changeWidget();
-              phoneIcon = const Icon(
-                CupertinoIcons.device_phone_landscape,
+            FloatingActionButton(
+              heroTag: "btn3",
+              child: const Icon(
+                Icons.output_outlined,
                 size: 40,
-              );
-              directionState = true;
-            });
-
-            // changeWidget(context);
-          },
+              ),
+              backgroundColor: Colors.blueAccent,
+              onPressed: () {
+                if (!directionState) {
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                    DeviceOrientation.portraitDown,
+                  ]);
+                } else {
+                  SystemChrome.setPreferredOrientations([
+                    DeviceOrientation.portraitUp,
+                    DeviceOrientation.portraitDown,
+                    DeviceOrientation.landscapeLeft,
+                    DeviceOrientation.landscapeRight,
+                  ]);
+                }
+                SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+                _stopTrackingPosition();
+                _speedStreamController.close();
+                Navigator.pop(context);
+              },
+            ),
+            const SizedBox(
+              width: 40,
+            ),
+          ],
         ),
-        const SizedBox(
-          width: 10,
-        ),
-        FloatingActionButton(
-          heroTag: "btn3",
-          child: const Icon(
-            Icons.output_outlined,
-            size: 40,
-          ),
-          backgroundColor: Colors.blueAccent,
-          onPressed: () {
-            if (!directionState) {
-              //設置垂直
-              SystemChrome.setPreferredOrientations([
-                DeviceOrientation.portraitUp,
-                DeviceOrientation.portraitDown,
-              ]);
-            } else {
-              SystemChrome.setPreferredOrientations([
-                DeviceOrientation.portraitUp,
-                DeviceOrientation.portraitDown,
-              ]);
-            }
-            //顯示導航及最頂端列
-            SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
-            _stopTrackingPosition(); // 停止追踪位置更新
-            _speedStreamController.close();
-            Navigator.pop(context);
-          },
-        ),
-        const SizedBox(
-          width: 40,
-        ),
-      ])),
+      ),
     );
   }
 }
