@@ -1,7 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors, unnecessary_new, avoid_print, use_build_context_synchronously
 
 
-import 'package:traffic_hero/firebase_options.dart';
+// import 'package:traffic_hero/firebase_options.dart';
 
 // import 'package:traffic_hero/firebase_options.dart';
 
@@ -15,9 +15,9 @@ void main() async {
   // await Firebase.initializeApp();
   try{
 
- await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+ // await Firebase.initializeApp(
+ //    options: DefaultFirebaseOptions.currentPlatform,
+ //  );
 
   await Firebase_message().initNotifications();
 
