@@ -15,6 +15,7 @@ class _CMSState extends State<CMS> {
   var screenWidth;
   var screenHeight;
   List<String> stringList = [];
+  var position;
 
   PageController controller = PageController();
   List<dynamic> cmsList_car = [
@@ -65,6 +66,7 @@ class _CMSState extends State<CMS> {
     _stopTrackingPosition(); // 停止追踪位置更新
     _speedStreamController.close();
     controller.dispose();
+    print(controller.isBlank);
     print(timer2?.isActive);
   }
 
@@ -89,8 +91,8 @@ class _CMSState extends State<CMS> {
   Future<void> _getSpeed() async {
     print('開始抓取速率');
     final LocationSettings locationSettings = LocationSettings(
-      accuracy: LocationAccuracy.high,
       distanceFilter: 0,
+      accuracy: LocationAccuracy.bestForNavigation,
     );
     Geolocator.getPositionStream(locationSettings: locationSettings)
         .listen((Position position) {
@@ -101,6 +103,8 @@ class _CMSState extends State<CMS> {
         _speed = speedInKmh;
         print(_speed);
       });
+
+      
 
       _speedStreamController.add(speedInKmh.toDouble());
     });
@@ -117,6 +121,7 @@ class _CMSState extends State<CMS> {
     fontSize = screenWidth * 0.05;
     updateCMSList_Car();
     updateCMS_Sidbar_List_Car();
+    getSpeedEnforcement();
     prefs = await SharedPreferences.getInstance();
   }
 
@@ -226,7 +231,7 @@ class _CMSState extends State<CMS> {
   }
 
   // 更新CMS_car資訊
-  void updateCMSList_Car() async {
+  Future<void> updateCMSList_Car() async {
     // 讀取API上即時訊息推播-汽車模式
     print('開始抓取ＣＭＳ');
     // var position = await geolocator().updataPosition();
@@ -262,6 +267,25 @@ class _CMSState extends State<CMS> {
       print(changeColorCode(cmsList_car[0]['content'][0]['color'][0]));
     } else {
       print('CMS抓取失敗');
+    }
+  }
+
+  getSpeedEnforcement() async {
+    print('開始抓取測速照相');
+    position = await geolocator().updataPosition(context);
+    var response,
+        responseBody,
+        url = dotenv.env['SpeedEnforcement'].toString() +
+            '?longitude=${position.longitude}&latitude=${position.latitude}&max_distance=5',
+        jwt = ',${state.accountState}';
+
+    try {
+      response = await api().apiGet(url, jwt);
+      responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      print('測速照相抓取成功');
+      print(responseBody);
+    } catch (e) {
+      print(e);
     }
   }
 
@@ -302,7 +326,6 @@ class _CMSState extends State<CMS> {
     int index = 0;
     // 每5秒向後端要求一次CMS資料
     timer2 = Timer.periodic(const Duration(seconds: 10), (timer) {
-      print(timer);
       if (index < cmsList_car.length) {
         try {
           FlutterTts().speak(cmsList_car[index]['voice']);
@@ -543,23 +566,22 @@ class _CMSState extends State<CMS> {
             ),
           ),
           Align(
-            alignment: Alignment.topCenter,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
-              crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
-              children: [
-                Container(
-                  width: screenWidth - 150,
-                  height: screenHeight - 600,
-                  child: Column(
-                    children: [
-                      Expanded(child: CMS_Content()),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
+              alignment: Alignment.topCenter,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center, // 垂直方向置中
+                crossAxisAlignment: CrossAxisAlignment.center, // 水平方向置中
+                children: [
+                  Container(
+                    width: screenWidth - 150,
+                    height: screenHeight - 600,
+                    child: Column(
+                      children: [
+                        Expanded(child: CMS_Content()),
+                      ],
+                    ),
+                  )
+                ],
+              )),
           Align(
             alignment: Alignment.centerRight,
             child: Container(
