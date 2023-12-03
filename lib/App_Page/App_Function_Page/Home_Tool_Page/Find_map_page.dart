@@ -416,38 +416,45 @@ class _mapPageState extends State<mapPage> {
                 mapListConvenientStore.length,
                 (index) {
                   final list = mapListConvenientStore[index];
-                  return Column(
-                    children: [
-                          ListTile(
-                            leading: Image.network(list['icon_url'],width:screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,height: screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,),
-                            title:Text(list['company_name'],overflow: TextOverflow.ellipsis),
-                            subtitle: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(list['branch_name'],overflow: TextOverflow.ellipsis),
-                                Text(list['branch_address'],overflow: TextOverflow.ellipsis),
-                              ],
-                            ),
-                            trailing: InkWell(
-                              child: Container(
+                  return InkWell(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Image.network(list['icon_url'],width:screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,height: screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,),
+                          title:Text(list['company_name'],overflow: TextOverflow.ellipsis),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(list['branch_name'],overflow: TextOverflow.ellipsis),
+                              Text(list['branch_address'],overflow: TextOverflow.ellipsis),
+                            ],
+                          ),
+                          trailing: InkWell(
+                            child: Container(
                                 child: Column(
                                   children: [
                                     Text('${list['distance']}m',style: TextStyle(fontSize: 20,color: Colors.indigo),),
                                     Icon(Icons.navigation,color: Colors.indigo,size: 20,),
                                   ],
                                 )
-                              ),
-                              onTap: () {
-                                launch(list['url']);
-                              },
                             ),
+                            onTap: () {
+                              launch(list['url']);
+                            },
                           ),
-                      Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                          indent: 10,
-                          endIndent: 10)
-                    ],
+                        ),
+                        Divider(
+                            thickness: 1,
+                            color: Colors.grey,
+                            indent: 10,
+                            endIndent: 10)
+                      ],
+                    ),
+                    onTap: (){
+                      setState(() {
+                        mapController.showMarkerInfoWindow(MarkerId(list['company_name']));
+                      });
+                    },
                   );
                 },
               ),
