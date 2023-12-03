@@ -190,14 +190,7 @@ Map<String, String> fastLocation_convientStore = {
   'url': '後端API'
 };
 
-//道路資訊 可篩選之路況list
-List<String> roadInfoFilterList = [
-  '停車場資訊',
-  '交通管制',
-  '交通事故',
-  '道路施工',
-  '道路壅塞'
-];
+
 
 //高雄捷運
 List<String> MRTList_kaohsiung = ["小港","高雄國際機場","草衙","前鎮高中", "凱旋", "獅甲", "三多商圈","中央公園", "美麗島",

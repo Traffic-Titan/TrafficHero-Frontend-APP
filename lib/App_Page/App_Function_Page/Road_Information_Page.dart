@@ -1,6 +1,8 @@
 // ignore_for_file: camel_case_types, library_private_types_in_public_api, file_names, unused_import, override_on_non_overriding_member, prefer_typing_uninitialized_variables, prefer_final_fields
 import 'package:flutter_waya/components/check_box.dart';
 import 'package:flutter_waya/extension/object_extension.dart';
+import 'package:flutter_waya/flutter_waya.dart';
+import 'package:intl/intl.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Road_Information/Road_Information_ParkingLot.dart';
 import 'package:traffic_hero/imports.dart';
 import 'package:geocoding/geocoding.dart';
@@ -14,6 +16,17 @@ class Road_Information extends StatefulWidget {
   @override
   _Road_InformationState createState() => _Road_InformationState();
 }
+//欲篩選的路況
+List<String> _filterRoadInfoItems =[];
+//道路資訊 可篩選之路況list
+List<Map<String, dynamic>> roadInfoFilterList = [
+  {'title': '停車場資訊', 'isChecked': false},
+  {'title': '交通管制', 'isChecked': false},
+  {'title': '交通事故', 'isChecked': false},
+  {'title': '道路施工', 'isChecked': false},
+  {'title': '道路壅塞', 'isChecked': false},
+  // Add more items as needed
+];
 
 class _Road_InformationState extends State<Road_Information> {
   late stateManager state;
@@ -32,10 +45,22 @@ class _Road_InformationState extends State<Road_Information> {
   late TextEditingController endPlaceText = new TextEditingController();
   late GoogleMapController _mapController;
   final Set<Marker> _markers = Set<Marker>();
-  //欲篩選的路況
-  final List<String> _filterRoadInfoItems =[];
   late BitmapDescriptor ParkingInfoImg,TrafficControlImg,RoadAccidentImg,RoadConstructionImg,TrafficJamImg;
   bool checkedBox = false;
+  var _showRoadInfoDetail;
+  List<Map<String, dynamic>> roadInfoDetail = [
+    {
+      "happendate": "日期",
+      "roadtype": "類型",
+      "happentime": "00:00:00.000",
+      "areaNm": "位置",
+      "Latitude": "經度",
+      "Longitude": "緯度",
+      "comment": "事件內容",
+      "region": "區域",
+      "direction": "方向"
+    }
+  ];
 
   @override
   void didChangeDependencies() async {
@@ -61,7 +86,6 @@ class _Road_InformationState extends State<Road_Information> {
     ParkingInfoImg = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(size: Size(10, 10),),
       'assets/roadInfo/parkingInfoImg.png',
-      
     );
     TrafficControlImg = await BitmapDescriptor.fromAssetImage(
       ImageConfiguration(size: Size(10, 10)),
@@ -203,6 +227,7 @@ class _Road_InformationState extends State<Road_Information> {
     print('list:${_filterRoadInfoItems.toString()}');
     // 目前位置標記
     for(String s in _filterRoadInfoItems){
+      roadInfoDetail.removeAt(0);
       print(s);
       switch(s){
         case '停車場資訊':
@@ -220,6 +245,7 @@ class _Road_InformationState extends State<Road_Information> {
                 );
             setState(() {
               _markers.add(marker);
+              addRoadInfoDetailList(parkingInfoList);
             });
           }
           print('add停車場資訊finish');
@@ -228,18 +254,21 @@ class _Road_InformationState extends State<Road_Information> {
           print('add交通管制');
           await searchTrafficControl();
           for(i =0;i< trafficControlList.length;i++){
-            marker=Marker(
-              markerId: MarkerId(trafficControlList[i]['areaNm']),
-              position: LatLng(double.parse(trafficControlList[i]['Latitude']),double.parse(trafficControlList[i]['Longitude'])),
-              icon: TrafficControlImg,
-              infoWindow: InfoWindow(
-                  title: trafficControlList[i]['areaNm'],
-                  snippet: trafficControlList[i]['comment']
-              ),
-            );
-            setState(() {
-              _markers.add(marker);
-            });
+              marker=Marker(
+                markerId: MarkerId(trafficControlList[i]['areaNm'].toString()),
+                position: LatLng(double.parse(trafficControlList[i]['Latitude']),double.parse(trafficControlList[i]['Longitude'])),
+                icon: TrafficControlImg,
+                infoWindow: InfoWindow(
+                    title: trafficControlList[i]['areaNm'],
+                    snippet: trafficControlList[i]['comment'].toString()
+                ),
+              );
+              setState(() {
+                _markers.add(marker);
+                if(i<30){
+                  addRoadInfoDetailList(trafficControlList[i]);
+                }
+              });
           }
           print('add交通管制finish');
           break;
@@ -258,6 +287,7 @@ class _Road_InformationState extends State<Road_Information> {
             );
             setState(() {
               _markers.add(marker);
+              addRoadInfoDetailList(roadAccidentList[i]);
             });
           }
           print('add交通事故finish');
@@ -277,6 +307,7 @@ class _Road_InformationState extends State<Road_Information> {
             );
             setState(() {
               _markers.add(marker);
+              addRoadInfoDetailList(roadConstructionList[i]);
             });
           }
           print('add道路施工finish');
@@ -297,6 +328,7 @@ class _Road_InformationState extends State<Road_Information> {
             );
             setState(() {
               _markers.add(marker);
+              addRoadInfoDetailList(trafficJamList[i]);
             });
           }
           print('add道路壅塞finish');
@@ -427,20 +459,13 @@ class _Road_InformationState extends State<Road_Information> {
       ],
     );
   }
-     void _filterRoadInfoItemsChange(item,isSelected){
-      if(isSelected){
-        setState(() {
-          Future.delayed(Duration(seconds: 1),(){
-            _filterRoadInfoItems.add(item);
-          });
-        });
-      }else{
-        setState(() {
-          Future.delayed(Duration(seconds: 1),(){
-            _filterRoadInfoItems.remove(item);
-          });
-        });
-      }
+     void _filterRoadInfoItemsChange(index,isSelected){
+         roadInfoFilterList[index]['isChecked'] = isSelected;
+         if(isSelected){
+           _filterRoadInfoItems.add(roadInfoFilterList[index]['title']);
+         }else{
+           _filterRoadInfoItems.remove(roadInfoFilterList[index]['title']);
+         }
   }
   //篩選路況
   Future<void> roadInfoFilter(BuildContext context) async {
@@ -451,18 +476,24 @@ class _Road_InformationState extends State<Road_Information> {
             scrollable: true,
             title: Text('選擇欲顯示路況'),
             content:SingleChildScrollView(
-              child: ListBody(
-                  children: Tool.roadInfoFilterList
-                  .map((item)=> CheckboxListTile(
-                    value:_filterRoadInfoItems.contains(item),
-                    title:Text(item),
-                    controlAffinity: ListTileControlAffinity.leading,
-                    onChanged:(isChecked) {
-                      _filterRoadInfoItemsChange(item,isChecked!);
-                    },
-                  ))
-                  .toList(),
-              ),
+              child: Column(
+                children: [
+                  // Use a Column instead of ListView.builder
+                  for (int index = 0; index < roadInfoFilterList.length; index++)
+                    CheckboxListTile(
+                      title: Text(roadInfoFilterList[index]['title']),
+                      value: roadInfoFilterList[index]['isChecked'],
+                      controlAffinity: ListTileControlAffinity.leading,
+                      onChanged: (value) {
+                        // Use a function to handle onChanged for better readability
+                        setState(() {
+                          _filterRoadInfoItemsChange(index, value);
+                        });
+                      },
+                    ),
+                ],
+              )
+
             ),
             actions: <Widget>[
               TextButton(
@@ -486,15 +517,138 @@ class _Road_InformationState extends State<Road_Information> {
       },
     );
   }
+  //新增List要顯示的路況
+  void addRoadInfoDetailList(list){
+      roadInfoDetail.add(list);
+  }
+  //道路資訊詳細資訊
+  Future<void> showRoadInfoDetail() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          // icon: Image.network(_showRoadInfoDetail['roadtype'],height: 70,),
+          title: Text('${_showRoadInfoDetail['areaNm']}'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('日期：${_showRoadInfoDetail['happendate']}',style: TextStyle(fontSize: 13),),
+                Text('時間：${_showRoadInfoDetail['happentime'].toString().substring(0,5)}',style: TextStyle(fontSize: 13)),
+                SizedBox(height: 5,),
+                Text('${_showRoadInfoDetail['comment']}',style: TextStyle(fontSize: 13)),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('返回'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+  //道路資訊list
+  Widget roadInfoListView(ScrollController scrollController) {
+    return SizedBox(
+      width: screenWidth * 0.9,
+      child: ListView(
+        controller: scrollController,
+        padding: EdgeInsets.zero,
+        children: List.generate(
+          roadInfoDetail.length,
+              (index) {
+            final list = roadInfoDetail[index];
+            return InkWell(
+              child: Column(
+                children: [
+                  ListTile(
+                    // leading: Image.asset(list['roadtype']),
+                      title: Text(list['areaNm']),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('日期：'+list['happendate']),
+                          Text('時間：'+list['happentime'].toString().substring(0,5)),
+                          Text(list['comment'].toString(),overflow: TextOverflow.ellipsis,) ,
+                        ],
+                      )
+                  ),
+                  Divider(
+                    thickness: 1,
+                    color: Colors.grey,
+                    indent: 10,
+                    endIndent: 10,
+                  ),
+                ],
+              ),
+              onTap: (){
+                setState(() {
+                  _showRoadInfoDetail = list;
+                });
+                showRoadInfoDetail();
+              },
+            );
+          },
+        ),
+      ),
+    );
 
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBar(),
-      body: mapView(),
+      body: Stack(
+        children: [
+          mapView(),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: DraggableScrollableSheet(
+              builder: (BuildContext context,
+                  ScrollController scrollController) {
+                return Container(
+                  width: screenWidth > 600
+                      ? screenWidth / 4 + 100
+                      : screenWidth,
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(222, 235, 247, 1),
+                  ),
+                  child: Column(
+                    children: [
+                      SizedBox(height: 10),
+                      SizedBox(
+                        width: 30,
+                        height: 5,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(50)),
+                        ),
+                      ),
+                      SizedBox(height: 14),
+                      Expanded(
+                        child: roadInfoListView(scrollController),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              expand: false,
+
+              initialChildSize: 0.3, // 初始高度比例
+              minChildSize: 0.1, // 最小高度比例
+              maxChildSize: 1, // 最大高度比例
+            ),
+          )
+        ],
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
       floatingActionButton: floatingBtn(),
-
     );
   }
 
