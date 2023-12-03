@@ -637,6 +637,7 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                       onPressed: () {
                         DatePicker.showTime12hPicker(context, showTitleActions: true,
                             onConfirm: (time) async {
+                          print(time);
                               print(DateFormat('HH:mm').format(time));
                               setState(() {
                                 dateTime_time = DateFormat('HH:mm').format(time).toString();
