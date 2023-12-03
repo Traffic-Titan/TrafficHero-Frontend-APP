@@ -171,13 +171,12 @@ class _mapPageState extends State<mapPage> {
     ));
 
     // 添加標記
-
     if (widget.url == '/APP/Home/QuickSearch/ConvenientStore') {
       print('1');
       print(content.length);
       for (int i = 0; i < content.length; i++) {
+        print(content[i]);
         var list = content[i];
-
         try {
           _markers.add(
             Marker(
@@ -216,11 +215,12 @@ class _mapPageState extends State<mapPage> {
                     list['distance'].toInt().toString() +
                     '公尺',
                 snippet: list['basic']['address'],
+                  onTap: () {
+                    launch(content[i]['url']);
+                    setState(() {});
+                  }
               ),
-              onTap: () {
-                launch(content[i]['url']);
-                setState(() {});
-              }),
+              ),
         );
         print(i.toString() +
             '標記成功' +
@@ -264,8 +264,8 @@ class _mapPageState extends State<mapPage> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('地址${gasStationDetail['basic']['address']}',style: TextStyle(fontSize: 13),),
-                Text('營業時間${gasStationDetail['basic']['business_hours']}',style: TextStyle(fontSize: 13)),
+                Text('地址：${gasStationDetail['basic']['address']}',style: TextStyle(fontSize: 13),),
+                Text('營業時間：${gasStationDetail['basic']['business_hours']}',style: TextStyle(fontSize: 13)),
                 SizedBox(height: 5,),
                 Row(
                   children: [
@@ -296,11 +296,11 @@ class _mapPageState extends State<mapPage> {
                 SizedBox(height: 3,),
                 Wrap(
                   children: [
-                    (gasStationDetail['payment']['member_card']) ? Text('會員卡 ',style: TextStyle(color: Colors.green),):Text(''),
-                    (gasStationDetail['payment']['e_invoice']) ? Text('電子發票 ',style: TextStyle(color: Colors.green),):Text(''),
-                    (gasStationDetail['payment']['easy_card']) ? Text('悠遊卡 ',style: TextStyle(color: Colors.green),):Text(''),
-                    (gasStationDetail['payment']['i_pass']) ? Text('一卡通 ',style: TextStyle(color: Colors.green),):Text(''),
-                    (gasStationDetail['payment']['happy_cash']) ? Text('Happy Card ',style: TextStyle(color: Colors.green),):Text(''),
+                    (gasStationDetail['payment']['member_card']) ? Text('#會員卡',style: TextStyle(color: Colors.purple,fontSize: 15),):Text(''),
+                    (gasStationDetail['payment']['e_invoice']) ? Text('#電子發票',style: TextStyle(color: Colors.indigo,fontSize: 15),):Text(''),
+                    (gasStationDetail['payment']['easy_card']) ? Text('#悠遊卡',style: TextStyle(color: Color.fromRGBO(192, 0, 0, 1),fontSize: 15),):Text(''),
+                    (gasStationDetail['payment']['i_pass']) ? Text('#一卡通',style: TextStyle(color: Color.fromRGBO(192, 0, 0, 1),fontSize: 15),):Text(''),
+                    (gasStationDetail['payment']['happy_cash']) ? Text('#Happy Cash',style: TextStyle(color: Colors.amber,fontSize: 15),):Text(''),
                   ],
                 ),
                 SizedBox(height: 5,),
@@ -314,8 +314,8 @@ class _mapPageState extends State<mapPage> {
                 SizedBox(height: 3,),
                 Row(
                   children: [
-                    (gasStationDetail['other_service']['self_service']) ? Text('自助加油 ',style: TextStyle(color: Colors.green),):Text(''),
-                    (gasStationDetail['other_service']['self_service_diesel']) ? Text('自助柴油加油 ',style: TextStyle(color: Colors.green),):Text(''),
+                    (gasStationDetail['other_service']['self_service']) ? Text('#自助加油',style: TextStyle(color: Colors.green,fontSize: 15),):Text(''),
+                    (gasStationDetail['other_service']['self_service_diesel']) ? Text('#自助柴油',style: TextStyle(color: Colors.grey,fontSize: 15),):Text(''),
                   ],
                 ),
               ],
@@ -363,15 +363,25 @@ class _mapPageState extends State<mapPage> {
                         },
                         child: ListTile(
                             leading: Image.network(list['icon_url']),
-                            title:Text('${list['basic']['station_name']}-${list['distance']}公尺'),
-                            subtitle: Text(list['basic']['address']),
-                            trailing: IconButton(
-                              onPressed: () {
-                                launch(list['url']);
-                              },
-                              icon: Icon(Icons.navigation,color: Colors.indigo,),
-                            )
-
+                            title:Text('${list['basic']['station_name']}-${list['basic']['type']}'),
+                            subtitle:Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(list['basic']['address'],overflow: TextOverflow.ellipsis,),
+                                Wrap(
+                                  children: [
+                                    (list['payment']['member_card']) ? Text('#會員卡',style: TextStyle(color: Colors.purple),):Text(''),
+                                    (list['payment']['e_invoice']) ? Text('#電子發票',style: TextStyle(color: Colors.indigo),):Text(''),
+                                    (list['payment']['easy_card']) ? Text('#悠遊卡',style: TextStyle(color: Color.fromRGBO(192, 0, 0, 1)),):Text(''),
+                                    (list['payment']['i_pass']) ? Text('#一卡通',style: TextStyle(color: Color.fromRGBO(192, 0, 0, 1)),):Text(''),
+                                    (list['payment']['happy_cash']) ? Text('#Happy Cash',style: TextStyle(color: Colors.amber),):Text(''),
+                                    (list['other_service']['self_service']) ? Text('#自助加油',style: TextStyle(color: Colors.green),):Text(''),
+                                    (list['other_service']['self_service_diesel']) ? Text('#自助柴油',style: TextStyle(color: Colors.grey),):Text(''),
+                                  ],
+                                )
+                              ],
+                            ),
+                            trailing: Text('${list['distance']}m',style: TextStyle(fontSize: 20,color: Colors.indigo),)
                         ),
                       ),
                       Divider(
@@ -400,66 +410,51 @@ class _mapPageState extends State<mapPage> {
         children: [
           // Container(width: screenWidth,height: 50,color: Colors.blue,child: Center(child: Text('dddd')),),
           Expanded(
-            child: GridView(
+            child: ListView(
               controller: scrollController,
-              padding: EdgeInsets.zero,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1, //横轴三个子widget
-                  childAspectRatio: 4 / 1),
               children: List.generate(
                 mapListConvenientStore.length,
                 (index) {
                   final list = mapListConvenientStore[index];
-                  return Column(
-                    children: [
-                      Expanded(
-                          child: ListTile(
-                            leading: Image.network(list['icon_url'],width:screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,height: screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,),
-                        title: 
-                        Container(
-                          width: screenWidth > 600 ? 600 : 200,
-                          height: 50,
-                          child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Text(list['company_name'],style: TextStyle(fontSize: screenWidth > 600 ? 12  : 17),overflow: TextOverflow.ellipsis),
-                              ],
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                Text(list['branch_name'],style: TextStyle(fontSize: screenWidth > 600 ? 15  : 13),overflow: TextOverflow.ellipsis),
-                              ],
-                            )
-                          ],
-                        ),),
-                        
-                        subtitle: Text(list['branch_address'],overflow: TextOverflow.ellipsis,style: TextStyle(fontSize: screenWidth > 600 ? 12  : 15)),
-                         trailing: InkWell(
-                          child: Container(
-                            width: 90,
-                            height: 30,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(30),
-                              color: Colors.white,
-                            ),
-                            child: Center(child: Text('導航')),
+                  return InkWell(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Image.network(list['icon_url'],width:screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,height: screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,),
+                          title:Text(list['company_name'],overflow: TextOverflow.ellipsis),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(list['branch_name'],overflow: TextOverflow.ellipsis),
+                              Text(list['branch_address'],overflow: TextOverflow.ellipsis),
+                            ],
                           ),
-                          onTap: () {
-                            launch(list['url']);
-                          },
+                          trailing: InkWell(
+                            child: Container(
+                                child: Column(
+                                  children: [
+                                    Text('${list['distance']}m',style: TextStyle(fontSize: 20,color: Colors.indigo),),
+                                    Icon(Icons.navigation,color: Colors.indigo,size: 20,),
+                                  ],
+                                )
+                            ),
+                            onTap: () {
+                              launch(list['url']);
+                            },
+                          ),
                         ),
-                      )),
-                      Divider(
-                          thickness: 1,
-                          color: Colors.grey,
-                          indent: 10,
-                          endIndent: 10)
-                    ],
+                        Divider(
+                            thickness: 1,
+                            color: Colors.grey,
+                            indent: 10,
+                            endIndent: 10)
+                      ],
+                    ),
+                    onTap: (){
+                      setState(() {
+                        mapController.showMarkerInfoWindow(MarkerId(list['company_name']));
+                      });
+                    },
                   );
                 },
               ),
@@ -503,7 +498,7 @@ class _mapPageState extends State<mapPage> {
       expand: false,
 
       initialChildSize: 0.3, // 初始高度比例
-      minChildSize: 0.2, // 最小高度比例
+      minChildSize: 0.1, // 最小高度比例
       maxChildSize: 1, // 最大高度比例
     );
   }
