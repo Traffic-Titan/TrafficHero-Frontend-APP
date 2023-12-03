@@ -105,7 +105,6 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
-
   void initState() {
     timerBus?.cancel();
     stoptimer();
@@ -241,7 +240,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     return chunks.join('\n'); // 使用換行符串起每組文字
   }
 
-  roadStartTimer() {
+  Future<void> roadStartTimer() async {
     timer = Timer.periodic(Duration(seconds: 1), (_) async {
       try {
         setState(() {
@@ -1466,7 +1465,11 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                 visible: carMode,
                 child: Column(
                   children: [
-                    weatherWidget(),
+                    FutureBuilder(
+                        future: getHome().getWeather(context),
+                        builder: (context, snapshot) {
+                          return weatherWidget();
+                        }),
                     toolCarWidget(),
                     trafficWarningWidget()
                   ],
