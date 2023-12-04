@@ -31,8 +31,6 @@ class _Login extends State<Login> {
     EasyLoading.dismiss();
   }
 
-
-
   // 取得附近站點資訊
   stationNearbySearchBus() async {
     var jwt = ',${state.accountState}';
@@ -221,9 +219,11 @@ class _Login extends State<Login> {
           });
           EasyLoading.dismiss();
           print(prefs.get('userToken'));
-
+          await Firebase_message().initNotifications();
           Navigator.pushAndRemoveUntil(
-          context, MaterialPageRoute(builder: (context) => const AllPage()),(router)=>false);
+              context,
+              MaterialPageRoute(builder: (context) => const AllPage()),
+              (router) => false);
           return true;
         } else {
           EasyLoading.dismiss();
