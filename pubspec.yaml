@@ -154,6 +154,14 @@ flutter:
     - assets/gasStation/gas.png
     - assets/gasStation/payment.png
     - assets/gasStation/service.png
+    - assets/gasStation/payment_EasyCard.png
+    - assets/gasStation/payment_EInvoice.png
+    - assets/gasStation/payment_IPass.png
+    - assets/gasStation/payment_MemberCard.png
+    - assets/gasStation/service_SelfDiesel.png
+    - assets/gasStation/service_SelfService.png
+    - assets/gasStation/payment_HappyCash.png
+
 
 
   # The following line ensures that the Material Icons font is

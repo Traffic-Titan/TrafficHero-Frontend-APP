@@ -276,15 +276,16 @@ class _mapPageState extends State<mapPage> {
                 ),
                 SizedBox(height: 3,),
                 Row(
-                  children: [
-                    (gasStationDetail['gasoline']['92']) ? Image.asset('assets/gasStation/gasoline_92.png',height: 35,):Text(''),
-                    (gasStationDetail['gasoline']['95']) ? Image.asset('assets/gasStation/gasoline_95.png',height: 35,):Text(''),
-                    (gasStationDetail['gasoline']['98']) ? Image.asset('assets/gasStation/gasoline_98.png',height: 35,):Text(''),
-                    (gasStationDetail['gasoline']['alcohol_gasoline']) ? Image.asset('assets/gasStation/gasoline_Alcohol.png',height: 35,):Text(''),
-                    (gasStationDetail['gasoline']['kerosene']) ? Image.asset('assets/gasStation/gasoline_Alcohol.png',height: 35,):Text(''),
-                    (gasStationDetail['gasoline']['super_diesel']) ? Image.asset('assets/gasStation/gasoline_Kerosene.png',height: 35,):Text(''),
-                  ],
-                ),
+                    children: [
+                      (gasStationDetail['gasoline']['92']) ? Image.asset('assets/gasStation/gasoline_92.png',height: 35,):Text(''),
+                      (gasStationDetail['gasoline']['95']) ? Image.asset('assets/gasStation/gasoline_95.png',height: 35,):Text(''),
+                      (gasStationDetail['gasoline']['98']) ? Image.asset('assets/gasStation/gasoline_98.png',height: 35,):Text(''),
+                      (gasStationDetail['gasoline']['alcohol_gasoline']) ? Image.asset('assets/gasStation/gasoline_Alcohol.png',height: 35,):Text(''),
+                      (gasStationDetail['gasoline']['kerosene']) ? Image.asset('assets/gasStation/gasoline_Alcohol.png',height: 35,):Text(''),
+                      (gasStationDetail['gasoline']['super_diesel']) ? Image.asset('assets/gasStation/gasoline_Kerosene.png',height: 35,):Text(''),
+                    ],
+                  ),
+
                 SizedBox(height: 5,),
                 Row(
                   children: [
@@ -295,14 +296,19 @@ class _mapPageState extends State<mapPage> {
                 ),
                 SizedBox(height: 3,),
                 Wrap(
-                  children: [
-                    (gasStationDetail['payment']['member_card']) ? Text('#會員卡',style: TextStyle(color: Colors.purple,fontSize: 15),):Text(''),
-                    (gasStationDetail['payment']['e_invoice']) ? Text('#電子發票',style: TextStyle(color: Colors.indigo,fontSize: 15),):Text(''),
-                    (gasStationDetail['payment']['easy_card']) ? Text('#悠遊卡',style: TextStyle(color: Color.fromRGBO(192, 0, 0, 1),fontSize: 15),):Text(''),
-                    (gasStationDetail['payment']['i_pass']) ? Text('#一卡通',style: TextStyle(color: Color.fromRGBO(192, 0, 0, 1),fontSize: 15),):Text(''),
-                    (gasStationDetail['payment']['happy_cash']) ? Text('#Happy Cash',style: TextStyle(color: Colors.amber,fontSize: 15),):Text(''),
-                  ],
-                ),
+                    children: [
+                      (gasStationDetail['payment']['member_card']) ? Image.asset('assets/gasStation/payment_MemberCard.png',height: 25,):Text(''),
+                      SizedBox(width: 5,),
+                      (gasStationDetail['payment']['e_invoice']) ? Image.asset('assets/gasStation/payment_EInvoice.png',height: 25,):Text(''),
+                      SizedBox(width: 5,),
+                      (gasStationDetail['payment']['easy_card']) ? Image.asset('assets/gasStation/payment_EasyCard.png',height: 25,):Text(''),
+                      SizedBox(width: 5,),
+                      (gasStationDetail['payment']['i_pass']) ? Image.asset('assets/gasStation/payment_IPass.png',height: 25,):Text(''),
+                      SizedBox(width: 5,),
+                      (gasStationDetail['payment']['happy_cash']) ? Image.asset('assets/gasStation/payment_HappyCash.png',height: 25,):Text(''),
+                    ],
+                  ),
+
                 SizedBox(height: 5,),
                 Row(
                   children: [
@@ -314,8 +320,8 @@ class _mapPageState extends State<mapPage> {
                 SizedBox(height: 3,),
                 Row(
                   children: [
-                    (gasStationDetail['other_service']['self_service']) ? Text('#自助加油',style: TextStyle(color: Colors.green,fontSize: 15),):Text(''),
-                    (gasStationDetail['other_service']['self_service_diesel']) ? Text('#自助柴油',style: TextStyle(color: Colors.grey,fontSize: 15),):Text(''),
+                    (gasStationDetail['other_service']['self_service']) ? Image.asset('assets/gasStation/service_SelfService.png',height: 25,):Text(''),
+                    (gasStationDetail['other_service']['self_service_diesel']) ? Image.asset('assets/gasStation/service_SelfDiesel.png',height: 25,):Text(''),
                   ],
                 ),
               ],
@@ -323,15 +329,9 @@ class _mapPageState extends State<mapPage> {
           ),
           actions: <Widget>[
             TextButton(
-              child: const Text('返回'),
+              child: const Text('確認'),
               onPressed: () {
                 Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Icon(Icons.navigation,color: Colors.indigo,),
-              onPressed: () {
-                launch(gasStationDetail['url']);
               },
             ),
           ],
@@ -370,18 +370,26 @@ class _mapPageState extends State<mapPage> {
                                 Text(list['basic']['address'],overflow: TextOverflow.ellipsis,),
                                 Wrap(
                                   children: [
-                                    (list['payment']['member_card']) ? Text('#會員卡',style: TextStyle(color: Colors.purple),):Text(''),
-                                    (list['payment']['e_invoice']) ? Text('#電子發票',style: TextStyle(color: Colors.indigo),):Text(''),
-                                    (list['payment']['easy_card']) ? Text('#悠遊卡',style: TextStyle(color: Color.fromRGBO(192, 0, 0, 1)),):Text(''),
-                                    (list['payment']['i_pass']) ? Text('#一卡通',style: TextStyle(color: Color.fromRGBO(192, 0, 0, 1)),):Text(''),
-                                    (list['payment']['happy_cash']) ? Text('#Happy Cash',style: TextStyle(color: Colors.amber),):Text(''),
-                                    (list['other_service']['self_service']) ? Text('#自助加油',style: TextStyle(color: Colors.green),):Text(''),
-                                    (list['other_service']['self_service_diesel']) ? Text('#自助柴油',style: TextStyle(color: Colors.grey),):Text(''),
+                                    (list['payment']['member_card']) ? Image.asset('assets/gasStation/payment_MemberCard.png',height: 25,):Text(''),
+                                    (list['other_service']['self_service']) ? Image.asset('assets/gasStation/service_SelfService.png',height: 25,):Text(''),
+                                    (list['other_service']['self_service_diesel']) ? Image.asset('assets/gasStation/service_SelfDiesel.png',height: 25,):Text(''),
                                   ],
                                 )
                               ],
                             ),
-                            trailing: Text('${list['distance']}m',style: TextStyle(fontSize: 20,color: Colors.indigo),)
+                            trailing: InkWell(
+                              child: Container(
+                                  child: Column(
+                                    children: [
+                                      Text('${list['distance']}m',style: TextStyle(fontSize: 20,color: Colors.indigo),),
+                                      Icon(Icons.navigation,color: Colors.indigo,size: 20,),
+                                    ],
+                                  )
+                              ),
+                              onTap: () {
+                                launch(list['url']);
+                              },
+                            ),
                         ),
                       ),
                       Divider(
