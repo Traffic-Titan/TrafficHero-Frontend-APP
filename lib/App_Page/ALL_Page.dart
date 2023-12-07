@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, file_names, avoid_print
+import 'package:traffic_hero/Imports.dart';
 import 'package:traffic_hero/imports.dart';
 
 class AllPage extends StatefulWidget {
@@ -163,7 +164,12 @@ class _AllPageState extends State<AllPage> {
         leading: IconButton(
           icon: Image.asset('assets/topbar/message.png',width: 50,height: 50,),
           iconSize: 50,
-          onPressed: () => print('object'),
+          onPressed: (){
+           Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => messagePage()));
+          },
         ),
         actions: <Widget>[
           IconButton(

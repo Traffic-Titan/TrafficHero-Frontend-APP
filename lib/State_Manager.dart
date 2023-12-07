@@ -128,6 +128,7 @@ class stateManager with ChangeNotifier {
   var _TRA_TimeTableSearch_Station_Result_OutBound;
   var _TRA_TimeTableSearch_Station_Result_InBound;
   var _MRT_Taipei_DynamicInfo;
+   List<dynamic>  _CMSSpeed = [];
 
 
  String get modeName => _modeName;
@@ -160,6 +161,7 @@ class stateManager with ChangeNotifier {
   get TRA_TimeTableSearch_Station_Result_OutBound => _TRA_TimeTableSearch_Station_Result_OutBound;
   get TRA_TimeTableSearch_Station_Result_InBound => _TRA_TimeTableSearch_Station_Result_InBound;
   get MRT_Taipei_DynamicInfo => _MRT_Taipei_DynamicInfo;
+  get CMSSpeed => _CMSSpeed;
 
   void updateMRT_Taipei_DynamicInfo(List<dynamic> newValue){
     _MRT_Taipei_DynamicInfo = newValue;
@@ -346,11 +348,18 @@ class stateManager with ChangeNotifier {
   }
 
 
+  
+
 
   get NearbyRoadCondition => _NearbyRoadCondition;
 
   void updateNearbyRoadCondition(newValue) {
     _NearbyRoadCondition = newValue;
+    notifyListeners();
+  }
+
+    void UpdateMessageList(newValue) {
+    _CMSSpeed = newValue;
     notifyListeners();
   }
 }
