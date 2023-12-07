@@ -1465,11 +1465,7 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
                 visible: carMode,
                 child: Column(
                   children: [
-                    FutureBuilder(
-                        future: getHome().getWeather(context),
-                        builder: (context, snapshot) {
-                          return weatherWidget();
-                        }),
+                    weatherWidget(),
                     toolCarWidget(),
                     trafficWarningWidget()
                   ],

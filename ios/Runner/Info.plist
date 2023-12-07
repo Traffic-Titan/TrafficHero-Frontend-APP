@@ -5,8 +5,6 @@
 	<key>BGTaskSchedulerPermittedIdentifiers</key>
 	<array>
 		<string>com.googleusercontent.apps.1012827309373-nqn992svvc3ic5aip8phd0evrbni4v28</string>
-		<string>com.yourcompany.yourapp.backgroundTaskIdentifier</string>
-		<string>com.transistorsoft.fetch</string>
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
@@ -36,6 +34,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.861823949799-vc35cprkp249096uujjn0vvnmcvjppkn</string>
+				<string>com.googleusercontent.apps.1012827309373-nqn992svvc3ic5aip8phd0evrbni4v28</string>
 			</array>
 		</dict>
 	</array>

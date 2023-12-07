@@ -70,6 +70,7 @@ export 'package:traffic_hero/App_Page/App_Function_Page/CMS_PIP_Page.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/Home_Tool_Page/Find_map_page.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/THSR_CarNumSearchResult.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/TRA_TimeTableSearch.dart';
+export 'package:traffic_hero/App_Page/App_Function_Page/Message_Page.dart';
 
 //Function
 export 'package:traffic_hero/Function/JWT.dart';

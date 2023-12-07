@@ -20,7 +20,7 @@ class _appLoadingPage extends State<appLoadingPage> {
     EasyLoading.show(status: '登入中...');
     checkToken();
     EasyLoading.dismiss();
-
+    Firebase_message().UpdateContext(context);
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
     try {
@@ -56,7 +56,7 @@ class _appLoadingPage extends State<appLoadingPage> {
 
       response = await api().apiGet(url, jwt);
       state.updateAccountState('${prefs.get('userToken')}');
-
+      await getHome().getUser(context);
       if (response.statusCode == 200) {
         state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
         state.updateModeState(prefs.get('mode').toString());
@@ -71,11 +71,14 @@ class _appLoadingPage extends State<appLoadingPage> {
             MaterialPageRoute(builder: (context) => const Login()),
             (router) => false);
         EasyLoading.dismiss();
-        EasyLoading.dismiss();
       }
     } catch (e) {
       print(e);
       EasyLoading.dismiss();
+      Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const Login()),
+            (router) => false);
     }
   }
 
