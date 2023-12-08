@@ -81,8 +81,8 @@ class _CMSState extends State<CMS> {
   var positionNow;
   String speed = '0';
   var fontSize;
-  var showCMS = true;
-  var showSpeed = false;
+  bool showCMS = true;
+  bool showSpeed = false;
 
   @override
   void initState() {
@@ -127,40 +127,76 @@ class _CMSState extends State<CMS> {
       String directionString = getDirectionString(direction);
       print(directionString);
 
-      print((_speed > 100 ? 500 : 150));
-      if (distance < (_speed > 100 ? 500 : 150)) {
+      print((_speed > 100 ? 10000 : 5000));
+      if (distance < (_speed > 100 ? 10000 : 5000)) {
         print(true);
       } else {
         print(distance);
         getSpeedEnforcement();
-        // updateCMSList_Car();
+        _stopTrackingPosition();
+        updateCMSList_Car();
       }
+      var last;
 
       for (var i = 0; i < SpeedEnforcement.length; i++) {
         double SpeedEnforcementDistance = Geolocator.distanceBetween(
-          position.latitude,
-          position.longitude,
           SpeedEnforcement[i]['location']['latitude'],
           SpeedEnforcement[i]['location']['longitude'],
+          position.latitude,
+          position.longitude,
         );
 
-        // if (SpeedEnforcement[i]['direction'] == directionString) {
-        if (SpeedEnforcementDistance < 650) {
+
+
+        try {
+          // if (SpeedEnforcement[i]['direction'] == directionString) {
+          print('SpeedEnforcementDistance < 600:' +
+              (SpeedEnforcementDistance < 600).toString());
+          print('最近測速照相距離' + SpeedEnforcementDistance.toString());
+          if (SpeedEnforcementDistance < 300 &&
+              SpeedEnforcementDistance > 200) {
+            setState(() {
+              showCMS = false;
+              showSpeed = true;
+              ShowSpeedEnforcement = [];
+
+              _stopTrackingPosition();
+
+              FlutterTts().speak(SpeedEnforcement[i]['voice'] +
+                  (speedInKmh > int.parse(SpeedEnforcement[i]['speed_limit'])
+                      ? '您已超速'
+                      : ''));
+            });
+            ShowSpeedEnforcement.add(SpeedEnforcement[i]);
+            print(SpeedEnforcement[i]['voice'] +
+                (speedInKmh > int.parse(SpeedEnforcement[i]['speed_limit'])
+                    ? '您已超速'
+                    : ''));
+            print('前方有測速照相600公尺');
+          } else if (SpeedEnforcementDistance >= 0 &&
+              SpeedEnforcementDistance < 100) {
+            setState(() {
+              showCMS = true;
+              showSpeed = false;
+            });
+          } else if (last < 0) {
+            setState(() {
+              showCMS = true;
+              showSpeed = false;
+            });
+          }
           setState(() {
-            ShowSpeedEnforcement = [];
-            showCMS = false;
-            showSpeed = true;
+            last = SpeedEnforcementDistance;
           });
-          ShowSpeedEnforcement.add(SpeedEnforcement[i]);
-          print('前方有測速照相600公尺');
-        }else{
-          setState(() {
-            showCMS = true;
-            showSpeed = false;
-          });
+
+          // }
+        } catch (e) {
+          print(e);
         }
-        // }
       }
+
+      print('showCMS:' + showCMS.toString());
+      print('showSpeed:' + showSpeed.toString());
 
       _speedStreamController.add(speedInKmh.toDouble());
     });
@@ -349,7 +385,7 @@ class _CMSState extends State<CMS> {
     var response,
         responseBody,
         url = dotenv.env['SpeedEnforcement'].toString() +
-            '?longitude=${position1.longitude}&latitude=${position1.latitude}&max_distance=1',
+            '?longitude=${position1.longitude}&latitude=${position1.latitude}&max_distance=10',
         jwt = ',${state.accountState}';
 
     try {
