@@ -1,4 +1,5 @@
 // ignore_for_file: camel_case_types, prefer_const_declarations, non_constant_identifier_names, duplicate_ignore, unnecessary_import, unrelated_type_equality_checks, dead_code, file_names, sized_box_for_whitespace, unused_local_variable, prefer_typing_uninitialized_variables
+import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:traffic_hero/imports.dart';
 
@@ -25,7 +26,7 @@ class _registerPage extends State<registerPage> {
   var response;
   //給性別及生日預設變數
   var gender = '性別';
-  var birthday = '生日';
+  String birthday='生日';
   //控制輸入匡顯示錯誤是否顯示
   var errorEmail = true;
   var errorName = true;
@@ -249,7 +250,29 @@ class _registerPage extends State<registerPage> {
               const SizedBox(
                 height: 10,
               ),
-            
+              Container(
+                width: 310,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    DatePicker.showDatePicker(context, showTitleActions: true,
+                        onConfirm: (time) async {
+                          print(time);
+                          setState(() {
+                            birthday = time.toString().substring(0, 10);
+                          });
+                        }
+                    );
+                  },
+                  child: Align(
+                    alignment: Alignment.bottomLeft,
+                    child: Text(birthday,style: TextStyle(color: Colors.black,fontSize: 18)),
+                  )
+                ),
+              ),
               const SizedBox(
                 height: 50,
               ),

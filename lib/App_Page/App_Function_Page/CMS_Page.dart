@@ -61,16 +61,16 @@ class _CMSState extends State<CMS> {
     size: 40,
   );
 
-  @override
-  void dispose() {
-    super.dispose();
-    print('離開頁面');
-    _stopTrackingPosition(); // 停止追踪位置更新
-    _speedStreamController.close();
-    controller.dispose();
-    print(controller.isBlank);
-    print(timer2?.isActive);
-  }
+@override
+void dispose() {
+  super.dispose();
+  print('離開頁面');
+  _stopTrackingPosition(); // 停止追踪位置更新
+  _speedStreamController.close();
+  controller.dispose();
+  print(controller.isBlank);
+  print(timer2?.isActive);
+}
 
   bool directionState = true;
   var Carpostionstatus = false;
@@ -148,6 +148,7 @@ class _CMSState extends State<CMS> {
 
 
 
+
         try {
           // if (SpeedEnforcement[i]['direction'] == directionString) {
           print('SpeedEnforcementDistance < 600:' +
@@ -185,6 +186,7 @@ class _CMSState extends State<CMS> {
               showSpeed = false;
             });
           }
+
           setState(() {
             last = SpeedEnforcementDistance;
           });
@@ -193,6 +195,7 @@ class _CMSState extends State<CMS> {
         } catch (e) {
           print(e);
         }
+
       }
 
       print('showCMS:' + showCMS.toString());
@@ -325,18 +328,17 @@ class _CMSState extends State<CMS> {
     }
   }
 
-  void _stopTrackingPosition() async {
-    // 取消位置更新的订阅
-    //  timer2?.cancel();
-    if (timer2 != null) {
-      try {
-        timer2?.cancel();
-      } catch (e) {
-        print('Error while canceling timer2: $e');
-      }
+void _stopTrackingPosition() async {
+  // 取消位置更新的訂閱
+  if (timer2 != null) {
+    try {
+      timer2?.cancel();
+    } catch (e) {
+      print('Error while canceling timer2: $e');
     }
-    _positionStreamSubscription?.cancel();
   }
+  _positionStreamSubscription?.cancel();
+}
 
   // 更新CMS_car資訊
   Future<void> updateCMSList_Car() async {
@@ -347,7 +349,7 @@ class _CMSState extends State<CMS> {
             ? dotenv.env['CMS_Main_Car'].toString()
             : dotenv.env['CMS_Main_Scooter'].toString().toString()) +
         '?longitude=${position.longitude}&latitude=${position.latitude}';
-    '?longitude=all&latitude=all';
+    // '?longitude=all&latitude=all';
     var jwt = ',${state.accountState}';
     var response;
     try {
@@ -410,7 +412,7 @@ class _CMSState extends State<CMS> {
             ? dotenv.env['CMS_Sidebar_Car'].toString()
             : dotenv.env['CMS_Sidebar_Scooter'].toString().toString()) +
         '?longitude=${position.longitude}&latitude=${position.latitude}';
-    '?longitude=all&latitude=all';
+    // '?longitude=all&latitude=all';
     var jwt = ',${state.accountState}';
     var response;
     try {
@@ -435,30 +437,30 @@ class _CMSState extends State<CMS> {
     }
   }
 
-  void setDisplay() {
-    int index = 0;
-    // 每5秒向後端要求一次CMS資料
-    timer2 = Timer.periodic(const Duration(seconds: 10), (timer) {
-      if (index < cmsList_car.length) {
-        try {
-          FlutterTts().speak(cmsList_car[index]['voice']);
+void setDisplay() {
+  int index = 0;
+  // 每10秒向後端要求一次CMS資料
+  timer2 = Timer.periodic(const Duration(seconds: 10), (timer) {
+    if (mounted && index >= 0 && index < cmsList_car.length) {
+      try {
+        FlutterTts().speak(cmsList_car[index]['voice']);
 
-          //  FlutterTts().speak('測試');
-          controller.animateToPage(
-            index,
-            duration: Duration(milliseconds: 1000),
-            curve: Curves.easeInOut,
-          );
-        } catch (e) {
-          print(e);
-        }
-
-        index++;
-      } else {
-        index = 0;
+        controller.animateToPage(
+          index,
+          duration: Duration(milliseconds: 1000),
+          curve: Curves.easeInOut,
+        );
+      } catch (e) {
+        print(e);
       }
-    });
-  }
+
+      index++;
+    } else {
+      index = 0;
+    }
+  });
+}
+
 
   changeWidget() {
     if (directionState) {

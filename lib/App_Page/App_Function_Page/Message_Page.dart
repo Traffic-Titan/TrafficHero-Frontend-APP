@@ -1,3 +1,4 @@
+
 import 'package:traffic_hero/Imports.dart';
 
 class messagePage extends StatefulWidget {
@@ -9,11 +10,13 @@ class messagePage extends StatefulWidget {
 
 class update {
   Update(messageLits) {
+
     try {
       _messagePageState().messageSave(messageLits);
     } catch (e) {
       print(e);
     }
+
   }
 }
 
