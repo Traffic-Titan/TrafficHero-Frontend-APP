@@ -90,6 +90,8 @@ class _Login extends State<Login> {
       "google_id": googleController.googleAccount.value?.id ?? '',
     };
 
+    print(body);
+
     var url = dotenv.env['GoogleSSO'].toString();
     var jwt = '';
 
@@ -103,10 +105,16 @@ class _Login extends State<Login> {
       try {
         if (response.statusCode == 200) {
           //將狀態寫入
+           await prefs.setString(
+              'userToken', jsonDecode(response.body)['token']);
           state.updateAccountState(
               await jsonDecode(response.body)['token'] ?? '');
           //跳轉頁面
-          getHome();
+         await Firebase_message().initNotifications();
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const AllPage()),
+              (router) => false);
           //SSO回傳訊息403，判斷為未註冊，跳轉註冊頁面
         } else if (response.statusCode == 403) {
           //將需要註冊狀態寫入狀態管理

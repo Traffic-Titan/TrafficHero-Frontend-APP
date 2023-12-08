@@ -180,10 +180,10 @@ void dispose() {
               showCMS = true;
               showSpeed = false;
             });
-          } else if (last < 0) {
+          } else  {
             setState(() {
-              showCMS = true;
-              showSpeed = false;
+              // showCMS = true;
+              // showSpeed = false;
             });
           }
 
@@ -196,6 +196,10 @@ void dispose() {
           print(e);
         }
 
+      }
+
+      for(var i = 0 ; i < ShowSpeedEnforcement.length ;i++){
+        
       }
 
       print('showCMS:' + showCMS.toString());
