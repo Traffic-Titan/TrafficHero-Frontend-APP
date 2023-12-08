@@ -106,7 +106,16 @@ class _Login extends State<Login> {
           state.updateAccountState(
               await jsonDecode(response.body)['token'] ?? '');
           //跳轉頁面
-          getHome();
+          print(await jsonDecode(response.body)['token']);
+          await prefs.setString(
+              'userToken', jsonDecode(response.body)['token']);
+          EasyLoading.dismiss();
+          print(prefs.get('userToken'));
+          await Firebase_message().initNotifications();
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => const AllPage()),
+              (router) => false);
           //SSO回傳訊息403，判斷為未註冊，跳轉註冊頁面
         } else if (response.statusCode == 403) {
           //將需要註冊狀態寫入狀態管理

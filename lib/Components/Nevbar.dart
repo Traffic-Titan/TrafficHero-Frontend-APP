@@ -31,7 +31,7 @@ class _NavbarState extends State<Navbar> {
   }
 
   logOut() {
-    // googleController.google_signOut();
+    googleController.google_signOut();
     prefs.setString('userToken', '');
     print(prefs.get('userToken'));
     state.updateAccountState('');
