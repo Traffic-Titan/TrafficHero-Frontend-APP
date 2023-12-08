@@ -61,11 +61,12 @@ class Firebase_message {
     prefs = await SharedPreferences.getInstance();
     await _firebaseMess.requestPermission();
     final fCMToken = await _firebaseMess.getToken();
+    print('Token:$fCMToken');
     if (prefs.get('userToken') != '') {
       await registerMessageToken(fCMToken);
     }
 
-    print('Token:$fCMToken');
+    
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('App opened from onMessageOpenedApp message:');
@@ -117,6 +118,8 @@ class Firebase_message {
   }
 
   Future<void> registerMessageToken(token) async {
+    // EasyLoading.show(status: '開始註冊');
+    print('註冊');
     var response,
         url = dotenv.env['Subscribe'].toString() + '?fcm_token=${token}',
         jwt = ',${prefs.get('userToken')}',
@@ -125,11 +128,13 @@ class Firebase_message {
     try {
       response = await api().apiPost(Body, url, jwt);
       if (response.statusCode == 200) {
+
         print(true);
       } else {
         print(response.statusCode);
       }
     } catch (e) {
+      // EasyLoading.showError('FCME'+e.toString());
       print(e);
     }
   }
