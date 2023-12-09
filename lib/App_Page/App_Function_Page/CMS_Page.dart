@@ -61,16 +61,16 @@ class _CMSState extends State<CMS> {
     size: 40,
   );
 
-@override
-void dispose() {
-  super.dispose();
-  print('離開頁面');
-  _stopTrackingPosition(); // 停止追踪位置更新
-  _speedStreamController.close();
-  controller.dispose();
-  print(controller.isBlank);
-  print(timer2?.isActive);
-}
+  @override
+  void dispose() {
+    super.dispose();
+    print('離開頁面');
+    _stopTrackingPosition(); // 停止追踪位置更新
+    _speedStreamController.close();
+    controller.dispose();
+    print(controller.isBlank);
+    print(timer2?.isActive);
+  }
 
   bool directionState = true;
   var Carpostionstatus = false;
@@ -146,9 +146,6 @@ void dispose() {
           position.longitude,
         );
 
-
-
-
         try {
           // if (SpeedEnforcement[i]['direction'] == directionString) {
           print('SpeedEnforcementDistance < 600:' +
@@ -157,34 +154,11 @@ void dispose() {
           if (SpeedEnforcementDistance < 300 &&
               SpeedEnforcementDistance > 200) {
             setState(() {
-              showCMS = false;
-              showSpeed = true;
               ShowSpeedEnforcement = [];
-
-              _stopTrackingPosition();
-
-              FlutterTts().speak(SpeedEnforcement[i]['voice'] +
-                  (speedInKmh > int.parse(SpeedEnforcement[i]['speed_limit'])
-                      ? '您已超速'
-                      : ''));
             });
             ShowSpeedEnforcement.add(SpeedEnforcement[i]);
-            print(SpeedEnforcement[i]['voice'] +
-                (speedInKmh > int.parse(SpeedEnforcement[i]['speed_limit'])
-                    ? '您已超速'
-                    : ''));
+
             print('前方有測速照相600公尺');
-          } else if (SpeedEnforcementDistance >= 0 &&
-              SpeedEnforcementDistance < 100) {
-            setState(() {
-              showCMS = true;
-              showSpeed = false;
-            });
-          } else if (last < 0) {
-            setState(() {
-              showCMS = true;
-              showSpeed = false;
-            });
           }
 
           setState(() {
@@ -195,7 +169,39 @@ void dispose() {
         } catch (e) {
           print(e);
         }
+      }
 
+      for (var i = 0; i < ShowSpeedEnforcement.length; i++) {
+        double SpeedEnforcementDistance2 = Geolocator.distanceBetween(
+          ShowSpeedEnforcement[i]['location']['latitude'],
+          ShowSpeedEnforcement[i]['location']['longitude'],
+          position.latitude,
+          position.longitude,
+        );
+        if (SpeedEnforcementDistance2 < 290 &&
+            SpeedEnforcementDistance2 > 100) {
+          setState(() {
+            showCMS = false;
+            showSpeed = true;
+            _stopTrackingPosition();
+
+            FlutterTts().speak(ShowSpeedEnforcement[i]['voice'] +
+                (speedInKmh > int.parse(ShowSpeedEnforcement[i]['speed_limit'])
+                    ? '您已超速'
+                    : ''));
+          });
+
+          print(ShowSpeedEnforcement[i]['voice'] +
+              (speedInKmh > int.parse(ShowSpeedEnforcement[i]['speed_limit'])
+                  ? '您已超速'
+                  : ''));
+          print('前方有測速照相600公尺');
+        } else  {
+          setState(() {
+            showCMS = true;
+            showSpeed = false;
+          });
+        }
       }
 
       print('showCMS:' + showCMS.toString());
@@ -328,17 +334,17 @@ void dispose() {
     }
   }
 
-void _stopTrackingPosition() async {
-  // 取消位置更新的訂閱
-  if (timer2 != null) {
-    try {
-      timer2?.cancel();
-    } catch (e) {
-      print('Error while canceling timer2: $e');
+  void _stopTrackingPosition() async {
+    // 取消位置更新的訂閱
+    if (timer2 != null) {
+      try {
+        timer2?.cancel();
+      } catch (e) {
+        print('Error while canceling timer2: $e');
+      }
     }
+    _positionStreamSubscription?.cancel();
   }
-  _positionStreamSubscription?.cancel();
-}
 
   // 更新CMS_car資訊
   Future<void> updateCMSList_Car() async {
@@ -437,30 +443,29 @@ void _stopTrackingPosition() async {
     }
   }
 
-void setDisplay() {
-  int index = 0;
-  // 每10秒向後端要求一次CMS資料
-  timer2 = Timer.periodic(const Duration(seconds: 10), (timer) {
-    if (mounted && index >= 0 && index < cmsList_car.length) {
-      try {
-        FlutterTts().speak(cmsList_car[index]['voice']);
+  void setDisplay() {
+    int index = 0;
+    // 每10秒向後端要求一次CMS資料
+    timer2 = Timer.periodic(const Duration(seconds: 10), (timer) {
+      if (mounted && index >= 0 && index < cmsList_car.length) {
+        try {
+          FlutterTts().speak(cmsList_car[index]['voice']);
 
-        controller.animateToPage(
-          index,
-          duration: Duration(milliseconds: 1000),
-          curve: Curves.easeInOut,
-        );
-      } catch (e) {
-        print(e);
+          controller.animateToPage(
+            index,
+            duration: Duration(milliseconds: 1000),
+            curve: Curves.easeInOut,
+          );
+        } catch (e) {
+          print(e);
+        }
+
+        index++;
+      } else {
+        index = 0;
       }
-
-      index++;
-    } else {
-      index = 0;
-    }
-  });
-}
-
+    });
+  }
 
   changeWidget() {
     if (directionState) {
