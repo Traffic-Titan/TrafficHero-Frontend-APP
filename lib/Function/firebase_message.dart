@@ -12,14 +12,11 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
     'payload': message.data
   };
 
-
-
   try {
     await saveList(newMessage);
   } catch (e) {
     print(e);
   }
-
 }
 
 Future<void> saveList(messagelist) async {
@@ -27,25 +24,27 @@ Future<void> saveList(messagelist) async {
   List<dynamic> message = [];
   late SharedPreferences prefs;
   prefs = await SharedPreferences.getInstance();
+  final storedMessage = prefs.getString('message') ?? '[]'; // 使用 '[]' 作為預設值
+
+  final decodedMessage = json.decode(storedMessage.trim()) as List<dynamic>;
 
   try {
-    final storedMessage = prefs.getString('message');
-    final decodedMessage = json.decode(storedMessage!.trim()) as List<dynamic>;
     print("加入之前" + decodedMessage.toString());
     if (decodedMessage is List) {
       message = decodedMessage;
       print(message);
       print(message.length);
     }
-    ;
 
     message.add(messagelist);
     prefs.setString('message', json.encode(message));
-    print("saveList加入之後" +prefs.getString('message').toString());
+    print("saveList加入之後" + prefs.getString('message').toString());
   } catch (e) {
     print(e);
   }
 }
+
+
 
 class Firebase_message {
   final _firebaseMess = FirebaseMessaging.instance;
@@ -66,7 +65,6 @@ class Firebase_message {
       await registerMessageToken(fCMToken);
     }
 
-    
     FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
     FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       print('App opened from onMessageOpenedApp message:');
@@ -75,18 +73,16 @@ class Firebase_message {
       print('payload: ${message.data}');
 
       final newMessage = {
-    'title': message.notification?.title,
-    'body': message.notification?.body,
-    'payload': message.data
-  };
+        'title': message.notification?.title,
+        'body': message.notification?.body,
+        'payload': message.data
+      };
 
-
-
-  try {
-     saveList(newMessage);
-  } catch (e) {
-    print(e);
-  }
+      try {
+        saveList(newMessage);
+      } catch (e) {
+        print(e);
+      }
     });
     FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       print('App opened from onMessage message:');
@@ -128,7 +124,6 @@ class Firebase_message {
     try {
       response = await api().apiPost(Body, url, jwt);
       if (response.statusCode == 200) {
-
         print(true);
       } else {
         print(response.statusCode);
