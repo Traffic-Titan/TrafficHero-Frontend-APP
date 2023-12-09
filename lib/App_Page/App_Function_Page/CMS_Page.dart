@@ -128,7 +128,7 @@ void dispose() {
       print(directionString);
 
       print((_speed > 100 ? 10000 : 5000));
-      if (distance < (_speed > 100 ? 10000 : 5000)) {
+      if (distance < (_speed > 100 ? 1000 : 500)) {
         print(true);
       } else {
         print(distance);
