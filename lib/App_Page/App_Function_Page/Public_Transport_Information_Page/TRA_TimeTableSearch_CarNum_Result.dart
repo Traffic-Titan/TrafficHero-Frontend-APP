@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, file_names, camel_case_types, use_super_parameters, prefer_typing_uninitialized_variables, non_constant_identifier_names
+
 import 'package:traffic_hero/imports.dart';
 
 class TRA_TimeTableSearch_CarNum_Result extends StatefulWidget {
@@ -22,16 +24,16 @@ class _TRA_TimeTableSearch_CarNum_ResultState extends State<TRA_TimeTableSearch_
     CarType = state.TRA_TimeTableSearch_CarType;
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(221, 235, 247, 1),
+      backgroundColor: const Color.fromRGBO(221, 235, 247, 1),
       appBar:AppBar(
         title:Text(CarNum+" "+CarType) ,
-        backgroundColor: Color.fromRGBO(113, 170, 221, 1),
+        backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
       ),
       body: Column(
         children: [
 
-          SizedBox(height: 10,),
-          Row(
+          const SizedBox(height: 10,),
+          const Row(
             children: [
               Expanded(
                   flex: 1,
@@ -55,7 +57,7 @@ class _TRA_TimeTableSearch_CarNum_ResultState extends State<TRA_TimeTableSearch_
               ),
             ],
           ),
-          Divider(),
+          const Divider(),
           // 內容
           Flexible(
             child: ListView.builder(
@@ -68,15 +70,15 @@ class _TRA_TimeTableSearch_CarNum_ResultState extends State<TRA_TimeTableSearch_
                         Expanded(
                           flex: 3,
                           child: ListTile(
-                              title: Container(
+                              title: SizedBox(
                                 height: 30,
-                                child: Text(list['StationName']['Zh_tw'],style: TextStyle(color: Colors.black,fontSize: 20),textAlign: TextAlign.center,),
+                                child: Text(list['StationName']['Zh_tw'],style: const TextStyle(color: Colors.black,fontSize: 20),textAlign: TextAlign.center,),
                               )
                           ),
                         ),
                         Expanded(
                           flex: 3,
-                          child: Text(list['ArrivalTime'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+                          child: Text(list['ArrivalTime'],style: const TextStyle(fontSize: 20),textAlign: TextAlign.center,),
                         ),
                         // Expanded(
                         //     flex: 1,
@@ -84,7 +86,7 @@ class _TRA_TimeTableSearch_CarNum_ResultState extends State<TRA_TimeTableSearch_
                         // ),
                         Expanded(
                           flex: 3,
-                          child: Text(list['DepartureTime'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+                          child: Text(list['DepartureTime'],style: const TextStyle(fontSize: 20),textAlign: TextAlign.center,),
                         ),
                       ],
                     ),

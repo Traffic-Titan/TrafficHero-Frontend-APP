@@ -1,4 +1,4 @@
-// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, unnecessary_null_comparison, prefer_function_declarations_over_variables, camel_case_types, prefer_typing_uninitialized_variables, file_names
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, unnecessary_null_comparison, prefer_function_declarations_over_variables, camel_case_types, prefer_typing_uninitialized_variables, file_names, use_super_parameters
 import 'package:traffic_hero/imports.dart';
 
 class verify_page extends StatefulWidget {

@@ -1,6 +1,8 @@
+// ignore_for_file: deprecated_member_use, file_names, camel_case_types, prefer_typing_uninitialized_variables, non_constant_identifier_names, avoid_unnecessary_containers
+
 import 'package:traffic_hero/imports.dart';
 class TRA_TimeTableSearch_StartEndStation_Result extends StatefulWidget {
-  const TRA_TimeTableSearch_StartEndStation_Result({Key? key}) : super(key: key);
+  const TRA_TimeTableSearch_StartEndStation_Result({super.key});
 
   @override
   State<TRA_TimeTableSearch_StartEndStation_Result> createState() => _TRA_TimeTableSearch_StartEndStation_ResultState();
@@ -21,20 +23,20 @@ class _TRA_TimeTableSearch_StartEndStation_ResultState extends State<TRA_TimeTab
     screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      backgroundColor: Color.fromRGBO(221, 235, 247, 1),
+      backgroundColor: const Color.fromRGBO(221, 235, 247, 1),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(113, 170, 221, 1),
-        iconTheme: IconThemeData(//返回鍵顏色
+        backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
+        iconTheme: const IconThemeData(//返回鍵顏色
           color:Colors.white, //change your color here
         ),
-        titleTextStyle: TextStyle(color: Colors.white,fontSize: 20),
+        titleTextStyle: const TextStyle(color: Colors.white,fontSize: 20),
         title: Text(StartStation+"　－　"+EndStation),
       ),
       body: Column(
         children: [
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           Container(
-            child: Row(
+            child: const Row(
               children: [
                 Icon(Icons.add_business,size: 20,),
                 Text("山線"),
@@ -51,9 +53,9 @@ class _TRA_TimeTableSearch_StartEndStation_ResultState extends State<TRA_TimeTab
               ],
             ),
           ),
-          Divider(),
+          const Divider(),
           Container(
-            child: Row(
+            child: const Row(
               children: [
                 Expanded(
                   flex: 1,
@@ -78,7 +80,7 @@ class _TRA_TimeTableSearch_StartEndStation_ResultState extends State<TRA_TimeTab
               ],
             ),
           ),
-          Divider(height: 5,color:Color.fromRGBO(24, 60, 126, 1)),
+          const Divider(height: 5,color:Color.fromRGBO(24, 60, 126, 1)),
           // 內容
           Flexible(
             child: ListView.builder(
@@ -87,18 +89,18 @@ class _TRA_TimeTableSearch_StartEndStation_ResultState extends State<TRA_TimeTab
                   var list = DailyTimeTable_Result[index];
                   return ListTile(
                     minVerticalPadding:15,
-                    leading: Container(
+                    leading: SizedBox(
                         height: 50,
                         width: 80,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
-                            color: (list['TrainTypeName'].toString().contains('區間')) ? Color.fromRGBO(24, 60, 126, 1) : Colors.red,
+                            color: (list['TrainTypeName'].toString().contains('區間')) ? const Color.fromRGBO(24, 60, 126, 1) : Colors.red,
                           ),
                           child:Column(
                             children: [
-                              Text(list['TrainNo'],style: TextStyle(color: Colors.white,fontSize: 18),textAlign: TextAlign.center,),
-                              Text(list['TrainTypeName'],style: TextStyle(color: Colors.white,fontSize: 13),textAlign: TextAlign.center,overflow: TextOverflow.ellipsis,),
+                              Text(list['TrainNo'],style: const TextStyle(color: Colors.white,fontSize: 18),textAlign: TextAlign.center,),
+                              Text(list['TrainTypeName'],style: const TextStyle(color: Colors.white,fontSize: 13),textAlign: TextAlign.center,overflow: TextOverflow.ellipsis,),
                             ],
                           )
 
@@ -108,9 +110,9 @@ class _TRA_TimeTableSearch_StartEndStation_ResultState extends State<TRA_TimeTab
                       children: [
                       Expanded(
                           flex: 2,
-                          child: Text(list['StopTimes'][0]['ArrivalTime'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+                          child: Text(list['StopTimes'][0]['ArrivalTime'],style: const TextStyle(fontSize: 20),textAlign: TextAlign.center,),
                         ),
-                      Expanded(
+                      const Expanded(
                           flex: 1,
                           child:Column(
                             children: [
@@ -122,11 +124,11 @@ class _TRA_TimeTableSearch_StartEndStation_ResultState extends State<TRA_TimeTab
                       ),
                       Expanded(
                         flex: 2,
-                        child: Text(list['StopTimes'][list['StopTimes'].length-1]['ArrivalTime'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+                        child: Text(list['StopTimes'][list['StopTimes'].length-1]['ArrivalTime'],style: const TextStyle(fontSize: 20),textAlign: TextAlign.center,),
                       ),
                       ],
                     ),
-                    trailing: Text(list['Fare'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+                    trailing: Text(list['Fare'],style: const TextStyle(fontSize: 20),textAlign: TextAlign.center,),
                   );
                 }
             ),

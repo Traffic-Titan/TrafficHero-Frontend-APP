@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, use_super_parameters, prefer_typing_uninitialized_variables, prefer_collection_literals, annotate_overrides, sort_child_properties_last
+
 import 'package:traffic_hero/imports.dart';
 class StationMap_Bus extends StatefulWidget {
   const StationMap_Bus({Key? key}) : super(key: key);
@@ -47,10 +49,10 @@ class _StationMap_BusState extends State<StationMap_Bus> {
     // 目前位置標記
     _markers.add(
       Marker(
-        markerId: MarkerId('目前位置'),
+        markerId: const MarkerId('目前位置'),
         position: LatLng(position.latitude, position.longitude),
         icon: BitmapDescriptor.defaultMarkerWithHue(223),
-        infoWindow: InfoWindow(
+        infoWindow: const InfoWindow(
             title: '目前位置'
         ),
       )
@@ -97,8 +99,8 @@ class _StationMap_BusState extends State<StationMap_Bus> {
 //定位按鈕
   Widget floatingBtn(){
     return FloatingActionButton(
-      child: Icon(Icons.location_searching),
-      backgroundColor:Color.fromRGBO(113, 170, 221, 1),
+      child: const Icon(Icons.location_searching),
+      backgroundColor:const Color.fromRGBO(113, 170, 221, 1),
       onPressed: () {
         addPositionMarkers(state.positionNow.latitude,state.positionNow.longitude,'目前位置');
       },
@@ -112,15 +114,15 @@ class _StationMap_BusState extends State<StationMap_Bus> {
             length: 4,
             child: Scaffold(
                 appBar: AppBar(
-                  iconTheme: IconThemeData(color: Colors.white),
+                  iconTheme: const IconThemeData(color: Colors.white),
                   backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
                   leading: IconButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    icon: Icon(Icons.arrow_back_outlined),
+                    icon: const Icon(Icons.arrow_back_outlined),
                   ),
-                  title: Text('站點地圖', style: TextStyle(
+                  title: const Text('站點地圖', style: TextStyle(
                       color: Colors.white),),
                 ),
                 body: Stack(

@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, file_names, avoid_print
+// ignore_for_file: prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, file_names, avoid_print, prefer_const_constructors
 import 'package:traffic_hero/Imports.dart';
 import 'package:traffic_hero/imports.dart';
 

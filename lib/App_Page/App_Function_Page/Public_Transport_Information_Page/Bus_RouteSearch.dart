@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, file_names, constant_identifier_names, prefer_typing_uninitialized_variables, non_constant_identifier_names, use_super_parameters, unnecessary_brace_in_string_interps, prefer_interpolation_to_compose_strings, avoid_print, prefer_is_empty, prefer_const_constructors, unnecessary_new
 
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/Bus_RouteDetail.dart';
 import 'package:traffic_hero/imports.dart';
@@ -97,7 +97,7 @@ class _BusRouteSearchState extends State<BusRouteSearch> {
             height: 10,
           ),
           // 公車班次輸入框
-              Container(
+              SizedBox(
                 width: MediaQuery.of(context).size.width * 0.9,
                 height: 45,
                 child: TextField(

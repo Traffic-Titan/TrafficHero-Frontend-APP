@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, use_super_parameters, non_constant_identifier_names, unnecessary_brace_in_string_interps, avoid_print, prefer_const_constructors
+
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/THSR_StartEndStationSearch_Result.dart';
@@ -26,9 +28,8 @@ class _THSR_StartEndStationSearchState extends State<THSR_StartEndStationSearch>
 
     //根據起訖點搜尋
     getStationList() async{
-      var url = dotenv.env['THSR_SearchBy_Date_Stop'].toString() +
-          '?OriginStationName=${dropDownValue_Start}&DestinationStationName=${dropDownValue_End}&TrainDate=${selectedDate}';
-      var jwt = ',' + state.accountState.toString();
+      var url = '${dotenv.env['THSR_SearchBy_Date_Stop']}?OriginStationName=${dropDownValue_Start}&DestinationStationName=${dropDownValue_End}&TrainDate=${selectedDate}';
+      var jwt = ',${state.accountState}';
       print(url);
       var response = await api().apiGet(url, jwt);
       if (response.statusCode == 200) {

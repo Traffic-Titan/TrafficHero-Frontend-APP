@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, file_names, camel_case_types, prefer_typing_uninitialized_variables, prefer_collection_literals, annotate_overrides, non_constant_identifier_names, avoid_print, avoid_unnecessary_containers
 
 import 'package:traffic_hero/Imports.dart';
 
@@ -47,10 +47,10 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
     _markers.clear();
     // 目前位置標記
     _markers.add(Marker(
-      markerId: MarkerId('目前位置'),
+      markerId: const MarkerId('目前位置'),
       position: LatLng(position.latitude, position.longitude),
       icon: BitmapDescriptor.defaultMarkerWithHue(223),
-      infoWindow: InfoWindow(title: '目前位置'),
+      infoWindow: const InfoWindow(title: '目前位置'),
     ));
 
     for (var i = 0; i < content.length; i++) {
@@ -63,23 +63,17 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
                   list['location']['latitude'], list['location']['longitude']),
               infoWindow: InfoWindow(
                 title: list['station_name_zh_tw'],
-                snippet: '可借 - ' +
-                    list['available_rent_bikes'].toString() +
-                    ',可還 - ' +
-                    list['available_return_bikes'].toString(),
+                snippet: '可借 - ${list['available_rent_bikes']},可還 - ${list['available_return_bikes']}',
               ),
               onTap: () {
                 launch(list['url']);
                 setState(() {});
               }),
         );
-        print(i.toString() +
-            '標記成功' +
-            list['location']['latitude'].toString() +
-            list['location']['longitude'].toString());
+        print('$i標記成功${list['location']['latitude']}${list['location']['longitude']}');
       } catch (e) {
         print(e);
-        print(i.toString() + '標記失敗');
+        print('$i標記失敗');
       }
     }
   }
@@ -134,13 +128,13 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
       child: Column(
         children: [
           Container(
-            color: Color.fromRGBO(62, 111, 179, 1),
-            child: ListTile(
+            color: const Color.fromRGBO(62, 111, 179, 1),
+            child: const ListTile(
               title: Text(
                 '附近站點',
                 style: TextStyle(color: Colors.white),
               ),
-              trailing: Container(
+              trailing: SizedBox(
                 width: 110,
                 height: 50,
                 child: Row(
@@ -172,7 +166,7 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
                     title: Container(
                       child: Text(
                         list['station_name_zh_tw'],
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 15,
                           color: Color.fromRGBO(0, 32, 96, 1),
                         ),
@@ -183,24 +177,24 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(list['service_type']),
-                        Text('${list['distance']}m',style: TextStyle(color: Colors.indigo),),
+                        Text('${list['distance']}m',style: const TextStyle(color: Colors.indigo),),
                       ],
                     ),
-                    trailing: Container(
+                    trailing: SizedBox(
                       width: 100,
                       height: 50,
                       child: Row(
                         children: [
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Text(
                             list['available_rent_bikes'].toString(),
-                            style: TextStyle(fontSize: 18, color: Colors.red),
+                            style: const TextStyle(fontSize: 18, color: Colors.red),
                           ),
-                          SizedBox(width: 30),
+                          const SizedBox(width: 30),
                           Text(
                             list['available_return_bikes'].toString(),
                             style:
-                                TextStyle(fontSize: 18, color: Colors.blueAccent),
+                                const TextStyle(fontSize: 18, color: Colors.blueAccent),
                           ),
                         ],
                       ),

@@ -1,4 +1,4 @@
-// ignore_for_file: unused_import, file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print, avoid_types_as_parameter_names, use_build_context_synchronously, unnecessary_brace_in_string_interps, prefer_is_empty, camel_case_types, must_be_immutable
+// ignore_for_file: unused_import, file_names, non_constant_identifier_names, prefer_typing_uninitialized_variables, avoid_print, avoid_types_as_parameter_names, use_build_context_synchronously, unnecessary_brace_in_string_interps, prefer_is_empty, camel_case_types, must_be_immutable, use_super_parameters
 
 import 'package:traffic_hero/Imports.dart';
 // Make sure to import other necessary dependencies here

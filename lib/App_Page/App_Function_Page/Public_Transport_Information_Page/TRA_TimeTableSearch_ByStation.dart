@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, non_constant_identifier_names, camel_case_types, prefer_typing_uninitialized_variables
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/TRA_TimeTableSearch_ByStation_Result.dart';
 import 'package:traffic_hero/imports.dart';
@@ -494,7 +496,7 @@ String dropDownValue_Start = stopName.first;
 
 
 class TRA_TimeTableSearch_ByStation extends StatefulWidget {
-  const TRA_TimeTableSearch_ByStation({Key? key}) : super(key: key);
+  const TRA_TimeTableSearch_ByStation({super.key});
 
   @override
   State<TRA_TimeTableSearch_ByStation> createState() => _TRA_TimeTableSearch_ByStationState();
@@ -507,9 +509,8 @@ class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_BySt
   getStationTimeTableByStation() async{
     var outBoundList = [];
     var inBoundList = [];
-    var url = dotenv.env['TRA_DailyTimeTable_ByStation'].toString() +
-        '?StationID=${stationID[stopName.indexOf(dropDownValue_Start)]}';
-    var jwt = ',' + state.accountState.toString();
+    var url = '${dotenv.env['TRA_DailyTimeTable_ByStation']}?StationID=${stationID[stopName.indexOf(dropDownValue_Start)]}';
+    var jwt = ',${state.accountState}';
     var response = await api().apiGet(url, jwt);
     if (response.statusCode == 200) {
       var data = jsonDecode(utf8.decode(response.bodyBytes));
@@ -530,8 +531,8 @@ class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_BySt
         state.updateTRA_TimeTableSearch_Station_Result_OutBound(outBoundList);
         state.updateTRA_TimeTableSearch_Station_Result_InBound(inBoundList);
       });
-      Future.delayed(Duration(seconds: 1),(){
-        Navigator.push(context, MaterialPageRoute(builder: (context) => TRA_TimeTableSearch_ByStation_Result()));
+      Future.delayed(const Duration(seconds: 1),(){
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const TRA_TimeTableSearch_ByStation_Result()));
       });
 
     }
@@ -542,17 +543,17 @@ class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_BySt
     state = Provider.of<stateManager>(context, listen: false);
     screenWidth = MediaQuery. of(context). size. width ;
     return Scaffold(
-      backgroundColor: Color.fromRGBO(221, 235, 247, 1),
+      backgroundColor: const Color.fromRGBO(221, 235, 247, 1),
       body: Column(
         children: [
           Container(
-            margin: EdgeInsets.only(bottom: 10,top: 10),
-            decoration: BoxDecoration(
+            margin: const EdgeInsets.only(bottom: 10,top: 10),
+            decoration: const BoxDecoration(
               color: Color.fromRGBO(165, 201, 233, 1),
               borderRadius: BorderRadius.all(Radius.circular(14)),
             ),
             width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-            child: Text('車站查詢',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
+            child: const Text('車站查詢',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
           ),
         //起訖站查詢按鈕
           Container(
@@ -564,9 +565,9 @@ class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_BySt
                     //選擇起始地
                     DecoratedBox(
                         decoration: BoxDecoration(
-                            border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
+                            border: Border.all(color: const Color.fromRGBO(24, 60, 126, 1),width: 2),
                             borderRadius: BorderRadius.circular(15),
-                            color: Color.fromRGBO(221, 235, 247, 1)
+                            color: const Color.fromRGBO(221, 235, 247, 1)
                         ),
                         child: Container(
                             height: 60,
@@ -575,11 +576,11 @@ class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_BySt
 
                             child: DropdownSearch<String>(
                               items: stopName,
-                              popupProps: PopupProps.menu(
+                              popupProps: const PopupProps.menu(
                                 showSearchBox: true, // add this line
                                 showSelectedItems: true,
                               ),
-                              dropdownDecoratorProps: DropDownDecoratorProps(
+                              dropdownDecoratorProps: const DropDownDecoratorProps(
                                   textAlign: TextAlign.center,
                                   baseStyle:TextStyle(fontSize: 20),
                                   dropdownSearchDecoration: InputDecoration(
@@ -596,8 +597,8 @@ class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_BySt
               )
           ),
           Container(
-              margin: EdgeInsets.only(top: 20),
-              decoration: BoxDecoration(
+              margin: const EdgeInsets.only(top: 20),
+              decoration: const BoxDecoration(
                 color: Color.fromRGBO(24, 60, 126, 1),
                 borderRadius: BorderRadius.all(Radius.circular(14)),
               ),
@@ -606,7 +607,7 @@ class _TRA_TimeTableSearch_ByStationState extends State<TRA_TimeTableSearch_BySt
                 onPressed: () async {
                   await getStationTimeTableByStation();
                 },
-                child: Text('搜尋',style: TextStyle(color: Colors.white,fontSize: 20),),
+                child: const Text('搜尋',style: TextStyle(color: Colors.white,fontSize: 20),),
               )
           ),
         ],

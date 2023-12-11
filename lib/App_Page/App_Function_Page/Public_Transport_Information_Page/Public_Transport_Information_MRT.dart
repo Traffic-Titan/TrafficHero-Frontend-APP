@@ -1,5 +1,5 @@
 
-// ignore_for_file: unused_local_variable
+// ignore_for_file: unused_local_variable, file_names, prefer_const_literals_to_create_immutables
 
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/MRT_AnkengLRT.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/MRT_DanhaiLRT.dart';
@@ -23,23 +23,23 @@ Widget publicTransportInfoMRT(context){
                 toolbarHeight: 0,
                 bottom: TabBar(
                   labelColor:Colors.white,//被選中文字顏色,
-                  labelStyle: TextStyle(fontSize: 18),
-                  indicator: UnderlineTabIndicator( // 被選中底線顏色
+                  labelStyle: const TextStyle(fontSize: 18),
+                  indicator: const UnderlineTabIndicator( // 被選中底線顏色
                       borderSide: BorderSide(color: Color.fromRGBO(29, 73, 153, 1))
                   ),
-                  overlayColor: MaterialStateProperty.all(Color.fromRGBO(113, 170, 221, 1)),
+                  overlayColor: MaterialStateProperty.all(const Color.fromRGBO(113, 170, 221, 1)),
                   tabs: [
-                    Tab(text: '臺北捷運'),
-                    Tab(text: '淡海輕軌'),
-                    Tab(text: '安坑輕軌'),
-                    Tab(text: '桃園捷運'),
-                    Tab(text: '臺中捷運'),
-                    Tab(text: '高雄捷運'),
+                    const Tab(text: '臺北捷運'),
+                    const Tab(text: '淡海輕軌'),
+                    const Tab(text: '安坑輕軌'),
+                    const Tab(text: '桃園捷運'),
+                    const Tab(text: '臺中捷運'),
+                    const Tab(text: '高雄捷運'),
                   ],
                   isScrollable: true,
                 ),
               ),
-              body: TabBarView(
+              body: const TabBarView(
                 physics: NeverScrollableScrollPhysics(),
                 children: [
                   MRT_Taipei(),

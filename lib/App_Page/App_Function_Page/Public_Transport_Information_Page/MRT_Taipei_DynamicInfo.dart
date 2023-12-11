@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables, non_constant_identifier_names, camel_case_types, use_super_parameters, no_leading_underscores_for_local_identifiers, unnecessary_brace_in_string_interps, avoid_print, prefer_const_constructors, avoid_unnecessary_containers
+
 import 'package:traffic_hero/Imports.dart';
 
 var screenWidth;
@@ -115,7 +117,6 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
               Expanded(
                 flex: 3,
                 child: ElevatedButton(
-                  child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
                     iconColor: MaterialStateProperty.all(Colors.white,),
@@ -123,6 +124,7 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                   onPressed: (){
                     updateStationState("BR");
                   },
+                  child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                 ),
               ),
             ],
@@ -189,7 +191,6 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                 Expanded(
                   flex: 2,
                   child: ElevatedButton(
-                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
                       iconColor: MaterialStateProperty.all(Colors.white,),
@@ -197,6 +198,7 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                     onPressed: (){
                       updateStationState("R");
                     },
+                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                   ),
                 ),
               ],
@@ -263,7 +265,6 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                 Expanded(
                   flex: 2,
                   child: ElevatedButton(
-                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
                       iconColor: MaterialStateProperty.all(Colors.white,),
@@ -271,6 +272,7 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                     onPressed: (){
                       updateStationState("G");
                     },
+                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                   ),
                 ),
               ],
@@ -337,7 +339,6 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                 Expanded(
                   flex: 2,
                   child: ElevatedButton(
-                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
                       iconColor: MaterialStateProperty.all(Colors.white,),
@@ -345,6 +346,7 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                     onPressed: (){
                       updateStationState("O");
                     },
+                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                   ),
                 ),
               ],
@@ -411,7 +413,6 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                 Expanded(
                   flex: 2,
                   child: ElevatedButton(
-                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
                       iconColor: MaterialStateProperty.all(Colors.white,),
@@ -419,6 +420,7 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                     onPressed: (){
                       updateStationState("BL");
                     },
+                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                   ),
                 ),
               ],
@@ -485,7 +487,6 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                 Expanded(
                   flex: 2,
                   child: ElevatedButton(
-                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                     style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Color.fromRGBO(29, 73, 153, 1),),
                       iconColor: MaterialStateProperty.all(Colors.white,),
@@ -493,6 +494,7 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                     onPressed: (){
                       updateStationState("Y");
                     },
+                    child: Text('Update',style: TextStyle(color: Colors.white,fontSize: 20),),
                   ),
                 ),
               ],
@@ -563,7 +565,7 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                       borderSide: BorderSide(color: Color.fromRGBO(29, 73, 153, 1))
                   ),
                   overlayColor: MaterialStateProperty.all(Color.fromRGBO(113, 170, 221, 1)),
-                  tabs: [
+                  tabs: const [
                     Tab(text: 'BR'),
                     Tab(text: 'R'),
                     Tab(text: 'G'),
@@ -585,11 +587,11 @@ class _MRT_Taipei_DynamicInfoState extends State<MRT_Taipei_DynamicInfo> {
                 ],
               ),
               floatingActionButton: FloatingActionButton(
-                  child: Icon(Icons.arrow_back),
                   backgroundColor: Color.fromRGBO(187, 214, 239, 1),
                   onPressed: (){{
                     Navigator.pop(context);
-                  }}
+                  }},
+                  child: Icon(Icons.arrow_back)
               ),
             )
         )
