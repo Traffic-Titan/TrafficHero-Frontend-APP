@@ -82,6 +82,8 @@ dependencies:
   # background_fetch: ^1.2.1
   extended_image: ^8.1.1
   firebase_messaging: ^14.7.6
+  flutter_lints: ^3.0.1
+  webview_flutter_android: ^3.12.1
 
 
 dev_dependencies:

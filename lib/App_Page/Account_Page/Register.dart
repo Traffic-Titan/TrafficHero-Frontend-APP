@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, prefer_const_declarations, non_constant_identifier_names, duplicate_ignore, unnecessary_import, unrelated_type_equality_checks, dead_code, file_names, sized_box_for_whitespace, unused_local_variable, prefer_typing_uninitialized_variables
+// ignore_for_file: camel_case_types, prefer_const_declarations, non_constant_identifier_names, duplicate_ignore, unnecessary_import, unrelated_type_equality_checks, dead_code, file_names, sized_box_for_whitespace, unused_local_variable, prefer_typing_uninitialized_variables, avoid_print, prefer_const_constructors
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
 import 'package:traffic_hero/imports.dart';

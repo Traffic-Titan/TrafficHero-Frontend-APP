@@ -1,9 +1,11 @@
+// ignore_for_file: file_names, camel_case_types, prefer_typing_uninitialized_variables, non_constant_identifier_names, avoid_print, prefer_is_empty
+
 import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page_Detail.dart';
 import 'package:traffic_hero/imports.dart';
 
 
 class Tourist_Information_Page_SearchPage extends StatefulWidget {
-  const Tourist_Information_Page_SearchPage({Key? key}) : super(key: key);
+  const Tourist_Information_Page_SearchPage({super.key});
 
   @override
   State<Tourist_Information_Page_SearchPage> createState() => _Tourist_Information_Page_SearchPageState();
@@ -25,8 +27,8 @@ class _Tourist_Information_Page_SearchPageState extends State<Tourist_Informatio
   }
   //根據"關鍵字"回傳該項目的UID、名稱
   void resultDetail(String UID) async{
-    var url = dotenv.env['KeyWord2UID'].toString() + '?UID='+UID;
-    var jwt = ',' + state.accountState.toString();
+    var url = '${dotenv.env['KeyWord2UID']}?UID=$UID';
+    var jwt = ',${state.accountState}';
     var response = await api().apiGet(url, jwt);
     if (response.statusCode == 200) {
       setState(() {
@@ -41,8 +43,8 @@ class _Tourist_Information_Page_SearchPageState extends State<Tourist_Informatio
 
   // 關鍵字搜尋
   void searchResult(String inputText)async{
-    var url = dotenv.env['SearchKeyWord'].toString() + '?KeyWord='+inputText;
-    var jwt = ',' + state.accountState.toString();
+    var url = '${dotenv.env['SearchKeyWord']}?KeyWord=$inputText';
+    var jwt = ',${state.accountState}';
     var response = await api().apiGet(url, jwt);
     if (response.statusCode == 200) {
       setState(() {
@@ -68,13 +70,13 @@ class _Tourist_Information_Page_SearchPageState extends State<Tourist_Informatio
 
           // 搜尋欄
           title: ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.search,
                 color: Colors.white,
                 size: 28,
               ),
               title: TextField(
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: '以名稱搜尋',
                   hintStyle: TextStyle(
                     color: Colors.white,
@@ -95,7 +97,7 @@ class _Tourist_Information_Page_SearchPageState extends State<Tourist_Informatio
                     searchResult(inputText);
                   }
                 },
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 ),
               )
@@ -116,8 +118,8 @@ class _Tourist_Information_Page_SearchPageState extends State<Tourist_Informatio
                         resultDetail(data['UID']);
 
                         //透過延遲進入頁面，使頁面能夠順利讀取UID所獲取的資料
-                        Future.delayed(Duration(seconds: 1),(){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Tourist_Information_Page_Detail()));
+                        Future.delayed(const Duration(seconds: 1),(){
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const Tourist_Information_Page_Detail()));
                         });
                       },
                       child: Text(data['名稱'])

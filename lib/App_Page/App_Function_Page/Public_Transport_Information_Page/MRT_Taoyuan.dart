@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, use_super_parameters, prefer_typing_uninitialized_variables
+
 import 'package:traffic_hero/Imports.dart';
 
 class MRT_Taoyuan extends StatefulWidget {
@@ -15,7 +17,7 @@ class _MRT_TaoyuanState extends State<MRT_Taoyuan> {
           controller: scrollController,
           children: [
             //搜尋欄
-            ListTile(
+            const ListTile(
                 leading: Icon(
                   Icons.search,
                   color: Color.fromRGBO(46, 80, 140, 1),
@@ -49,13 +51,13 @@ class _MRT_TaoyuanState extends State<MRT_Taoyuan> {
                 )
             ),
             ClipRRect(
-              borderRadius: BorderRadius.all(Radius.circular(30)),
+              borderRadius: const BorderRadius.all(Radius.circular(30)),
               child: Container(
                 alignment: Alignment.bottomLeft,
-                margin: EdgeInsets.only(left: 20,right: 20),
-                padding: EdgeInsets.all(5),
-                color: Color.fromRGBO(165, 201, 233, 1),
-                child: Text('進站動態',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 18),textAlign:TextAlign.center,),
+                margin: const EdgeInsets.only(left: 20,right: 20),
+                padding: const EdgeInsets.all(5),
+                color: const Color.fromRGBO(165, 201, 233, 1),
+                child: const Text('進站動態',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 18),textAlign:TextAlign.center,),
               ),
             ),
 
@@ -69,7 +71,7 @@ class _MRT_TaoyuanState extends State<MRT_Taoyuan> {
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
-    return Stack(
+    return const Stack(
         children:[
           WebViewForMRT(
             tt: 'https://tw.piliapp.com/mrt-taiwan/airport/',

@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_type_check, avoid_print, prefer_interpolation_to_compose_strings, camel_case_types, non_constant_identifier_names, prefer_typing_uninitialized_variables, unnecessary_brace_in_string_interps
+
 import '../Imports.dart';
 
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
@@ -91,7 +93,6 @@ class Firebase_message {
       print('payload: ${message.data}');
 
       // 初始化 messageList，以防它為 null
-      messageList ??= [];
 
       // 使用 Map 類型來構建新的訊息
       final newMessage = {
@@ -100,16 +101,7 @@ class Firebase_message {
         'payload': message.data
       };
       await saveList(newMessage);
-      // messageList.add(newMessage);
-      // prefs.setString('message', json.encode(messageList));
-      // try {
-      //   await update().Update(messageList);
-      // } catch (e) {
-      //   print(e);
-      // }
 
-      // state.UpdateMessageList(messageList);
-      // print(messageList);
     });
   }
 

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, use_super_parameters, prefer_typing_uninitialized_variables, unnecessary_brace_in_string_interps
+
 import 'package:traffic_hero/Imports.dart';
 
 class THSR_CarNumSearchResult extends StatefulWidget {
@@ -25,18 +27,18 @@ class _THSR_CarNumSearchResultState extends State<THSR_CarNumSearchResult> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromRGBO(221, 235, 247, 1),
+      backgroundColor: const Color.fromRGBO(221, 235, 247, 1),
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(113, 170, 221, 1),
-        iconTheme: IconThemeData(//返回鍵顏色
+        backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
+        iconTheme: const IconThemeData(//返回鍵顏色
           color:Colors.white, //change your color here
         ),
-        titleTextStyle: TextStyle(color: Colors.white,fontSize: 20),
+        titleTextStyle: const TextStyle(color: Colors.white,fontSize: 20),
         title: Text("車次${carNum}"),
       ),
       body: Column(
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -72,11 +74,11 @@ class _THSR_CarNumSearchResultState extends State<THSR_CarNumSearchResult> {
                         ),
                         Expanded(
                           flex: 3,
-                          child: Text(list['停靠站'],style: TextStyle(fontSize: 20,color:  Color.fromRGBO(24, 60, 126, 1)),textAlign: TextAlign.center,),
+                          child: Text(list['停靠站'],style: const TextStyle(fontSize: 20,color:  Color.fromRGBO(24, 60, 126, 1)),textAlign: TextAlign.center,),
                         ),
                         Expanded(
                             flex: 4,
-                            child: Text(list['預估抵達時間'],style: TextStyle(fontSize: 20,color:  Color.fromRGBO(24, 60, 126, 1)),textAlign: TextAlign.center,)
+                            child: Text(list['預估抵達時間'],style: const TextStyle(fontSize: 20,color:  Color.fromRGBO(24, 60, 126, 1)),textAlign: TextAlign.center,)
                         )
                       ],
                     );

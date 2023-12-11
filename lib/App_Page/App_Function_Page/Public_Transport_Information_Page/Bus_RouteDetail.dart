@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, prefer_typing_uninitialized_variables, use_super_parameters, non_constant_identifier_names, avoid_print, unnecessary_new, prefer_interpolation_to_compose_strings
+
 import 'package:traffic_hero/imports.dart';
 
 class BusRouteDetail extends StatefulWidget {
@@ -30,7 +32,7 @@ class _BusRouteDetailState extends State<BusRouteDetail> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(221, 235, 247, 1),
       appBar: new AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color.fromRGBO(113, 170, 221, 1),
       ),
       body: ListView.builder(

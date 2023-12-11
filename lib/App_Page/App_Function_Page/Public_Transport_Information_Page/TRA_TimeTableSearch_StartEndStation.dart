@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, use_super_parameters, non_constant_identifier_names, prefer_typing_uninitialized_variables, unnecessary_brace_in_string_interps, avoid_print
+
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:flutter_datetime_picker_plus/flutter_datetime_picker_plus.dart';
 import 'package:intl/intl.dart';
@@ -427,9 +429,8 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
     screenWidth = MediaQuery. of(context). size. width ;
     //根據起訖點取得火車時刻表
     getStationTimeTable() async{
-      var url = dotenv.env['TRA_DailyTimeTable_ByStartEndStation'].toString() +
-          '?OriginStationID=${stationID[stopName.indexOf(dropDownValue_Start)]}&DestinationStationID=${stationID[stopName.indexOf(dropDownValue_End)]}&TrainDate=${dateTime_date}&TrainTime=${dateTime_time}';
-      var jwt = ',' + state.accountState.toString();
+      var url = '${dotenv.env['TRA_DailyTimeTable_ByStartEndStation']}?OriginStationID=${stationID[stopName.indexOf(dropDownValue_Start)]}&DestinationStationID=${stationID[stopName.indexOf(dropDownValue_End)]}&TrainDate=${dateTime_date}&TrainTime=${dateTime_time}';
+      var jwt = ',${state.accountState}';
       var response = await api().apiGet(url, jwt);
       var responseBody;
       print(url);
@@ -441,8 +442,8 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
           state.updateTRA_TimeTableSearch_EndStation(dropDownValue_End);
           state.updateTRA_TimeTableSearch_StartEndStation_Result(responseBody);
         });
-        Future.delayed(Duration(seconds: 1),(){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => TRA_TimeTableSearch_StartEndStation_Result()));
+        Future.delayed(const Duration(seconds: 1),(){
+          Navigator.push(context, MaterialPageRoute(builder: (context) => const TRA_TimeTableSearch_StartEndStation_Result()));
         });
 
       }
@@ -450,17 +451,17 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
 
     return Scaffold(
       body: Scaffold(
-        backgroundColor: Color.fromRGBO(221, 235, 247, 1),
+        backgroundColor: const Color.fromRGBO(221, 235, 247, 1),
         body: Column(
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 10,top: 10),
-              decoration: BoxDecoration(
+              margin: const EdgeInsets.only(bottom: 10,top: 10),
+              decoration: const BoxDecoration(
                 color: Color.fromRGBO(165, 201, 233, 1),
                 borderRadius: BorderRadius.all(Radius.circular(14)),
               ),
               width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-              child: Text('起訖站查詢',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
+              child: const Text('起訖站查詢',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
             ),
             //起訖站查詢按鈕
             Container(
@@ -471,9 +472,9 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                 children: [
                   DecoratedBox(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
+                          border: Border.all(color: const Color.fromRGBO(24, 60, 126, 1),width: 2),
                           borderRadius: BorderRadius.circular(15),
-                          color: Color.fromRGBO(221, 235, 247, 1)
+                          color: const Color.fromRGBO(221, 235, 247, 1)
                       ),
                       child: Container(
                         height: 60,
@@ -482,11 +483,11 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
 
                         child: DropdownSearch<String>(
                           items: stopName,
-                          popupProps: PopupProps.menu(
+                          popupProps: const PopupProps.menu(
                             showSearchBox: true, // add this line
                             showSelectedItems: true,
                           ),
-                          dropdownDecoratorProps: DropDownDecoratorProps(
+                          dropdownDecoratorProps: const DropDownDecoratorProps(
                               textAlign: TextAlign.center,
                               baseStyle:TextStyle(fontSize: 20),
                               dropdownSearchDecoration: InputDecoration(
@@ -528,13 +529,13 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                   //     )
                   // ),
                   //交換按鈕
-                  Icon(Icons.cached,size: 20,),
+                  const Icon(Icons.cached,size: 20,),
                   //選擇目的地
                   DecoratedBox(
                       decoration: BoxDecoration(
-                          border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
+                          border: Border.all(color: const Color.fromRGBO(24, 60, 126, 1),width: 2),
                           borderRadius: BorderRadius.circular(15),
-                          color: Color.fromRGBO(221, 235, 247, 1)
+                          color: const Color.fromRGBO(221, 235, 247, 1)
                       ),
                       child: Container(
                           height: 60,
@@ -542,11 +543,11 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                           alignment: Alignment.center,
                           child: DropdownSearch<String>(
                             items: stopName,
-                            popupProps: PopupProps.menu(
+                            popupProps: const PopupProps.menu(
                               showSearchBox: true, // add this line
                               showSelectedItems: true,
                             ),
-                            dropdownDecoratorProps: DropDownDecoratorProps(
+                            dropdownDecoratorProps: const DropDownDecoratorProps(
                                 textAlign: TextAlign.center,
                                 baseStyle:TextStyle(fontSize: 20),
                                 dropdownSearchDecoration: InputDecoration(
@@ -589,29 +590,29 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
               ),
             ),
             Container(
-              margin: EdgeInsets.only(bottom: 10,top: 10),
-              decoration: BoxDecoration(
+              margin: const EdgeInsets.only(bottom: 10,top: 10),
+              decoration: const BoxDecoration(
                 color: Color.fromRGBO(165, 201, 233, 1),
                 borderRadius: BorderRadius.all(Radius.circular(14)),
               ),
               width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-              child: Text('日期時間',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
+              child: const Text('日期時間',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
             ),
             Row(
               children: [
                 Container(
-                  padding: EdgeInsets.only(left: 10,right: 5),
+                  padding: const EdgeInsets.only(left: 10,right: 5),
                   width: screenWidth*0.6,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                        border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
+                        border: Border.all(color: const Color.fromRGBO(24, 60, 126, 1),width: 2),
                         borderRadius: BorderRadius.circular(15),
-                        color: Color.fromRGBO(221, 235, 247, 1)
+                        color: const Color.fromRGBO(221, 235, 247, 1)
                     ),
                     child:TextButton(
                       onPressed: () {
                         DatePicker.showDatePicker(context, showTitleActions: true,
-                            maxTime: DateTime.now().add(Duration(days: 120)),
+                            maxTime: DateTime.now().add(const Duration(days: 120)),
                             minTime: DateTime.now(),
                             onConfirm: (date) async {
                               setState(() {
@@ -620,18 +621,18 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                             }
                         );
                       },
-                      child: Text(dateTime_date,style: TextStyle(color:  Color.fromRGBO(24, 60, 126, 1),fontSize: 20),),
+                      child: Text(dateTime_date,style: const TextStyle(color:  Color.fromRGBO(24, 60, 126, 1),fontSize: 20),),
                     ),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.only(left: 5,right: 10),
+                  padding: const EdgeInsets.only(left: 5,right: 10),
                   width: screenWidth*0.4,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                        border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
+                        border: Border.all(color: const Color.fromRGBO(24, 60, 126, 1),width: 2),
                         borderRadius: BorderRadius.circular(15),
-                        color: Color.fromRGBO(24, 60, 126, 1)
+                        color: const Color.fromRGBO(24, 60, 126, 1)
                     ),
                     child:TextButton(
                       onPressed: () {
@@ -645,15 +646,15 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                             }
                         );
                       },
-                      child: Text(dateTime_time,style: TextStyle(color: Colors.white,fontSize: 20),),
+                      child: Text(dateTime_time,style: const TextStyle(color: Colors.white,fontSize: 20),),
                     ),
                   ),
                 ),
               ],
             ),
             Container(
-                margin: EdgeInsets.only(top: 20),
-                decoration: BoxDecoration(
+                margin: const EdgeInsets.only(top: 20),
+                decoration: const BoxDecoration(
                   color: Color.fromRGBO(24, 60, 126, 1),
                   borderRadius: BorderRadius.all(Radius.circular(14)),
                 ),
@@ -662,7 +663,7 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                   onPressed: () async {
                     await getStationTimeTable();
                   },
-                  child: Text('搜尋',style: TextStyle(color: Colors.white,fontSize: 20),),
+                  child: const Text('搜尋',style: TextStyle(color: Colors.white,fontSize: 20),),
                 )
             ),
           ],

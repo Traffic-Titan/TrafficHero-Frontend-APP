@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, file_names, depend_on_referenced_packages
+
 import 'package:traffic_hero/Imports.dart';
 
 import 'package:traffic_hero/imports.dart';

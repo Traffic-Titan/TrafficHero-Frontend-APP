@@ -1,4 +1,4 @@
-// ignore_for_file: deprecated_member_use
+// ignore_for_file: deprecated_member_use, file_names, camel_case_types, prefer_const_constructors_in_immutables, prefer_typing_uninitialized_variables, prefer_collection_literals, avoid_print, prefer_const_constructors, prefer_interpolation_to_compose_strings, non_constant_identifier_names, avoid_unnecessary_containers
 
 import 'package:traffic_hero/imports.dart';
 
@@ -86,13 +86,13 @@ class _mapPageState extends State<mapPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
+ 
     super.initState();
   }
 
   @override
   void didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
+
     super.didChangeDependencies();
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;

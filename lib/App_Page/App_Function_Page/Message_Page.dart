@@ -1,4 +1,6 @@
 
+// ignore_for_file: unnecessary_type_check, file_names, camel_case_types, non_constant_identifier_names, avoid_print, prefer_typing_uninitialized_variables, annotate_overrides, prefer_interpolation_to_compose_strings
+
 import 'package:traffic_hero/Imports.dart';
 
 class messagePage extends StatefulWidget {
@@ -51,7 +53,7 @@ class _messagePageState extends State<messagePage> {
             print(message.length);
           });
         } else {
-          throw FormatException("Invalid JSON format in SharedPreferences");
+          throw const FormatException("Invalid JSON format in SharedPreferences");
         }
       } catch (e) {
         print('Error decoding message: $e');
@@ -92,7 +94,7 @@ class _messagePageState extends State<messagePage> {
             print(message.length);
           });
         } else {
-          throw FormatException("Invalid JSON format in SharedPreferences");
+          throw const FormatException("Invalid JSON format in SharedPreferences");
         }
       } catch (e) {
         print('Error decoding message: $e');
@@ -132,7 +134,7 @@ class _messagePageState extends State<messagePage> {
                             Expanded(
                               child: Text(
                                 messageList['title'].toString(),
-                                style: TextStyle(fontSize: 15),
+                                style: const TextStyle(fontSize: 15),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -165,7 +167,7 @@ class _messagePageState extends State<messagePage> {
                       // }
                     },
                   ),
-                  Divider(
+                  const Divider(
                       thickness: 1,
                       color: Colors.grey,
                       indent: 10,
@@ -179,8 +181,8 @@ class _messagePageState extends State<messagePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromRGBO(62, 111, 179, 1),
-        title: Column(
+        backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
+        title: const Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [

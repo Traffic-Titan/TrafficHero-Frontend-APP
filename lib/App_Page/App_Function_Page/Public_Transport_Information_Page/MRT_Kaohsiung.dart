@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, use_super_parameters, prefer_typing_uninitialized_variables, avoid_init_to_null, unnecessary_brace_in_string_interps, avoid_print
+
 import 'package:dropdown_search/dropdown_search.dart';
 
 import 'package:traffic_hero/Imports.dart';
@@ -57,7 +59,7 @@ class _MRT_KaohsiungState extends State<MRT_Kaohsiung> {
                     width: 75,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.blue, width: 3.0),
-                      borderRadius: BorderRadius.only(
+                      borderRadius: const BorderRadius.only(
                         topLeft: Radius.circular(14.0),
                         topRight: Radius.circular(14.0),
                         bottomLeft: Radius.circular(14.0),
@@ -66,7 +68,7 @@ class _MRT_KaohsiungState extends State<MRT_Kaohsiung> {
                     ),
                     child: Text(
                       list['剩餘時間'].toString(),
-                      style: TextStyle(fontSize: 23),
+                      style: const TextStyle(fontSize: 23),
                       textAlign: TextAlign.center,
                     ),
                   ),
@@ -85,18 +87,18 @@ class _MRT_KaohsiungState extends State<MRT_Kaohsiung> {
         children: [
           //搜尋欄
           ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.search,
                 color: Color.fromRGBO(46, 80, 140, 1),
                 size: 28,
               ),
               title: DropdownSearch<String>(
                 items: MRTList_kaohsiung,
-                popupProps: PopupProps.menu(
+                popupProps: const PopupProps.menu(
                   showSearchBox: true, // add this line
                   showSelectedItems: true,
                 ),
-                dropdownDecoratorProps: DropDownDecoratorProps(
+                dropdownDecoratorProps: const DropDownDecoratorProps(
                     textAlign: TextAlign.center,
                     baseStyle:TextStyle(fontSize: 20),
                     dropdownSearchDecoration: InputDecoration(
@@ -124,21 +126,21 @@ class _MRT_KaohsiungState extends State<MRT_Kaohsiung> {
               onPressed: () {
                 stationState();
               }, 
-              child: Text('搜尋'),
+              child: const Text('搜尋'),
             ),
           ),
           ClipRRect(
-            borderRadius: BorderRadius.all(Radius.circular(14)),
+            borderRadius: const BorderRadius.all(Radius.circular(14)),
             child: Container(
               alignment: Alignment.centerLeft,
-              margin: EdgeInsets.only(left: 10,right: 10),
-              padding: EdgeInsets.all(5),
+              margin: const EdgeInsets.only(left: 10,right: 10),
+              padding: const EdgeInsets.all(5),
               width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-              color: Color.fromRGBO(165, 201, 233, 1),
-              child: Text('進站動態',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 23)),
+              color: const Color.fromRGBO(165, 201, 233, 1),
+              child: const Text('進站動態',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 23)),
             ),
           ),
-          (_selectedItem != null)? stationView(scrollController):Text('請選擇站點'),
+          (_selectedItem != null)? stationView(scrollController):const Text('請選擇站點'),
         ],
       )
     );
@@ -151,7 +153,7 @@ class _MRT_KaohsiungState extends State<MRT_Kaohsiung> {
     screenHeight = MediaQuery.of(context).size.height;
     return Stack(
       children:[
-        WebViewForMRT(
+        const WebViewForMRT(
           tt: 'https://tw.piliapp.com/mrt-taiwan/kaohsiung/',
         ),
         Align(
@@ -168,7 +170,7 @@ class _MRT_KaohsiungState extends State<MRT_Kaohsiung> {
                 ),
                 child: Column(
                   children: [
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     SizedBox(
                       width: 30,
                       height: 5,
@@ -178,7 +180,7 @@ class _MRT_KaohsiungState extends State<MRT_Kaohsiung> {
                             borderRadius: BorderRadius.circular(50)),
                       ),
                     ),
-                    SizedBox(height: 14),
+                    const SizedBox(height: 14),
                     Expanded(
                       child: scrollView(scrollController),
                     ),

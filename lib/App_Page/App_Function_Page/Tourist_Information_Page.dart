@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, camel_case_types, deprecated_member_use
+// ignore_for_file: file_names, camel_case_types, deprecated_member_use, prefer_typing_uninitialized_variables, prefer_collection_literals, use_build_context_synchronously, avoid_print, unnecessary_brace_in_string_interps
 // ignore: unnecessary_import
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:traffic_hero/imports.dart';
@@ -108,7 +108,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
 
 //延遲向後端取得觀光資訊
   startTimer(latitude, longitude) {
-    timer = Timer.periodic(Duration(seconds: 1), (_) async {
+    timer = Timer.periodic(const Duration(seconds: 1), (_) async {
       try {
         setState(() {
           print(second);
@@ -204,10 +204,10 @@ class _Tourist_InformationState extends State<Tourist_Information>
     _markers.clear();
     // 目前位置標記
     _markers.add(Marker(
-      markerId: MarkerId('目前位置'),
+      markerId: const MarkerId('目前位置'),
       position: LatLng(position.latitude, position.longitude),
       icon: BitmapDescriptor.defaultMarkerWithHue(223),
-      infoWindow: InfoWindow(title: '目前位置'),
+      infoWindow: const InfoWindow(title: '目前位置'),
     ));
     // 添加標記
     for (int i = 0; i < tourismList.length; i++) {
@@ -277,7 +277,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                         ),
                         child: Column(
                           children: [
-                            SizedBox(height: 10),
+                            const SizedBox(height: 10),
                             SizedBox(
                               width: 30,
                               height: 5,
@@ -287,7 +287,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                                     borderRadius: BorderRadius.circular(50)),
                               ),
                             ),
-                            SizedBox(height: 14),
+                            const SizedBox(height: 14),
                             Expanded(
                               child: scrollView(scrollController),
                             ),
@@ -317,7 +317,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
         color: Colors.white,
         size: 28,
       ),
-      title: ListTile(
+      title: const ListTile(
         // leading: InkWell(
         //     onTap: () async {
         //       LatLngBounds bounds = await mapController.getVisibleRegion();
@@ -417,17 +417,17 @@ class _Tourist_InformationState extends State<Tourist_Information>
                       scrollview = true;
                     });
                   },
-                  icon: Icon(Icons.arrow_back_ios,),
+                  icon: const Icon(Icons.arrow_back_ios,),
                   ),
               title: Text(
                 list != null ? list['name'] : '',
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
               subtitle:
                   Text(list != null ? list['address'].toString() : '無地址顯示'),
             ),
 
-            Container(
+            SizedBox(
               height: 250,
               width: screenWidth,
               child: ListView.builder(
@@ -439,7 +439,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                   return Container(
                     width: 280,
                     height: 60,
-                    margin: EdgeInsets.all(8), // 可以调整间距
+                    margin: const EdgeInsets.all(8), // 可以调整间距
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(14.0),
                       child: Image.network(
@@ -453,10 +453,10 @@ class _Tourist_InformationState extends State<Tourist_Information>
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            Container(
+            SizedBox(
               height: 30,
               width: screenWidth,
               child: ListView(
@@ -479,7 +479,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14.0),
                             ),
-                            child: SizedBox(
+                            child: const SizedBox(
                               width: 100,
                               height: 95,
                               child: Column(
@@ -493,7 +493,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Visibility(
@@ -506,7 +506,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(14.0),
                             ),
-                            child: SizedBox(
+                            child: const SizedBox(
                               width: 100,
                               height: 95,
                               child: Column(
@@ -520,7 +520,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       //         Visibility(
@@ -540,7 +540,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                       //               child: Text('網站'),),
                       //           ),
                       //         ),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       // InkWell(
@@ -551,16 +551,16 @@ class _Tourist_InformationState extends State<Tourist_Information>
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
-            ListTile(
+            const ListTile(
               title: Text(
                 '詳細介紹',
                 style: TextStyle(fontSize: 20),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 3,
             ),
             Card(
@@ -577,7 +577,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                         : list['description_detail']),
                   )),
             ),
-            ListTile(
+            const ListTile(
               title: Text(
                 '天氣資訊',
                 style: TextStyle(fontSize: 20),
@@ -587,7 +587,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
               leading: Image.network(list['weather']['weather_icon_url']),
               title: Text(
                 '目前溫度：${list['weather']['temperature']}',
-                style: TextStyle(fontSize: 20),
+                style: const TextStyle(fontSize: 20),
               ),
               subtitle: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -598,10 +598,10 @@ class _Tourist_InformationState extends State<Tourist_Information>
                 ],
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 3,
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
           ],
@@ -632,14 +632,14 @@ class _Tourist_InformationState extends State<Tourist_Information>
                     child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start, //水平對齊方式
                         children: <Widget>[
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           AspectRatio(
                             //設定圖片的長寬比
                             aspectRatio: 3 / 2,
                             child: ClipRRect(
-                              borderRadius: BorderRadius.only(
+                              borderRadius: const BorderRadius.only(
                                   topLeft: Radius.circular(14.0),
                                   topRight: Radius.circular(14.0),
                                   bottomLeft: Radius.circular(14.0),
@@ -651,14 +651,14 @@ class _Tourist_InformationState extends State<Tourist_Information>
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Flexible(
                             child: Column(children: [
                               Padding(
                                 padding:
-                                    EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                                    const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
                                 child: Column(
                                   //用Column讓兩排文字可以垂直排列
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -666,7 +666,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                                     Text(
                                       list['name'].toString(),
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 15,
                                           color:
                                               Color.fromRGBO(24, 60, 126, 1)),
@@ -676,7 +676,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                                           ? '無地址顯示'
                                           : list['address'],
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 13,
                                           color:
                                               Color.fromRGBO(24, 60, 126, 1)),
@@ -684,7 +684,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                                     Text(
                                       list['phone'].toString(),
                                       overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 10,
                                           color:
                                               Color.fromRGBO(24, 60, 126, 1)),
@@ -712,7 +712,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                     },
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
               ],

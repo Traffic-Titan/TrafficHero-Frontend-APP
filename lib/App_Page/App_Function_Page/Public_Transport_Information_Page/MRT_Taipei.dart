@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, use_super_parameters, prefer_typing_uninitialized_variables, prefer_const_constructors, sort_child_properties_last
+
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/MRT_Taipei_DynamicInfo.dart';
 import 'package:traffic_hero/Imports.dart';
 

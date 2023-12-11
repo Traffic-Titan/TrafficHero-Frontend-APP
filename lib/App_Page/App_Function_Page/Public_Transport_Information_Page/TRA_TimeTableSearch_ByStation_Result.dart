@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, use_super_parameters, prefer_typing_uninitialized_variables
+
 import 'package:traffic_hero/imports.dart';
 
 import 'TRA_TimeTableSearch_ByStation_InBound.dart';
@@ -11,6 +13,7 @@ class TRA_TimeTableSearch_ByStation_Result extends StatefulWidget {
 }
 
 class _TRA_TimeTableSearch_ByStation_ResultState extends State<TRA_TimeTableSearch_ByStation_Result> {
+  // ignore: non_constant_identifier_names
   var StationName;
   var state;
   @override
@@ -32,23 +35,23 @@ class _TRA_TimeTableSearch_ByStation_ResultState extends State<TRA_TimeTableSear
                         Navigator.pop(context);
                       },
                     ),
-                    Text(StationName+"車站",style: TextStyle(color: Colors.white),),
+                    Text(StationName+"車站",style: const TextStyle(color: Colors.white),),
                   ],
                 ),
                 bottom: TabBar(
                   labelColor: Colors.white,//被選中文字顏色,
-                  labelStyle: TextStyle(fontSize: 18),
-                  indicator: UnderlineTabIndicator( // 被選中底線顏色
+                  labelStyle: const TextStyle(fontSize: 18),
+                  indicator: const UnderlineTabIndicator( // 被選中底線顏色
                       borderSide: BorderSide(color: Color.fromRGBO(29, 73, 153, 1))
                   ),
-                  overlayColor: MaterialStateProperty.all(Color.fromRGBO(113, 170, 221, 1)),
-                  tabs: [
+                  overlayColor: MaterialStateProperty.all(const Color.fromRGBO(113, 170, 221, 1)),
+                  tabs: const [
                     Tab(text: '順行'),
                     Tab(text: '逆行'),
                   ],
                 ),
               ),
-              body: TabBarView(
+              body: const TabBarView(
                 //禁止左右滑動
                 physics: NeverScrollableScrollPhysics(),
                 children: [

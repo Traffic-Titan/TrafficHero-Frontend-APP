@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:traffic_hero/imports.dart';
 class TouristDetailInfo extends StatelessWidget {
   const TouristDetailInfo(touristlist, {super.key});

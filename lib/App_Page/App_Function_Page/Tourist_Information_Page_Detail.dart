@@ -1,4 +1,6 @@
 
+// ignore_for_file: file_names, camel_case_types, use_super_parameters, prefer_typing_uninitialized_variables, prefer_interpolation_to_compose_strings
+
 import 'package:traffic_hero/imports.dart';
 
 class Tourist_Information_Page_Detail extends StatefulWidget {
@@ -60,25 +62,25 @@ class _Tourist_Information_Page_DetailState extends State<Tourist_Information_Pa
                     }
 
                   },
-                    child: Text('地址：'+data['地址'],style: TextStyle(fontSize: 15)),),
+                    child: Text('地址：'+data['地址'],style: const TextStyle(fontSize: 15)),),
                 ),
             ),
             Expanded(
               flex: 2,
                 child: Align(
                   alignment: Alignment.center,
-                  child: Text('聯絡電話：'+data['聯絡電話'],style: TextStyle(fontSize: 15)),
+                  child: Text('聯絡電話：'+data['聯絡電話'],style: const TextStyle(fontSize: 15)),
                 ),
             ),
             Expanded(
               flex: 15,
-              child: ListView(children: [Text(data['說明'],style: TextStyle(fontSize: 20))],),
+              child: ListView(children: [Text(data['說明'],style: const TextStyle(fontSize: 20))],),
             ),
             Expanded(
               flex: 1,
               child: Align(
                 alignment: Alignment.bottomCenter,
-                child:Text('超連結：'+data['連結'],style: TextStyle(fontSize: 15)),
+                child:Text('超連結：'+data['連結'],style: const TextStyle(fontSize: 15)),
               ),
             ),
           ],

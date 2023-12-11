@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, file_names, unnecessary_import, deprecated_member_use
+// ignore_for_file: camel_case_types, file_names, unnecessary_import, deprecated_member_use, unnecessary_new, prefer_typing_uninitialized_variables, prefer_collection_literals, avoid_print, unnecessary_brace_in_string_interps, unnecessary_string_interpolations
 
 
 
@@ -45,7 +45,7 @@ class _Route_Planning extends State<Route_Planning> {
   void routeSearch() async{
     var response;
     var url = dotenv.env['RoutePlanning'].toString();
-    var jwt = ',' + state.accountState.toString();
+    var jwt = ',${state.accountState}';
     print(startData);
     print(endData);
     for(int i =0;i<startData.length;i++){
@@ -93,10 +93,7 @@ class _Route_Planning extends State<Route_Planning> {
     var response;
     var data;
     List<String> suggestions=[];
-    var url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'+
-        '?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}'+
-        '&query=${input}'+
-        '&key=${key}';
+    var url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}&query=${input}&key=${key}';
     try {
       response = await get(Uri.parse(url.toString()));
     } catch (e) {
@@ -144,11 +141,11 @@ class _Route_Planning extends State<Route_Planning> {
     // 目前位置標記
     _markers.add(
         Marker(
-          markerId: MarkerId('目前位置'),
+          markerId: const MarkerId('目前位置'),
           position: LatLng(state.positionNow.latitude,state.positionNow.longitude),
           // position:LatLng(23.71078097146887, 120.54107031283465),
           icon: BitmapDescriptor.defaultMarkerWithHue(223),
-          infoWindow: InfoWindow(
+          infoWindow: const InfoWindow(
               title: '目前位置'
           ),
         )
@@ -156,7 +153,7 @@ class _Route_Planning extends State<Route_Planning> {
     //新增起始地標記
     _markers.add(
         Marker(
-          markerId: MarkerId('起始地'),
+          markerId: const MarkerId('起始地'),
           position: LatLng(startData['geometry']['location']['lat'],
               startData['geometry']['location']['lng']),
           infoWindow: InfoWindow(
@@ -167,7 +164,7 @@ class _Route_Planning extends State<Route_Planning> {
     //新增目的地標記
     _markers.add(
       Marker(
-        markerId: MarkerId('目的地'),
+        markerId: const MarkerId('目的地'),
         position: LatLng(endData['geometry']['location']['lat'],
             endData['geometry']['location']['lng']),
         infoWindow: InfoWindow(
@@ -205,7 +202,7 @@ class _Route_Planning extends State<Route_Planning> {
               ),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
+                  borderSide: const BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
                   borderRadius: BorderRadius.circular(15),
                 ),
               ),
@@ -248,7 +245,7 @@ class _Route_Planning extends State<Route_Planning> {
               onPressed: () {
                 changePlace();
               },
-              icon: Icon(Icons.change_circle_outlined,size: 30,color: Color.fromRGBO(24, 60, 126, 1)),
+              icon: const Icon(Icons.change_circle_outlined,size: 30,color: Color.fromRGBO(24, 60, 126, 1)),
             ),
           ),
           //輸入目的地
@@ -260,7 +257,7 @@ class _Route_Planning extends State<Route_Planning> {
                 ),
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
+                      borderSide: const BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
                       borderRadius: BorderRadius.circular(15),
                     ),
                 ),
@@ -282,15 +279,13 @@ class _Route_Planning extends State<Route_Planning> {
               endPlaceText.text = suggestion;
             },
           ),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           Row(
             children: [
               //選擇時間按鈕
               Expanded(
                 flex: 5,
                 child: OutlinedButton(
-                  child: Text(DateFormat('yyyy/MM/dd').format(DateTime.now()).toString()
-                      ,style: TextStyle(color: Color.fromRGBO(24, 60, 126, 1),fontSize: 20)),
                   style: OutlinedButton.styleFrom(
                     side: const BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
                     shape: RoundedRectangleBorder(
@@ -298,29 +293,30 @@ class _Route_Planning extends State<Route_Planning> {
                     ),
                   ),
                   onPressed: () {},
+                  child: Text(DateFormat('yyyy/MM/dd').format(DateTime.now()).toString()
+                      ,style: const TextStyle(color: Color.fromRGBO(24, 60, 126, 1),fontSize: 20)),
                 ),
               ),
               //出發時間
               Expanded(
                 flex: 2,
                 child: ElevatedButton(
-                  child: Text('出發',style: TextStyle(color: Colors.white,fontSize:17)),
                   style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(24, 60, 126, 1),
+                    primary: const Color.fromRGBO(24, 60, 126, 1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),// Background color
                   ),
                   onPressed: () {},
+                  child: const Text('出發',style: TextStyle(color: Colors.white,fontSize:17)),
                 ),
               ),
               //抵達時間
               Expanded(
                 flex: 2,
                 child: ElevatedButton(
-                  child: Text('抵達',style: TextStyle(color: Colors.white,fontSize: 17)),
                   style: ElevatedButton.styleFrom(
-                    primary: Color.fromRGBO(24, 60, 126, 1),
+                    primary: const Color.fromRGBO(24, 60, 126, 1),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),// Background color
@@ -328,16 +324,16 @@ class _Route_Planning extends State<Route_Planning> {
                   onPressed: () {
 
                   },
+                  child: const Text('抵達',style: TextStyle(color: Colors.white,fontSize: 17)),
                 ),
               ),
             ],
           ),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           //搜尋按鈕
           ElevatedButton(
-            child: Text('搜尋',style: TextStyle(color: Colors.white,fontSize: 20)),
             style: ElevatedButton.styleFrom(
-              primary: Color.fromRGBO(24, 60, 126, 1),
+              primary: const Color.fromRGBO(24, 60, 126, 1),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
               ),// Background color
@@ -345,6 +341,7 @@ class _Route_Planning extends State<Route_Planning> {
             onPressed: (){
               routeSearch();
             },
+            child: const Text('搜尋',style: TextStyle(color: Colors.white,fontSize: 20)),
           )
         ],
       ),
@@ -366,9 +363,9 @@ class _Route_Planning extends State<Route_Planning> {
                     controller: startPlaceText,
                     decoration: InputDecoration(
                       hintText: startData['name'],
-                      hintStyle: TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
+                      hintStyle: const TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
+                        borderSide: const BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
@@ -383,7 +380,7 @@ class _Route_Planning extends State<Route_Planning> {
                     onPressed: () {
                       changePlace();
                     },
-                    icon: Icon(Icons.change_circle_outlined,size: 30,color: Color.fromRGBO(24, 60, 126, 1)),
+                    icon: const Icon(Icons.change_circle_outlined,size: 30,color: Color.fromRGBO(24, 60, 126, 1)),
                   ),
               ),
               Expanded(
@@ -392,9 +389,9 @@ class _Route_Planning extends State<Route_Planning> {
                     controller: endPlaceText,
                     decoration: InputDecoration(
                       hintText: endData['name'],
-                      hintStyle: TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
+                      hintStyle: const TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
+                        borderSide: const BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
                         borderRadius: BorderRadius.circular(15),
                       ),
                     ),
@@ -405,7 +402,7 @@ class _Route_Planning extends State<Route_Planning> {
               ),
             ],
           ),
-          SizedBox(height: 10,),
+          const SizedBox(height: 10,),
           Column(
             children:List.generate(routePlanning['data']['routes'].length, (index) {
                 final list = routePlanning['data']['routes'][index];
@@ -417,15 +414,15 @@ class _Route_Planning extends State<Route_Planning> {
                             Expanded(
                               flex:8,
                               child:Text('${DateFormat('HH:mm a').format(DateTime.parse(list['start_time']))} - '
-                                  '${DateFormat('HH:mm a').format(DateTime.parse(list['end_time']))}',style: TextStyle(fontSize: 26),),
+                                  '${DateFormat('HH:mm a').format(DateTime.parse(list['end_time']))}',style: const TextStyle(fontSize: 26),),
                             ),
                             Expanded(
                               flex:2,
-                              child:Text('${Duration(seconds:list['travel_time']).toString().substring(0,7)}',style: TextStyle(fontSize: 20)),
+                              child:Text('${Duration(seconds:list['travel_time']).toString().substring(0,7)}',style: const TextStyle(fontSize: 20)),
                             ),
                           ],
                         ),
-                        SizedBox(height: 10,),
+                        const SizedBox(height: 10,),
                         Align(
                           alignment: Alignment.centerLeft,
                           child: Wrap(
@@ -438,10 +435,10 @@ class _Route_Planning extends State<Route_Planning> {
                                 children: [
                                   Image.asset('assets/publicTransportIcon/${sectionList[i]['transport']['mode']}.png', height: 40,),
                                   // 車號排除詳細資訊=null
-                                  (sectionList[i]['transport']['shortName'] == null) ? Text('') :
-                                  Text(sectionList[i]['transport']['shortName'], style: TextStyle(fontSize: 15)),
+                                  (sectionList[i]['transport']['shortName'] == null) ? const Text('') :
+                                  Text(sectionList[i]['transport']['shortName'], style: const TextStyle(fontSize: 15)),
                                   // 判斷是不是最後一個，不用加>
-                                  (i < list['sections'].length - 1) ? Text('＞', style: TextStyle(fontSize: 18)) : Text(' '),
+                                  (i < list['sections'].length - 1) ? const Text('＞', style: TextStyle(fontSize: 18)) : const Text(' '),
                                 ],
                               );
                             }
@@ -482,7 +479,7 @@ class _Route_Planning extends State<Route_Planning> {
               ),
               child: Column(
                 children: [
-                  SizedBox(height:10),
+                  const SizedBox(height:10),
                   SizedBox(
                     width:30,
                     height: 5,
@@ -492,7 +489,7 @@ class _Route_Planning extends State<Route_Planning> {
                           borderRadius: BorderRadius.circular(50)),
                     ),
                   ),
-                  SizedBox(height:14),
+                  const SizedBox(height:14),
                   Expanded(
                     child: draggleView ? inputView(scrollController) : routePlanView(scrollController),
                   ),

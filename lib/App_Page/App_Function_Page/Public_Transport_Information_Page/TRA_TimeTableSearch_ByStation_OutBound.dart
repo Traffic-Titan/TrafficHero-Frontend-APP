@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use, file_names, camel_case_types, use_super_parameters, prefer_typing_uninitialized_variables, non_constant_identifier_names, avoid_unnecessary_containers, sized_box_for_whitespace
+
 import 'package:traffic_hero/imports.dart';
 
 class TRA_TimeTableSearch_ByStation_OutBound extends StatefulWidget {
@@ -41,7 +43,7 @@ class _TRA_TimeTableSearch_ByStation_OutBoundState extends State<TRA_TimeTableSe
           // ),
           // Divider(),
           Container(
-            child: Row(
+            child: const Row(
               children: [
                 Expanded(
                     flex: 1,
@@ -62,7 +64,7 @@ class _TRA_TimeTableSearch_ByStation_OutBoundState extends State<TRA_TimeTableSe
               ],
             ),
           ),
-          Divider(height: 5,color:Color.fromRGBO(24, 60, 126, 1)),
+          const Divider(height: 5,color:Color.fromRGBO(24, 60, 126, 1)),
           // 內容
           Flexible(
             child: ListView.builder(
@@ -77,19 +79,19 @@ class _TRA_TimeTableSearch_ByStation_OutBoundState extends State<TRA_TimeTableSe
                         child: DecoratedBox(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
-                              color: (list['TrainTypeName'].toString().contains('區間')) ? Color.fromRGBO(24, 60, 126, 1) : Colors.red,
+                              color: (list['TrainTypeName'].toString().contains('區間')) ? const Color.fromRGBO(24, 60, 126, 1) : Colors.red,
                             ),
                             child:Column(
                               children: [
-                                Text(list['TrainNo'],style: TextStyle(color: Colors.white,fontSize: 18),textAlign: TextAlign.center,),
-                                Text(list['TrainTypeName'],style: TextStyle(color: Colors.white,fontSize: 13),textAlign: TextAlign.center,overflow: TextOverflow.ellipsis,),
+                                Text(list['TrainNo'],style: const TextStyle(color: Colors.white,fontSize: 18),textAlign: TextAlign.center,),
+                                Text(list['TrainTypeName'],style: const TextStyle(color: Colors.white,fontSize: 13),textAlign: TextAlign.center,overflow: TextOverflow.ellipsis,),
                               ],
                             )
 
                         )
                     ),
-                    title: Text(list['ArrivalTime'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
-                    trailing: Text(list['DestinationStationName'],style: TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+                    title: Text(list['ArrivalTime'],style: const TextStyle(fontSize: 20),textAlign: TextAlign.center,),
+                    trailing: Text(list['DestinationStationName'],style: const TextStyle(fontSize: 20),textAlign: TextAlign.center,),
                   );
                 }
             ),

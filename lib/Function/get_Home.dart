@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, avoid_print, prefer_typing_uninitialized_variables
+
 import 'package:traffic_hero/Imports.dart';
 
 class getHome {
@@ -43,8 +45,7 @@ class getHome {
     print('天氣資訊開始抓取');
     var position = await geolocator().updataPosition(context);
     var response;
-    var url = dotenv.env['Weather'].toString() +
-        '?longitude=${position.longitude}&latitude=${position.latitude}';
+    var url = '${dotenv.env['Weather']}?longitude=${position.longitude}&latitude=${position.latitude}';
     var jwt = ',${prefs.get('userToken')}';
     print(jwt);
     try {
@@ -57,7 +58,7 @@ class getHome {
     try {
       if (response.statusCode == 200) {
         state.updateWeatherState(jsonDecode(utf8.decode(response.bodyBytes)));
-        print('天氣資訊資料' + state.weather.toString());
+        print('天氣資訊資料${state.weather}');
         print('天氣資訊抓取成功');
       } else {
         print(jsonDecode(utf8.decode(response.bodyBytes)));

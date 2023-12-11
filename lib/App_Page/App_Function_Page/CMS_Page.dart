@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, sort_child_properties_last, unused_element, unused_local_variable, override_on_non_overriding_member, prefer_typing_uninitialized_variables, avoid_print, duplicate_ignore, avoid_unnecessary_containers, deprecated_member_use
+// ignore_for_file: file_names, sort_child_properties_last, unused_element, unused_local_variable, override_on_non_overriding_member, prefer_typing_uninitialized_variables, avoid_print, duplicate_ignore, avoid_unnecessary_containers, deprecated_member_use, library_prefixes, non_constant_identifier_names, prefer_final_fields, prefer_const_constructors, prefer_interpolation_to_compose_strings, empty_catches, sized_box_for_whitespace, prefer_const_literals_to_create_immutables
 
 import 'package:traffic_hero/Imports.dart';
 import 'package:geocoding/geocoding.dart';
@@ -350,6 +350,7 @@ class _CMSState extends State<CMS> {
   Future<void> updateCMSList_Car() async {
     // 讀取API上即時訊息推播-汽車模式
     print('開始抓取ＣＭＳ');
+    _stopTrackingPosition();
     var position = await geolocator().updataPosition(context);
     var url = (state.modeName == 'car'
             ? dotenv.env['CMS_Main_Car'].toString()

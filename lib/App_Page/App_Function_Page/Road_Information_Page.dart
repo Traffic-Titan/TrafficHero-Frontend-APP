@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, library_private_types_in_public_api, file_names, unused_import, override_on_non_overriding_member, prefer_typing_uninitialized_variables, prefer_final_fields
+// ignore_for_file: camel_case_types, library_private_types_in_public_api, file_names, unused_import, override_on_non_overriding_member, prefer_typing_uninitialized_variables, prefer_final_fields, library_prefixes, use_super_parameters, unnecessary_new, prefer_collection_literals, non_constant_identifier_names, avoid_print, unnecessary_brace_in_string_interps, prefer_interpolation_to_compose_strings
 import 'package:flutter_waya/components/check_box.dart';
 import 'package:flutter_waya/extension/object_extension.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -84,23 +84,23 @@ class _Road_InformationState extends State<Road_Information> {
 // 初始化 customIcon
   Future<void> _initCustomImg() async {
     ParkingInfoImg = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(10, 10),),
+      const ImageConfiguration(size: Size(10, 10),),
       'assets/roadInfo/parkingInfoImg.png',
     );
     TrafficControlImg = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(10, 10)),
+      const ImageConfiguration(size: Size(10, 10)),
       'assets/roadInfo/trafficControlImg.png',
     );
     RoadAccidentImg = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size:Size(10, 10)),
+      const ImageConfiguration(size:Size(10, 10)),
       'assets/roadInfo/roadAccidentImg.png',
     );
     RoadConstructionImg = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(10, 10)),
+      const ImageConfiguration(size: Size(10, 10)),
       'assets/roadInfo/roadConstructionImg.png',
     );
     TrafficJamImg = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(size: Size(10, 10)),
+      const ImageConfiguration(size: Size(10, 10)),
       'assets/roadInfo/trafficjamImg.png',
     );
     // 一旦 customIcon 初始化完成，触发重建以使用它
@@ -111,7 +111,7 @@ class _Road_InformationState extends State<Road_Information> {
     print('取得停車位資訊');
     // EasyLoading.show(status: '儲存中');
     var url = dotenv.env['ParkingInfo'];
-    var jwt = ',' + state.accountState;
+    var jwt = ',${state.accountState}';
     var response;
     try {
       response = await api().apiGet(url, jwt);
@@ -129,7 +129,7 @@ class _Road_InformationState extends State<Road_Information> {
     print('取得交通管制資訊');
     // EasyLoading.show(status: '儲存中');
     var url = dotenv.env['TrafficControl'];
-    var jwt = ',' + state.accountState;
+    var jwt = ',${state.accountState}';
     var response;
     try {
       response = await api().apiGet(url, jwt);
@@ -147,7 +147,7 @@ class _Road_InformationState extends State<Road_Information> {
     print('取得交通事故資訊');
     // EasyLoading.show(status: '儲存中');
     var url = dotenv.env['RoadAccident'];
-    var jwt = ',' + state.accountState;
+    var jwt = ',${state.accountState}';
     var response;
     try {
       response = await api().apiGet(url, jwt);
@@ -165,7 +165,7 @@ class _Road_InformationState extends State<Road_Information> {
     print('取得道路施工資訊');
     // EasyLoading.show(status: '儲存中');
     var url = dotenv.env['RoadConstruction'];
-    var jwt = ',' + state.accountState;
+    var jwt = ',${state.accountState}';
     var response;
     try {
       response = await api().apiGet(url, jwt);
@@ -183,7 +183,7 @@ class _Road_InformationState extends State<Road_Information> {
     print('取得道路壅塞資訊');
     // EasyLoading.show(status: '儲存中');
     var url = dotenv.env['Trafficjam'];
-    var jwt = ',' + state.accountState;
+    var jwt = ',${state.accountState}';
     var response;
     try {
       response = await api().apiGet(url, jwt);
@@ -370,10 +370,7 @@ class _Road_InformationState extends State<Road_Information> {
     var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
     var response;
     var data;
-    var url = 'https://maps.googleapis.com/maps/api/place/textsearch/json'+
-        '?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}'+
-        '&query=${input}'+
-        '&key=${key}';
+    var url = 'https://maps.googleapis.com/maps/api/place/textsearch/json?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}&query=${input}&key=${key}';
     try {
       response = await get(Uri.parse(url.toString()));
     } catch (e) {
@@ -401,7 +398,7 @@ class _Road_InformationState extends State<Road_Information> {
   PreferredSizeWidget appBar(){
     return AppBar(
       backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
-      leading: InkWell(
+      leading: const InkWell(
           child:  Icon(
             Icons.search,
             color: Colors.white,
@@ -442,19 +439,19 @@ class _Road_InformationState extends State<Road_Information> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         FloatingActionButton(
-          child: Icon(Icons.location_searching,color: Colors.white,),
-          backgroundColor: Color.fromRGBO(33, 84, 144, 1),
+          backgroundColor: const Color.fromRGBO(33, 84, 144, 1),
           onPressed: () {
             addPositionMarkers(state.positionNow.latitude,state.positionNow.longitude,'目前位置');
           },
+          child: const Icon(Icons.location_searching,color: Colors.white,),
         ),
-        SizedBox(width: 10,),
+        const SizedBox(width: 10,),
         FloatingActionButton(
-          child: Icon(Icons.line_weight,color: Colors.white,),
-          backgroundColor: Color.fromRGBO(33, 84, 144, 1),
+          backgroundColor: const Color.fromRGBO(33, 84, 144, 1),
           onPressed: () {
             roadInfoFilter(context);
           },
+          child: const Icon(Icons.line_weight,color: Colors.white,),
         ),
       ],
     );
@@ -474,7 +471,7 @@ class _Road_InformationState extends State<Road_Information> {
       builder: (BuildContext context) {
         return AlertDialog(
             scrollable: true,
-            title: Text('選擇欲顯示路況'),
+            title: const Text('選擇欲顯示路況'),
             content:SingleChildScrollView(
               child: Column(
                 children: [
@@ -497,13 +494,13 @@ class _Road_InformationState extends State<Road_Information> {
             ),
             actions: <Widget>[
               TextButton(
-                child: Text('取消'),
+                child: const Text('取消'),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
               ),
               TextButton(
-                child: Text('確定'),
+                child: const Text('確定'),
                 onPressed: () {
                   Navigator.of(context).pop();
                   setState(() {
@@ -533,10 +530,10 @@ class _Road_InformationState extends State<Road_Information> {
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('日期：${_showRoadInfoDetail['happendate']}',style: TextStyle(fontSize: 13),),
-                Text('時間：${_showRoadInfoDetail['happentime'].toString().substring(0,5)}',style: TextStyle(fontSize: 13)),
-                SizedBox(height: 5,),
-                Text('${_showRoadInfoDetail['comment']}',style: TextStyle(fontSize: 13)),
+                Text('日期：${_showRoadInfoDetail['happendate']}',style: const TextStyle(fontSize: 13),),
+                Text('時間：${_showRoadInfoDetail['happentime'].toString().substring(0,5)}',style: const TextStyle(fontSize: 13)),
+                const SizedBox(height: 5,),
+                Text('${_showRoadInfoDetail['comment']}',style: const TextStyle(fontSize: 13)),
               ],
             ),
           ),
@@ -573,12 +570,12 @@ class _Road_InformationState extends State<Road_Information> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text('日期：'+list['happendate']),
-                          Text('時間：'+list['happentime'].toString().substring(0,5)),
+                          Text('時間：${list['happentime'].toString().substring(0,5)}'),
                           Text(list['comment'].toString(),overflow: TextOverflow.ellipsis,) ,
                         ],
                       )
                   ),
-                  Divider(
+                  const Divider(
                     thickness: 1,
                     color: Colors.grey,
                     indent: 10,
@@ -620,7 +617,7 @@ class _Road_InformationState extends State<Road_Information> {
                   ),
                   child: Column(
                     children: [
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       SizedBox(
                         width: 30,
                         height: 5,
@@ -630,7 +627,7 @@ class _Road_InformationState extends State<Road_Information> {
                               borderRadius: BorderRadius.circular(50)),
                         ),
                       ),
-                      SizedBox(height: 14),
+                      const SizedBox(height: 14),
                       Expanded(
                         child: roadInfoListView(scrollController),
                       ),

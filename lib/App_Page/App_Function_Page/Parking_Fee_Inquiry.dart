@@ -5,8 +5,7 @@ import 'package:traffic_hero/Imports.dart' as choices;
 
 class parkingFeeInquiry extends StatefulWidget {
   parkingFeeInquiry(
-      {Key? key, required this.listUser, required this.listAmount,required this.list2})
-      : super(key: key);
+      {super.key, required this.listUser, required this.listAmount,required this.list2});
 
   var listUser;
   var listAmount;

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names, camel_case_types, use_super_parameters, prefer_typing_uninitialized_variables
+
 import 'package:traffic_hero/Imports.dart';
 
 class MRT_Taichung extends StatefulWidget {
@@ -12,7 +14,7 @@ class _MRT_TaichungState extends State<MRT_Taichung> {
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
-    return Stack(
+    return const Stack(
         children:[
           WebViewForMRT(
             tt: 'https://tw.piliapp.com/mrt-taiwan/taichung/',
