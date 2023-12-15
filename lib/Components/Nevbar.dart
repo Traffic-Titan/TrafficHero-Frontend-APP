@@ -72,8 +72,8 @@ class _NavbarState extends State<Navbar> {
             leading: const Icon(Icons.account_circle),
             title: const Text('會員管理'),
             onTap: () {
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (context) => const AccountManager()));
+              Navigator.pushAndRemoveUntil(
+                  context, MaterialPageRoute(builder: (context) => const AccountManager()),(router) => true);
             },
           ),
           ListTile(

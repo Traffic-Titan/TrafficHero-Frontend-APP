@@ -19,25 +19,4 @@ class googlesso extends GetxController {
   Future<void> google_signOut() async {
     googleAccount.value = await googleSignIn.signOut();
   }
-
-  // Future<User?> signinWithGoogle() async {
-  //   GoogleSignInAccount? gUser;
-
-  //     gUser = await googleSignIn.signIn();
-
-  //   // if (gUser != null) {
-  //   //   // final GoogleSignInAuthentication gAuth = await gUser.authentication;
-
-  //   //   // final credential = GoogleAuthProvider.credential(
-  //   //   //   accessToken: gAuth.accessToken,
-  //   //   //   idToken: gAuth.idToken,
-  //   //   // );
-
-  //   //   final userCredential =
-  //   //       await FirebaseAuth.instance.signInWithCredential(credential);
-  //   //   return userCredential.user;
-  //   // }
-
-  //   return null;
-  // }
 }

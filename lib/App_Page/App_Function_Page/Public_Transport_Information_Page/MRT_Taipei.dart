@@ -25,7 +25,7 @@ class _MRT_TaipeiState extends State<MRT_Taipei> {
           tt: 'https://tw.piliapp.com/mrt-taiwan/taipei/',
         ),
          floatingActionButton: FloatingActionButton(
-             child: Image.asset('assets/publicTransportIcon/MRTRouteMap.png',height: 40,),
+             child: Image.asset('assets/publicTransportIcon/MRTRouteMap.png',height: 40,width: 40,),
              backgroundColor: Color.fromRGBO(187, 214, 239, 1),
              onPressed: (){{
                Future.delayed(Duration(seconds: 1),(){
