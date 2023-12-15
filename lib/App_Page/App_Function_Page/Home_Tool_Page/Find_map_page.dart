@@ -78,7 +78,7 @@ class _mapPageState extends State<mapPage> {
       "location": {"longitude": 120.5357042, "latitude": 23.6984855},
       "icon_url":
           "https://www.colorhexa.com/e7f1fe.png",
-      "distance": 299.86522728507106,
+      "distance": 0,
       "url":
           "comgooglemapsurl://www.google.com/maps/dir/?api=1&destination=雲林縣斗六市鎮南里明德路四五五號一樓&travelmode=driving&dir_action=navigate"
     },
@@ -381,7 +381,7 @@ class _mapPageState extends State<mapPage> {
                               child: Container(
                                   child: Column(
                                     children: [
-                                      Text('${list['distance']}m',style: TextStyle(fontSize: 20,color: Colors.indigo),),
+                                      Text('${list['distance']}km',style: TextStyle(fontSize: 20,color: Colors.indigo),),
                                       Icon(Icons.navigation,color: Colors.indigo,size: 20,),
                                     ],
                                   )
@@ -441,7 +441,7 @@ class _mapPageState extends State<mapPage> {
                             child: Container(
                                 child: Column(
                                   children: [
-                                    Text('${list['distance']}m',style: TextStyle(fontSize: 20,color: Colors.indigo),),
+                                    Text('${list['distance']}km',style: TextStyle(fontSize: 20,color: Colors.indigo),),
                                     Icon(Icons.navigation,color: Colors.indigo,size: 20,),
                                   ],
                                 )

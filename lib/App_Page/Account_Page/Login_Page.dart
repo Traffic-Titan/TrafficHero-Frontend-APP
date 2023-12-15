@@ -11,13 +11,10 @@ class Login extends StatefulWidget {
 class _Login extends State<Login> {
   late stateManager state;
   late SharedPreferences prefs;
-
   final usernameController = TextEditingController(),
       passwordController = TextEditingController(),
       googleController = Get.put(googlesso());
-
   var showLoginError = false, showPassword = true, errorText = '', response;
-
   int count = 0;
 
 //當頁面創造時執行
@@ -31,59 +28,8 @@ class _Login extends State<Login> {
     EasyLoading.dismiss();
   }
 
-  // 取得附近站點資訊
-  stationNearbySearchBus() async {
-    var jwt = ',${state.accountState}';
-    var position = await geolocator().updataPosition(context);
-    var url =
-        '${dotenv.env['StationNearbyBus']}?latitude=${position.latitude}&longitude=${position.longitude}';
-    var response;
-    try {
-      response = await api().apiGet(url, jwt);
-    } catch (e) {
-      print(e);
-    }
-    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      state.updateNearbyStationBus(responseBody);
-      print('getNearbySearchBus');
-    }
-  }
 
-  stationNearbySearchTrain() async {
-    var jwt = ',${state.accountState}';
-    var position = await geolocator().updataPosition(context);
-    var url =
-        '${dotenv.env['StationNearbyTrain']}?latitude=${position.latitude}&longitude=${position.longitude}';
-    var response;
-    try {
-      response = await api().apiGet(url, jwt);
-    } catch (e) {
-      print(e);
-    }
-    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      state.updateNearbyStationTrain(responseBody);
-    }
-  }
-
-  stationNearbySearchBike() async {
-    var jwt = ',${state.accountState}';
-    var position = await geolocator().updataPosition(context);
-    var url =
-        '${dotenv.env['StationNearbyBike']}?latitude=${position.latitude}&longitude=${position.longitude}';
-    var response;
-    try {
-      response = await api().apiGet(url, jwt);
-    } catch (e) {
-      print(e);
-    }
-    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      state.updateNearbyStationBike(responseBody);
-    }
-  }
-
+//執行google sign in
   handlesignIn(GoogleSignInAccount? account) async {
     var body = {
       "email": googleController.googleAccount.value?.email ?? '',
@@ -163,7 +109,11 @@ class _Login extends State<Login> {
         count++;
       });
       if (count <= 1) {
-        handlesignIn(account);
+        try {
+          handlesignIn(account);
+        } catch (e) {
+          EasyLoading.dismiss();
+        }
       }
     }).onError((err) {
       print('Error during Signing in: $err');
@@ -404,17 +354,13 @@ class _Login extends State<Login> {
                           print(prefs.get('userToken'));
                           try {
                             if (googleController.googleAccount.value == null) {
-                              EasyLoading.show(status: '登入中...');
-                              print('1');
                               googleController.google();
                             } else {
                               //確保在登錄界面保持登出
                               googleController.google_signOut();
                             }
                           } catch (e) {
-                            EasyLoading.dismiss();
                             print(e);
-                            EasyLoading.showError(e.toString());
                           }
 
                           // google_sso_function();

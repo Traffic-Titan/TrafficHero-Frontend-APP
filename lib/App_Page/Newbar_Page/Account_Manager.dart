@@ -73,18 +73,34 @@ class _AccountManager extends State<AccountManager> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       backgroundColor: const Color.fromRGBO(230, 240, 255, 1),
       appBar: AppBar(
-        title: const Text("會員管理"),
+        title: const Text(
+          "會員管理",
+          style: TextStyle(color: Colors.white),
+        ),
+        leading: InkWell(
+          child: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.white,
+          ),
+          onTap: () {
+            Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const AllPage()),
+                (router) => false);
+          },
+        ),
         backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
       ),
       body: Scrollbar(
         child: Column(
           children: [
-            const SizedBox(height: 20,),
+            const SizedBox(
+              height: 20,
+            ),
             Center(
-              child:  ClipOval(
+              child: ClipOval(
                 child: Image.memory(
                   base64Decode(state.profile?["avatar"] ?? ''),
                   width: 90,
@@ -92,8 +108,10 @@ class _AccountManager extends State<AccountManager> {
                   fit: BoxFit.cover,
                 ),
               ),
-            
-            ),const SizedBox(height: 20,),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             const Align(
               alignment: Alignment.topLeft,
               child: Text("  個人資訊",
@@ -223,7 +241,8 @@ class _AccountManager extends State<AccountManager> {
                                 resetInfo();
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color.fromRGBO(67, 150, 200, 1),
+                                backgroundColor:
+                                    const Color.fromRGBO(67, 150, 200, 1),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
                                         20)), // Background color
@@ -246,7 +265,8 @@ class _AccountManager extends State<AccountManager> {
                               });
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(67, 150, 200, 1),
+                              backgroundColor:
+                                  const Color.fromRGBO(67, 150, 200, 1),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20)), // Background color
@@ -301,7 +321,8 @@ class _AccountManager extends State<AccountManager> {
                           child: ElevatedButton(
                             onPressed: null,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(67, 150, 200, 1),
+                              backgroundColor:
+                                  const Color.fromRGBO(67, 150, 200, 1),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20)), // Background color
@@ -345,7 +366,8 @@ class _AccountManager extends State<AccountManager> {
                                           const changePassword()));
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromRGBO(67, 150, 200, 1),
+                              backgroundColor:
+                                  const Color.fromRGBO(67, 150, 200, 1),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(
                                       20)), // Background color
