@@ -18,7 +18,7 @@ class _AccountManager extends State<AccountManager> {
   var img;
   var profileBody;
 
-var changeStutes;
+  var changeStutes;
 
   int count = 0;
   bool accountShow = true,
@@ -111,10 +111,14 @@ var changeStutes;
     var response;
     var url = dotenv.env['Profile'];
     var jwt = ',${state.accountState}';
-   
+
     response = await api().apiPut(body, url, jwt);
     if (response.statusCode == 200) {
-      state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
+      EasyLoading.showSuccess(jsonDecode(utf8.decode(response.bodyBytes))['message']);
+       await getHome().getUser(context);
+       print(jsonDecode(utf8.decode(response.bodyBytes)));
+       resetInfo();
+      // state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
     }
@@ -346,6 +350,7 @@ var changeStutes;
                                   nameChangeShow = true;
                                   accountShow = false;
                                   googleSSOShow = googleBTNShow(googleSSOShow);
+                                  changeStutes = 'name';
                                 });
                               },
                               child: ListTile(
@@ -392,6 +397,7 @@ var changeStutes;
                                   genderchangeShow = true;
                                   accountShow = false;
                                   googleSSOShow = googleBTNShow(googleSSOShow);
+                                  changeStutes = 'gender';
                                 });
                               },
                               child: ListTile(
@@ -414,12 +420,12 @@ var changeStutes;
                                 endIndent: 10),
                             InkWell(
                               onTap: () {
-                               setState(() {
+                                setState(() {
                                   saveShow = true;
-                                birthdayChangeShow = true;
-                                accountShow = false;
-                                googleSSOShow = googleBTNShow(googleSSOShow);
-                               });
+                                  birthdayChangeShow = true;
+                                  accountShow = false;
+                                  googleSSOShow = googleBTNShow(googleSSOShow);
+                                });
                               },
                               child: ListTile(
                                 title: Text(
@@ -639,7 +645,7 @@ var changeStutes;
     ]);
   }
 
- Widget birthdayChange() {
+  Widget birthdayChange() {
     return Stack(children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
@@ -683,7 +689,6 @@ var changeStutes;
     ]);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -701,10 +706,57 @@ var changeStutes;
         actions: [
           Visibility(
               visible: saveShow,
-              child: const Padding(
-                  padding: EdgeInsets.all(15.0),
+              child: Padding(
+                  padding: const EdgeInsets.all(15.0),
                   child: InkWell(
-                    child: Text(
+                    onTap: () {
+                      switch (changeStutes) {
+                        case 'name':
+                          setState(() {
+                            profileBody = {
+                              "name": changedName.text,
+                              "email": email,
+                              "password": "string",
+                              "gender": gender,
+                              "birthday": birthday,
+                              "google_id": google_id,
+                              "avatar": img,
+                            };
+                          });
+                          changeInfor(profileBody);
+                          break;
+                          case 'gender':
+                           setState(() {
+                            profileBody = {
+                              "name": name,
+                              "email": email,
+                              "password": "string",
+                              "gender": gender,
+                              "birthday": birthday,
+                              "google_id": google_id,
+                              "avatar": img,
+                            };
+                          });
+                          changeInfor(profileBody);
+                          break;
+                          case 'birthday':
+                           setState(() {
+                            profileBody = {
+                              "name": name,
+                              "email": email,
+                              "password": "string",
+                              "gender": gender,
+                              "birthday": birthday,
+                              "google_id": google_id,
+                              "avatar": img,
+                            };
+                          });
+                          changeInfor(profileBody);
+                          
+                          break;
+                      }
+                    },
+                    child: const Text(
                       '儲存',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
