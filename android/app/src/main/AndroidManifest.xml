@@ -10,7 +10,7 @@
     <application
         android:label="Traffic Hero"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/appicon"
         android:enableOnBackInvokedCallback="true">
 
         <!-- TODO: Add your Google Maps API key here -->

@@ -212,6 +212,8 @@ class _Login extends State<Login> {
         context, MaterialPageRoute(builder: (context) => const registerPage()));
   }
 
+  //View Code
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
