@@ -167,6 +167,9 @@ class _registerPage extends State<registerPage> {
     }
   }
 
+
+
+//view Code
   @override
   Widget build(BuildContext context) {
     return Scaffold(

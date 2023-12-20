@@ -86,6 +86,10 @@ dependencies:
   webview_flutter_android: ^3.12.1
 
 
+
+
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -140,6 +144,7 @@ flutter:
     - assets/roadInfo/trafficControlImg.png
     - assets/roadInfo/trafficjamImg.png
     - assets/roadInfo/roadConstructionImg.png
+    - assets/AppIcon.jpg
     - assets/AppIcon.png
     - assets/publicTransportIcon/MRTRouteMap.png
     - assets/publicTransportIcon/BusStop.png

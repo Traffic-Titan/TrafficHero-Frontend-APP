@@ -114,10 +114,29 @@ class _AccountManager extends State<AccountManager> {
 
     response = await api().apiPut(body, url, jwt);
     if (response.statusCode == 200) {
-      EasyLoading.showSuccess(jsonDecode(utf8.decode(response.bodyBytes))['message']);
-       await getHome().getUser(context);
-       print(jsonDecode(utf8.decode(response.bodyBytes)));
-       resetInfo();
+      EasyLoading.showSuccess(
+          jsonDecode(utf8.decode(response.bodyBytes))['message']);
+      await getHome().getUser(context);
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+      resetInfo();
+      // state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
+    } else {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+  } //此為顯示密碼function
+
+  changePassword(body) async {
+    var response;
+    var url = '${dotenv.env['ChangePassword']}?type=login';
+    var jwt = ',${state.accountState}';
+
+    response = await api().apiPut(body, url, jwt);
+    if (response.statusCode == 200) {
+      EasyLoading.showSuccess(
+          jsonDecode(utf8.decode(response.bodyBytes))['message']);
+      await getHome().getUser(context);
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+      resetInfo();
       // state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
@@ -372,6 +391,15 @@ class _AccountManager extends State<AccountManager> {
                               indent: 1,
                             ),
                             InkWell(
+                              onTap: (){
+                                setState(() {
+                                  saveShow = true;
+                                  emailChangeShow = true;
+                                  accountShow = false;
+                                  googleSSOShow = googleBTNShow(googleSSOShow);
+                                  changeStutes = 'email';
+                                });
+                              },
                               child: ListTile(
                                 title: Text(
                                   'E-mail:',
@@ -535,8 +563,20 @@ class _AccountManager extends State<AccountManager> {
             const SizedBox(
               height: 20,
             ),
-            const InkWell(
-              child: Card(
+            InkWell(
+              onTap: () {
+                setState(() {
+                  profileBody = {
+                    "email": email,
+                    "old_password":
+                        Sha256().sha256Function(passwordController.text),
+                    "new_password":
+                        Sha256().sha256Function(NewPasswordController.text)
+                  };
+                });
+                changePassword(profileBody);
+              },
+              child: const Card(
                 color: Color.fromRGBO(62, 111, 179, 1),
                 child: SizedBox(
                   width: 300,
@@ -550,6 +590,56 @@ class _AccountManager extends State<AccountManager> {
                 ),
               ),
             )
+          ],
+        ),
+      )
+    ]);
+  }
+
+ Widget nameChange() {
+    return Stack(children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                accountShow = true;
+                nameChangeShow = false;
+                saveShow = false;
+                googleSSOShow = googleBTNShow(googleSSOShow);
+              });
+            },
+            child: Icon(
+              Icons.clear,
+              size: 40,
+              color: Colors.grey.shade500,
+            ),
+          ),
+        ),
+      ),
+      Align(
+        alignment: Alignment.topCenter,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 60,
+            ),
+            const Text(
+              '更新您的姓名',
+              style: TextStyle(fontSize: 30),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            MyTextfield(
+              controller: changedName,
+              hintText: name,
+              obscurText: false,
+              error_status: true,
+              error_text: '',
+            ),
           ],
         ),
       )
@@ -595,7 +685,7 @@ class _AccountManager extends State<AccountManager> {
     ]);
   }
 
-  Widget nameChange() {
+  Widget emailChange() {
     return Stack(children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
@@ -605,7 +695,7 @@ class _AccountManager extends State<AccountManager> {
             onTap: () {
               setState(() {
                 accountShow = true;
-                nameChangeShow = false;
+                emailChangeShow = false;
                 saveShow = false;
                 googleSSOShow = googleBTNShow(googleSSOShow);
               });
@@ -626,15 +716,15 @@ class _AccountManager extends State<AccountManager> {
               height: 60,
             ),
             const Text(
-              '更新您的姓名',
+              '更新您的電子郵件',
               style: TextStyle(fontSize: 30),
             ),
             const SizedBox(
               height: 20,
             ),
             MyTextfield(
-              controller: changedName,
-              hintText: name,
+              controller: changedEmail,
+              hintText: email,
               obscurText: false,
               error_status: true,
               error_text: '',
@@ -725,8 +815,8 @@ class _AccountManager extends State<AccountManager> {
                           });
                           changeInfor(profileBody);
                           break;
-                          case 'gender':
-                           setState(() {
+                        case 'gender':
+                          setState(() {
                             profileBody = {
                               "name": name,
                               "email": email,
@@ -739,8 +829,8 @@ class _AccountManager extends State<AccountManager> {
                           });
                           changeInfor(profileBody);
                           break;
-                          case 'birthday':
-                           setState(() {
+                        case 'birthday':
+                          setState(() {
                             profileBody = {
                               "name": name,
                               "email": email,
@@ -752,7 +842,22 @@ class _AccountManager extends State<AccountManager> {
                             };
                           });
                           changeInfor(profileBody);
-                          
+
+                          break;
+                           case 'email':
+                          setState(() {
+                            profileBody = {
+                              "name": name,
+                              "email": changedEmail.text,
+                              "password": "string",
+                              "gender": gender,
+                              "birthday": birthday,
+                              "google_id": google_id,
+                              "avatar": img,
+                            };
+                          });
+                          changeInfor(profileBody);
+
                           break;
                       }
                     },
@@ -784,7 +889,8 @@ class _AccountManager extends State<AccountManager> {
             Visibility(visible: nameChangeShow, child: nameChange()),
             Visibility(visible: googleSSOShow, child: SSObtn()),
             Visibility(visible: genderchangeShow, child: genderChange()),
-            Visibility(visible: birthdayChangeShow, child: birthdayChange())
+            Visibility(visible: birthdayChangeShow, child: birthdayChange()),
+            Visibility(visible: emailChangeShow, child: emailChange())
           ],
         ),
       ),
