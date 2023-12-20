@@ -34,7 +34,7 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  http: ^1.1.0
+  http: ^1.1.2
   provider: ^6.0.5
   flutter_login: ^4.1.1
   url_launcher_ios: ^6.1.4
@@ -168,6 +168,7 @@ flutter:
     - assets/gasStation/service_SelfDiesel.png
     - assets/gasStation/service_SelfService.png
     - assets/gasStation/payment_HappyCash.png
+    - assets/home/security-camera.png
 
 
 
