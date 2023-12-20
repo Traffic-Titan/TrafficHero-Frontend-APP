@@ -2,6 +2,7 @@
 import 'package:flutter_waya/components/check_box.dart';
 import 'package:flutter_waya/extension/object_extension.dart';
 import 'package:flutter_waya/flutter_waya.dart';
+import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Road_Information/Road_Information_ParkingLot.dart';
 import 'package:traffic_hero/imports.dart';
@@ -131,7 +132,7 @@ class _Road_InformationState extends State<Road_Information> {
   }
 
   Future<Uint8List> _getNetworkImageData(String url) async {
-    final Response response = await get(Uri.parse(url));
+    final http.Response response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
       return response.bodyBytes;
     } else {
@@ -398,61 +399,7 @@ class _Road_InformationState extends State<Road_Information> {
   }
 
   //篩選路況
-  Future<void> roadInfoFilter(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          scrollable: true,
-          title: const Text('選擇顯示路況'),
-          content: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  width: 300,
-                  height: 400,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: roadInfoFilterList.length,
-                    itemBuilder: (context, index) {
-                      return CheckboxListTile(
-                        title: Text(roadInfoFilterList[index]['title']),
-                        value: roadInfoFilterList[index]['isChecked'],
-                        controlAffinity: ListTileControlAffinity.trailing,
-                        onChanged: (value) {
-                          setState(() {
-                            _filterRoadInfoItemsChange(index, value);
-                          });
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text('取消'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text('確定'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                setState(() {
-                  _markers.clear();
-                });
-                addRoadInfoMarkers();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+
 
   //新增List要顯示的路況
   void addRoadInfoDetailList(list) {
