@@ -964,36 +964,31 @@ class _CMSState extends State<CMS> {
                 child: CMS_Content2(),
               ),
             ),
+
+            
             Align(
-              alignment: Alignment.centerRight,
-              child: Container(
-                color: Colors.green,
-                height: screenHeight,
-                width: 100,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      '路',
-                      style: TextStyle(color: Colors.white, fontSize: 50),
-                    ),
-                    Text(
-                      '肩',
-                      style: TextStyle(color: Colors.white, fontSize: 50),
-                    ),
-                    Text(
-                      '開',
-                      style: TextStyle(color: Colors.white, fontSize: 50),
-                    ),
-                    Text(
-                      '放',
-                      style: TextStyle(color: Colors.white, fontSize: 50),
-                    ),
-                  ],
+            alignment: Alignment.centerRight,
+            child: Container(
+              color: Colors.green,
+              height: screenHeight,
+              width: 50,
+              child: Center(
+                child: Container(
+                  height: 300,
+                  child: ListView.builder(
+                    itemCount: stringList.length,
+                    itemBuilder: (context, index) {
+                      final list = stringList[index];
+                      return Text(
+                        list,
+                        style: TextStyle(color: Colors.white, fontSize: 40),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),
+          ),
             Align(
               alignment: Alignment.bottomLeft,
               child: Container(
