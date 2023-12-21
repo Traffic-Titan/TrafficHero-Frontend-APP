@@ -126,26 +126,15 @@ class _Road_InformationState extends State<Road_Information> {
     setState(() {});
   }
 
-  Future<BitmapDescriptor> _loadNetworkIcon(String url) async {
-    final Uint8List markerIcon = await _getNetworkImageData(url);
-    return BitmapDescriptor.fromBytes(markerIcon);
-  }
 
-  Future<Uint8List> _getNetworkImageData(String url) async {
-    final http.Response response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      return response.bodyBytes;
-    } else {
-      throw Exception('Failed to load network image');
-    }
-  }
 
   Future<void> getPBS(type) async {
+        var position = await geolocator().updataPosition(context);
     print('開始抓取PBS');
     var response;
     var jwt = ',' + state.accountState;
     var url = dotenv.env['PBS'].toString() +
-        '?longitude=121.51371&latitude=25.04875&type=${type}';
+        '?latitude=${position.latitude}&longitude=${position.longitude}&type=${type}';
 
     try {
       response = await api().apiGet(url, jwt);
@@ -165,28 +154,62 @@ class _Road_InformationState extends State<Road_Information> {
 
   //新增路況標記
   Future<void> addRoadInfoMarkers() async {
-    print(position.toString());
-    Marker marker;
-    int i;
-    // 目前位置標記
+  print('開始標記');
+  print(roadInformationList);
 
-    for (i = 0; i < roadInformationList.length; i++) {
-      marker = Marker(
-        markerId: MarkerId(roadInformationList[i]['roadtype']),
-        position: LatLng(roadInformationList[i]['location']['Latitude'],
-            roadInformationList[i]['longitude']['Longitude']),
-       icon: await _loadNetworkIcon(roadInformationList[i]['icon_url']),
-
-        infoWindow: InfoWindow(
-            title: parkingInfoList[i]['Address'],
-            snippet: '總車位:${parkingInfoList[i]['TotalSpace'].toString()}'),
-      );
+  try {
+    for (int i = 0; i < roadInformationList.length; i++) {
+      Marker marker = await createMarker(roadInformationList[i]);
       setState(() {
         _markers.add(marker);
-        addRoadInfoDetailList(parkingInfoList);
       });
     }
+  } catch (e) {
+    print(e);
   }
+}
+
+Future<Marker> createMarker(Map<String, dynamic> roadInfo) async {
+  try {
+    BitmapDescriptor markerIcon = await _loadNetworkIcon(roadInfo['icon_url']);
+
+    return Marker(
+      markerId: MarkerId(roadInfo['roadtype']),
+      position: LatLng(
+        roadInfo['location']['latitude'],
+        roadInfo['location']['longitude'],
+      ),
+      icon: markerIcon,
+      infoWindow: InfoWindow(
+        title: roadInfo['Address'], // 修改成正確的資訊
+      ),
+    );
+  } catch (e) {
+    print(e);
+    // 如果加載圖標出現異常，返回一個默認的 Marker，你可以根據需求修改這個行為
+    return Marker(
+      markerId: MarkerId(roadInfo['roadtype']),
+      position: LatLng(
+        roadInfo['location']['latitude'],
+        roadInfo['location']['longitude'],
+      ),
+      icon: BitmapDescriptor.defaultMarker,
+      infoWindow: InfoWindow(
+        title: roadInfo['Address'], // 修改成正確的資訊
+      ),
+    );
+  }
+}
+
+Future<BitmapDescriptor> _loadNetworkIcon(String url) async {
+  final http.Response response = await http.get(Uri.parse(url));
+  if (response.statusCode == 200) {
+    return BitmapDescriptor.fromBytes(response.bodyBytes);
+  } else {
+    throw Exception('Failed to load network image');
+  }
+}
+
 
   //取得經緯度座標
   // void getLocation(destination) {
@@ -312,73 +335,7 @@ class _Road_InformationState extends State<Road_Information> {
             setState(() {
               sclectShow = (sclectShow == false ? true : false);
             });
-            // showDialog<void>(
-            //   context: context,
-            //   builder: (BuildContext context) {
-            //     return AlertDialog(
-            //       scrollable: true,
-            //       title: const Text('選擇顯示路況'),
-            //       content: SingleChildScrollView(
-            //         child: Column(
-            //           children: [
-            //             SizedBox(
-            //               width: 300,
-            //               height: 400,
-            //               child:
-
-            //               CheckboxListTile(
-            //                 title: const Text('1'),
-            //                 value: test,
-            //                 controlAffinity: ListTileControlAffinity.trailing,
-            //                 onChanged: (value) {
-            //                   setState(() {
-            //                     test = value ?? false;
-            //                     print(test);
-            //                   });
-            //                 },
-
-            //                 // ListView.builder(
-            //                 //   shrinkWrap: true,
-            //                 //   itemCount: roadInfoFilterList.length,
-            //                 //   itemBuilder: (context, index) {
-            //                 //     return CheckboxListTile(
-            //                 //       title: Text(roadInfoFilterList[index]['title']),
-            //                 //       value: roadInfoFilterList[index]['isChecked'],
-            //                 //       controlAffinity: ListTileControlAffinity.trailing,
-            //                 //       onChanged: (value) {
-            //                 //         setState(() {
-            //                 //           _filterRoadInfoItemsChange(index, value);
-            //                 //         });
-            //                 //       },
-            //                 //     );
-            //                 //   },
-            //                 // ),
-            //               ),
-            //             )
-            //           ],
-            //         ),
-            //       ),
-            //       actions: <Widget>[
-            //         TextButton(
-            //           child: const Text('取消'),
-            //           onPressed: () {
-            //             Navigator.of(context).pop();
-            //           },
-            //         ),
-            //         TextButton(
-            //           child: const Text('確定'),
-            //           onPressed: () {
-            //             Navigator.of(context).pop();
-            //             setState(() {
-            //               _markers.clear();
-            //             });
-            //             addRoadInfoMarkers();
-            //           },
-            //         ),
-            //       ],
-            //     );
-            //   },
-            // );
+           
           },
           child: const Icon(
             Icons.line_weight,
@@ -399,7 +356,6 @@ class _Road_InformationState extends State<Road_Information> {
   }
 
   //篩選路況
-
 
   //新增List要顯示的路況
   void addRoadInfoDetailList(list) {
