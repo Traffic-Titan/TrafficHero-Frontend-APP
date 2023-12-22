@@ -15,6 +15,7 @@ class _CMSState extends State<CMS> {
   var screenHeight;
   List<String> stringList = [];
   var position1;
+  int index1 = 0;
   var SpeedEnforcement;
   List<dynamic> ShowSpeedEnforcement = [];
 
@@ -196,7 +197,7 @@ class _CMSState extends State<CMS> {
                   ? '您已超速'
                   : ''));
           print('前方有測速照相600公尺');
-        } else  {
+        } else {
           setState(() {
             showCMS = true;
             showSpeed = false;
@@ -372,13 +373,46 @@ class _CMSState extends State<CMS> {
       state.updateCMSList_Car(responseBody);
       try {
         setState(() {
-          cmsList_car = responseBody;
+          if (responseBody != []) {
+            cmsList_car = responseBody;
+          } else {
+            List<dynamic> cmsList_car = [
+              {
+                "type": "",
+                "icon": "https://www.colorhexa.com/000000.png",
+                "content": [
+                  {
+                    "text": [""],
+                    "color": ["#FFFFFF"]
+                  },
+                  {
+                    "text": ["", ""],
+                    "color": ["#FFFFFF", "#FFFFFF"]
+                  },
+                  {
+                    "text": [""],
+                    "color": ["#FFFFFF"]
+                  }
+                ],
+                "voice": "",
+                "longitude": "121.000000",
+                "latitude": "25.000000",
+                "direction": "string",
+                "distance": 2.5,
+                "priority": "1",
+                "start": "2023-11-15T12:27:16.874000",
+                "end": "2025-01-05T04:27:16.874000",
+                "active": true,
+                "id": "655448a4c9dca141521c3630"
+              },
+            ];
+          }
+        });
+        setState(() {
+          index1 = 0;
         });
         setDisplay();
       } catch (e) {}
-
-     
-    
     } else {
       print('CMS抓取失敗');
     }
@@ -432,7 +466,12 @@ class _CMSState extends State<CMS> {
 
       try {
         setState(() {
-          stringList = responseBody[0]['content'][0]['text'][0].split('');
+          if(responseBody != []){
+stringList = responseBody[0]['content'][0]['text'][0].split('');
+          }else{
+            stringList = [];
+          }
+          
           print(stringList);
         });
       } catch (e) {}
@@ -441,14 +480,19 @@ class _CMSState extends State<CMS> {
     }
   }
 
-  void setDisplay() {
-    int index = 0;
+  void setDisplay() async{
     // 每10秒向後端要求一次CMS資料
-    timer2 = Timer.periodic(const Duration(seconds: 10), (timer) {
-      if (mounted && index >= 0 && index < cmsList_car.length) {
+    int index = 0;
+   
+    timer2 = Timer.periodic(const Duration(seconds: 10), (timer)async {
+      print(cmsList_car[index]['voice']);
+      print(index);
+      
+      if (index >= 0 && index < cmsList_car.length) {
         try {
-          FlutterTts().speak(cmsList_car[index]['voice']);
-
+         
+          await FlutterTts().speak(cmsList_car[index]['voice']);
+          print(cmsList_car[index]);
           controller.animateToPage(
             index,
             duration: Duration(milliseconds: 1000),
@@ -457,10 +501,14 @@ class _CMSState extends State<CMS> {
         } catch (e) {
           print(e);
         }
-
-        index++;
+        setState(() {
+          index++;
+        });
       } else {
-        index = 0;
+        setState(() {
+          index = 0;
+        });
+        
       }
     });
   }
@@ -542,7 +590,7 @@ class _CMSState extends State<CMS> {
                                     list2text,
                                     style: TextStyle(
                                       color: changeColorCode(list2color),
-                                      fontSize: 30,
+                                      fontSize: screenWidth * 0.07,
                                     ),
                                   ),
                                 );
@@ -561,6 +609,58 @@ class _CMSState extends State<CMS> {
       ),
     );
   }
+
+  // Widget CMS_Content() {
+  //   return Container(
+  //       width: screenWidth - 150,
+  //       height: 400,
+  //       child: Column(
+  //         mainAxisAlignment: MainAxisAlignment.center,
+  //         children: [
+  //           Image.network(
+  //             cmsList_car[index1]['icon'],
+  //             width: 130,
+  //             height: 130,
+  //           ),
+  //           Expanded(
+  //             child: ListView.builder(
+  //               shrinkWrap: true, // 添加這一行
+  //               itemCount: cmsList_car[index1]['content'].length,
+  //               itemBuilder: (context, index) {
+  //                 var list1 = cmsList_car[index1]['content'][index];
+  //                 return Center(
+  //                   child: Column(
+  //                     mainAxisAlignment: MainAxisAlignment.center,
+  //                     children: [
+  //                       Row(
+  //                         mainAxisAlignment: MainAxisAlignment.center,
+  //                         children: List.generate(
+  //                           list1['text'].length,
+  //                           (index) {
+  //                             var list2text = list1['text'][index];
+  //                             var list2color = list1['color'][index];
+  //                             return Padding(
+  //                               padding: const EdgeInsets.all(8.0),
+  //                               child: Text(
+  //                                 list2text,
+  //                                 style: TextStyle(
+  //                                   color: changeColorCode(list2color),
+  //                                   fontSize: screenWidth * 0.07,
+  //                                 ),
+  //                               ),
+  //                             );
+  //                           },
+  //                         ),
+  //                       )
+  //                     ],
+  //                   ),
+  //                 );
+  //               },
+  //             ),
+  //           ),
+  //         ],
+  //       ));
+  // }
 
   Widget SpeedEnforcement_Content() {
     return Container(
@@ -602,7 +702,7 @@ class _CMSState extends State<CMS> {
                                     list2text,
                                     style: TextStyle(
                                       color: changeColorCode(list2color),
-                                      fontSize: 30,
+                                      fontSize: 10,
                                     ),
                                   ),
                                 );
@@ -758,7 +858,9 @@ class _CMSState extends State<CMS> {
               ),
             ),
           ),
-          Align(
+          Visibility(
+            visible: stringList == [] ? false : true,
+            child: Align(
             alignment: Alignment.centerRight,
             child: Container(
               color: Colors.green,
@@ -780,7 +882,8 @@ class _CMSState extends State<CMS> {
                 ),
               ),
             ),
-          ),
+          ))
+          ,
           Align(
             alignment: Alignment.bottomLeft,
             child: Container(
@@ -964,31 +1067,29 @@ class _CMSState extends State<CMS> {
                 child: CMS_Content2(),
               ),
             ),
-
-            
             Align(
-            alignment: Alignment.centerRight,
-            child: Container(
-              color: Colors.green,
-              height: screenHeight,
-              width: 50,
-              child: Center(
-                child: Container(
-                  height: 300,
-                  child: ListView.builder(
-                    itemCount: stringList.length,
-                    itemBuilder: (context, index) {
-                      final list = stringList[index];
-                      return Text(
-                        list,
-                        style: TextStyle(color: Colors.white, fontSize: 40),
-                      );
-                    },
+              alignment: Alignment.centerRight,
+              child: Container(
+                color: Colors.green,
+                height: screenHeight,
+                width: 50,
+                child: Center(
+                  child: Container(
+                    height: 300,
+                    child: ListView.builder(
+                      itemCount: stringList.length,
+                      itemBuilder: (context, index) {
+                        final list = stringList[index];
+                        return Text(
+                          list,
+                          style: TextStyle(color: Colors.white, fontSize: 40),
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
             Align(
               alignment: Alignment.bottomLeft,
               child: Container(

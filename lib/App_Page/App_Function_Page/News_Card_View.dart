@@ -20,7 +20,9 @@ class _NewsCardViewState extends State<NewsCardView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Color.fromRGBO(62, 111, 179, 1),
+      ),
       body: SingleChildScrollView(
         child: Center(
           child: Container(

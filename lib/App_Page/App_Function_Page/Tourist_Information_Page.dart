@@ -1,9 +1,10 @@
-// ignore_for_file: file_names, camel_case_types, deprecated_member_use, prefer_typing_uninitialized_variables, prefer_collection_literals, use_build_context_synchronously, avoid_print, unnecessary_brace_in_string_interps
+// ignore_for_file: file_names, camel_case_types, deprecated_member_use, prefer_typing_uninitialized_variables, prefer_collection_literals, use_build_context_synchronously, avoid_print, unnecessary_brace_in_string_interps, unrelated_type_equality_checks, non_constant_identifier_names
 // ignore: unnecessary_import
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page_SearchPage.dart';
 import 'package:traffic_hero/imports.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-// ignore: unused_import
 import 'Tourist_Detail_Info.dart';
 
 class Tourist_Information extends StatefulWidget {
@@ -20,16 +21,22 @@ class _Tourist_InformationState extends State<Tourist_Information>
   late SharedPreferences prefs;
   var screenWidth;
   var screenHeight;
-  var scrollview = true;
+  var scrollview = 'list';
   String searchText = '';
   late LatLng currentCenter;
   late var tourismList = [];
   late GoogleMapController mapController;
   final Set<Marker> _markers = Set<Marker>();
   var position;
+  late TextEditingController endPlaceText = new TextEditingController();
   Timer? timer;
   var second = 1;
+  var list;
+  var Searchlist;
   var id;
+  var searchResult_list;
+  var resultDetail_list;
+  List<dynamic> seachList = [];
 
   _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -130,9 +137,8 @@ class _Tourist_InformationState extends State<Tourist_Information>
           await getTourismInfo2(latitude, longitude);
         } catch (e) {
           stoptimer();
-       
-            second = 1;
-          
+
+          second = 1;
         }
       }
     });
@@ -224,12 +230,91 @@ class _Tourist_InformationState extends State<Tourist_Information>
             ),
             onTap: () {
               setState(() {
-                scrollview = false;
+                scrollview = 'Listitem';
                 id = list['id'];
               });
             }),
       );
     }
+  }
+
+  void addMarkersSeach(des) {
+    _markers.clear();
+    // 目前位置標記
+    _markers.add(Marker(
+      markerId: const MarkerId('目前位置'),
+      position: LatLng(position.latitude, position.longitude),
+      icon: BitmapDescriptor.defaultMarkerWithHue(223),
+      infoWindow: const InfoWindow(title: '目前位置'),
+    ));
+    // 添加標記
+    _markers.add(
+      Marker(
+          markerId: MarkerId(des['name']),
+          position:
+              LatLng(des['position']['latitude'], des['position']['longitude']),
+          infoWindow: InfoWindow(
+            title: des['name'],
+            snippet: des['address'],
+          ),
+          onTap: () {}),
+    );
+  }
+
+  nullfunction() {
+    return [
+      {
+        'id': '',
+        'name': '',
+        'description': '',
+        'grade': '',
+        'address': '',
+        'zip_code': '892',
+        'phone': '886-910-327509',
+        'fax': '',
+        'website_url': '',
+        'picture': []
+      }
+    ];
+  }
+
+  Future<List<dynamic>> searchResult(String inputText) async {
+    List<dynamic> seachList = [];
+
+    setState(() {
+      seachList = [];
+    });
+
+    var url = '${dotenv.env['SearchKeyWord']}?Keyword=$inputText';
+    var jwt = ',${state.accountState}';
+    var response = await api().apiGet(url, jwt);
+
+    if (response.statusCode == 200) {
+      setState(() {
+        // searchResult_list : 儲存搜尋結果陣列
+
+        searchResult_list = jsonDecode(utf8.decode(response.bodyBytes));
+        print(searchResult_list);
+        var hotel = searchResult_list['name']['hotel'];
+        var scenic_spot1 = searchResult_list['name']['scenic_spot'];
+        var restaurant = searchResult_list['name']['restaurant'];
+
+        for (var i = 0; i < hotel.length; i++) {
+          seachList.add(hotel[i]);
+        }
+        for (var i = 0; i < scenic_spot1.length; i++) {
+          seachList.add(scenic_spot1[i]);
+        }
+
+        for (var i = 0; i < restaurant.length; i++) {
+          seachList.add(restaurant[i]);
+        }
+      });
+    } else {
+      print(jsonDecode(utf8.decode(response.bodyBytes)));
+    }
+
+    return seachList;
   }
 
   findid(id) {
@@ -243,10 +328,12 @@ class _Tourist_InformationState extends State<Tourist_Information>
   }
 
   scrollView(scrollController) {
-    if (scrollview == true) {
+    if (scrollview == 'list') {
       return nearbyPopularView(scrollController);
-    } else {
+    } else if (scrollview == 'Listitem') {
       return onenearbyPopularView(scrollController);
+    } else if (scrollview == 'search') {
+      return oneNearbySearchView(scrollController);
     }
   }
 
@@ -317,46 +404,63 @@ class _Tourist_InformationState extends State<Tourist_Information>
         color: Colors.white,
         size: 28,
       ),
-      title: const ListTile(
-        // leading: InkWell(
-        //     onTap: () async {
-        //       LatLngBounds bounds = await mapController.getVisibleRegion();
+      title: ListTile(
+        leading: InkWell(
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          const Tourist_Information_Page_SearchPage()));
+            },
+            child: const Icon(
+              Icons.search,
+              color: Colors.white,
+              size: 28,
+            )),
+        title: TypeAheadField(
+          textFieldConfiguration: TextFieldConfiguration(
+            autofocus: false,
+            style: DefaultTextStyle.of(context)
+                .style
+                .copyWith(fontStyle: FontStyle.italic, color: Colors.white),
+            controller: endPlaceText,
+            onChanged: (value) {
+              // 获取用户输入的内容
 
-        //       // 計算中心座標
-        //       double centerLatitude =
-        //           (bounds.northeast.latitude + bounds.southwest.latitude) / 2;
-        //       double centerLongitude =
-        //           (bounds.northeast.longitude + bounds.southwest.longitude) / 2;
+              searchResult(value);
+            },
+          ),
+          suggestionsCallback: (pattern) async {
+            // 假設 searchResult 是一個異步方法，返回搜尋結果的列表
 
-        //       // 將中心座標輸出到控制台
-        //       print("地圖中心座標：$centerLatitude, $centerLongitude");
-        //     },
-        //     child: Icon(
-        //       Icons.search,
-        //       color: Colors.white,
-        //       size: 28,
-        //     )),
-        // title: TextField(
-        //   decoration: InputDecoration(
-        //     hintText: '以名稱搜尋',
-        //     hintStyle: TextStyle(
-        //       color: Colors.white,
-        //       fontSize: 18,
-        //       fontStyle: FontStyle.italic,
-        //     ),
-        //     border: InputBorder.none,
-        //   ),
-        //   onTap: () {
-        //     // 只要點擊搜尋欄就跳轉到另外一個空白頁面
-        //     Navigator.push(
-        //         context,
-        //         MaterialPageRoute(
-        //             builder: (context) => Tourist_Information_Page_SearchPage()));
-        //   },
-        //   style: TextStyle(
-        //     color: Colors.white,
-        //   ),
-        // ),
+            return await searchResult(pattern);
+          },
+          itemBuilder: (context, suggestion) {
+            // 在這裡判斷該建議項目是否已搜尋到，並做出相應的顯示
+            bool isSearched = seachList.contains(suggestion);
+
+            return ListTile(
+              title: Text(
+                suggestion['name'].toString(),
+                style: TextStyle(
+                  fontWeight: isSearched ? FontWeight.bold : FontWeight.normal,
+                ),
+              ),
+            );
+          },
+          onSuggestionSelected: (seachList) {
+            endPlaceText.text = seachList['name'].toString();
+            setState(() {
+              scrollview = 'search';
+              Searchlist = seachList;
+              addMarkersSeach(seachList);
+              id = seachList['id'];
+              print(Searchlist);
+            });
+            // getLocation(suggestion);
+          },
+        ),
       ),
       bottom: TabBar(
         labelColor: Colors.white,
@@ -366,7 +470,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
         enableFeedback: true,
         onTap: (index) {
           setState(() {
-            scrollview = true;
+            scrollview = 'list';
             getTourismInfo();
           });
         },
@@ -386,17 +490,18 @@ class _Tourist_InformationState extends State<Tourist_Information>
       ),
       onCameraMove: (CameraPosition position) async {
         // 監測中心座標的變化並自動輸出
-        stoptimer();
-        currentCenter = position.target;
-        startTimer(currentCenter.latitude, currentCenter.longitude);
-        print("地圖中心座標：${currentCenter.latitude}, ${currentCenter.longitude}");
+        if (scrollview == 'list') {
+          stoptimer();
+          currentCenter = position.target;
+          startTimer(currentCenter.latitude, currentCenter.longitude);
+          print("地圖中心座標：${currentCenter.latitude}, ${currentCenter.longitude}");
+        }
       },
       markers: _markers,
     );
   }
 
   Widget onenearbyPopularView(ScrollController scrollController) {
-    var list;
     if (findid(id) != []) {
       list = findid(id);
     } else {}
@@ -412,13 +517,15 @@ class _Tourist_InformationState extends State<Tourist_Information>
           children: [
             ListTile(
               leading: IconButton(
-                  onPressed: () {
-                    setState(() {
-                      scrollview = true;
-                    });
-                  },
-                  icon: const Icon(Icons.arrow_back_ios,),
-                  ),
+                onPressed: () {
+                  setState(() {
+                    scrollview = 'list';
+                  });
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                ),
+              ),
               title: Text(
                 list != null ? list['name'] : '',
                 style: const TextStyle(fontSize: 20),
@@ -426,7 +533,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
               subtitle:
                   Text(list != null ? list['address'].toString() : '無地址顯示'),
             ),
-
             SizedBox(
               height: 250,
               width: screenWidth,
@@ -465,36 +571,9 @@ class _Tourist_InformationState extends State<Tourist_Information>
                 children: [
                   Row(
                     children: [
-                      Visibility(
-                        visible: list['website_url'] == '' ? false : true,
-                        child: InkWell(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => WebView(
-                                        tt: list['website_url'].toString())));
-                          },
-                          child: Card(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(14.0),
-                            ),
-                            child: const SizedBox(
-                              width: 100,
-                              height: 95,
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text('網站'),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
                       const SizedBox(
                         width: 10,
+                        height: 30,
                       ),
                       Visibility(
                         visible: list['google_maps_url'] == '' ? false : true,
@@ -508,7 +587,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                             ),
                             child: const SizedBox(
                               width: 100,
-                              height: 95,
+                              height: 100,
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -520,32 +599,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      //         Visibility(
-                      //           visible: list['website_url'] == '' ? false : true,
-                      //           child: InkWell(
-                      //             onTap: () {
-                      //               Navigator.push(
-                      //                   context,
-                      //                   MaterialPageRoute(
-                      //                       builder: (context) => WebView(
-                      //                           tt: list['website_url'].toString())));
-                      //             },
-                      //             child: Card(
-                      //               shape: RoundedRectangleBorder(
-                      //   borderRadius: BorderRadius.circular(14.0),
-                      // ),
-                      //               child: Text('網站'),),
-                      //           ),
-                      //         ),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      // InkWell(
-                      //   child: Text('data'),
-                      // )
                     ],
                   )
                 ],
@@ -610,6 +663,128 @@ class _Tourist_InformationState extends State<Tourist_Information>
     );
   }
 
+  Widget oneNearbySearchView(ScrollController scrollController) {
+    return SizedBox(
+      width: screenWidth * 0.9,
+      // height: 200,
+      child: SingleChildScrollView(
+        controller: scrollController,
+        padding: EdgeInsets.zero,
+        child: Column(
+          children: [
+            ListTile(
+              leading: IconButton(
+                onPressed: () {
+                  setState(() {
+                    scrollview = 'list';
+                  });
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                ),
+              ),
+              title: Text(
+                Searchlist != null ? Searchlist['name'] : '',
+                style: const TextStyle(fontSize: 20),
+              ),
+              subtitle: Text(Searchlist != null
+                  ? Searchlist['address'].toString()
+                  : '無地址顯示'),
+            ),
+            SizedBox(
+              height: 250,
+              width: screenWidth,
+              child: ListView.builder(
+                shrinkWrap: true,
+                scrollDirection: Axis.horizontal,
+                itemCount:
+                    Searchlist == null ? 0 : Searchlist['picture'].length,
+                itemBuilder: (context, index) {
+                  var list2 = Searchlist['picture'][index];
+                  return Container(
+                    width: 280,
+                    height: 60,
+                    margin: const EdgeInsets.all(8), // 可以调整间距
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(14.0),
+                      child: Image.network(
+                        list2.toString(),
+                        width: Searchlist['picture']?.length == 0
+                            ? screenWidth
+                            : 280,
+                        height: 60,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            const ListTile(
+              title: Text(
+                '詳細介紹',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            const SizedBox(
+              height: 3,
+            ),
+            Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(14.0),
+              ),
+              child: SizedBox(
+                  width:
+                      screenWidth > 600 ? screenWidth / 4 + 100 : screenWidth,
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Text(
+                        Searchlist['description_detail'].toString() == 'null'
+                            ? Searchlist['description']
+                            : Searchlist['description_detail']),
+                  )),
+            ),
+            const ListTile(
+              title: Text(
+                '天氣資訊',
+                style: TextStyle(fontSize: 20),
+              ),
+            ),
+            ListTile(
+              leading: Image.network(Searchlist['weather']['weather_icon_url']),
+              title: Text(
+                '目前溫度：${Searchlist['weather']['temperature']}',
+                style: const TextStyle(fontSize: 20),
+              ),
+              subtitle: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                      '今天最低溫：${Searchlist['weather']['the_lowest_temperature']}'),
+                  Text(
+                      '今天最高溫：${Searchlist['weather']['the_highest_temperature']}')
+                ],
+              ),
+            ),
+            const SizedBox(
+              height: 3,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   //附近景點
   Widget nearbyPopularView(ScrollController scrollController) {
     return SizedBox(
@@ -657,8 +832,8 @@ class _Tourist_InformationState extends State<Tourist_Information>
                           Flexible(
                             child: Column(children: [
                               Padding(
-                                padding:
-                                    const EdgeInsets.fromLTRB(16.0, 12.0, 16.0, 8.0),
+                                padding: const EdgeInsets.fromLTRB(
+                                    16.0, 12.0, 16.0, 8.0),
                                 child: Column(
                                   //用Column讓兩排文字可以垂直排列
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -706,8 +881,9 @@ class _Tourist_InformationState extends State<Tourist_Information>
                     onTap: () async {
                       state.updatePageDetail(list);
                       setState(() {
-                        scrollview = false;
+                        scrollview = 'Listitem';
                         id = list['id'];
+                        addMarkersSeach(list);
                       });
                     },
                   ),
