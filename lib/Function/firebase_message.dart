@@ -38,7 +38,7 @@ Future<void> saveList(messagelist) async {
       print(message.length);
     }
 
-    message.add(messagelist);
+    message.insert(0,messagelist);
     prefs.setString('message', json.encode(message));
     print("saveList加入之後" + prefs.getString('message').toString());
   } catch (e) {

@@ -1,4 +1,4 @@
-// ignore_for_file: camel_case_types, library_private_types_in_public_api, file_names, unused_import, override_on_non_overriding_member, prefer_typing_uninitialized_variables, prefer_final_fields, library_prefixes, use_super_parameters, unnecessary_new, prefer_collection_literals, non_constant_identifier_names, avoid_print, unnecessary_brace_in_string_interps, prefer_interpolation_to_compose_strings
+// ignore_for_file: camel_case_types, library_private_types_in_public_api, file_names, unused_import, override_on_non_overriding_member, prefer_typing_uninitialized_variables, prefer_final_fields, library_prefixes, use_super_parameters, unnecessary_new, prefer_collection_literals, non_constant_identifier_names, avoid_print, unnecessary_brace_in_string_interps, prefer_interpolation_to_compose_strings, use_build_context_synchronously, unused_field, unused_element
 import 'package:flutter_waya/components/check_box.dart';
 import 'package:flutter_waya/extension/object_extension.dart';
 import 'package:flutter_waya/flutter_waya.dart';
@@ -32,11 +32,36 @@ List<Map<String, dynamic>> roadInfoFilterList = [
   // Add more items as needed
 ];
 
+List<Map<String, dynamic>> freewayInfoFilterList = [
+  {'title': '路網圖', 'value': '路網圖'},
+  {'title': '路段資訊', 'value': '路段資訊'},
+  {'title': '即時資訊', 'value': '即時資訊'},
+  {'title': '施工、事件', 'value': '施工、事件'},
+  {'title': '開放路肩', 'value': '開放路肩'},
+  // Add more items as needed
+];
+
+List<Map<String, dynamic>> LocalRoadInfoFilterList = [
+  {'title': '基隆市', 'value': 'KeelungCity'},
+  {'title': '臺北市', 'value': 'TaipeiCity'},
+  {'title': '新北市', 'value': 'NewTaipeiCity'},
+  {'title': '桃園市', 'value': 'TaoyuanCity'},
+  {'title': '臺中市', 'value': 'TaichungCity'},
+  {'title': '彰化市', 'value': 'ChanghuaCounty'},
+  {'title': '南投市', 'value': 'NantouCounty'},
+  {'title': '高雄市', 'value': 'KaohsiungCity'},
+  // Add more items as needed
+];
+
 bool test = false;
 
 class _Road_InformationState extends State<Road_Information> {
   late stateManager state;
   var position;
+  var freeWayShow = false;
+  var freeWayListShow = true;
+  var localroadshow = false;
+  bool sclectShow = false;
   var screenWidth;
   var screenHeight;
   var positionNow;
@@ -45,7 +70,7 @@ class _Road_InformationState extends State<Road_Information> {
   var roadAccidentList;
   var roadConstructionList;
   var trafficJamList;
-  bool sclectShow = false;
+
   List<dynamic> roadInformationList = [];
   List<Map<String, dynamic>> destinationList = [];
   List<String> suggestions = [];
@@ -77,12 +102,16 @@ class _Road_InformationState extends State<Road_Information> {
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
-    state = Provider.of<stateManager>(context, listen: false);
-    positionNow = state.positionNow;
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
-    getPBS('all');
-    getPBS('交通障礙');
+    try {
+      state = Provider.of<stateManager>(context, listen: false);
+      positionNow = state.positionNow;
+      screenWidth = MediaQuery.of(context).size.width;
+      screenHeight = MediaQuery.of(context).size.height;
+      getPBS('all');
+    } catch (e) {
+      print(e);
+    }
+
     // position = await geolocator().updataPosition(context);
   }
 
@@ -93,50 +122,47 @@ class _Road_InformationState extends State<Road_Information> {
     _initCustomImg();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-  }
-
 // 初始化 customIcon
   Future<void> _initCustomImg() async {
-    ParkingInfoImg = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(
-        size: Size(10, 10),
-      ),
-      'assets/roadInfo/parkingInfoImg.png',
-    );
-    TrafficControlImg = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(10, 10)),
-      'assets/roadInfo/trafficControlImg.png',
-    );
-    RoadAccidentImg = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(10, 10)),
-      'assets/roadInfo/roadAccidentImg.png',
-    );
-    RoadConstructionImg = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(10, 10)),
-      'assets/roadInfo/roadConstructionImg.png',
-    );
-    TrafficJamImg = await BitmapDescriptor.fromAssetImage(
-      const ImageConfiguration(size: Size(10, 10)),
-      'assets/roadInfo/trafficjamImg.png',
-    );
+    try {
+      ParkingInfoImg = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(
+          size: Size(10, 10),
+        ),
+        'assets/roadInfo/parkingInfoImg.png',
+      );
+      TrafficControlImg = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(size: Size(10, 10)),
+        'assets/roadInfo/trafficControlImg.png',
+      );
+      RoadAccidentImg = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(size: Size(10, 10)),
+        'assets/roadInfo/roadAccidentImg.png',
+      );
+      RoadConstructionImg = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(size: Size(10, 10)),
+        'assets/roadInfo/roadConstructionImg.png',
+      );
+      TrafficJamImg = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(size: Size(10, 10)),
+        'assets/roadInfo/trafficjamImg.png',
+      );
+    } catch (e) {
+      print(e);
+    }
+
     // 一旦 customIcon 初始化完成，触发重建以使用它
     setState(() {});
   }
 
-
-
   Future<void> getPBS(type) async {
-        var position = await geolocator().updataPosition(context);
-    print('開始抓取PBS');
-    var response;
-    var jwt = ',' + state.accountState;
-    var url = dotenv.env['PBS'].toString() +
-        '?latitude=${position.latitude}&longitude=${position.longitude}&type=${type}';
-
     try {
+      print('開始抓取PBS');
+      var response;
+      var jwt = ',' + state.accountState;
+      var url = dotenv.env['PBS'].toString() +
+          '?latitude=${positionNow.latitude}&longitude=${positionNow.longitude}&type=${type}';
+
       response = await api().apiGet(url, jwt);
 
       List<dynamic> res = jsonDecode(utf8.decode(response.bodyBytes));
@@ -148,80 +174,140 @@ class _Road_InformationState extends State<Road_Information> {
       print(roadInformationList);
       addRoadInfoMarkers();
     } catch (e) {
-      print(e);
+      print('發生異常：$e');
+    }
+  }
+
+  Future<void> getFreeway(type) async {
+    try {
+      print('開始抓取PBS');
+      var response;
+      var jwt = ',' + state.accountState;
+      var url = dotenv.env['freeway'].toString() + '?type=${type}';
+
+      response = await api().apiGet(url, jwt);
+
+      var res = await jsonDecode(utf8.decode(response.bodyBytes));
+      print(res['url']);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WebView(tt: res['url']),
+            maintainState: false,
+          ));
+    } catch (e) {
+      print('發生異常：$e');
+    }
+  }
+
+  Future<void> getprovincialHighway() async {
+    try {
+      print('開始抓取PBS');
+      var response;
+      var jwt = ',' + state.accountState;
+      var url = dotenv.env['provincialHighway'].toString();
+
+      response = await api().apiGet(url, jwt);
+
+      var res = await jsonDecode(utf8.decode(response.bodyBytes));
+      print(res['url']);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WebView(tt: res['url']),
+            maintainState: false,
+          ));
+    } catch (e) {
+      print('發生異常：$e');
+    }
+  }
+
+
+    Future<void> getlocalroad(type) async {
+    try {
+      print('開始抓取PBS');
+      var response;
+      var jwt = ',' + state.accountState;
+      var url = dotenv.env['localRoad'].toString() + '?area=${type}';
+
+      response = await api().apiGet(url, jwt);
+
+      var res = await jsonDecode(utf8.decode(response.bodyBytes));
+      print(res['url']);
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WebView(tt: res['url']),
+            maintainState: false,
+          ));
+    } catch (e) {
+      print('發生異常：$e');
     }
   }
 
   //新增路況標記
   Future<void> addRoadInfoMarkers() async {
-  print('開始標記');
-  print(roadInformationList);
+    print('開始標記');
+    print(roadInformationList);
+    print(roadInformationList.length);
 
-  try {
-    for (int i = 0; i < roadInformationList.length; i++) {
-      Marker marker = await createMarker(roadInformationList[i]);
-      setState(() {
-        _markers.add(marker);
-      });
+    _markers.add(Marker(
+      markerId: const MarkerId('目前位置'),
+      position: LatLng(positionNow.latitude, positionNow.longitude),
+      icon: BitmapDescriptor.defaultMarkerWithHue(223),
+      infoWindow: const InfoWindow(title: '目前位置'),
+    ));
+    try {
+      for (int i = 0; i < roadInformationList.length; i++) {
+        print(roadInformationList[i]['location']['latitude']);
+        print(roadInformationList[i]['location']['longitude']);
+        try {
+          print(i);
+          setState(() {
+            _markers.add(Marker(
+              markerId: MarkerId(roadInformationList[i]['roadtype']),
+              position: LatLng(
+                roadInformationList[i]['location']['latitude'],
+                roadInformationList[i]['location']['longitude'],
+              ),
+              // icon: RoadAccidentImg,
+              infoWindow: InfoWindow(
+                title: roadInformationList[i]['Address'], // 修改成正確的資訊
+              ),
+            ));
+            print(i.toString() + '標記成功');
+          });
+        } catch (e) {
+          print(e);
+          // 如果加載圖標出現異常，返回一個默認的 Marker，你可以根據需求修改這個行為
+          setState(() {
+            _markers.add(Marker(
+              markerId: MarkerId(roadInformationList[i]['roadtype']),
+              position: LatLng(
+                roadInformationList[i]['location']['latitude'],
+                roadInformationList[i]['location']['longitude'],
+              ),
+              icon: RoadAccidentImg,
+              infoWindow: InfoWindow(
+                title: roadInformationList[i]['Address'], // 修改成正確的資訊
+              ),
+            ));
+          });
+        }
+      }
+    } catch (e) {
+      print(e);
     }
-  } catch (e) {
-    print(e);
   }
-}
 
-Future<Marker> createMarker(Map<String, dynamic> roadInfo) async {
-  try {
-    BitmapDescriptor markerIcon = await _loadNetworkIcon(roadInfo['icon_url']);
-
-    return Marker(
-      markerId: MarkerId(roadInfo['roadtype']),
-      position: LatLng(
-        roadInfo['location']['latitude'],
-        roadInfo['location']['longitude'],
-      ),
-      icon: markerIcon,
-      infoWindow: InfoWindow(
-        title: roadInfo['Address'], // 修改成正確的資訊
-      ),
-    );
-  } catch (e) {
-    print(e);
-    // 如果加載圖標出現異常，返回一個默認的 Marker，你可以根據需求修改這個行為
-    return Marker(
-      markerId: MarkerId(roadInfo['roadtype']),
-      position: LatLng(
-        roadInfo['location']['latitude'],
-        roadInfo['location']['longitude'],
-      ),
-      icon: BitmapDescriptor.defaultMarker,
-      infoWindow: InfoWindow(
-        title: roadInfo['Address'], // 修改成正確的資訊
-      ),
-    );
+  Future<BitmapDescriptor> _loadNetworkIcon(String url) async {
+    final http.Response response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) {
+      return BitmapDescriptor.fromBytes(response.bodyBytes);
+    } else {
+      throw Exception('Failed to load network image');
+    }
   }
-}
-
-Future<BitmapDescriptor> _loadNetworkIcon(String url) async {
-  final http.Response response = await http.get(Uri.parse(url));
-  if (response.statusCode == 200) {
-    return BitmapDescriptor.fromBytes(response.bodyBytes);
-  } else {
-    throw Exception('Failed to load network image');
-  }
-}
-
-
-  //取得經緯度座標
-  // void getLocation(destination) {
-  //   _markers.clear();
-  //   for (int i = 0; i < destinationList.length; i++) {
-  //     if (destination == destinationList[i]['name']) {
-  //       addPositionMarkers(destinationList[i]['lat'], destinationList[i]['lng'],
-  //           destinationList[i]['name']);
-  //       i = destinationList.length;
-  //     }
-  //   }
-  // }
 
   _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
@@ -242,71 +328,40 @@ Future<BitmapDescriptor> _loadNetworkIcon(String url) async {
   }
 
   //取得目的地經緯度座標
-  Future<List<String>> getInputLocation(inputText, inputValue) async {
-    var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
-    var response;
-    var data;
-    var url =
-        'https://maps.googleapis.com/maps/api/place/textsearch/json?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}&query=${input}&key=${key}';
-    try {
-      response = await get(Uri.parse(url.toString()));
-    } catch (e) {
-      print(e);
-    }
-    var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-    if (response.statusCode == 200) {
-      data = responseBody['results'];
-      suggestions = [];
-      // 将API响应数据转换为建议项列表
-      for (var item in data) {
-        suggestions.add(item['name']);
-        destinationList.add({
-          'name': item['name'],
-          'lat': item['geometry']['location']['lat'],
-          'lng': item['geometry']['location']['lng'],
-        });
-      }
-      return suggestions;
-    } else {
-      return suggestions;
-    }
-  }
+  // Future<List<String>> getInputLocation(inputText, inputValue) async {
+  //   var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
+  //   var response;
+  //   var data;
+  //   var url =
+  //       'https://maps.googleapis.com/maps/api/place/textsearch/json?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}&query=${input}&key=${key}';
+  //   try {
+  //     response = await get(Uri.parse(url.toString()));
+  //   } catch (e) {
+  //     print(e);
+  //   }
+  //   var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+  //   if (response.statusCode == 200) {
+  //     data = responseBody['results'];
+  //     suggestions = [];
+  //     // 将API响应数据转换为建议项列表
+  //     for (var item in data) {
+  //       suggestions.add(item['name']);
+  //       destinationList.add({
+  //         'name': item['name'],
+  //         'lat': item['geometry']['location']['lat'],
+  //         'lng': item['geometry']['location']['lng'],
+  //       });
+  //     }
+  //     return suggestions;
+  //   } else {
+  //     return suggestions;
+  //   }
+  // }
 
   //搜尋紐
   PreferredSizeWidget appBar() {
     return AppBar(
       backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
-      leading: const InkWell(
-          child: Icon(
-        Icons.search,
-        color: Colors.white,
-        size: 28,
-      )),
-      title: TypeAheadField(
-        textFieldConfiguration: TextFieldConfiguration(
-          autofocus: false,
-          style: DefaultTextStyle.of(context)
-              .style
-              .copyWith(fontStyle: FontStyle.italic, color: Colors.white),
-          controller: endPlaceText,
-          onChanged: (value) {
-            // 获取用户输入的内容
-            input = value;
-          },
-        ),
-        suggestionsCallback: (pattern) async {
-          return getInputLocation(input, false);
-        },
-        itemBuilder: (context, suggestion) {
-          return ListTile(
-            title: Text(suggestion.toString()),
-          );
-        },
-        onSuggestionSelected: (suggestion) {
-          endPlaceText.text = suggestion;
-          // getLocation(suggestion);
-        },
-      ),
     );
   }
 
@@ -316,13 +371,18 @@ Future<BitmapDescriptor> _loadNetworkIcon(String url) async {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         FloatingActionButton(
+          heroTag: "btn3",
           backgroundColor: const Color.fromRGBO(33, 84, 144, 1),
           onPressed: () {
-            // addPositionMarkers(state.positionNow.latitude,
-            // state.positionNow.longitude, '目前位置');
+            setState(() {
+              freeWayShow = freeWayShow == false ? true : false;
+              sclectShow = false;
+              freeWayListShow = true;
+              localroadshow = false;
+            });
           },
           child: const Icon(
-            Icons.location_searching,
+            Icons.add_road,
             color: Colors.white,
           ),
         ),
@@ -330,12 +390,13 @@ Future<BitmapDescriptor> _loadNetworkIcon(String url) async {
           width: 10,
         ),
         FloatingActionButton(
+          heroTag: "btn1",
           backgroundColor: const Color.fromRGBO(33, 84, 144, 1),
           onPressed: () {
             setState(() {
               sclectShow = (sclectShow == false ? true : false);
+              freeWayShow = false;
             });
-           
           },
           child: const Icon(
             Icons.line_weight,
@@ -519,6 +580,7 @@ Future<BitmapDescriptor> _loadNetworkIcon(String url) async {
                                       ? true
                                       : false;
                             });
+                            _markers.clear();
 
                             for (var i = 0;
                                 i < roadInfoFilterList.length;
@@ -526,9 +588,106 @@ Future<BitmapDescriptor> _loadNetworkIcon(String url) async {
                               if (roadInfoFilterList[i]['isChecked'] == true) {
                                 roadInformationList = [];
                                 getPBS(roadInfoFilterList[i]['value']);
+                              } else {
+                                // roadInformationList = [];
+                                // getPBS('all');
                               }
                             }
-                          })
+                          }),
+                  ],
+                ),
+              )),
+            ),
+          ),
+          Visibility(
+            visible: freeWayShow,
+            child: Align(
+              alignment: Alignment.center,
+              child: Card(
+                  child: SizedBox(
+                width: 250,
+                height: freeWayListShow == true ? 392 : 504,
+                child: Column(
+                  children: [
+                    Visibility(
+                        visible: freeWayListShow,
+                        child: Column(
+                          children: [
+                            for (int i = 0;
+                                i < freewayInfoFilterList.length;
+                                i++)
+                              InkWell(
+                                onTap: () async {
+                                  try {
+                                    getFreeway(
+                                        freewayInfoFilterList[i]['value']);
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                },
+                                child: ListTile(
+                                  title:
+                                      Text(freewayInfoFilterList[i]['title']),
+                                ),
+                              ),
+                            InkWell(
+                              onTap: () async {
+                                try {
+                                  getprovincialHighway();
+                                } catch (e) {
+                                  print(e);
+                                }
+                              },
+                              child: const ListTile(
+                                title: Text('省道即時路況'),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () async {
+                                setState(() {
+                                  freeWayListShow = false;
+                                  localroadshow = true;
+                                });
+                              },
+                              child: const ListTile(
+                                title: Text('地區道路路況'),
+                              ),
+                            )
+                          ],
+                        )),
+                    Visibility(
+                        visible: localroadshow,
+                        child: Column(
+                          children: [
+                            InkWell(
+                              onTap: () async {
+                                setState(() {
+                                  freeWayListShow = true;
+                                  localroadshow = false;
+                                });
+                              },
+                              child: const ListTile(
+                                title: Text('返回'),
+                              ),
+                            ),
+                            for (int i = 0;
+                                i < LocalRoadInfoFilterList.length;
+                                i++)
+                              InkWell(
+                                onTap: () async {
+                                  try {
+                                    getlocalroad(LocalRoadInfoFilterList[i]['value']);
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                },
+                                child: ListTile(
+                                  title:
+                                      Text(LocalRoadInfoFilterList[i]['title']),
+                                ),
+                              ),
+                          ],
+                        ))
                   ],
                 ),
               )),
