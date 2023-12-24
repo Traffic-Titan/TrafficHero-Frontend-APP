@@ -214,11 +214,12 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     if (response.statusCode == 200) {
       EasyLoading.dismiss();
       try {
+        
         print(res);
         await launch(res);
       } catch (e) {
         print(e.toString());
-        EasyLoading.showError(e.toString());
+        EasyLoading.showError('目前無儲存停車位');
       }
     } else {
       EasyLoading.dismiss();

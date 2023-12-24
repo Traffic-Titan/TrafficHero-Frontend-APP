@@ -3,29 +3,25 @@
 import 'package:geocoding/geocoding.dart';
 import 'package:traffic_hero/Imports.dart';
 
-
-
 class geolocator {
   late List<Placemark> placemarks;
   late stateManager state;
 
   StreamSubscription<Position>? _positionStreamSubscription;
 
-   Future<Position> updataPosition(context) async {
+  Future<Position> updataPosition(context) async {
     state = Provider.of<stateManager>(context, listen: false);
     Position position = await _determinePosition();
     state.changePositionNow(position);
-    try{
-List pm =
-        await placemarkFromCoordinates(position.latitude, position.longitude);
-    }catch(e){
+    try {
+      List pm =
+          await placemarkFromCoordinates(position.latitude, position.longitude);
+    } catch (e) {
       EasyLoading.showError('無法取得座標');
     }
-    
+
     return position;
   }
-
-
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -61,9 +57,9 @@ List pm =
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.bestForNavigation);
+    return await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.bestForNavigation);
   }
-
 }
 // desiredAccuracy: LocationAccuracy.best)
 

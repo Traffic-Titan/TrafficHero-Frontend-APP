@@ -1,4 +1,4 @@
-// ignore_for_file: file_names, camel_case_types, deprecated_member_use, prefer_typing_uninitialized_variables, prefer_collection_literals, use_build_context_synchronously, avoid_print, unnecessary_brace_in_string_interps, unrelated_type_equality_checks, non_constant_identifier_names
+// ignore_for_file: file_names, camel_case_types, deprecated_member_use, prefer_typing_uninitialized_variables, prefer_collection_literals, use_build_context_synchronously, avoid_print, unnecessary_brace_in_string_interps, unrelated_type_equality_checks, non_constant_identifier_names, unused_import
 // ignore: unnecessary_import
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page_SearchPage.dart';
@@ -28,7 +28,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
   late GoogleMapController mapController;
   final Set<Marker> _markers = Set<Marker>();
   var position;
-  late TextEditingController endPlaceText = new TextEditingController();
+  late TextEditingController endPlaceText =  TextEditingController();
   Timer? timer;
   var second = 1;
   var list;
@@ -48,7 +48,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
     screenWidth = MediaQuery.of(context).size.width;
     state = Provider.of<stateManager>(context, listen: false);
     prefs = await SharedPreferences.getInstance();
-
+    searchResult('1');
     screenHeight = MediaQuery.of(context).size.height;
     state.changePositionNow(await geolocator().updataPosition(context));
     position = state.positionNow;
@@ -209,12 +209,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
   void addMarkers() {
     _markers.clear();
     // 目前位置標記
-    _markers.add(Marker(
-      markerId: const MarkerId('目前位置'),
-      position: LatLng(position.latitude, position.longitude),
-      icon: BitmapDescriptor.defaultMarkerWithHue(223),
-      infoWindow: const InfoWindow(title: '目前位置'),
-    ));
+    
     // 添加標記
     for (int i = 0; i < tourismList.length; i++) {
       var list = tourismList[i];
@@ -261,22 +256,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
     );
   }
 
-  nullfunction() {
-    return [
-      {
-        'id': '',
-        'name': '',
-        'description': '',
-        'grade': '',
-        'address': '',
-        'zip_code': '892',
-        'phone': '886-910-327509',
-        'fax': '',
-        'website_url': '',
-        'picture': []
-      }
-    ];
-  }
+
 
   Future<List<dynamic>> searchResult(String inputText) async {
     List<dynamic> seachList = [];
@@ -419,7 +399,10 @@ class _Tourist_InformationState extends State<Tourist_Information>
               size: 28,
             )),
         title: TypeAheadField(
+          errorBuilder: (context, error) => const Text('暫無推薦'),
+
           textFieldConfiguration: TextFieldConfiguration(
+             
             autofocus: false,
             style: DefaultTextStyle.of(context)
                 .style
@@ -576,10 +559,10 @@ class _Tourist_InformationState extends State<Tourist_Information>
                         height: 30,
                       ),
                       Visibility(
-                        visible: list['google_maps_url'] == '' ? false : true,
+                        visible: list['map_url'] == '' ? false : true,
                         child: InkWell(
                           onTap: () {
-                            launch(list['google_maps_url']);
+                            launch(list['map_url']);
                           },
                           child: Card(
                             shape: RoundedRectangleBorder(
