@@ -21,6 +21,7 @@ class _CMSState extends State<CMS> {
   List<dynamic> ShowSpeedEnforcement = [];
 
   PageController controller = PageController();
+  
   List<dynamic> cmsList_car = [
     {
       "type": "",
@@ -85,6 +86,7 @@ class _CMSState extends State<CMS> {
   var fontSize;
   bool showCMS = true;
   bool showSpeed = false;
+  bool _showCMS = false;
   final _firebaseMess = FirebaseMessaging.instance;
   @override
   void initState() {
@@ -132,11 +134,10 @@ class _CMSState extends State<CMS> {
         print(body123);
         setState(() {
           showCMS = false;
+          _showCMS = true;
         });
-        //  await  FlutterTts().speak(body12[0]['voice'].toString());
-        setState(() {
-          showCMS = true;
-        });
+         await  FlutterTts().speak('前方龍潭路道路封閉，請改走四維路');
+     
       }
 
       // 初始化 messageList，以防它為 null
@@ -243,6 +244,7 @@ class _CMSState extends State<CMS> {
           setState(() {
             showCMS = false;
             showSpeed = true;
+            _showCMS = false;
             _stopTrackingPosition();
 
             FlutterTts().speak(ShowSpeedEnforcement[i]['voice'] +
@@ -444,9 +446,8 @@ class _CMSState extends State<CMS> {
             if (responseBody != []) {
               setState(() {
                 cmsList_car = responseBody;
-                print("CMS:"+ cmsList_car.toString());
+                print("CMS:" + cmsList_car.toString());
               });
-              
             } else {
               List<dynamic> cmsList_car = [
                 {
@@ -551,7 +552,7 @@ class _CMSState extends State<CMS> {
               stringList = [];
             }
 
-            print("CMS_Sidbar:"+stringList.toString());
+            print("CMS_Sidbar:" + stringList.toString());
           });
         } catch (e) {}
       } else {
@@ -687,6 +688,33 @@ class _CMSState extends State<CMS> {
         },
       ),
     );
+  }
+
+  Widget CMS() {
+    return Container(
+        width: screenWidth - 150,
+        height: 400,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.network(
+              'https://www.web-rentacar.com/img/helpful/road_signs_3.png',
+              width: 130,
+              height: 130,
+            ),
+            Expanded(
+                child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('道路封閉',style: TextStyle(color: Colors.white,fontSize: screenWidth * 0.07),),
+                  Text('龍潭路',style: TextStyle(color: Colors.white,fontSize: screenWidth * 0.07),),
+                  Text('請改走四維路',style: TextStyle(color: Colors.white,fontSize: screenWidth * 0.07),)
+                ],
+              ),
+            )),
+          ],
+        ));
   }
 
   Widget SpeedEnforcement_Content() {
@@ -880,6 +908,10 @@ class _CMSState extends State<CMS> {
                   Visibility(
                     visible: showCMS,
                     child: CMS_Content(),
+                  ),
+                  Visibility(
+                    visible: _showCMS,
+                    child: CMS(),
                   )
                 ],
               ),
@@ -950,7 +982,12 @@ class _CMSState extends State<CMS> {
                         onTap: () async {
                           EasyLoading.show(status: 'loading...');
                           print(tool['url']);
-                          findPlacesQuickly(tool['url']);
+                          if (tool['title'] == '停車場') {
+                            launch(tool['url'].toString());
+                            EasyLoading.dismiss();
+                          } else {
+                            findPlacesQuickly(tool['url']);
+                          }
                         },
                       ),
                     );

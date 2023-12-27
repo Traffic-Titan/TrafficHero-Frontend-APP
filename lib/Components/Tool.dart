@@ -92,12 +92,12 @@ List<Map<String, String>> fastLocationCarCms = [
     'url': dotenv.env['CMS_ConvenientStore'].toString()
   },
 
-  // {
-  //   'value': '充電站',
-  //   'title': '充電站',
-  //   'img': 'assets/fastLocation/chargingStation.png',
-  //   'url': dotenv.env['QuickSearch_ChargingStation'].toString()
-  // },
+  {
+    'value': '停車塲',
+    'title': '停車場',
+    'img': 'assets/roadInfo/parkingInfoImg.png',
+    'url': 'https://www.google.com/maps/dir/?api=1&destination=24.13655,120.686508&travelmode=driving&dir_action=navigate'
+  },
  
 ];
 

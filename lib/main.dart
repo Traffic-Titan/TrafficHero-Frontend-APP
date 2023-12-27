@@ -7,13 +7,14 @@ import 'Imports.dart';
 void main() async {
   await dotenv.load();
   WidgetsFlutterBinding.ensureInitialized();
-  // await Firebase.initializeApp();
-
   try {
+    //firebase初始化
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    //firebase 訊息初始化
     await Firebase_message().initNotifications();
+    //定位請求初始化
     await Geolocator.isLocationServiceEnabled();
   } catch (e) {
     print(e);
@@ -46,12 +47,7 @@ class _MyAppState extends State<MyApp> {
   late SharedPreferences prefs;
   late stateManager state;
 
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-    prefs = await SharedPreferences.getInstance();
-    EasyLoading.dismiss();
-  }
+
 
   @override
   Widget build(BuildContext context) {

@@ -38,15 +38,13 @@ Future<void> saveList(messagelist) async {
       print(message.length);
     }
 
-    message.insert(0,messagelist);
+    message.insert(0, messagelist);
     prefs.setString('message', json.encode(message));
     print("saveList加入之後" + prefs.getString('message').toString());
   } catch (e) {
     print(e);
   }
 }
-
-
 
 class Firebase_message {
   final _firebaseMess = FirebaseMessaging.instance;
@@ -95,13 +93,15 @@ class Firebase_message {
       // 初始化 messageList，以防它為 null
 
       // 使用 Map 類型來構建新的訊息
-      final newMessage = {
-        'title': message.notification?.title,
-        'body': message.notification?.body,
-        'payload': message.data
-      };
-      await saveList(newMessage);
 
+      if (message.notification?.title != '即時訊息推播') {
+        final newMessage = {
+          'title': message.notification?.title,
+          'body': message.notification?.body,
+          'payload': message.data
+        };
+        await saveList(newMessage);
+      }
     });
   }
 

@@ -23,6 +23,7 @@ class _appLoadingPage extends State<appLoadingPage> {
     Firebase_message().UpdateContext(context);
     DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
 
+//確認是哪個作業系統
     try {
       AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
       print('Running on ${androidInfo.device}');
@@ -58,14 +59,18 @@ class _appLoadingPage extends State<appLoadingPage> {
       state.updateAccountState('${prefs.get('userToken')}');
       await getHome().getUser(context);
       if (response.statusCode == 200) {
+        //將抓到的身份資料寫入狀態
         state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
+        //將之前紀錄的模式洩入模式的狀態
         state.updateModeState(prefs.get('mode').toString());
+        //確認token沒有過期登入成功
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const AllPage()),
             (router) => false);
         EasyLoading.dismiss();
       } else {
+         //確認token有過期登入失敗 
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const Login()),
