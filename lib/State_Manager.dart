@@ -4,6 +4,7 @@
 import 'imports.dart';
 
 class stateManager with ChangeNotifier {
+  //首頁
  Map<String, dynamic> _profile = {
     "name": "",
     "email": "",
@@ -90,7 +91,6 @@ class stateManager with ChangeNotifier {
     "distance": 0.2009265565158994
   },
   ];
-
   List<dynamic> _NearbyRoadCondition = [
     {
       "road_name": "",
@@ -104,7 +104,6 @@ class stateManager with ChangeNotifier {
   String _veriffyState = '';
   var _google_sso_status;
   var _google_sso;
- 
   var _pageDetail;
   var _keyWord;
   var _searchPageDetail;

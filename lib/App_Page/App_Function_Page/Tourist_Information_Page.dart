@@ -19,29 +19,32 @@ class _Tourist_InformationState extends State<Tourist_Information>
   late TabController _tabController;
   late stateManager state;
   late SharedPreferences prefs;
+  late LatLng currentCenter;
+  late GoogleMapController mapController;
+  late TextEditingController endPlaceText = TextEditingController();
+  late var tourismList = [];
   var screenWidth;
   var screenHeight;
   var scrollview = 'list';
-  String searchText = '';
-  late LatLng currentCenter;
-  late var tourismList = [];
-  late GoogleMapController mapController;
-  final Set<Marker> _markers = Set<Marker>();
-  var position;
-  late TextEditingController endPlaceText =  TextEditingController();
-  Timer? timer;
   var second = 1;
   var list;
   var Searchlist;
   var id;
   var searchResult_list;
   var resultDetail_list;
+  var position;
+  final Set<Marker> _markers = Set<Marker>();
+  String searchText = '';
+  Timer? timer;
   List<dynamic> seachList = [];
+  static const List<Tab> touristTabBar = <Tab>[
+    Tab(text: '景點'),
+    Tab(text: '住宿'),
+    Tab(text: '美食'),
+    Tab(text: '活動'),
+  ];
 
-  _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
-
+//初始化
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
@@ -55,12 +58,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
     getTourismInfo();
   }
 
-  static const List<Tab> touristTabBar = <Tab>[
-    Tab(text: '景點'),
-    Tab(text: '住宿'),
-    Tab(text: '美食'),
-    Tab(text: '活動'),
-  ];
   @override
   void initState() {
     super.initState();
@@ -73,6 +70,8 @@ class _Tourist_InformationState extends State<Tourist_Information>
     super.dispose();
   }
 
+
+//可控制座標
   getTourismInfo2(latitude, longitude) async {
     var response;
     var url;
@@ -148,6 +147,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
     timer?.cancel();
   }
 
+//輸出符合後端的模式規格
   changeMode(mode) {
     if (mode == 'car') {
       return 'Car';
@@ -209,7 +209,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
   void addMarkers() {
     _markers.clear();
     // 目前位置標記
-    
+
     // 添加標記
     for (int i = 0; i < tourismList.length; i++) {
       var list = tourismList[i];
@@ -255,8 +255,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
           onTap: () {}),
     );
   }
-
-
 
   Future<List<dynamic>> searchResult(String inputText) async {
     List<dynamic> seachList = [];
@@ -400,9 +398,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
             )),
         title: TypeAheadField(
           errorBuilder: (context, error) => const Text('暫無推薦'),
-
           textFieldConfiguration: TextFieldConfiguration(
-             
             autofocus: false,
             style: DefaultTextStyle.of(context)
                 .style
@@ -460,6 +456,11 @@ class _Tourist_InformationState extends State<Tourist_Information>
         tabs: touristTabBar,
       ),
     );
+  }
+
+  //google map
+  _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
   }
 
   //Google Map View

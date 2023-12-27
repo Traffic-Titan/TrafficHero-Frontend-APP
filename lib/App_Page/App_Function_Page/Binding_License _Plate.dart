@@ -19,7 +19,6 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
   var checkBinding2 = false;
   var listLicensePlateNumber = [];
   var screenWidth;
-
   String? type = 'C';
 
   @override
@@ -28,10 +27,12 @@ class _bindingLicensePlateState extends State<bindingLicensePlate> {
     state = Provider.of<stateManager>(context, listen: false);
     screenWidth = MediaQuery.of(context).size.width;
     EasyLoading.dismiss();
+    //對已綁定的資料進行初始化
     setState(() {
       listLicensePlateNumber = widget.list['vehicle'] ?? [];
     });
-    print(widget.list);
+
+    //判斷初始化是否無資料
     if (widget.list != 0) {
       setState(() {
         checkBinding = false;

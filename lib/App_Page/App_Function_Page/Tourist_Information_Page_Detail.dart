@@ -33,7 +33,6 @@ class _TouristInformationPageDetailState
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
     data = widget.detail;
-    print(data);
     mode = state.modeName;
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
