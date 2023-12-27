@@ -5,8 +5,6 @@ import 'package:traffic_hero/App_Page/App_Function_Page/Tourist_Information_Page
 import 'package:traffic_hero/imports.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 
-import 'Tourist_Detail_Info.dart';
-
 class Tourist_Information extends StatefulWidget {
   const Tourist_Information({super.key});
 

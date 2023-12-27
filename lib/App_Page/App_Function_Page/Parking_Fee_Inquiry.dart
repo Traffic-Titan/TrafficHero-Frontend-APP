@@ -5,7 +5,10 @@ import 'package:traffic_hero/Imports.dart' as choices;
 
 class parkingFeeInquiry extends StatefulWidget {
   parkingFeeInquiry(
-      {super.key, required this.listUser, required this.listAmount,required this.list2});
+      {super.key,
+      required this.listUser,
+      required this.listAmount,
+      required this.list2});
 
   var listUser;
   var listAmount;
@@ -15,28 +18,19 @@ class parkingFeeInquiry extends StatefulWidget {
   _parkingFeeInquiryState createState() => _parkingFeeInquiryState();
 }
 
-
-                            
-
 class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
-    late stateManager state;
+  late stateManager state;
   @override
   void initState() {
     super.initState();
-    print(widget.listUser);
     EasyLoading.dismiss();
   }
 
-    @override
-      void didChangeDependencies() {
+  @override
+  void didChangeDependencies() {
     super.didChangeDependencies();
     state = Provider.of<stateManager>(context, listen: false);
     EasyLoading.dismiss();
-    print(widget.listAmount);
-    if(widget.list2.length != 0){
-      
-    }
-    // FlutterTts().speak('歡迎來到 Traffic Hero');
   }
 
   text(name) {
@@ -63,7 +57,7 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
     return name; // Return the original name if no match is found
   }
 
-    goLicensePlateInput() async {
+  goLicensePlateInput() async {
     EasyLoading.show(status: '查詢中...');
     var licensePlate;
     var response;
@@ -78,8 +72,12 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
     if (response.statusCode == 200) {
       licensePlate = responseBody['vehicle'];
       print('eee');
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => LicensePlateInput(vehicle: licensePlate,)));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => LicensePlateInput(
+                    vehicle: licensePlate,
+                  )));
     }
   }
 
@@ -90,7 +88,6 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
       appBar: AppBar(
         elevation: 0,
         title: const Text('停車費查詢'),
-       
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -115,7 +112,7 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
                         title: const Text('車號'),
                         trailing: Text(widget.listUser['license_plate_number']),
                       ),
-                        ListTile(
+                      ListTile(
                         title: const Text('總額'),
                         trailing: Text(" ${widget.listUser['total_amount']}"),
                       ),
@@ -139,7 +136,7 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
                         borderRadius: BorderRadius.circular(14.0),
                       ),
                       child: Column(
-                        children: [    
+                        children: [
                           ListTile(
                             title: Text(
                               font2(list["area"]).toString(),
@@ -156,18 +153,16 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
                               });
                             },
                           ),
-                          
                           Visibility(
                             visible: true,
-                            child:
-                            Column(
+                            child: Column(
                               children: [
                                 const Divider(),
                                 // const Text('未過期'),
                                 ListView.builder(
-                                   physics: const NeverScrollableScrollPhysics(),
+                                  physics: const NeverScrollableScrollPhysics(),
                                   shrinkWrap: true,
-                                  itemCount: list["bills"].length ,
+                                  itemCount: list["bills"].length,
                                   itemBuilder: (context, index) {
                                     var bills = list["bills"][index];
                                     bool test = false;
@@ -177,8 +172,12 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
                                           Row(
                                             children: [
                                               Text(
-                                                    () {
-                                                  if (DateTime.parse('2023-10-12').isAfter(DateTime.parse(bills['PayLimitDate']))) {
+                                                () {
+                                                  if (DateTime.parse(
+                                                          '2023-10-12')
+                                                      .isAfter(DateTime.parse(
+                                                          bills[
+                                                              'PayLimitDate']))) {
                                                     test = true;
                                                   } else {
                                                     test = false;
@@ -187,7 +186,9 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
                                                 }(),
                                                 style: TextStyle(
                                                   fontWeight: FontWeight.w500,
-                                                  color: (test ? Colors.red : Colors.black),
+                                                  color: (test
+                                                      ? Colors.red
+                                                      : Colors.black),
                                                 ),
                                               ),
                                             ],
@@ -196,12 +197,15 @@ class _parkingFeeInquiryState extends State<parkingFeeInquiry> {
                                             '${bills['ParkingDate']}\n到期日: ${bills['PayLimitDate']}',
                                             style: TextStyle(
                                               fontWeight: FontWeight.w500,
-                                              color: (test ? Colors.red : Colors.black),
+                                              color: (test
+                                                  ? Colors.red
+                                                  : Colors.black),
                                             ),
                                           ),
                                         ],
                                       ),
-                                      trailing: Text('應繳金額： ${bills['PayAmount']}元\n累積停車: ${bills['ParkingHours']}h'),
+                                      trailing: Text(
+                                          '應繳金額： ${bills['PayAmount']}元\n累積停車: ${bills['ParkingHours']}h'),
                                     );
                                   },
                                 ),

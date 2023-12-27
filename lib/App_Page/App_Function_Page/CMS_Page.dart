@@ -19,9 +19,7 @@ class _CMSState extends State<CMS> {
   int index1 = 0;
   var SpeedEnforcement;
   List<dynamic> ShowSpeedEnforcement = [];
-
   PageController controller = PageController();
-  
   List<dynamic> cmsList_car = [
     {
       "type": "",
@@ -64,17 +62,6 @@ class _CMSState extends State<CMS> {
     size: 40,
   );
 
-  @override
-  void dispose() {
-    super.dispose();
-    print('離開頁面');
-    _stopTrackingPosition(); // 停止追踪位置更新
-    _speedStreamController.close();
-    controller.dispose();
-    print(controller.isBlank);
-    print(timer2?.isActive);
-  }
-
   bool directionState = true;
   var Carpostionstatus = false;
   String displayImg = 'https://www.colorhexa.com/000000.png';
@@ -97,6 +84,7 @@ class _CMSState extends State<CMS> {
     controller = PageController();
   }
 
+//即時訊息緊急推播
   Future<void> initNotifications() async {
     prefs = await SharedPreferences.getInstance();
     await _firebaseMess.requestPermission();
@@ -136,8 +124,7 @@ class _CMSState extends State<CMS> {
           showCMS = false;
           _showCMS = true;
         });
-         await  FlutterTts().speak('前方龍潭路道路封閉，請改走四維路');
-     
+        await FlutterTts().speak('前方龍潭路道路封閉，請改走四維路');
       }
 
       // 初始化 messageList，以防它為 null
@@ -151,7 +138,152 @@ class _CMSState extends State<CMS> {
     });
   }
 
-  Future<void> _getSpeed() async {
+//
+
+
+//當頁面創造時執行
+  @override
+  void didChangeDependencies() async {
+    super.didChangeDependencies();
+    _stopTrackingPosition();
+    state = Provider.of<stateManager>(context, listen: false);
+    screenWidth = MediaQuery.of(context).size.width;
+    screenHeight = MediaQuery.of(context).size.height;
+    fontSize = screenWidth * 0.05;
+    position = state.positionNow;
+    position1 = state.positionNow;
+    await getSpeedEnforcement();
+    _getSpeed();
+    updateCMSList_Car();
+    updateCMS_Sidbar_List_Car();
+
+    prefs = await SharedPreferences.getInstance();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    print('離開頁面');
+    _stopTrackingPosition(); // 停止追踪位置更新
+    _speedStreamController.close();
+    controller.dispose();
+    print(controller.isBlank);
+    print(timer2?.isActive);
+  }
+
+  changeMode(mode) {
+    if (mode == 'car') {
+      return 'Car';
+    } else if (mode == 'scooter') {
+      return 'Scooter';
+    }
+  }
+
+  //快速尋找地點
+  findPlacesQuickly(url) async {
+    try {
+      position = await geolocator().updataPosition(context);
+
+      var response;
+      var res;
+      var urlPosition = url +
+          '?os=${prefs.get('system')}&mode=${changeMode(state.modeName)}&longitude=${position.longitude}&latitude=${position.latitude}';
+
+      print(urlPosition);
+      var jwt = ',${state.accountState}';
+      try {
+        response = await api().apiGet(urlPosition, jwt);
+        print(jsonDecode(utf8.decode(response.bodyBytes)));
+        res = jsonDecode(utf8.decode(response.bodyBytes))['url'];
+        if (response.statusCode == 200) {
+          EasyLoading.dismiss();
+          try {
+            print(res);
+            await launch(res);
+          } catch (e) {
+            print(e.toString());
+            EasyLoading.showError(e.toString());
+          }
+        } else {
+          EasyLoading.dismiss();
+          print(jsonDecode(utf8.decode(response.bodyBytes)));
+        }
+      } catch (e) {
+        print(e);
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  //Save Position
+  savePosition() async {
+    print('儲存停車開始存取');
+    EasyLoading.show(status: '儲存中');
+    var position = await geolocator().updataPosition(context);
+    var body = {
+      "longitude": position.longitude.toString(),
+      "latitude": position.latitude.toString()
+    };
+    var url = dotenv.env['SaveCarPosition'];
+    var jwt = ',' + state.accountState;
+    var response;
+    try {
+      response = await api().apiPut(body, url, jwt);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        EasyLoading.showSuccess(responseBody['message']);
+        Carpostionstatus = true;
+        print('儲存停車成功');
+        EasyLoading.dismiss();
+      }
+    } catch (e) {
+      print(e);
+      EasyLoading.showError('存取失敗');
+      print('儲存停車失敗');
+      EasyLoading.dismiss();
+    }
+  }
+
+  getPosition() async {
+    print('儲存停車開始存取');
+    EasyLoading.show(status: '儲存中');
+    var position = await geolocator().updataPosition(context);
+    var url = '${dotenv.env['GetCarPosition']}?os=${prefs.get('system')}';
+    print(url);
+    var jwt = ',' + state.accountState;
+    var response;
+    try {
+      response = await api().apiGet(url, jwt);
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        EasyLoading.showSuccess(responseBody['message']);
+        print('儲存停車成功');
+        EasyLoading.dismiss();
+      }
+    } catch (e) {
+      print(e);
+      EasyLoading.showError('存取失敗');
+      print('儲存停車失敗');
+      EasyLoading.dismiss();
+    }
+  }
+
+  void _stopTrackingPosition() async {
+    // 取消位置更新的訂閱
+    if (timer2 != null) {
+      try {
+        timer2?.cancel();
+      } catch (e) {
+        print('Error while canceling timer2: $e');
+      }
+    }
+    _positionStreamSubscription?.cancel();
+  }
+
+
+// 時速、判斷播報訊息距離
+    Future<void> _getSpeed() async {
     print('開始抓取速率');
     final LocationSettings locationSettings = LocationSettings(
       distanceFilter: 0,
@@ -273,6 +405,7 @@ class _CMSState extends State<CMS> {
     });
   }
 
+//判斷行走方向
   String getDirectionString(double direction) {
     if ((direction >= 337.5 && direction <= 360) ||
         (direction >= 0 && direction < 22.5)) {
@@ -286,135 +419,6 @@ class _CMSState extends State<CMS> {
     } else {
       return '未知方向';
     }
-  }
-
-//當頁面創造時執行
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-    _stopTrackingPosition();
-    state = Provider.of<stateManager>(context, listen: false);
-    screenWidth = MediaQuery.of(context).size.width;
-    screenHeight = MediaQuery.of(context).size.height;
-    fontSize = screenWidth * 0.05;
-    position = state.positionNow;
-    position1 = state.positionNow;
-    await getSpeedEnforcement();
-    _getSpeed();
-    updateCMSList_Car();
-    updateCMS_Sidbar_List_Car();
-
-    prefs = await SharedPreferences.getInstance();
-  }
-
-  changeMode(mode) {
-    if (mode == 'car') {
-      return 'Car';
-    } else if (mode == 'scooter') {
-      return 'Scooter';
-    }
-  }
-
-  //快速尋找地點
-  findPlacesQuickly(url) async {
-    try {
-      position = await geolocator().updataPosition(context);
-
-      var response;
-      var res;
-      var urlPosition = url +
-          '?os=${prefs.get('system')}&mode=${changeMode(state.modeName)}&longitude=${position.longitude}&latitude=${position.latitude}';
-
-      print(urlPosition);
-      var jwt = ',${state.accountState}';
-      try {
-        response = await api().apiGet(urlPosition, jwt);
-        print(jsonDecode(utf8.decode(response.bodyBytes)));
-        res = jsonDecode(utf8.decode(response.bodyBytes))['url'];
-        if (response.statusCode == 200) {
-          EasyLoading.dismiss();
-          try {
-            print(res);
-            await launch(res);
-          } catch (e) {
-            print(e.toString());
-            EasyLoading.showError(e.toString());
-          }
-        } else {
-          EasyLoading.dismiss();
-          print(jsonDecode(utf8.decode(response.bodyBytes)));
-        }
-      } catch (e) {
-        print(e);
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  //Save Position
-  savePosition() async {
-    print('儲存停車開始存取');
-    EasyLoading.show(status: '儲存中');
-    var position = await geolocator().updataPosition(context);
-    var body = {
-      "longitude": position.longitude.toString(),
-      "latitude": position.latitude.toString()
-    };
-    var url = dotenv.env['SaveCarPosition'];
-    var jwt = ',' + state.accountState;
-    var response;
-    try {
-      response = await api().apiPut(body, url, jwt);
-      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-      if (response.statusCode == 200) {
-        EasyLoading.showSuccess(responseBody['message']);
-        Carpostionstatus = true;
-        print('儲存停車成功');
-        EasyLoading.dismiss();
-      }
-    } catch (e) {
-      print(e);
-      EasyLoading.showError('存取失敗');
-      print('儲存停車失敗');
-      EasyLoading.dismiss();
-    }
-  }
-
-  getPosition() async {
-    print('儲存停車開始存取');
-    EasyLoading.show(status: '儲存中');
-    var position = await geolocator().updataPosition(context);
-    var url = '${dotenv.env['GetCarPosition']}?os=${prefs.get('system')}';
-    print(url);
-    var jwt = ',' + state.accountState;
-    var response;
-    try {
-      response = await api().apiGet(url, jwt);
-      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-      if (response.statusCode == 200) {
-        EasyLoading.showSuccess(responseBody['message']);
-        print('儲存停車成功');
-        EasyLoading.dismiss();
-      }
-    } catch (e) {
-      print(e);
-      EasyLoading.showError('存取失敗');
-      print('儲存停車失敗');
-      EasyLoading.dismiss();
-    }
-  }
-
-  void _stopTrackingPosition() async {
-    // 取消位置更新的訂閱
-    if (timer2 != null) {
-      try {
-        timer2?.cancel();
-      } catch (e) {
-        print('Error while canceling timer2: $e');
-      }
-    }
-    _positionStreamSubscription?.cancel();
   }
 
   // 更新CMS_car資訊
@@ -541,7 +545,7 @@ class _CMSState extends State<CMS> {
 
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
       if (response.statusCode == 200) {
-        print('抓取ＣＭＳ_Sidbar成功');
+        print('抓取CMS_Sidbar成功');
 
         try {
           setState(() {
@@ -556,7 +560,7 @@ class _CMSState extends State<CMS> {
           });
         } catch (e) {}
       } else {
-        print('CMS抓取失敗');
+        print('CMS_Sidbar抓取失敗');
       }
     } catch (e) {
       print(e);
@@ -625,10 +629,13 @@ class _CMSState extends State<CMS> {
     }
   }
 
+//向後端抓取顏色編碼，重新編碼
   Color changeColorCode(color) {
     return Color(int.parse(('FF' + color.replaceAll("#", "")), radix: 16));
   }
 
+
+//View Code
   //Widget
   Widget CMS_Content() {
     return Container(
@@ -707,9 +714,21 @@ class _CMSState extends State<CMS> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('道路封閉',style: TextStyle(color: Colors.white,fontSize: screenWidth * 0.07),),
-                  Text('龍潭路',style: TextStyle(color: Colors.white,fontSize: screenWidth * 0.07),),
-                  Text('請改走四維路',style: TextStyle(color: Colors.white,fontSize: screenWidth * 0.07),)
+                  Text(
+                    '道路封閉',
+                    style: TextStyle(
+                        color: Colors.white, fontSize: screenWidth * 0.07),
+                  ),
+                  Text(
+                    '龍潭路',
+                    style: TextStyle(
+                        color: Colors.white, fontSize: screenWidth * 0.07),
+                  ),
+                  Text(
+                    '請改走四維路',
+                    style: TextStyle(
+                        color: Colors.white, fontSize: screenWidth * 0.07),
+                  )
                 ],
               ),
             )),

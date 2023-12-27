@@ -1,8 +1,4 @@
 // ignore_for_file: camel_case_types, file_names, unnecessary_import, deprecated_member_use, unnecessary_new, prefer_typing_uninitialized_variables, prefer_collection_literals, avoid_print, unnecessary_brace_in_string_interps, unnecessary_string_interpolations
-
-
-
-
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
@@ -38,9 +34,7 @@ class _Route_Planning extends State<Route_Planning> {
     screenHeight = MediaQuery. of(context). size. height;
     state.changePositionNow(await geolocator().updataPosition(context));
   }
-  _onMapCreated(GoogleMapController controller){
-    mapController = controller;
-  }
+
   //搜尋路徑
   void routeSearch() async{
     var response;
@@ -174,6 +168,9 @@ class _Route_Planning extends State<Route_Planning> {
     );
   }
   //Google Map View
+    _onMapCreated(GoogleMapController controller){
+    mapController = controller;
+  }
   Widget mapView(){
     return  GoogleMap(
       onMapCreated: _onMapCreated,
@@ -208,7 +205,7 @@ class _Route_Planning extends State<Route_Planning> {
               ),
               controller: startPlaceText,
               onChanged: (value) {
-                // 获取用户输入的内容
+                // 獲取輸入內容
                 input = value;
               },
             ),
@@ -224,21 +221,6 @@ class _Route_Planning extends State<Route_Planning> {
               startPlaceText.text = suggestion;
             },
           ),
-          // TextField(
-          //   controller: startPlaceText,
-          //   decoration: InputDecoration(
-          //     hintText: '輸入起始地',
-          //     hintStyle: TextStyle(color: Color.fromRGBO(24, 60, 126, 1)),
-          //     enabledBorder: OutlineInputBorder(
-          //       borderSide: BorderSide(width: 3, color: Color.fromRGBO(24, 60, 126, 1),),
-          //       borderRadius: BorderRadius.circular(15),
-          //     ),
-          //   ),
-          //   onEditingComplete: (){
-          //     getInputLocation(startPlaceText.text,true);
-          //   },
-          // ),
-          //交換起始地&目的地
           Align(
             alignment: Alignment.center,
             child: IconButton(
@@ -263,7 +245,6 @@ class _Route_Planning extends State<Route_Planning> {
                 ),
               controller: endPlaceText,
               onChanged: (value) {
-                // 获取用户输入的内容
                 input = value;
               },
             ),

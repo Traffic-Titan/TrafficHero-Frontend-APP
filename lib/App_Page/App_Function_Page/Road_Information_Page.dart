@@ -155,6 +155,7 @@ class _Road_InformationState extends State<Road_Information> {
     setState(() {});
   }
 
+//取得警廣資訊
   Future<void> getPBS(type) async {
     try {
       print('開始抓取PBS');
@@ -178,6 +179,7 @@ class _Road_InformationState extends State<Road_Information> {
     }
   }
 
+//取得高速公路1968 URL
   Future<void> getFreeway(type) async {
     try {
       print('開始抓取PBS');
@@ -200,9 +202,10 @@ class _Road_InformationState extends State<Road_Information> {
     }
   }
 
+//取得省道道路資訊URL
   Future<void> getprovincialHighway() async {
     try {
-      print('開始抓取PBS');
+      print('開始抓取省道道路資訊');
       var response;
       var jwt = ',' + state.accountState;
       var url = dotenv.env['provincialHighway'].toString();
@@ -222,10 +225,10 @@ class _Road_InformationState extends State<Road_Information> {
     }
   }
 
-
-    Future<void> getlocalroad(type) async {
+//取得地方道路資訊URL
+  Future<void> getlocalroad(type) async {
     try {
-      print('開始抓取PBS');
+      print('開始抓取地方道路資訊URL');
       var response;
       var jwt = ',' + state.accountState;
       var url = dotenv.env['localRoad'].toString() + '?area=${type}';
@@ -300,20 +303,12 @@ class _Road_InformationState extends State<Road_Information> {
     }
   }
 
-  Future<BitmapDescriptor> _loadNetworkIcon(String url) async {
-    final http.Response response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      return BitmapDescriptor.fromBytes(response.bodyBytes);
-    } else {
-      throw Exception('Failed to load network image');
-    }
-  }
+  //Google Map View
 
   _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
   }
 
-  //Google Map View
   Widget mapView() {
     return GoogleMap(
       myLocationEnabled: false,
@@ -327,38 +322,9 @@ class _Road_InformationState extends State<Road_Information> {
     );
   }
 
-  //取得目的地經緯度座標
-  // Future<List<String>> getInputLocation(inputText, inputValue) async {
-  //   var key = dotenv.env['GOOGLE_MAPS_API_KEY'];
-  //   var response;
-  //   var data;
-  //   var url =
-  //       'https://maps.googleapis.com/maps/api/place/textsearch/json?location=${state.positionNow.latitude}%2C${state.positionNow.longitude}&query=${input}&key=${key}';
-  //   try {
-  //     response = await get(Uri.parse(url.toString()));
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-  //   if (response.statusCode == 200) {
-  //     data = responseBody['results'];
-  //     suggestions = [];
-  //     // 将API响应数据转换为建议项列表
-  //     for (var item in data) {
-  //       suggestions.add(item['name']);
-  //       destinationList.add({
-  //         'name': item['name'],
-  //         'lat': item['geometry']['location']['lat'],
-  //         'lng': item['geometry']['location']['lng'],
-  //       });
-  //     }
-  //     return suggestions;
-  //   } else {
-  //     return suggestions;
-  //   }
-  // }
 
-  //搜尋紐
+
+  //appBar
   PreferredSizeWidget appBar() {
     return AppBar(
       backgroundColor: const Color.fromRGBO(62, 111, 179, 1),
@@ -375,6 +341,7 @@ class _Road_InformationState extends State<Road_Information> {
           backgroundColor: const Color.fromRGBO(33, 84, 144, 1),
           onPressed: () {
             setState(() {
+              //控制塞選選項頁面
               freeWayShow = freeWayShow == false ? true : false;
               sclectShow = false;
               freeWayListShow = true;
@@ -407,21 +374,7 @@ class _Road_InformationState extends State<Road_Information> {
     );
   }
 
-  void _filterRoadInfoItemsChange(index, isSelected) {
-    roadInfoFilterList[index]['isChecked'] = isSelected;
-    if (isSelected) {
-      _filterRoadInfoItems.add(roadInfoFilterList[index]['title']);
-    } else {
-      _filterRoadInfoItems.remove(roadInfoFilterList[index]['title']);
-    }
-  }
 
-  //篩選路況
-
-  //新增List要顯示的路況
-  void addRoadInfoDetailList(list) {
-    roadInfoDetail.add(list);
-  }
 
   //道路資訊詳細資訊
   Future<void> showRoadInfoDetail() async {
@@ -676,7 +629,8 @@ class _Road_InformationState extends State<Road_Information> {
                               InkWell(
                                 onTap: () async {
                                   try {
-                                    getlocalroad(LocalRoadInfoFilterList[i]['value']);
+                                    getlocalroad(
+                                        LocalRoadInfoFilterList[i]['value']);
                                   } catch (e) {
                                     print(e);
                                   }

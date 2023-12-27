@@ -76,9 +76,6 @@ class _messagePageState extends State<messagePage> {
 
   Future<void> messageSave(messageLits) async {
     print('更新中');
-    // setState(() {
-    //   message = messageLits;
-    // });
 
     final storedMessage = prefs.getString('message');
     if (storedMessage != null && storedMessage.trim().isNotEmpty) {
@@ -144,27 +141,8 @@ class _messagePageState extends State<messagePage> {
                       ],
                     ),
                     subtitle: Text(messageList['body'].toString()),
-                    trailing: const Icon(
-                      Icons.arrow_forward_ios,
-                      size: 30,
-                    ),
                     onTap: () {
-                      // EasyLoading.show(status: 'loading...');
-                      // if (messageList['news_url'].toString() != '') {
-                      //   Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) =>
-                      //               WebView(tt: messageList['news_url'].toString())));
-                      // } else {
-                      //   print(messageList);
-                      //   Navigator.push(
-                      //       context,
-                      //       MaterialPageRoute(
-                      //           builder: (context) => NewsCardView(
-                      //                 listView: messageList,
-                      //               )));
-                      // }
+                    
                     },
                   ),
                   const Divider(
