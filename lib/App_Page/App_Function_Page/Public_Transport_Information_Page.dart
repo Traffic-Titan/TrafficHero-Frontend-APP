@@ -22,13 +22,6 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
   var positionNow;
   var position;
 
-  // static const List<Tab> publicTransportationBar = <Tab>[
-  //   Tab(text: '腳踏車'),
-  //   Tab(text: '公車'),
-  //   Tab(text: '捷運'),
-  //   Tab(text: '台鐵'),
-  //   Tab(text: '高鐵'),
-  // ];
 
   @override
   void didChangeDependencies() async {
@@ -38,40 +31,10 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
     screenWidth = MediaQuery. of(context). size. width ;
     screenHeight = MediaQuery. of(context). size. height;
     position = await geolocator().updataPosition(context);
-    // 取得附近站點有哪些
-    // getNearbyStation();
+
   }
-  @override
-  void initState() {
-    super.initState();
-    // _tabController = TabController(vsync: this, length: publicTransportationBar.length);
-  }
-  @override
-  void dispose() {
-    // _tabController.dispose();
-    super.dispose();
-  }
-  // //取得附近站點有哪些
-  // getNearbyStation() async{
-  //   var response;
-  //   var jwt = ',${state.accountState}';
-  //   // 先讀取附近站點有哪些腳踏車資訊
-  //   var nearbyStationURL = dotenv.env['StationNearbyBike']! + '?latitude=${position.latitude}&longitude=${position.longitude}';
-  //   try {
-  //     response = await api().apiGet(nearbyStationURL, jwt);
-  //     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
-  //     if (response.statusCode == 200) {
-  //       // 將API讀取到的所有附近站點加入陣列
-  //       nearbyStation_list = responseBody;
-  //       // 取得大眾運輸資訊
-  //       getPublicTransportation();
-  //     } else {
-  //       print(jsonDecode(utf8.decode(response.bodyBytes)).toString());
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  // }
+
+
   //腳踏車附近站點
   stationNearbySearchBus() async{
     var jwt = ',${state.accountState}';
@@ -87,9 +50,7 @@ class _Public_Transport_InformationState extends State<Public_Transport_Informat
     var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
     if (response.statusCode == 200) {
       state.updateNearbyStationBus(responseBody);
-      // setState(() {
-      //   nearbyStation_list = responseBody;
-      // });
+
     }
   }
 

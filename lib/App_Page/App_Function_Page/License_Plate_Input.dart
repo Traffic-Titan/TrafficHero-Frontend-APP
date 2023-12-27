@@ -17,9 +17,6 @@ class _LicensePlateInputState extends State<LicensePlateInput> {
   late stateManager state;
   var list2 = [];
   var vehicle = [];
-
-  //綁定車牌測試用
-
   String? type = 'C';
 
   void showResultDialog(BuildContext context, listUser, listAmount, list2) {

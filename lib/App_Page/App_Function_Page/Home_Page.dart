@@ -340,6 +340,8 @@ class _Home extends State<Home> with SingleTickerProviderStateMixin {
     print('timer stop');
   }
 
+
+//更新頁面上顯示數值狀態
   void update() async {
     try {
       setState(() {

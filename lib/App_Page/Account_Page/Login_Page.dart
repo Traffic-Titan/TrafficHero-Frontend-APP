@@ -202,18 +202,20 @@ class _Login extends State<Login> {
     }
   }
 
+
+//跳轉忘記密碼頁面
   void forgetpassword(context) {
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => const forgetPasswordPage()));
   }
 
+//跳轉註冊頁面
   void register_page(context) {
     Navigator.push(
         context, MaterialPageRoute(builder: (context) => const registerPage()));
   }
 
   //View Code
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -364,8 +366,6 @@ class _Login extends State<Login> {
                           } catch (e) {
                             print(e);
                           }
-
-                          // google_sso_function();
                         }),
                   ],
                 )

@@ -282,6 +282,11 @@ class _registerPage extends State<registerPage> {
               InkWell(
                 child: const block_button(functionName: "送出"),
                 onTap: () {
+                  try{
+                    googlesso().google_signOut();
+                  }catch(e){
+                    print(e);
+                  }
                   if (text_lengh() && check_password_function()) {
                     EasyLoading.show(status: 'loading...');
                     register_function(context);

@@ -18,13 +18,7 @@ class _Tourist_Information_Page_SearchPageState
   var searchResult_list;
   var resultDetail_list;
   List<dynamic> seachList = [];
-  @override
-  void initState() {
-    super.initState();
-    searchResult_list = [
-      {"UID": "0", "名稱": "請輸入您想搜尋的地點"}
-    ];
-  }
+
 
   @override
   void didChangeDependencies() async {

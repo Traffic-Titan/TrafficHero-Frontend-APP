@@ -6,6 +6,7 @@ import 'package:traffic_hero/imports.dart';
 class TouristInformationPageDetail extends StatefulWidget {
   const TouristInformationPageDetail({Key? key, required this.detail})
       : super(key: key);
+      //取得詳細資料
   final detail;
 
   @override
@@ -22,11 +23,7 @@ class _TouristInformationPageDetailState
   late double screenHeight; // 修正成 double 型態
   late PageController controller;
 
-  @override
-  void initState() {
-    super.initState();
-     // 在 initState 中初始化 controller
-  }
+
 
   @override
   void didChangeDependencies() async {

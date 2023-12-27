@@ -44,7 +44,7 @@ class _NewsState extends State<News> {
     //依照模式判斷顯示內容
     if (state.modeName == 'car') {
       setState(() {
-        print(listView);
+       
         urlApi = dotenv.env['News_Car'].toString();
         listCity = choices.city;
         listType = choices.way;
