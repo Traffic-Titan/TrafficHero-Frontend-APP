@@ -33,17 +33,6 @@ class _MRT_TaoyuanState extends State<MRT_Taoyuan> {
                     ),
                     border: InputBorder.none,
                   ),
-                  // 將搜尋欄中輸入的字傳到後端做關鍵字搜尋
-                  // onChanged: (inputText) async {
-                  //   // 若無輸入，則下排保持顯示"請輸入您想搜尋的地點"
-                  //   if(inputText.length == 0){
-                  //     setState(() {
-                  //       searchResult_list=[{"UID":"0","名稱":"請輸入您想搜尋的地點"}];
-                  //     });
-                  //   }else{
-                  //     searchResult(inputText);
-                  //   }
-                  // },
                   style: TextStyle(
                     backgroundColor: Color.fromRGBO(221, 235, 247, 1),
                     color: Color.fromRGBO(46, 80, 140, 1),

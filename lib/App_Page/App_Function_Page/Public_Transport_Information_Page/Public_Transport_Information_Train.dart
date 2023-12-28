@@ -1,4 +1,3 @@
-
 // ignore_for_file: unused_local_variable, file_names, camel_case_types, use_super_parameters, unnecessary_late, prefer_typing_uninitialized_variables, prefer_is_empty, avoid_unnecessary_containers
 
 import 'package:dropdown_search/dropdown_search.dart';
@@ -8,11 +7,13 @@ class Public_Transport_Information_Train extends StatefulWidget {
   const Public_Transport_Information_Train({Key? key}) : super(key: key);
 
   @override
-  State<Public_Transport_Information_Train> createState() => _Public_Transport_Information_TrainState();
+  State<Public_Transport_Information_Train> createState() =>
+      _Public_Transport_Information_TrainState();
 }
 
 // 所有火車站 站點ID
-const List<String> stationID = <String>["0920",
+const List<String> stationID = <String>[
+  "0920",
   "1020",
   "1040",
   "1110",
@@ -254,9 +255,11 @@ const List<String> stationID = <String>["0920",
   "7270",
   "7335",
   "7360",
-  "7361"];
+  "7361"
+];
 // 所有火車站 站名
-const List<String> stopName =  <String>["八堵",
+const List<String> stopName = <String>[
+  "八堵",
   "板橋",
   "樹林",
   "埔心",
@@ -498,50 +501,93 @@ const List<String> stopName =  <String>["八堵",
   "大里",
   "平溪",
   "瑞芳",
-  "海科館"];
+  "海科館"
+];
 // 提供下拉式選單的預設值
 String dropDownValue = stopName.first;
 //順行
-late List<Map<String,dynamic>> outBound = [{"方向": "順行", "起點站": "暫無發車","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
+late List<Map<String, dynamic>> outBound = [
+  {
+    "方向": "順行",
+    "起點站": "暫無發車",
+    "終點站": "",
+    "列車類型": "",
+    "列車編號": "",
+    "預估到站時間": "",
+    "線路": ""
+  }
+];
 //逆行
-late List<Map<String,dynamic>> inBound = [{"方向": "逆行", "起點站": "暫無發車","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
+late List<Map<String, dynamic>> inBound = [
+  {
+    "方向": "逆行",
+    "起點站": "暫無發車",
+    "終點站": "",
+    "列車類型": "",
+    "列車編號": "",
+    "預估到站時間": "",
+    "線路": ""
+  }
+];
 //該站資訊
 var stationInfo = [];
 var state;
 var screenWidth;
 var screenHeight;
 
-class _Public_Transport_Information_TrainState extends State<Public_Transport_Information_Train> {
+class _Public_Transport_Information_TrainState
+    extends State<Public_Transport_Information_Train> {
   //取得站點資料
   getStopList(value) async {
     // 利用站名與站點ID相對應，讓選到的站名轉換為對應的ID
     var pickedNum = stopName.indexOf(value!);
-    var url = '${dotenv.env['TRA_StationLiveBoard']}?StationID=${stationID[pickedNum]}';
+    var url =
+        '${dotenv.env['TRA_StationLiveBoard']}?StationID=${stationID[pickedNum]}';
     var jwt = ',${state.accountState}';
     var response = await api().apiGet(url, jwt);
     if (response.statusCode == 200) {
       setState(() {
         stationInfo = jsonDecode(utf8.decode(response.bodyBytes));
       });
-      if(stationInfo.length!=0){
+      if (stationInfo.length != 0) {
         outBound.clear();
         inBound.clear();
-        for(int i=0;i<stationInfo.length;i++){
-          if(stationInfo[i]['方向'] == "順行"){
+        for (int i = 0; i < stationInfo.length; i++) {
+          if (stationInfo[i]['方向'] == "順行") {
             outBound.add(stationInfo[i]);
-          }
-          else if(stationInfo[i]['方向'] == "逆行"){
+          } else if (stationInfo[i]['方向'] == "逆行") {
             inBound.add(stationInfo[i]);
           }
         }
-        if(outBound.length==0){
-          outBound = [{"方向": "順行", "起點站": "暫無發車","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
-        }else if(inBound.length==0){
-          inBound = [{"方向": "逆行", "起點站": "暫無發車","終點站":"","列車類型":"","列車編號":"","預估到站時間":"","線路":""}];
+        if (outBound.length == 0) {
+          outBound = [
+            {
+              "方向": "順行",
+              "起點站": "暫無發車",
+              "終點站": "",
+              "列車類型": "",
+              "列車編號": "",
+              "預估到站時間": "",
+              "線路": ""
+            }
+          ];
+        } else if (inBound.length == 0) {
+          inBound = [
+            {
+              "方向": "逆行",
+              "起點站": "暫無發車",
+              "終點站": "",
+              "列車類型": "",
+              "列車編號": "",
+              "預估到站時間": "",
+              "線路": ""
+            }
+          ];
         }
       }
     }
   }
+
   //台鐵頁面
   @override
   Widget build(BuildContext context) {
@@ -550,11 +596,11 @@ class _Public_Transport_Information_TrainState extends State<Public_Transport_In
     screenHeight = MediaQuery.of(context).size.height;
     return Container(
       color: const Color.fromRGBO(230, 240, 255, 1),
-        child: Column(
-          children: [
-            Container(
+      child: Column(
+        children: [
+          Container(
               height: 60,
-              width: screenWidth*0.9,
+              width: screenWidth * 0.9,
               alignment: Alignment.center,
               padding: const EdgeInsets.only(left: 10),
               decoration: const BoxDecoration(
@@ -563,7 +609,8 @@ class _Public_Transport_Information_TrainState extends State<Public_Transport_In
               ),
               child: Row(
                 children: [
-                  const Text('選擇車站：',style: TextStyle(fontSize: 18,color: Colors.white)),
+                  const Text('選擇車站：',
+                      style: TextStyle(fontSize: 18, color: Colors.white)),
                   SizedBox(
                       height: 60,
                       width: 150,
@@ -574,181 +621,216 @@ class _Public_Transport_Information_TrainState extends State<Public_Transport_In
                           // showSelectedItems: true,
                         ),
                         dropdownDecoratorProps: const DropDownDecoratorProps(
-                            baseStyle:TextStyle(fontSize:20,color: Colors.white),
-                            dropdownSearchDecoration: InputDecoration(
-                            )),
+                            baseStyle:
+                                TextStyle(fontSize: 20, color: Colors.white),
+                            dropdownSearchDecoration: InputDecoration()),
                         onChanged: (String? value) => setState(() async {
                           dropDownValue = value!;
                           await getStopList(dropDownValue);
                         }),
                         selectedItem: stopName.first,
-                      )
-                  )
-
-                  // DropdownButton(
-                  //   value: dropDownValue,
-                  //   dropdownColor: Color.fromRGBO(47, 125, 195, 1),
-                  //   items: stopName.map<DropdownMenuItem<String>>((String value) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: value,
-                  //       child: Text(value,style: const TextStyle(fontSize: 18,color: Colors.white),),
-                  //     );
-                  //   }).toList(),
-                  //   onChanged: (String? value) async {
-                  //     setState(() {
-                  //       dropDownValue = value!;
-                  //     });
-                  //     await getStopList(dropDownValue);
-                  //   },
-                  // ),
+                      ))
                 ],
-              )
-            ),
-            Container(
-                width: screenWidth*0.9,
-                color: Colors.white,
-                alignment: Alignment.center,
-                child: Column(
+              )),
+          Container(
+              width: screenWidth * 0.9,
+              color: Colors.white,
+              alignment: Alignment.center,
+              child: Column(
                 children: [
                   Row(
                     children: [
                       Container(
-                        height: screenHeight*0.25,
+                        height: screenHeight * 0.25,
                         color: const Color.fromRGBO(47, 125, 195, 1),
                         padding: const EdgeInsets.only(left: 3),
                         alignment: AlignmentDirectional.centerStart,
-                        child: const Text("順行",style: TextStyle(fontSize:18,color: Colors.white),),
+                        child: const Text(
+                          "順行",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
                       SizedBox(
-                        height: screenHeight*0.25,
-                        width: screenWidth*0.8-10,
+                        height: screenHeight * 0.25,
+                        width: screenWidth * 0.8 - 10,
                         child: ListView.builder(
                             itemCount: outBound.length,
-                            itemBuilder: (context, index){
+                            itemBuilder: (context, index) {
                               var list = outBound[index];
-                              return (list['起點站']=='暫無發車') ? const Text('暫無發車'):
-                                ListTile(
-                                  title:Container(
-                                      child: Row(
-                                        children: [
-                                          SizedBox(
-                                            height: 60,
-                                            width: 100,
-                                            child: DecoratedBox(
-                                                decoration: BoxDecoration(
-                                                  color: const Color.fromRGBO(255, 0, 0, 1),
-                                                  borderRadius: BorderRadius.circular(15),
-                                                ),
-                                                child: Column(
-                                                  children: [
-                                                    Text(list['列車類型'],style: const TextStyle(color:Colors.white),),
-                                                    Text(list['列車編號'],style: const TextStyle(color:Colors.white),),
-                                                  ],
-                                                )
+                              return (list['起點站'] == '暫無發車')
+                                  ? const Text('暫無發車')
+                                  : ListTile(
+                                      title: Container(
+                                          child: Row(
+                                      children: [
+                                        SizedBox(
+                                          height: 60,
+                                          width: 100,
+                                          child: DecoratedBox(
+                                              decoration: BoxDecoration(
+                                                color: const Color.fromRGBO(
+                                                    255, 0, 0, 1),
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                              ),
+                                              child: Column(
+                                                children: [
+                                                  Text(
+                                                    list['列車類型'],
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    list['列車編號'],
+                                                    style: const TextStyle(
+                                                        color: Colors.white),
+                                                  ),
+                                                ],
+                                              )),
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Column(
+                                          children: [
+                                            Text(
+                                              list["起點站"] +
+                                                  " － " +
+                                                  list["終點站"] +
+                                                  "(${list["線路"]})",
+                                              textAlign: TextAlign.center,
                                             ),
-                                          ),
-                                          const SizedBox(width: 10,),
-                                          Column(
-                                            children: [
-                                              Text(list["起點站"]+" － "+list["終點站"]+"(${list["線路"]})",textAlign: TextAlign.center,),
-                                              Text(list["預估到站時間"].toString().substring(0,5),textAlign: TextAlign.center,)
-                                            ],
-                                          ),
-                                        ],
-                                      )
-                                  )
-                              );
-                            }
-                        ),
+                                            Text(
+                                              list["預估到站時間"]
+                                                  .toString()
+                                                  .substring(0, 5),
+                                              textAlign: TextAlign.center,
+                                            )
+                                          ],
+                                        ),
+                                      ],
+                                    )));
+                            }),
                       )
                     ],
                   ),
-                  const Divider(height: 5,color: Color.fromRGBO(24, 60, 126, 1)),
+                  const Divider(
+                      height: 5, color: Color.fromRGBO(24, 60, 126, 1)),
                   Row(
                     children: [
                       Container(
-                        height: screenHeight*0.25,
+                        height: screenHeight * 0.25,
                         color: const Color.fromRGBO(47, 125, 195, 1),
                         padding: const EdgeInsets.only(left: 3),
                         alignment: AlignmentDirectional.centerStart,
-                        child: const Text("逆行",style: TextStyle(fontSize:18,color: Colors.white),),
+                        child: const Text(
+                          "逆行",
+                          style: TextStyle(fontSize: 18, color: Colors.white),
+                        ),
                       ),
                       Column(
                         children: [
                           SizedBox(
-                            height: screenHeight*0.25,
-                            width: screenWidth*0.8-10,
+                            height: screenHeight * 0.25,
+                            width: screenWidth * 0.8 - 10,
                             child: ListView.builder(
                                 itemCount: inBound.length,
-                                itemBuilder: (context, index){
+                                itemBuilder: (context, index) {
                                   var list = inBound[index];
-                                  return (list['起點站']=='暫無發車') ? const Text('暫無發車'):
-                                    ListTile(
-                                      title:Container(
-                                          child:Row(
-                                            children: [
-                                              SizedBox(
-                                                height: 60,
-                                                width:100,
-                                                child: DecoratedBox(
-                                                    decoration: BoxDecoration(
-                                                      color: const Color.fromRGBO(255, 0, 0, 1),
-                                                      borderRadius: BorderRadius.circular(15),
-                                                    ),
-                                                    child: Column(
-                                                      children: [
-                                                        Text(list['列車類型'],style: const TextStyle(color:Colors.white),),
-                                                        Text(list['列車編號'],style: const TextStyle(color:Colors.white),),
-                                                      ],
-                                                    )
+                                  return (list['起點站'] == '暫無發車')
+                                      ? const Text('暫無發車')
+                                      : ListTile(
+                                          title: Container(
+                                              child: Row(
+                                          children: [
+                                            SizedBox(
+                                              height: 60,
+                                              width: 100,
+                                              child: DecoratedBox(
+                                                  decoration: BoxDecoration(
+                                                    color: const Color.fromRGBO(
+                                                        255, 0, 0, 1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            15),
+                                                  ),
+                                                  child: Column(
+                                                    children: [
+                                                      Text(
+                                                        list['列車類型'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      Text(
+                                                        list['列車編號'],
+                                                        style: const TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                    ],
+                                                  )),
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Column(
+                                              children: [
+                                                Text(
+                                                  list["起點站"] +
+                                                      " － " +
+                                                      list["終點站"] +
+                                                      "(${list["線路"]})",
+                                                  textAlign: TextAlign.center,
                                                 ),
-                                              ),
-
-                                              const SizedBox(width: 10,),
-                                              Column(
-                                                children: [
-                                                  Text(list["起點站"]+" － "+list["終點站"]+"(${list["線路"]})",textAlign: TextAlign.center,),
-                                                  Text(list["預估到站時間"].toString().substring(0,5),textAlign: TextAlign.center,)
-                                                ],
-                                              ),
-                                            ],
-                                          )
-                                      )
-                                  );
-                                }
-                            ),
+                                                Text(
+                                                  list["預估到站時間"]
+                                                      .toString()
+                                                      .substring(0, 5),
+                                                  textAlign: TextAlign.center,
+                                                )
+                                              ],
+                                            ),
+                                          ],
+                                        )));
+                                }),
                           )
                         ],
                       )
                     ],
                   ),
                 ],
-              )
-            ),
-            const SizedBox(height: 10,),
-            ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(const Color.fromRGBO(24, 60, 126, 1),),
-                shape: MaterialStateProperty.all(const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20)), )),
-                minimumSize: MaterialStateProperty.all(Size(screenWidth - 30 > 600 ? 600 : screenWidth - 30, 50)),
+              )),
+          const SizedBox(
+            height: 10,
+          ),
+          ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                const Color.fromRGBO(24, 60, 126, 1),
               ),
-              onPressed: (){
-                Future.delayed(const Duration(seconds: 1),(){
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const TRA_TimeTableSearch()),
-                  );
-                });
-              },
-              child: const Text("火車時刻表條件查詢",style: TextStyle(color: Colors.white,fontSize: 20),),
-            )
-          ],
-        ),
-
+              shape: MaterialStateProperty.all(const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+              )),
+              minimumSize: MaterialStateProperty.all(
+                  Size(screenWidth - 30 > 600 ? 600 : screenWidth - 30, 50)),
+            ),
+            onPressed: () {
+              Future.delayed(const Duration(seconds: 1), () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const TRA_TimeTableSearch()),
+                );
+              });
+            },
+            child: const Text(
+              "火車時刻表條件查詢",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
-
-
-
-
