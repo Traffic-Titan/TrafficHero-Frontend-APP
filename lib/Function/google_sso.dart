@@ -8,6 +8,7 @@ class googlesso extends GetxController {
   var isAuthorized = false;
   var scopes = <String>[];
 
+//google登入
   Future<void> google() async {
     try {
       googleAccount.value = await googleSignIn.signIn();
@@ -15,7 +16,7 @@ class googlesso extends GetxController {
       print(e);
     }
   }
-
+//google登出
   Future<void> google_signOut() async {
     googleAccount.value = await googleSignIn.signOut();
   }

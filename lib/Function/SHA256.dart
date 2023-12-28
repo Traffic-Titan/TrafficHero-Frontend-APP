@@ -2,6 +2,7 @@
 
 import 'package:traffic_hero/imports.dart';
 
+//密碼加密
 class Sha256 {
   String sha256Function(String password) {
     var bytes1 = utf8.encode(password); // 将数据转换为字节数组

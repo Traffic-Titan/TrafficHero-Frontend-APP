@@ -63,14 +63,16 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
                   list['location']['latitude'], list['location']['longitude']),
               infoWindow: InfoWindow(
                 title: list['station_name_zh_tw'],
-                snippet: '可借 - ${list['available_rent_bikes']},可還 - ${list['available_return_bikes']}',
+                snippet:
+                    '可借 - ${list['available_rent_bikes']},可還 - ${list['available_return_bikes']}',
               ),
               onTap: () {
                 launch(list['url']);
                 setState(() {});
               }),
         );
-        print('$i標記成功${list['location']['latitude']}${list['location']['longitude']}');
+        print(
+            '$i標記成功${list['location']['latitude']}${list['location']['longitude']}');
       } catch (e) {
         print(e);
         print('$i標記失敗');
@@ -160,52 +162,57 @@ class _publicTransportInfoBikeState extends State<publicTransportInfoBike> {
             itemCount: content.length,
             itemBuilder: (context, index) {
               final list = content[index];
-                return InkWell(
-                  child: ListTile(
-                    leading: Image.network(list['icon_url']),
-                    title: Container(
-                      child: Text(
-                        list['station_name_zh_tw'],
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: Color.fromRGBO(0, 32, 96, 1),
-                        ),
-                        overflow: TextOverflow.ellipsis,
+              return InkWell(
+                child: ListTile(
+                  leading: Image.network(list['icon_url']),
+                  title: Container(
+                    child: Text(
+                      list['station_name_zh_tw'],
+                      style: const TextStyle(
+                        fontSize: 15,
+                        color: Color.fromRGBO(0, 32, 96, 1),
                       ),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(list['service_type']),
-                        Text('${list['distance']}m',style: const TextStyle(color: Colors.indigo),),
-                      ],
-                    ),
-                    trailing: SizedBox(
-                      width: 100,
-                      height: 50,
-                      child: Row(
-                        children: [
-                          const SizedBox(width: 10),
-                          Text(
-                            list['available_rent_bikes'].toString(),
-                            style: const TextStyle(fontSize: 18, color: Colors.red),
-                          ),
-                          const SizedBox(width: 30),
-                          Text(
-                            list['available_return_bikes'].toString(),
-                            style:
-                                const TextStyle(fontSize: 18, color: Colors.blueAccent),
-                          ),
-                        ],
-                      ),
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  onTap: () {
-                    setState(() {
-                      _mapController.showMarkerInfoWindow(MarkerId(list['station_name_zh_tw']));
-                    });
-                  },
-                );
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(list['service_type']),
+                      Text(
+                        '${list['distance']}m',
+                        style: const TextStyle(color: Colors.indigo),
+                      ),
+                    ],
+                  ),
+                  trailing: SizedBox(
+                    width: 100,
+                    height: 50,
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        Text(
+                          list['available_rent_bikes'].toString(),
+                          style:
+                              const TextStyle(fontSize: 18, color: Colors.red),
+                        ),
+                        const SizedBox(width: 30),
+                        Text(
+                          list['available_return_bikes'].toString(),
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.blueAccent),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  setState(() {
+                    _mapController.showMarkerInfoWindow(
+                        MarkerId(list['station_name_zh_tw']));
+                  });
+                },
+              );
             },
           ))
         ],

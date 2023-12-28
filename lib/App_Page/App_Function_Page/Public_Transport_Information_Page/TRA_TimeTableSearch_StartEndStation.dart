@@ -6,23 +6,109 @@ import 'package:intl/intl.dart';
 import 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/TRA_TimeTableSearch_StartEndStation_Result.dart';
 import 'package:traffic_hero/imports.dart';
 
-
-
 class TRA_TimeTableSearch_StartEndStation extends StatefulWidget {
   const TRA_TimeTableSearch_StartEndStation({Key? key}) : super(key: key);
 
   @override
-  State<TRA_TimeTableSearch_StartEndStation> createState() => _TRA_TimeTableSearch_StartEndStationState();
+  State<TRA_TimeTableSearch_StartEndStation> createState() =>
+      _TRA_TimeTableSearch_StartEndStationState();
 }
+
 String dropDownValue_Start = stopName.first;
 String dropDownValue_End = stopName.first;
 // 全台火車站名
-const List<String> stopName =  <String>["八堵","板橋","樹林","埔心","北新竹","竹東","九讚頭","合興","大山","通霄","日南",
-  "大甲","臺中港","清水","苗栗","豐原","栗林","頭家厝","松竹","太原","精武","臺中","五權","大慶","成功","大村","社頭","林內",
-  "石榴","民雄","嘉北","柳營","隆田","善化","新市","大橋","保安","仁德","中洲","路竹","岡山","橋頭","新左營","左營","美術館",
-  "民族","後庄","潮州","林邊","枋寮","內獅","金崙","知本","康樂","臺東","山里","關山","海端","池上","三民","大富","光復","北埔",
-  "南澳","新馬","中里","宜蘭","牡丹","十分","四腳亭","三坑","七堵","五堵","南港","南樹林","中壢","富岡","新富","北湖","千甲",
-  "新莊","上員","橫山","新竹","龍港","沙鹿","追分","豐富","南勢","銅鑼","三義",
+const List<String> stopName = <String>[
+  "八堵",
+  "板橋",
+  "樹林",
+  "埔心",
+  "北新竹",
+  "竹東",
+  "九讚頭",
+  "合興",
+  "大山",
+  "通霄",
+  "日南",
+  "大甲",
+  "臺中港",
+  "清水",
+  "苗栗",
+  "豐原",
+  "栗林",
+  "頭家厝",
+  "松竹",
+  "太原",
+  "精武",
+  "臺中",
+  "五權",
+  "大慶",
+  "成功",
+  "大村",
+  "社頭",
+  "林內",
+  "石榴",
+  "民雄",
+  "嘉北",
+  "柳營",
+  "隆田",
+  "善化",
+  "新市",
+  "大橋",
+  "保安",
+  "仁德",
+  "中洲",
+  "路竹",
+  "岡山",
+  "橋頭",
+  "新左營",
+  "左營",
+  "美術館",
+  "民族",
+  "後庄",
+  "潮州",
+  "林邊",
+  "枋寮",
+  "內獅",
+  "金崙",
+  "知本",
+  "康樂",
+  "臺東",
+  "山里",
+  "關山",
+  "海端",
+  "池上",
+  "三民",
+  "大富",
+  "光復",
+  "北埔",
+  "南澳",
+  "新馬",
+  "中里",
+  "宜蘭",
+  "牡丹",
+  "十分",
+  "四腳亭",
+  "三坑",
+  "七堵",
+  "五堵",
+  "南港",
+  "南樹林",
+  "中壢",
+  "富岡",
+  "新富",
+  "北湖",
+  "千甲",
+  "新莊",
+  "上員",
+  "橫山",
+  "新竹",
+  "龍港",
+  "沙鹿",
+  "追分",
+  "豐富",
+  "南勢",
+  "銅鑼",
+  "三義",
   "花壇",
   "員林",
   "源泉",
@@ -174,9 +260,11 @@ const List<String> stopName =  <String>["八堵","板橋","樹林","埔心","北
   "大里",
   "平溪",
   "瑞芳",
-  "海科館"];
+  "海科館"
+];
 // 全台火車站點ID
-const List<String> stationID = <String>["0920",
+const List<String> stationID = <String>[
+  "0920",
   "1020",
   "1040",
   "1110",
@@ -418,18 +506,22 @@ const List<String> stationID = <String>["0920",
   "7270",
   "7335",
   "7360",
-  "7361"];
-String dateTime_date=DateTime.now().toString().substring(0, 10);
-String dateTime_time =  DateFormat('HH:mm').format(DateTime.now());
+  "7361"
+];
+String dateTime_date = DateTime.now().toString().substring(0, 10);
+String dateTime_time = DateFormat('HH:mm').format(DateTime.now());
 var screenWidth;
-class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearch_StartEndStation> {
+
+class _TRA_TimeTableSearch_StartEndStationState
+    extends State<TRA_TimeTableSearch_StartEndStation> {
   @override
   Widget build(BuildContext context) {
     var state = Provider.of<stateManager>(context, listen: false);
-    screenWidth = MediaQuery. of(context). size. width ;
+    screenWidth = MediaQuery.of(context).size.width;
     //根據起訖點取得火車時刻表
-    getStationTimeTable() async{
-      var url = '${dotenv.env['TRA_DailyTimeTable_ByStartEndStation']}?OriginStationID=${stationID[stopName.indexOf(dropDownValue_Start)]}&DestinationStationID=${stationID[stopName.indexOf(dropDownValue_End)]}&TrainDate=${dateTime_date}&TrainTime=${dateTime_time}';
+    getStationTimeTable() async {
+      var url =
+          '${dotenv.env['TRA_DailyTimeTable_ByStartEndStation']}?OriginStationID=${stationID[stopName.indexOf(dropDownValue_Start)]}&DestinationStationID=${stationID[stopName.indexOf(dropDownValue_End)]}&TrainDate=${dateTime_date}&TrainTime=${dateTime_time}';
       var jwt = ',${state.accountState}';
       var response = await api().apiGet(url, jwt);
       var responseBody;
@@ -437,15 +529,18 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
       if (response.statusCode == 200) {
         print(url);
         setState(() {
-          responseBody=jsonDecode(utf8.decode(response.bodyBytes));
+          responseBody = jsonDecode(utf8.decode(response.bodyBytes));
           state.updateTRA_TimeTableSearch_StartStation(dropDownValue_Start);
           state.updateTRA_TimeTableSearch_EndStation(dropDownValue_End);
           state.updateTRA_TimeTableSearch_StartEndStation_Result(responseBody);
         });
-        Future.delayed(const Duration(seconds: 1),(){
-          Navigator.push(context, MaterialPageRoute(builder: (context) => const TRA_TimeTableSearch_StartEndStation_Result()));
+        Future.delayed(const Duration(seconds: 1), () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      const TRA_TimeTableSearch_StartEndStation_Result()));
         });
-
       }
     }
 
@@ -455,13 +550,18 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
         body: Column(
           children: [
             Container(
-              margin: const EdgeInsets.only(bottom: 10,top: 10),
+              margin: const EdgeInsets.only(bottom: 10, top: 10),
               decoration: const BoxDecoration(
                 color: Color.fromRGBO(165, 201, 233, 1),
                 borderRadius: BorderRadius.all(Radius.circular(14)),
               ),
               width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-              child: const Text('起訖站查詢',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
+              child: const Text(
+                '起訖站查詢',
+                style: TextStyle(
+                    color: Color.fromRGBO(29, 73, 153, 1), fontSize: 25),
+                textAlign: TextAlign.center,
+              ),
             ),
             //起訖站查詢按鈕
             Container(
@@ -472,71 +572,11 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                 children: [
                   DecoratedBox(
                       decoration: BoxDecoration(
-                          border: Border.all(color: const Color.fromRGBO(24, 60, 126, 1),width: 2),
+                          border: Border.all(
+                              color: const Color.fromRGBO(24, 60, 126, 1),
+                              width: 2),
                           borderRadius: BorderRadius.circular(15),
-                          color: const Color.fromRGBO(221, 235, 247, 1)
-                      ),
-                      child: Container(
-                        height: 60,
-                        width: 150,
-                        alignment: Alignment.center,
-
-                        child: DropdownSearch<String>(
-                          items: stopName,
-                          popupProps: const PopupProps.menu(
-                            showSearchBox: true, // add this line
-                            showSelectedItems: true,
-                          ),
-                          dropdownDecoratorProps: const DropDownDecoratorProps(
-                              textAlign: TextAlign.center,
-                              baseStyle:TextStyle(fontSize: 20),
-                              dropdownSearchDecoration: InputDecoration(
-                              )),
-                          onChanged: (String? value) => setState(() {
-                            dropDownValue_Start = value!;
-                          }),
-                          selectedItem: stopName.first,
-                        )
-                      )
-                  ),
-                  //選擇起始地
-                  // DecoratedBox(
-                  //     decoration: BoxDecoration(
-                  //         border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
-                  //         borderRadius: BorderRadius.circular(15),
-                  //         color: Color.fromRGBO(221, 235, 247, 1)
-                  //     ),
-                  //     child: Container(
-                  //       height: 60,
-                  //       width: 150,
-                  //       alignment: Alignment.center,
-                  //       child: DropdownButton(
-                  //           value: dropDownValue_Start,
-                  //           items: stopName.map<DropdownMenuItem<String>>((String value) {
-                  //             return DropdownMenuItem<String>(
-                  //               value: value,
-                  //               child: Text(value,style: const TextStyle(
-                  //                 fontSize: 20,
-                  //               ),),
-                  //             );
-                  //           }).toList(),
-                  //           onChanged:(String? value){
-                  //             setState(() {
-                  //               dropDownValue_Start = value!;
-                  //             });
-                  //           }
-                  //       ),
-                  //     )
-                  // ),
-                  //交換按鈕
-                  const Icon(Icons.cached,size: 20,),
-                  //選擇目的地
-                  DecoratedBox(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: const Color.fromRGBO(24, 60, 126, 1),width: 2),
-                          borderRadius: BorderRadius.circular(15),
-                          color: const Color.fromRGBO(221, 235, 247, 1)
-                      ),
+                          color: const Color.fromRGBO(221, 235, 247, 1)),
                       child: Container(
                           height: 60,
                           width: 150,
@@ -547,106 +587,129 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                               showSearchBox: true, // add this line
                               showSelectedItems: true,
                             ),
-                            dropdownDecoratorProps: const DropDownDecoratorProps(
-                                textAlign: TextAlign.center,
-                                baseStyle:TextStyle(fontSize: 20),
-                                dropdownSearchDecoration: InputDecoration(
-                                )),
+                            dropdownDecoratorProps:
+                                const DropDownDecoratorProps(
+                                    textAlign: TextAlign.center,
+                                    baseStyle: TextStyle(fontSize: 20),
+                                    dropdownSearchDecoration:
+                                        InputDecoration()),
+                            onChanged: (String? value) => setState(() {
+                              dropDownValue_Start = value!;
+                            }),
+                            selectedItem: stopName.first,
+                          ))),
+
+                  //交換按鈕
+                  const Icon(
+                    Icons.cached,
+                    size: 20,
+                  ),
+                  //選擇目的地
+                  DecoratedBox(
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                              color: const Color.fromRGBO(24, 60, 126, 1),
+                              width: 2),
+                          borderRadius: BorderRadius.circular(15),
+                          color: const Color.fromRGBO(221, 235, 247, 1)),
+                      child: Container(
+                          height: 60,
+                          width: 150,
+                          alignment: Alignment.center,
+                          child: DropdownSearch<String>(
+                            items: stopName,
+                            popupProps: const PopupProps.menu(
+                              showSearchBox: true, // add this line
+                              showSelectedItems: true,
+                            ),
+                            dropdownDecoratorProps:
+                                const DropDownDecoratorProps(
+                                    textAlign: TextAlign.center,
+                                    baseStyle: TextStyle(fontSize: 20),
+                                    dropdownSearchDecoration:
+                                        InputDecoration()),
                             onChanged: (String? value) => setState(() {
                               dropDownValue_Start = value!;
                             }),
                             selectedItem: stopName.last,
-                          )
-                      )
-                  ),
-                  // DecoratedBox(
-                  //     decoration: BoxDecoration(
-                  //         border: Border.all(color: Color.fromRGBO(24, 60, 126, 1),width: 2),
-                  //         borderRadius: BorderRadius.circular(15),
-                  //         color: Color.fromRGBO(24, 60, 126, 1)
-                  //     ),
-                  //     child:Container(
-                  //       height: 60,
-                  //       width: 150,
-                  //       alignment: Alignment.center,
-                  //       child: DropdownButton(
-                  //           dropdownColor: Color.fromRGBO(24, 60, 126, 1),
-                  //           value: dropDownValue_End,
-                  //           items: stopName.map<DropdownMenuItem<String>>((String value) {
-                  //             return DropdownMenuItem<String>(
-                  //               value: value,
-                  //               child: Text(value,style: const TextStyle(fontSize: 20,color: Colors.white),),
-                  //             );
-                  //           }).toList(),
-                  //           onChanged:(String? value){
-                  //             setState(() {
-                  //               dropDownValue_End = value!;
-                  //             });
-                  //           }
-                  //       ),
-                  //     )
-                  // ),
+                          ))),
                 ],
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(bottom: 10,top: 10),
+              margin: const EdgeInsets.only(bottom: 10, top: 10),
               decoration: const BoxDecoration(
                 color: Color.fromRGBO(165, 201, 233, 1),
                 borderRadius: BorderRadius.all(Radius.circular(14)),
               ),
               width: screenWidth - 30 > 600 ? 600 : screenWidth - 30,
-              child: const Text('日期時間',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.center,),
+              child: const Text(
+                '日期時間',
+                style: TextStyle(
+                    color: Color.fromRGBO(29, 73, 153, 1), fontSize: 25),
+                textAlign: TextAlign.center,
+              ),
             ),
             Row(
               children: [
                 Container(
-                  padding: const EdgeInsets.only(left: 10,right: 5),
-                  width: screenWidth*0.6,
+                  padding: const EdgeInsets.only(left: 10, right: 5),
+                  width: screenWidth * 0.6,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                        border: Border.all(color: const Color.fromRGBO(24, 60, 126, 1),width: 2),
+                        border: Border.all(
+                            color: const Color.fromRGBO(24, 60, 126, 1),
+                            width: 2),
                         borderRadius: BorderRadius.circular(15),
-                        color: const Color.fromRGBO(221, 235, 247, 1)
-                    ),
-                    child:TextButton(
+                        color: const Color.fromRGBO(221, 235, 247, 1)),
+                    child: TextButton(
                       onPressed: () {
-                        DatePicker.showDatePicker(context, showTitleActions: true,
-                            maxTime: DateTime.now().add(const Duration(days: 120)),
-                            minTime: DateTime.now(),
-                            onConfirm: (date) async {
-                              setState(() {
-                                dateTime_date = date.toString().substring(0, 10);
-                              });
-                            }
-                        );
+                        DatePicker.showDatePicker(context,
+                            showTitleActions: true,
+                            maxTime:
+                                DateTime.now().add(const Duration(days: 120)),
+                            minTime: DateTime.now(), onConfirm: (date) async {
+                          setState(() {
+                            dateTime_date = date.toString().substring(0, 10);
+                          });
+                        });
                       },
-                      child: Text(dateTime_date,style: const TextStyle(color:  Color.fromRGBO(24, 60, 126, 1),fontSize: 20),),
+                      child: Text(
+                        dateTime_date,
+                        style: const TextStyle(
+                            color: Color.fromRGBO(24, 60, 126, 1),
+                            fontSize: 20),
+                      ),
                     ),
                   ),
                 ),
                 Container(
-                  padding: const EdgeInsets.only(left: 5,right: 10),
-                  width: screenWidth*0.4,
+                  padding: const EdgeInsets.only(left: 5, right: 10),
+                  width: screenWidth * 0.4,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                        border: Border.all(color: const Color.fromRGBO(24, 60, 126, 1),width: 2),
+                        border: Border.all(
+                            color: const Color.fromRGBO(24, 60, 126, 1),
+                            width: 2),
                         borderRadius: BorderRadius.circular(15),
-                        color: const Color.fromRGBO(24, 60, 126, 1)
-                    ),
-                    child:TextButton(
+                        color: const Color.fromRGBO(24, 60, 126, 1)),
+                    child: TextButton(
                       onPressed: () {
-                        DatePicker.showTime12hPicker(context, showTitleActions: true,
-                            onConfirm: (time) async {
+                        DatePicker.showTime12hPicker(context,
+                            showTitleActions: true, onConfirm: (time) async {
                           print(time);
-                              print(DateFormat('HH:mm').format(time));
-                              setState(() {
-                                dateTime_time = DateFormat('HH:mm').format(time).toString();
-                              });
-                            }
-                        );
+                          print(DateFormat('HH:mm').format(time));
+                          setState(() {
+                            dateTime_time =
+                                DateFormat('HH:mm').format(time).toString();
+                          });
+                        });
                       },
-                      child: Text(dateTime_time,style: const TextStyle(color: Colors.white,fontSize: 20),),
+                      child: Text(
+                        dateTime_time,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 20),
+                      ),
                     ),
                   ),
                 ),
@@ -663,9 +726,11 @@ class _TRA_TimeTableSearch_StartEndStationState extends State<TRA_TimeTableSearc
                   onPressed: () async {
                     await getStationTimeTable();
                   },
-                  child: const Text('搜尋',style: TextStyle(color: Colors.white,fontSize: 20),),
-                )
-            ),
+                  child: const Text(
+                    '搜尋',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                )),
           ],
         ),
       ),

@@ -26,7 +26,7 @@ class _registerPage extends State<registerPage> {
   var response;
   //給性別及生日預設變數
   var gender = '性別';
-  String birthday='生日';
+  String birthday = '生日';
   //控制輸入匡顯示錯誤是否顯示
   var errorEmail = true;
   var errorName = true;
@@ -167,8 +167,6 @@ class _registerPage extends State<registerPage> {
     }
   }
 
-
-
 //view Code
   @override
   Widget build(BuildContext context) {
@@ -260,21 +258,20 @@ class _registerPage extends State<registerPage> {
                   borderRadius: BorderRadius.circular(50),
                 ),
                 child: TextButton(
-                  onPressed: () {
-                    DatePicker.showDatePicker(context, showTitleActions: true,
-                        onConfirm: (time) async {
-                          print(time);
-                          setState(() {
-                            birthday = time.toString().substring(0, 10);
-                          });
-                        }
-                    );
-                  },
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Text(birthday,style: TextStyle(color: Colors.black,fontSize: 18)),
-                  )
-                ),
+                    onPressed: () {
+                      DatePicker.showDatePicker(context, showTitleActions: true,
+                          onConfirm: (time) async {
+                        print(time);
+                        setState(() {
+                          birthday = time.toString().substring(0, 10);
+                        });
+                      });
+                    },
+                    child: Align(
+                      alignment: Alignment.bottomLeft,
+                      child: Text(birthday,
+                          style: TextStyle(color: Colors.black, fontSize: 18)),
+                    )),
               ),
               const SizedBox(
                 height: 50,
@@ -282,9 +279,9 @@ class _registerPage extends State<registerPage> {
               InkWell(
                 child: const block_button(functionName: "送出"),
                 onTap: () {
-                  try{
+                  try {
                     googlesso().google_signOut();
-                  }catch(e){
+                  } catch (e) {
                     print(e);
                   }
                   if (text_lengh() && check_password_function()) {

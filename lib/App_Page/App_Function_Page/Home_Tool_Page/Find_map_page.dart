@@ -60,10 +60,9 @@ class _mapPageState extends State<mapPage> {
       "location": {"longitude": 120.527777777778, "latitude": 23.7008333333333},
       "distance": 0,
       "icon_url":
-      "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/CPC_Corporation%2C_Taiwan_Seal.svg/1024px-CPC_Corporation%2C_Taiwan_Seal.svg.png",
-
+          "https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/CPC_Corporation%2C_Taiwan_Seal.svg/1024px-CPC_Corporation%2C_Taiwan_Seal.svg.png",
       "url":
-      "comgooglemapsurl://www.google.com/maps/dir/?api=1&destination=雲林縣斗六市雲林路二段334號&travelmode=driving&dir_action=navigate"
+          "comgooglemapsurl://www.google.com/maps/dir/?api=1&destination=雲林縣斗六市雲林路二段334號&travelmode=driving&dir_action=navigate"
     }
   ];
 
@@ -76,8 +75,7 @@ class _mapPageState extends State<mapPage> {
       "branch_address": "",
       "status": "核准設立",
       "location": {"longitude": 120.5357042, "latitude": 23.6984855},
-      "icon_url":
-          "https://www.colorhexa.com/e7f1fe.png",
+      "icon_url": "https://www.colorhexa.com/e7f1fe.png",
       "distance": 0,
       "url":
           "comgooglemapsurl://www.google.com/maps/dir/?api=1&destination=雲林縣斗六市鎮南里明德路四五五號一樓&travelmode=driving&dir_action=navigate"
@@ -86,13 +84,11 @@ class _mapPageState extends State<mapPage> {
 
   @override
   void initState() {
- 
     super.initState();
   }
 
   @override
   void didChangeDependencies() async {
-
     super.didChangeDependencies();
     screenHeight = MediaQuery.of(context).size.height;
     screenWidth = MediaQuery.of(context).size.width;
@@ -206,21 +202,20 @@ class _mapPageState extends State<mapPage> {
         var list = content[i];
         _markers.add(
           Marker(
-              markerId: MarkerId(list['basic']['station_name']),
-              position: LatLng(
-                  list['location']['latitude'], list['location']['longitude']),
-              infoWindow: InfoWindow(
+            markerId: MarkerId(list['basic']['station_name']),
+            position: LatLng(
+                list['location']['latitude'], list['location']['longitude']),
+            infoWindow: InfoWindow(
                 title: list['basic']['station_name'] +
                     " - 距離: " +
                     list['distance'].toInt().toString() +
                     '公尺',
                 snippet: list['basic']['address'],
-                  onTap: () {
-                    launch(content[i]['url']);
-                    setState(() {});
-                  }
-              ),
-              ),
+                onTap: () {
+                  launch(content[i]['url']);
+                  setState(() {});
+                }),
+          ),
         );
         print(i.toString() +
             '標記成功' +
@@ -259,69 +254,178 @@ class _mapPageState extends State<mapPage> {
       barrierDismissible: false, // user must tap button!
       builder: (BuildContext context) {
         return AlertDialog(
-          icon: Image.network(gasStationDetail['icon_url'],height: 70,),
-          title: Text('${gasStationDetail['basic']['station_name']}-${gasStationDetail['basic']['type']}'),
+          icon: Image.network(
+            gasStationDetail['icon_url'],
+            height: 70,
+          ),
+          title: Text(
+              '${gasStationDetail['basic']['station_name']}-${gasStationDetail['basic']['type']}'),
           content: SingleChildScrollView(
             child: ListBody(
               children: <Widget>[
-                Text('地址：${gasStationDetail['basic']['address']}',style: TextStyle(fontSize: 13),),
-                Text('營業時間：${gasStationDetail['basic']['business_hours']}',style: TextStyle(fontSize: 13)),
-                SizedBox(height: 5,),
+                Text(
+                  '地址：${gasStationDetail['basic']['address']}',
+                  style: TextStyle(fontSize: 13),
+                ),
+                Text('營業時間：${gasStationDetail['basic']['business_hours']}',
+                    style: TextStyle(fontSize: 13)),
+                SizedBox(
+                  height: 5,
+                ),
                 Row(
                   children: [
-                    Image.asset('assets/gasStation/gas.png',height: 25,),
-                    SizedBox(width: 5,),
-                    Text('提供油種',style: TextStyle(fontSize: 18,color: Colors.indigo)),
+                    Image.asset(
+                      'assets/gasStation/gas.png',
+                      height: 25,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('提供油種',
+                        style: TextStyle(fontSize: 18, color: Colors.indigo)),
                   ],
                 ),
-                SizedBox(height: 3,),
-                Row(
-                    children: [
-                      (gasStationDetail['gasoline']['92']) ? Image.asset('assets/gasStation/gasoline_92.png',height: 35,):Text(''),
-                      (gasStationDetail['gasoline']['95']) ? Image.asset('assets/gasStation/gasoline_95.png',height: 35,):Text(''),
-                      (gasStationDetail['gasoline']['98']) ? Image.asset('assets/gasStation/gasoline_98.png',height: 35,):Text(''),
-                      (gasStationDetail['gasoline']['alcohol_gasoline']) ? Image.asset('assets/gasStation/gasoline_Alcohol.png',height: 35,):Text(''),
-                      (gasStationDetail['gasoline']['kerosene']) ? Image.asset('assets/gasStation/gasoline_Alcohol.png',height: 35,):Text(''),
-                      (gasStationDetail['gasoline']['super_diesel']) ? Image.asset('assets/gasStation/gasoline_Kerosene.png',height: 35,):Text(''),
-                    ],
-                  ),
-
-                SizedBox(height: 5,),
+                SizedBox(
+                  height: 3,
+                ),
                 Row(
                   children: [
-                    Image.asset('assets/gasStation/payment.png',height: 25,),
-                    SizedBox(width: 5,),
-                    Text('付款方式',style: TextStyle(fontSize: 18,color: Colors.indigo)),
+                    (gasStationDetail['gasoline']['92'])
+                        ? Image.asset(
+                            'assets/gasStation/gasoline_92.png',
+                            height: 35,
+                          )
+                        : Text(''),
+                    (gasStationDetail['gasoline']['95'])
+                        ? Image.asset(
+                            'assets/gasStation/gasoline_95.png',
+                            height: 35,
+                          )
+                        : Text(''),
+                    (gasStationDetail['gasoline']['98'])
+                        ? Image.asset(
+                            'assets/gasStation/gasoline_98.png',
+                            height: 35,
+                          )
+                        : Text(''),
+                    (gasStationDetail['gasoline']['alcohol_gasoline'])
+                        ? Image.asset(
+                            'assets/gasStation/gasoline_Alcohol.png',
+                            height: 35,
+                          )
+                        : Text(''),
+                    (gasStationDetail['gasoline']['kerosene'])
+                        ? Image.asset(
+                            'assets/gasStation/gasoline_Alcohol.png',
+                            height: 35,
+                          )
+                        : Text(''),
+                    (gasStationDetail['gasoline']['super_diesel'])
+                        ? Image.asset(
+                            'assets/gasStation/gasoline_Kerosene.png',
+                            height: 35,
+                          )
+                        : Text(''),
                   ],
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 5,
+                ),
+                Row(
+                  children: [
+                    Image.asset(
+                      'assets/gasStation/payment.png',
+                      height: 25,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('付款方式',
+                        style: TextStyle(fontSize: 18, color: Colors.indigo)),
+                  ],
+                ),
+                SizedBox(
+                  height: 3,
+                ),
                 Wrap(
-                    children: [
-                      (gasStationDetail['payment']['member_card']) ? Image.asset('assets/gasStation/payment_MemberCard.png',height: 25,):Text(''),
-                      SizedBox(width: 5,),
-                      (gasStationDetail['payment']['e_invoice']) ? Image.asset('assets/gasStation/payment_EInvoice.png',height: 25,):Text(''),
-                      SizedBox(width: 5,),
-                      (gasStationDetail['payment']['easy_card']) ? Image.asset('assets/gasStation/payment_EasyCard.png',height: 25,):Text(''),
-                      SizedBox(width: 5,),
-                      (gasStationDetail['payment']['i_pass']) ? Image.asset('assets/gasStation/payment_IPass.png',height: 25,):Text(''),
-                      SizedBox(width: 5,),
-                      (gasStationDetail['payment']['happy_cash']) ? Image.asset('assets/gasStation/payment_HappyCash.png',height: 25,):Text(''),
-                    ],
-                  ),
-
-                SizedBox(height: 5,),
-                Row(
                   children: [
-                    Image.asset('assets/gasStation/service.png',height: 25,),
-                    SizedBox(width: 5,),
-                    Text('其他服務',style: TextStyle(fontSize: 18,color: Colors.indigo)),
+                    (gasStationDetail['payment']['member_card'])
+                        ? Image.asset(
+                            'assets/gasStation/payment_MemberCard.png',
+                            height: 25,
+                          )
+                        : Text(''),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    (gasStationDetail['payment']['e_invoice'])
+                        ? Image.asset(
+                            'assets/gasStation/payment_EInvoice.png',
+                            height: 25,
+                          )
+                        : Text(''),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    (gasStationDetail['payment']['easy_card'])
+                        ? Image.asset(
+                            'assets/gasStation/payment_EasyCard.png',
+                            height: 25,
+                          )
+                        : Text(''),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    (gasStationDetail['payment']['i_pass'])
+                        ? Image.asset(
+                            'assets/gasStation/payment_IPass.png',
+                            height: 25,
+                          )
+                        : Text(''),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    (gasStationDetail['payment']['happy_cash'])
+                        ? Image.asset(
+                            'assets/gasStation/payment_HappyCash.png',
+                            height: 25,
+                          )
+                        : Text(''),
                   ],
                 ),
-                SizedBox(height: 3,),
+                SizedBox(
+                  height: 5,
+                ),
                 Row(
                   children: [
-                    (gasStationDetail['other_service']['self_service']) ? Image.asset('assets/gasStation/service_SelfService.png',height: 25,):Text(''),
-                    (gasStationDetail['other_service']['self_service_diesel']) ? Image.asset('assets/gasStation/service_SelfDiesel.png',height: 25,):Text(''),
+                    Image.asset(
+                      'assets/gasStation/service.png',
+                      height: 25,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text('其他服務',
+                        style: TextStyle(fontSize: 18, color: Colors.indigo)),
+                  ],
+                ),
+                SizedBox(
+                  height: 3,
+                ),
+                Row(
+                  children: [
+                    (gasStationDetail['other_service']['self_service'])
+                        ? Image.asset(
+                            'assets/gasStation/service_SelfService.png',
+                            height: 25,
+                          )
+                        : Text(''),
+                    (gasStationDetail['other_service']['self_service_diesel'])
+                        ? Image.asset(
+                            'assets/gasStation/service_SelfDiesel.png',
+                            height: 25,
+                          )
+                        : Text(''),
                   ],
                 ),
               ],
@@ -350,7 +454,7 @@ class _mapPageState extends State<mapPage> {
               controller: scrollController,
               children: List.generate(
                 mapListGasStation.length,
-                    (index) {
+                (index) {
                   final list = mapListGasStation[index];
                   return Column(
                     children: [
@@ -362,34 +466,60 @@ class _mapPageState extends State<mapPage> {
                           showGasStationDetail();
                         },
                         child: ListTile(
-                            leading: Image.network(list['icon_url']),
-                            title:Text('${list['basic']['station_name']}-${list['basic']['type']}'),
-                            subtitle:Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(list['basic']['address'],overflow: TextOverflow.ellipsis,),
-                                Wrap(
-                                  children: [
-                                    (list['payment']['member_card']) ? Image.asset('assets/gasStation/payment_MemberCard.png',height: 25,):Text(''),
-                                    (list['other_service']['self_service']) ? Image.asset('assets/gasStation/service_SelfService.png',height: 25,):Text(''),
-                                    (list['other_service']['self_service_diesel']) ? Image.asset('assets/gasStation/service_SelfDiesel.png',height: 25,):Text(''),
-                                  ],
-                                )
-                              ],
-                            ),
-                            trailing: InkWell(
-                              child: Container(
-                                  child: Column(
-                                    children: [
-                                      Text('${list['distance']}km',style: TextStyle(fontSize: 20,color: Colors.indigo),),
-                                      Icon(Icons.navigation,color: Colors.indigo,size: 20,),
-                                    ],
-                                  )
+                          leading: Image.network(list['icon_url']),
+                          title: Text(
+                              '${list['basic']['station_name']}-${list['basic']['type']}'),
+                          subtitle: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                list['basic']['address'],
+                                overflow: TextOverflow.ellipsis,
                               ),
-                              onTap: () {
-                                launch(list['url']);
-                              },
-                            ),
+                              Wrap(
+                                children: [
+                                  (list['payment']['member_card'])
+                                      ? Image.asset(
+                                          'assets/gasStation/payment_MemberCard.png',
+                                          height: 25,
+                                        )
+                                      : Text(''),
+                                  (list['other_service']['self_service'])
+                                      ? Image.asset(
+                                          'assets/gasStation/service_SelfService.png',
+                                          height: 25,
+                                        )
+                                      : Text(''),
+                                  (list['other_service']['self_service_diesel'])
+                                      ? Image.asset(
+                                          'assets/gasStation/service_SelfDiesel.png',
+                                          height: 25,
+                                        )
+                                      : Text(''),
+                                ],
+                              )
+                            ],
+                          ),
+                          trailing: InkWell(
+                            child: Container(
+                                child: Column(
+                              children: [
+                                Text(
+                                  '${list['distance']}km',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.indigo),
+                                ),
+                                Icon(
+                                  Icons.navigation,
+                                  color: Colors.indigo,
+                                  size: 20,
+                                ),
+                              ],
+                            )),
+                            onTap: () {
+                              launch(list['url']);
+                            },
+                          ),
                         ),
                       ),
                       Divider(
@@ -399,7 +529,6 @@ class _mapPageState extends State<mapPage> {
                         endIndent: 10,
                       ),
                     ],
-
                   );
                 },
               ),
@@ -428,24 +557,42 @@ class _mapPageState extends State<mapPage> {
                     child: Column(
                       children: [
                         ListTile(
-                          leading: Image.network(list['icon_url'],width:screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,height: screenWidth > 600 ? 600 * 0.1 : screenWidth * 0.15,),
-                          title:Text(list['company_name'],overflow: TextOverflow.ellipsis),
+                          leading: Image.network(
+                            list['icon_url'],
+                            width: screenWidth > 600
+                                ? 600 * 0.1
+                                : screenWidth * 0.15,
+                            height: screenWidth > 600
+                                ? 600 * 0.1
+                                : screenWidth * 0.15,
+                          ),
+                          title: Text(list['company_name'],
+                              overflow: TextOverflow.ellipsis),
                           subtitle: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(list['branch_name'],overflow: TextOverflow.ellipsis),
-                              Text(list['branch_address'],overflow: TextOverflow.ellipsis),
+                              Text(list['branch_name'],
+                                  overflow: TextOverflow.ellipsis),
+                              Text(list['branch_address'],
+                                  overflow: TextOverflow.ellipsis),
                             ],
                           ),
                           trailing: InkWell(
                             child: Container(
                                 child: Column(
-                                  children: [
-                                    Text('${list['distance']}km',style: TextStyle(fontSize: 20,color: Colors.indigo),),
-                                    Icon(Icons.navigation,color: Colors.indigo,size: 20,),
-                                  ],
-                                )
-                            ),
+                              children: [
+                                Text(
+                                  '${list['distance']}km',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.indigo),
+                                ),
+                                Icon(
+                                  Icons.navigation,
+                                  color: Colors.indigo,
+                                  size: 20,
+                                ),
+                              ],
+                            )),
                             onTap: () {
                               launch(list['url']);
                             },
@@ -458,9 +605,10 @@ class _mapPageState extends State<mapPage> {
                             endIndent: 10)
                       ],
                     ),
-                    onTap: (){
+                    onTap: () {
                       setState(() {
-                        mapController.showMarkerInfoWindow(MarkerId(list['company_name']));
+                        mapController.showMarkerInfoWindow(
+                            MarkerId(list['company_name']));
                       });
                     },
                   );
