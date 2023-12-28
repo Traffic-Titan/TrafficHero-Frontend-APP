@@ -65,7 +65,7 @@ export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_T
 export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_Bus.dart';
 export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_MRT.dart';
 export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_Train.dart';
-export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_THSRdart';
+export '../App_Page/App_Function_Page/Public_Transport_Information_Page/Public_Transport_Information_THSR.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/CMS_PIP_Page.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/Home_Tool_Page/Find_map_page.dart';
 export 'package:traffic_hero/App_Page/App_Function_Page/Public_Transport_Information_Page/THSR_CarNumSearchResult.dart';
