@@ -112,7 +112,6 @@ class _Road_InformationState extends State<Road_Information> {
       print(e);
     }
 
-    // position = await geolocator().updataPosition(context);
   }
 
   @override
@@ -304,7 +303,6 @@ class _Road_InformationState extends State<Road_Information> {
   }
 
   //Google Map View
-
   _onMapCreated(GoogleMapController controller) {
     _mapController = controller;
   }

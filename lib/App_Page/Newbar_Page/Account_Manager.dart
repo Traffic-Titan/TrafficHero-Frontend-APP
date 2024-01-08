@@ -86,7 +86,6 @@ class _AccountManager extends State<AccountManager> {
       "avatar": googleController.googleAccount.value?.photoUrl ?? '',
     };
     try {
-      // print(googleController.googleAccount.value?.email ?? '');
       response = await api().apiPut(body, url, jwt);
 
       if (response.statusCode == 200) {
@@ -137,7 +136,6 @@ class _AccountManager extends State<AccountManager> {
       await getHome().getUser(context);
       print(jsonDecode(utf8.decode(response.bodyBytes)));
       resetInfo();
-      // state.updateprofileState(jsonDecode(utf8.decode(response.bodyBytes)));
     } else {
       print(jsonDecode(utf8.decode(response.bodyBytes)));
     }

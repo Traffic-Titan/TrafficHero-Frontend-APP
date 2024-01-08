@@ -31,7 +31,6 @@ class _CMSPIPState extends State<CMSPIP> {
     screenWidth = MediaQuery.of(context).size.width;
     screenHeight = MediaQuery.of(context).size.height;
     fontSize = screenWidth * 0.05;
-    // updateCMSListCar();
 
     setDisplay();
   }

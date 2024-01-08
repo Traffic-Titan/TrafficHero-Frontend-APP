@@ -183,13 +183,12 @@ class _DropdownButtonExampleState extends State<DropdownButtonExample> {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: dropdownValue,
-      elevation: 10,//设置阴影
-      style: new TextStyle(//设置文本框里面文字的样式
+      elevation: 10,//設置陰影
+      style: new TextStyle(//設置文本框里面文字的樣式
           color: Colors.black,
           fontSize: 20
       ),
-      iconSize: 30,//设置三角标icon的大小
-      // underline: Container(height: 1,color: Colors.blue,),// 下划线
+      iconSize: 30,//設置三角標icon的大小
       onChanged: (String? value) {
         // This is called when the user selects an item.
         setState(() {

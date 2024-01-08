@@ -147,7 +147,7 @@ class _PasserbyPage extends State<PasserbyPage> {
             setState(() {
               tabBodies = carAndScooterNavigationBar;
               if (index == 2) {
-                //跳轉CMS葉面
+                //跳轉CMS頁面
                 _navigateToCMS(context);
                 index = 0;
               }

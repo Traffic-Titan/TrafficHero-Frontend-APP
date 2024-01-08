@@ -163,23 +163,6 @@ Widget publicTransportInfoBus(context) {
                           textAlign: TextAlign.left,
                         ))),
               ),
-              // Container(
-              //   padding: EdgeInsets.only(left: 30,right: 30),
-              //   child: ElevatedButton(
-              //       style: ButtonStyle(
-              //         backgroundColor: MaterialStateProperty.all(Color.fromRGBO(165, 201, 233, 1)),
-              //         side: MaterialStateProperty.all(BorderSide(color: Color.fromRGBO(29, 73, 153, 1),width: 3)),
-              //         minimumSize: MaterialStateProperty.all(Size(screenWidth - 30 > 600 ? 600 : screenWidth - 30, 50)),
-              //       ),
-              //       onPressed: (){
-              //         //我的收藏
-              //       },
-              //       child: ListTile(
-              //           leading: Icon(Icons.heart,size: 50,color: Color.fromRGBO(29, 73, 153, 1),),
-              //           title: Text('我的收藏',style: TextStyle(color: Color.fromRGBO(29, 73, 153, 1),fontSize: 25),textAlign:TextAlign.left,)
-              //       )
-              //   ),
-              // ),
             ],
           ),
         ),

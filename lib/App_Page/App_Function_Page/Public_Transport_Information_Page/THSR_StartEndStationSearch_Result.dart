@@ -33,7 +33,7 @@ class _THSR_StartEndStationSearch_ResultState
 
   @override
   Widget build(BuildContext context) {
-    //跳轉道車次搜尋結果頁面
+    //跳轉到車次搜尋結果頁面
     toCarNumSearchResult(num) async {
       var carNum = num;
       var url = '${dotenv.env['THSR_SearchBy_EachCar']}?CarNo=${carNum}';

@@ -108,20 +108,6 @@ class _MRT_KaohsiungState extends State<MRT_Kaohsiung> {
                 }),
                 selectedItem: MRTList_kaohsiung.first,
               ),
-              // DropdownButton<String>(
-              //   value: _selectedItem,
-              //   onChanged: (String? newValue) {
-              //     setState(() {
-              //       _selectedItem = newValue!;
-              //     });
-              //   },
-              //   items: MRTList_kaohsiung.map((String value) {
-              //     return DropdownMenuItem<String>(
-              //       value: value,
-              //       child: Text(value),
-              //     );
-              //   }).toList(),
-              // ),
             trailing: TextButton(
               onPressed: () {
                 stationState();

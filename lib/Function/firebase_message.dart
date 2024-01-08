@@ -106,7 +106,6 @@ class Firebase_message {
   }
 
   Future<void> registerMessageToken(token) async {
-    // EasyLoading.show(status: '開始註冊');
     print('註冊');
     var response,
         url = dotenv.env['Subscribe'].toString() + '?fcm_token=${token}',
@@ -121,7 +120,6 @@ class Firebase_message {
         print(response.statusCode);
       }
     } catch (e) {
-      // EasyLoading.showError('FCME'+e.toString());
       print(e);
     }
   }

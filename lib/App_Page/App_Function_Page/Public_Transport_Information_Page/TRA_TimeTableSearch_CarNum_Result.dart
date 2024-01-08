@@ -106,10 +106,6 @@ class _TRA_TimeTableSearch_CarNum_ResultState
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        // Expanded(
-                        //     flex: 1,
-                        //     child:Icon(Icons.arrow_forward)
-                        // ),
                         Expanded(
                           flex: 3,
                           child: Text(

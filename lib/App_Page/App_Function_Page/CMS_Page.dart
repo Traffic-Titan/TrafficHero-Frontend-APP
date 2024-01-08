@@ -128,7 +128,6 @@ class _CMSState extends State<CMS> {
       }
 
       // 初始化 messageList，以防它為 null
-
       // 使用 Map 類型來構建新的訊息
       final newMessage = {
         'title': message.notification?.title,
@@ -138,7 +137,6 @@ class _CMSState extends State<CMS> {
     });
   }
 
-//
 
 
 //當頁面創造時執行
@@ -523,7 +521,7 @@ class _CMSState extends State<CMS> {
     }
   }
 
-  //UpDate CMS Sidbar
+  //UpDate CMS Sidebar
   void updateCMS_Sidbar_List_Car() async {
     // 讀取API上即時訊息推播-汽車模式
     try {

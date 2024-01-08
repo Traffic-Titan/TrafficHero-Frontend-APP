@@ -61,7 +61,6 @@ class _Route_Planning extends State<Route_Planning> {
         '&DestinationLatitude=${endData['geometry']['location']['lat']}'
         '&DestinationLongitude=${endData['geometry']['location']['lng']}'
         '&StartTime=${DateFormat('yyyy-MM-ddTHH:mm:ss').format(DateTime.now())}';
-    // url += '?latitude=23.712098794315647&longitude=120.54102575330592&DestinationLatitude=22.666729273959174&DestinationLongitude=120.3033084049614';
     print(url);
 
 
