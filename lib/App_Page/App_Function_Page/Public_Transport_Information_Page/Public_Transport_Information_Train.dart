@@ -605,7 +605,6 @@ class _Public_Transport_Information_TrainState
               padding: const EdgeInsets.only(left: 10),
               decoration: const BoxDecoration(
                 color: Color.fromRGBO(47, 125, 195, 1),
-                // borderRadius: BorderRadius.circular(5)
               ),
               child: Row(
                 children: [
@@ -618,7 +617,6 @@ class _Public_Transport_Information_TrainState
                         items: stopName,
                         popupProps: const PopupProps.menu(
                           showSearchBox: true, // add this line
-                          // showSelectedItems: true,
                         ),
                         dropdownDecoratorProps: const DropDownDecoratorProps(
                             baseStyle:

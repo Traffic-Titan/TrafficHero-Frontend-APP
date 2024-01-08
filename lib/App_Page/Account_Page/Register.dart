@@ -10,7 +10,7 @@ class registerPage extends StatefulWidget {
 }
 
 class _registerPage extends State<registerPage> {
-  //設定輸入匡的控制器
+  //設定輸入框的控制器
   final registerNameController = TextEditingController();
   final registerEmailController = TextEditingController();
   final registerPasswordController = TextEditingController();
@@ -18,7 +18,7 @@ class _registerPage extends State<registerPage> {
 
   //給生日顯示格式
   final DateFormat formatter = DateFormat('yyyy/MM/dd');
-  //預設米瑪顯示變數隱藏
+  //預設密瑪顯示變數隱藏
   var showPassword = true;
   var showPasswordCkeck = true;
   // ignore: prefer_typing_uninitialized_variables

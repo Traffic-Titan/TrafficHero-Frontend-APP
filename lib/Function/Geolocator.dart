@@ -61,15 +61,3 @@ class geolocator {
         desiredAccuracy: LocationAccuracy.bestForNavigation);
   }
 }
-// desiredAccuracy: LocationAccuracy.best)
-
-  // @override
-  // void dispose() {
-  //   _stopTrackingPosition(); // 停止追踪位置更新
-  //   super.dispose();
-  // }
-
-  // void _stopTrackingPosition() {
-  //   // 取消位置更新的订阅
-  //   _positionStreamSubscription?.cancel();
-  // }

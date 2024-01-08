@@ -50,9 +50,8 @@ class _WebViewForMRTState extends State<WebViewForMRT> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onNavigationRequest: (NavigationRequest request) {
-            // 拦截页面导航，获取网络请求的名称
+            // 攔截頁面導航，獲取網絡請求的名稱
             print('Request name: ${request.url}');
-            // print('Request method: ${request.method}');
             return NavigationDecision.navigate;
           },
           onProgress: (int progress) {

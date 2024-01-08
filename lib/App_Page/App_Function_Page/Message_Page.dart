@@ -29,7 +29,6 @@ class _messagePageState extends State<messagePage> {
 
   @override
   void initState() {
-    // print(message);
     super.initState();
   }
 

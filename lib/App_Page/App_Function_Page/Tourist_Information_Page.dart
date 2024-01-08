@@ -527,7 +527,7 @@ class _Tourist_InformationState extends State<Tourist_Information>
                   return Container(
                     width: 280,
                     height: 60,
-                    margin: const EdgeInsets.all(8), // 可以调整间距
+                    margin: const EdgeInsets.all(8), // 可以調整間距
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(14.0),
                       child: Image.network(
@@ -648,7 +648,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
   Widget oneNearbySearchView(ScrollController scrollController) {
     return SizedBox(
       width: screenWidth * 0.9,
-      // height: 200,
       child: SingleChildScrollView(
         controller: scrollController,
         padding: EdgeInsets.zero,
@@ -846,14 +845,6 @@ class _Tourist_InformationState extends State<Tourist_Information>
                                           color:
                                               Color.fromRGBO(24, 60, 126, 1)),
                                     ),
-                                    // Text(
-                                    //   '與景點距離${list['phone']} 公里',
-                                    //   overflow: TextOverflow.ellipsis,
-                                    //   style: TextStyle(
-                                    //       fontSize: 10,
-                                    //       color:
-                                    //           Color.fromRGBO(24, 60, 126, 1)),
-                                    // ),
                                   ],
                                 ),
                               ),
@@ -879,8 +870,5 @@ class _Tourist_InformationState extends State<Tourist_Information>
         ),
       ),
     );
-
-    //   },
-    // );
   }
 }
