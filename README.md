@@ -314,3 +314,90 @@ App 預覽
 
  class MainActivity: FlutterActivity() {
 }
+
+
+ENV格式
+```
+TrafficHeroBackend = ''
+GOOGLE_MAPS_API_KEY=""
+appToken = ""
+
+# Account
+Login = "/APP/Account/Login"
+Register = "/APP/Account/Register"
+GoogleSSO = "/APP/Account/GoogleSSO"
+ChangePassword = "/APP/Account/ChangePassword"
+ForgotPassword = "/APP/Account/ForgotPassword"
+VerifyCode = "/APP/Account/VerifyCode"
+Profile = "/APP/Account/Profile"
+Profile_Email = "/APP/Account/Profile/Email"
+Subscribe = '/APP/Account/Notification/Subscribe'
+Unsubscribe = '/APP/Account/Notification/Unsubscribe'
+
+# Home
+GasStation = "/APP/Home/QuickSearch/GasStation"
+ConvenientStore = "/APP/Home/QuickSearch/ConvenientStore"
+GetLink = "/APP/Home/Weather/GetLink"
+ParkingFee = "/APP/Home/ParkingFee"
+News_Car = "/APP/News/Car"
+News_PublicTransport = "/APP/News/PublicTransport"
+OperationalStatus='/APP/Home/OperationalStatus'
+News_Scooter = '/APP/News/Scooter'
+Weather = "/APP/Home/Weather"
+Vehicle='/APP/Home/Vehicle'
+StationNearby = '/APP/Information/PublicTransport/NearbyStationInfo'
+StationNearbyBus = '/APP/Information/PublicTransport/NearbyStationInfo_Bus'
+StationNearbyTrain = '/APP/Information/PublicTransport/NearbyStationInfo_Train'
+StationNearbyBike = '/APP/Information/PublicTransport/Nearby/PublicBicycle'
+NearbyRoadCondition  = '/APP/Home/NearbyRoadCondition/Car'
+NearbyRoadConditionScooter  = '/APP/Home/NearbyRoadCondition/Scooter'
+GetParkingLocation = '/APP/CMS/ParkingLocation/Get'
+QuickSearch_ChargingStation = '/APP/Home/QuickSearch/ChargingStation'
+QuickSearch_BatterySwapStation_Gogoro = '/APP/Home/QuickSearch/BatterySwapStation/Gogoro'
+QuickSearch_BatterySwapStation_Ionex = '/APP/Home/QuickSearch/BatterySwapStation/Ionex'
+QuickSearch_BatterySwapStation_eMOVING ='/APP/Home/QuickSearch/BatterySwapStation/eMOVING'
+
+
+#Public_Information
+MRT_KRTC = '/APP/Information/PublicTransport/MRT/KRTC'
+MRT_TRTC = '/APP/Information/PublicTransport/MRT/TRTC'
+StationNearby = '/APP/Information/PublicTransport/NearbyStationInfo'
+PublicBicycle = '/APP/Information/PublicTransport/PublicBicycle'
+BusRoute = '/APP/Information/PublicTransport/Bus/Search'
+TRA_StationNearby = '/APP/Information/PublicTransport/TaiwanRailWay/SearchStationByLocation'
+BusRouteStopby = '/APP/Information/PublicTransport/Bus/StationStopby'
+THSR_SearchBy_Date_Stop = '/APP/Information/PublicTransport/THSR/DailyTimeTable_THSR'
+THSR_SearchBy_EachCar = '/APP/Information/PublicTransport/THSR/EachStop_THSR'
+TRA_StationLiveBoard = '/APP/Information/PublicTransport/TaiwanRailway/StationLiveBoard_Train'
+TRA_DailyTimeTable_ByStartEndStation ='/APP/Information/PublicTransport/TaiwanRailway/DailyTimeTable_ByStartEndStation'
+TRA_DailyTimeTable_ByCarNum = '/APP/Information/PublicTransport/TaiwanRailway/DailyTimeTable_ByCarNum'
+TRA_DailyTimeTable_ByStation = '/APP/Information/PublicTransport/TaiwanRailway/DailyTimeTable_ByStation'
+
+#Road_Information
+ParkingInfo = '/APP/Information/Road/CityParkingInfo'
+TrafficControl = '/APP/Information/Road/RoadInfo_Traffic_Control'
+RoadAccident = '/APP/Information/Road/RoadInfo_Accident'
+RoadConstruction ='/APP/Information/Road/RoadInfo_Road_Construction'
+Trafficjam = '/APP/Information/Road/RoadInfo_Trafficjam'
+PBS = '/APP/Information/Road/PBS'
+
+# Tourism
+TouristSpot="/APP/Information/Tourism/ScenicSpot"
+TouristHotel="/APP/Information/Tourism/Hotel"
+TouristFood="/APP/Information/Tourism/Restaurant"
+TouristActivity="/APP/Information/Tourism/Activity"
+SearchKeyWord = "/APP/Information/Tourism/Find"
+RoutePlanning = "/APP/Information/Tourism/TravelPlan"
+KeyWord2UID = "/APP/Information/Tourism/TourismUID_FindData"
+
+#CMS
+CMS_Main_Car = '/APP/CMS/Main/Car'
+CMS_Main_Scooter = '/APP/CMS/Main/Scooter'
+CMS_Sidebar_Car = '/APP/CMS/Sidebar/Car'
+CMS_Sidebar_Scooter = '/APP/CMS/Sidebar/Scooter'
+GetCarPosition = '/APP/CMS/ParkingLocation/Get'
+SaveCarPosition = '/APP/CMS/ParkingLocation/Save'
+CMS_GasStation = '/APP/CMS/QuickSearch/GasStation'
+CMS_ConvenientStore = '/APP/CMS/QuickSearch/ConvenientStore'
+SpeedEnforcement =  '/APP/CMS/SpeedEnforcement'
+```
